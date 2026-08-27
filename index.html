@@ -134,16 +134,52 @@
     #lykos-dashboard-preview .lykos-player b { font-size:11px; color:var(--lykos-yellow); }
     #lykos-dashboard-preview .lykos-footer-note { margin-top:14px; color:rgba(255,255,255,.82); font-size:9px; text-align:right; text-shadow:0 1px 5px rgba(0,0,0,.35); }
     #lykos-dashboard-preview [data-view-panel][hidden] { display:none; }
-    #lykos-dashboard-preview .lykos-player-hero { display:flex; align-items:center; gap:13px; }
-    #lykos-dashboard-preview .lykos-player-photo { width:44px; height:44px; border-radius:12px; background:var(--lykos-blue); color:#fff; border:1px solid rgba(255,255,255,.15); display:grid; place-items:center; font-size:15px; font-weight:800; }
+    #lykos-dashboard-preview .lykos-player-page { padding:0; }
+    #lykos-dashboard-preview .lykos-player-profile { min-height:576px; padding:30px 28px 42px; }
+    #lykos-dashboard-preview .lykos-player-profile-top { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:start; }
+    #lykos-dashboard-preview .lykos-player-identity { min-width:0; display:grid; grid-template-columns:184px minmax(0,1fr); gap:26px; align-items:end; }
+    #lykos-dashboard-preview .lykos-player-visual { position:relative; height:246px; margin:0; align-self:end; overflow:hidden; }
+    #lykos-dashboard-preview .lykos-player-visual::after { content:""; position:absolute; left:8%; right:8%; bottom:0; height:34px; background:radial-gradient(ellipse,rgba(0,0,0,.38),transparent 70%); filter:blur(6px); }
+    #lykos-dashboard-preview .lykos-player-photo { position:relative; z-index:1; width:100%; height:100%; display:block; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 16px 18px rgba(0,0,0,.24)); }
+    #lykos-dashboard-preview .lykos-player-name-wrap { min-width:0; padding-bottom:17px; }
+    #lykos-dashboard-preview .lykos-player-name-wrap h1 { margin:0; color:#fff; font-size:clamp(46px,5.3vw,82px); line-height:.76; letter-spacing:.015em; text-shadow:0 5px 22px rgba(0,0,0,.25); }
+    #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-first-name,
+    #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-last-name { display:block; }
     #lykos-dashboard-preview .lykos-stat-table { width:100%; border-collapse:collapse; margin-top:15px; font-size:11px; }
     #lykos-dashboard-preview .lykos-stat-table th, #lykos-dashboard-preview .lykos-stat-table td { padding:10px 8px; border-bottom:1px solid var(--lykos-line); text-align:left; }
     #lykos-dashboard-preview .lykos-stat-table th { color:var(--lykos-muted); font-weight:600; }
     #lykos-dashboard-preview .lykos-season-chip { display:inline-flex; padding:4px 7px; border-radius:999px; background:var(--lykos-yellow); color:var(--lykos-navy); font-weight:700; }
-    #lykos-dashboard-preview .lykos-player-status { display:inline-flex; margin-top:4px; color:var(--lykos-yellow); font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-player-status { display:inline-flex; margin-top:10px; color:#fff; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-player-essentials { display:flex; flex-wrap:nowrap; align-items:center; gap:9px; max-width:min(100%,720px); margin-top:20px; overflow-x:auto; color:var(--lykos-yellow); font-size:13px; font-weight:700; line-height:1.25; white-space:nowrap; scrollbar-width:none; }
+    #lykos-dashboard-preview .lykos-player-essentials::-webkit-scrollbar { display:none; }
+    #lykos-dashboard-preview .lykos-player-essentials[hidden] { display:none; }
+    #lykos-dashboard-preview .lykos-player-essential-separator { color:rgba(208,182,49,.52); }
+    #lykos-dashboard-preview .lykos-shirt-number { color:#fff; font-family:"OMMarseille", Georgia, serif; font-weight:900; letter-spacing:.02em; }
     #lykos-dashboard-preview .lykos-player-first-name { font-weight:400; }
     #lykos-dashboard-preview .lykos-player-last-name { font-weight:800; }
     #lykos-dashboard-preview .lykos-period[hidden] { display:none !important; }
+    #lykos-dashboard-preview .lykos-player-profile-top > .lykos-period { margin-top:4px; }
+    #lykos-dashboard-preview .lykos-player-summary { display:grid; grid-template-columns:minmax(0,1fr) 210px minmax(250px,.78fr); gap:16px; align-items:stretch; margin-top:-2px; }
+    #lykos-dashboard-preview .lykos-player-kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    #lykos-dashboard-preview .lykos-player-kpi { min-height:145px; padding:18px 13px 15px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+    #lykos-dashboard-preview .lykos-player-kpi span { display:block; color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:.04em; }
+    #lykos-dashboard-preview .lykos-player-kpi strong { display:block; margin-top:8px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:40px; line-height:1; }
+    #lykos-dashboard-preview .lykos-player-kpi small { display:block; min-height:1.25em; margin-top:9px; color:var(--lykos-muted); font-size:9px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-card { min-height:145px; padding:16px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:space-between; }
+    #lykos-dashboard-preview .lykos-performance-card > span { color:#fff; font-size:10px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-score { width:86px; height:86px; margin:8px 0 2px; border-radius:18px; background:rgba(255,255,255,.08); color:#fff; display:grid; place-items:center; font-family:"OMMarseille",Georgia,serif; font-size:36px; border:1px solid rgba(255,255,255,.12); }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="excellent"] { background:#22c55e; color:#041b12; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="good"] { background:#84cc16; color:#172004; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="average"] { background:#facc15; color:#2c2300; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="low"] { background:#f97316; color:#2b0d00; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="very-low"] { background:#ef4444; color:#fff; }
+    #lykos-dashboard-preview .lykos-performance-card small { min-height:1.25em; color:var(--lykos-muted); font-size:9px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-honours { min-height:145px; padding:18px 20px; }
+    #lykos-dashboard-preview .lykos-honours h2 { margin:0; font-family:"OMMarseille",Georgia,serif; font-size:24px; line-height:1; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-honours-list { margin:18px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
+    #lykos-dashboard-preview .lykos-honours-list li { color:#fff; font-size:11px; line-height:1.35; }
+    #lykos-dashboard-preview .lykos-honours-empty { margin:20px 0 0; color:var(--lykos-muted); font-size:11px; line-height:1.5; }
+    #lykos-dashboard-preview .lykos-player-detail-extension { display:none; }
     #lykos-dashboard-preview .lykos-data-pending { min-height:360px; padding:36px; display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-data-pending-mark { width:54px; height:54px; margin:0 auto 16px; border-radius:16px; background:rgba(208,182,49,.16); color:var(--lykos-yellow); border:1px solid rgba(208,182,49,.45); display:grid; place-items:center; font-size:22px; font-weight:700; }
     #lykos-dashboard-preview .lykos-data-pending strong { display:block; font-family:"OMMarseille", Georgia, serif; font-size:18px; letter-spacing:.04em; text-transform:uppercase; }
@@ -258,6 +294,26 @@
       #lykos-dashboard-preview .lykos-chart { height:155px; }
       #lykos-dashboard-preview .lykos-stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
       #lykos-dashboard-preview .lykos-stat-card { padding:14px; }
+      #lykos-dashboard-preview .lykos-player-profile { min-height:0; padding:18px 14px 26px; }
+      #lykos-dashboard-preview .lykos-player-profile-top { display:flex; flex-direction:column; gap:12px; }
+      #lykos-dashboard-preview .lykos-player-identity { width:100%; grid-template-columns:112px minmax(0,1fr); gap:12px; align-items:end; }
+      #lykos-dashboard-preview .lykos-player-visual { height:174px; }
+      #lykos-dashboard-preview .lykos-player-name-wrap { padding-bottom:12px; }
+      #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:clamp(34px,12vw,52px); line-height:.8; }
+      #lykos-dashboard-preview .lykos-player-essentials { margin-top:14px; gap:6px; font-size:10px; }
+      #lykos-dashboard-preview .lykos-player-status { margin-top:8px; font-size:9px; }
+      #lykos-dashboard-preview .lykos-player-profile-top > .lykos-period { order:2; margin-top:0; }
+      #lykos-dashboard-preview .lykos-player-summary { grid-template-columns:1fr 1fr; gap:9px; margin-top:15px; }
+      #lykos-dashboard-preview .lykos-player-kpis { order:3; grid-column:1/-1; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+      #lykos-dashboard-preview .lykos-performance-card { order:1; }
+      #lykos-dashboard-preview .lykos-honours { order:2; }
+      #lykos-dashboard-preview .lykos-player-kpi { min-height:118px; padding:14px 9px; }
+      #lykos-dashboard-preview .lykos-player-kpi strong { font-size:34px; }
+      #lykos-dashboard-preview .lykos-performance-card { min-height:164px; padding:14px 10px; }
+      #lykos-dashboard-preview .lykos-performance-score { width:76px; height:76px; font-size:31px; }
+      #lykos-dashboard-preview .lykos-honours { min-height:164px; padding:16px; }
+      #lykos-dashboard-preview .lykos-honours h2 { font-size:20px; }
+      #lykos-dashboard-preview .lykos-honours-empty { margin-top:16px; font-size:10px; }
       #lykos-dashboard-preview .lykos-pantheon-grid {
         display:flex; gap:11px; margin:0 -14px; padding:0 14px 10px; overflow-x:auto;
         scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch;
@@ -273,6 +329,9 @@
       #lykos-dashboard-preview .lykos-kpi { padding:11px; }
       #lykos-dashboard-preview .lykos-period button { font-size:9px; }
       #lykos-dashboard-preview .lykos-headnav { left:8px; right:8px; }
+      #lykos-dashboard-preview .lykos-player-identity { grid-template-columns:94px minmax(0,1fr); gap:9px; }
+      #lykos-dashboard-preview .lykos-player-visual { height:150px; }
+      #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:clamp(30px,11.5vw,43px); }
     }
     @media (prefers-reduced-motion: reduce) {
       #lykos-dashboard-preview *, #lykos-dashboard-preview *::before, #lykos-dashboard-preview *::after {
@@ -387,19 +446,40 @@
           </article>
         </div>
       </section>
-      <section class="lykos-content" data-view-panel="players" hidden>
-        <div class="lykos-heading">
-          <div class="lykos-player-hero">
-            <div class="lykos-player-photo" data-player-initials>FP</div>
-            <div><h1 data-selected-player><span class="lykos-player-first-name">Fabien</span> <span class="lykos-player-last-name">Perals</span></h1><span class="lykos-player-status" data-selected-status>Joueur actuel</span></div>
+      <section class="lykos-content lykos-player-page" data-view-panel="players" hidden>
+        <div class="lykos-player-profile">
+          <div class="lykos-player-profile-top">
+            <div class="lykos-player-identity">
+              <figure class="lykos-player-visual">
+                <img class="lykos-player-photo" data-player-image src="joueur-lykos.png" alt="Illustration du joueur du Lykos FC">
+              </figure>
+              <div class="lykos-player-name-wrap">
+                <h1 data-selected-player><span class="lykos-player-first-name">Fabien</span><span class="lykos-player-last-name">Perals</span></h1>
+                <div class="lykos-player-essentials" data-player-essentials aria-label="Informations essentielles du joueur"></div>
+                <span class="lykos-player-status" data-selected-status hidden></span>
+              </div>
+            </div>
+            <div class="lykos-period" data-player-period aria-label="Période du joueur">
+              <button data-period="current" aria-pressed="true">Saison actuelle</button>
+              <button data-period="previous" aria-pressed="false">Saison dernière</button>
+              <button data-period="alltime" aria-pressed="false">All-time</button>
+            </div>
           </div>
-          <div class="lykos-period" data-player-period aria-label="Période du joueur">
-            <button data-period="current" aria-pressed="true">Saison actuelle</button>
-            <button data-period="previous" aria-pressed="false">Saison dernière</button>
-            <button data-period="alltime" aria-pressed="false">All-time</button>
+          <div class="lykos-player-summary">
+            <div class="lykos-player-kpis" data-player-statistics></div>
+            <article class="lykos-panel lykos-performance-card">
+              <span>Indice de performance</span>
+              <strong class="lykos-performance-score" data-performance-score>—</strong>
+              <small data-performance-rank>Indisponible</small>
+            </article>
+            <article class="lykos-panel lykos-honours">
+              <h2>Palmarès</h2>
+              <ul class="lykos-honours-list" data-player-honours hidden></ul>
+              <p class="lykos-honours-empty" data-player-honours-empty>Aucune distinction disponible.</p>
+            </article>
           </div>
+          <div class="lykos-player-detail-extension" data-player-detail-extension></div>
         </div>
-        <div class="lykos-stats-grid" data-player-statistics></div>
       </section>
       <section class="lykos-content" data-view-panel="pantheon" hidden>
         <div class="lykos-heading">
@@ -421,9 +501,64 @@
       };
       // Source affichée : endpoint SportEasy stats/all/players, jamais la somme des catégories.
       const officialPlayerRows = [["3687378","Adrien Vanden Abeele",false,[null,null,null,null,null,null,null],[3,0,0,1,0,0,0]],["3421204","Adrien Zammut",true,[null,null,null,null,null,null,null],[14,51,31,5,7.6,3.64,2.21]],["3986244","Alexandre Dato",true,[27,36,20,4,6.4,1.33,0.74],[33,44,22,4,6.3,1.33,0.67]],["8818435","Antoine Alonzo",false,[30,60,28,4,6,2,0.93],[37,74,34,4,6,2,0.92]],["3687294","Antoine Didron",false,[null,null,null,null,null,null,null],[32,36,29,2,5.1,1.13,0.91]],["7251654","Antonin Ussel",false,[null,null,null,null,null,null,null],[4,8,4,0,5.7,2,1]],["9168750","Axel CROS",false,[null,null,null,null,null,null,null],[5,1,1,1,0,0.2,0.2]],["10724984","Bacem OINES",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["5923952","Benjamin Blavier",false,[null,null,null,null,null,null,null],[17,34,15,2,4.8,2,0.88]],["8351348","Corentin Mortier",false,[null,null,null,null,null,null,null],[7,8,7,0,6.3,1.14,1]],["3687220","DIM Couvrat",false,[null,null,null,null,null,null,null],[9,0,0,0,0,0,0]],["5767725","Dylan Perier",false,[37,40,13,1,5,1.08,0.35],[101,195,76,8,5.9,1.93,0.75]],["8623360","El Hathate Achraf",true,[3,12,4,0,7.7,4,1.33],[3,12,4,0,7.7,4,1.33]],["6448277","Enzo Sales",true,[1,0,1,0,5,0,1],[21,12,13,0,5.2,0.57,0.62]],["3687283","Fabien Perals",true,[8,1,2,0,5.2,0.13,0.25],[18,9,12,0,5.2,0.5,0.67]],["3687372","Florent Arcayna",false,[null,null,null,null,null,null,null],[1,1,4,0,0,1,4]],["3687373","Florian Mathieu",false,[null,null,null,null,null,null,null],[36,44,29,1,6.2,1.22,0.81]],["3687303","Gabriel Perals",true,[53,2,24,7,6.9,0.04,0.45],[132,7,68,22,7.1,0.05,0.52]],["3687315","Gael Magnet",false,[null,null,null,null,null,null,null],[5,22,12,1,0,4.4,2.4]],["2633439","Gaetan Fourmont",true,[18,27,18,3,6.2,1.5,1],[18,27,18,3,6.2,1.5,1]],["8464161","Guillaume Dato",true,[14,27,6,2,6.1,1.93,0.43],[29,83,20,6,6.5,2.86,0.69]],["3687304","Hugo BARRANCO",true,[null,null,null,null,null,null,null],[30,68,28,5,6.6,2.27,0.93]],["7431379","Jean-Jacques Dreydemy",false,[null,null,null,null,null,null,null],[17,26,21,0,5.2,1.53,1.24]],["5767653","Jeremy Bizot",false,[null,null,null,null,null,null,null],[15,1,6,3,5.9,0.07,0.4]],["8736763","Karim Maroufi",false,[null,null,null,null,null,null,null],[5,7,7,0,6.3,1.4,1.4]],["5209256","Loïc Heurlie",false,[6,7,10,0,4.6,1.17,1.67],[6,7,10,0,4.6,1.17,1.67]],["10268311","Luca Jay",true,[1,0,0,0,0,0,0],[1,0,0,0,0,0,0]],["6865008","Lucas Migale",false,[null,null,null,null,null,null,null],[2,0,0,0,6,0,0]],["6436983","Mathis Rousset",true,[null,null,null,null,null,null,null],[27,49,24,5,6.4,1.81,0.89]],["3687447","Mehdi Elb",false,[null,null,null,null,null,null,null],[1,4,1,0,0,4,1]],["10737114","Nicolas Boulin",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["7352538","Paul Andrei",false,[null,null,null,null,null,null,null],[7,18,7,1,6.1,2.57,1]],["3687292","Paul-Lucas Estrada",false,[null,null,null,null,null,null,null],[9,19,10,3,0,2.11,1.11]],["7171822","Pedro Martinez",false,[null,null,null,null,null,null,null],[15,25,10,2,6.6,1.67,0.67]],["6475207","Quentin Bouchet",false,[13,12,8,1,5.2,0.92,0.62],[56,68,50,5,5.6,1.21,0.89]],["1737291","Quentin Guion",true,[32,54,29,1,5.2,1.69,0.91],[34,59,30,1,5.2,1.74,0.88]],["5767549","Quentin Souberan",false,[null,null,null,null,null,null,null],[39,75,46,9,6.6,1.92,1.18]],["7390140","Quentin Toscani",false,[12,21,11,0,5.7,1.75,0.92],[36,111,56,6,7.1,3.08,1.56]],["7649102","Rachid Azzaoui",true,[35,25,49,4,6.5,0.71,1.4],[48,30,81,6,7,0.63,1.69]],["2458065","Ricky Carrot",false,[null,null,null,null,null,null,null],[3,13,4,0,6.2,4.33,1.33]],["3687457","Rida Ros",false,[null,null,null,null,null,null,null],[1,4,0,0,0,4,0]],["6106021","Robin Paya",true,[27,26,26,5,6.6,0.96,0.96],[81,106,118,8,6.8,1.31,1.46]],["3687448","Shason Sebillet",false,[null,null,null,null,null,null,null],[4,31,2,3,0,7.75,0.5]],["7552192","Simon Jacquier",true,[25,47,24,4,6.8,1.88,0.96],[42,87,50,6,6.8,2.07,1.19]],["3687291","Teo Mercier",false,[null,null,null,null,null,null,null],[6,2,2,2,0,0.33,0.33]],["3687366","Thomas Estrada",false,[null,null,null,null,null,null,null],[1,4,4,0,0,4,4]],["3687367","Thomas Nicolle",false,[null,null,null,null,null,null,null],[1,0,0,0,0,0,0]],["9557397","Tommy Lejoyeux",true,[38,52,42,6,7,1.37,1.11],[38,52,42,6,7,1.37,1.11]],["6438705","Tony Machado",false,[null,null,null,null,null,null,null],[1,1,2,0,7,1,2]]];
+      // Champs visibles dans l'effectif SportEasy le 27/08/2026. Les valeurs absentes restent nulles.
+      const currentPlayerEssentials = {
+        "8623360":{flags:"🇲🇦",birthDate:null,position:null,arrivalYear:null,shirtNumber:null},
+        "7649102":{flags:"🇫🇷 🇲🇦",birthDate:"21/04/1988",position:"DEF",arrivalYear:"2024",shirtNumber:"5"},
+        "3687304":{flags:"🇫🇷",birthDate:"24/02/1999",position:"ATT",arrivalYear:"2020",shirtNumber:"9"},
+        "10737114":{flags:"🇫🇷",birthDate:null,position:null,arrivalYear:null,shirtNumber:null},
+        "3986244":{flags:"🇫🇷",birthDate:"07/04/1990",position:"DEF",arrivalYear:"2024",shirtNumber:"29"},
+        "8464161":{flags:"🇫🇷",birthDate:null,position:"ATT",arrivalYear:"2024",shirtNumber:"99"},
+        "2633439":{flags:"🇫🇷",birthDate:"25/06/1999",position:"ATT",arrivalYear:null,shirtNumber:null},
+        "1737291":{flags:"🇫🇷",birthDate:"25/12/1991",position:null,arrivalYear:null,shirtNumber:null},
+        "7552192":{flags:"🇫🇷",birthDate:"10/04/2000",position:"ATT",arrivalYear:"2024",shirtNumber:"2"},
+        "10268311":{flags:"🇫🇷",birthDate:null,position:null,arrivalYear:null,shirtNumber:null},
+        "9557397":{flags:"🇫🇷",birthDate:null,position:null,arrivalYear:null,shirtNumber:null},
+        "10724984":{flags:"🇫🇷",birthDate:"13/08/1988",position:null,arrivalYear:null,shirtNumber:null},
+        "6106021":{flags:"🇫🇷",birthDate:"16/02/2000",position:"ATT",arrivalYear:"2023",shirtNumber:"10"},
+        "3687283":{flags:"🇫🇷",birthDate:"11/10/2000",position:"G",arrivalYear:"2019",shirtNumber:"17"},
+        "3687303":{flags:"🇫🇷",birthDate:"13/09/1996",position:"G",arrivalYear:"2020",shirtNumber:"1"},
+        "6436983":{flags:"🇫🇷",birthDate:"05/07/2000",position:"DEF",arrivalYear:"2023",shirtNumber:"5"},
+        "6448277":{flags:"🇫🇷",birthDate:"22/10/1999",position:"DEF",arrivalYear:"2023",shirtNumber:"22"},
+        "3421204":{flags:"🇫🇷",birthDate:"19/08/2000",position:"ATT",arrivalYear:"2023",shirtNumber:"19"}
+      };
+      // Première et dernière années de présence connues dans les saisons SportEasy.
+      const formerPlayerPeriods = {
+        "2458065":"2022 - 2023",
+        "3687220":"2020 - 2021",
+        "3687291":"2020 - 2021",
+        "3687292":"2020 - 2021",
+        "3687294":"2020 - 2024",
+        "3687315":"2020 - 2021",
+        "3687366":"2020 - 2021",
+        "3687367":"2020 - 2021",
+        "3687372":"2020 - 2021",
+        "3687373":"2020 - 2025",
+        "3687378":"2020 - 2021",
+        "3687447":"2020 - 2021",
+        "3687448":"2020 - 2021",
+        "3687457":"2020 - 2021",
+        "5209256":"2025 - 2026",
+        "5767549":"2022 - 2026",
+        "5767653":"2022 - 2025",
+        "5767725":"2022 - 2026",
+        "5923952":"2022 - 2026",
+        "6438705":"2023 - 2024",
+        "6475207":"2023 - 2026",
+        "6865008":"2023 - 2024",
+        "7171822":"2023 - 2024",
+        "7251654":"2023 - 2026",
+        "7352538":"2024 - 2025",
+        "7390140":"2023 - 2026",
+        "7431379":"2023 - 2024",
+        "8351348":"2024 - 2025",
+        "8736763":"2024 - 2025",
+        "8818435":"2024 - 2026",
+        "9168750":"2020 - 2021"
+      };
       const playerMetricKeys = ['matchesPlayed','goals','assists','manOfMatch','gradeAverage','goalsPerMatch','assistsPerMatch'];
       const playerMetricLabels = { matchesPlayed:'Matchs joués', goals:'Buts', assists:'Passes décisives', manOfMatch:'Homme du match', gradeAverage:'Note moyenne', goalsPerMatch:'Buts par match', assistsPerMatch:'Passes par match' };
-      const players = officialPlayerRows.map(([id,name,current,previous,alltime]) => ({ id,name,current,stats:{ current:Object.fromEntries(playerMetricKeys.map(key => [key,null])), previous:Object.fromEntries(playerMetricKeys.map((key,index) => [key,previous[index]])), alltime:Object.fromEntries(playerMetricKeys.map((key,index) => [key,alltime[index]])) } }));
+      const players = officialPlayerRows.map(([id,name,current,previous,alltime]) => ({ id,name,current,essentials:current ? currentPlayerEssentials[id] ?? null : null,stats:{ current:Object.fromEntries(playerMetricKeys.map(key => [key,null])), previous:Object.fromEntries(playerMetricKeys.map((key,index) => [key,previous[index]])), alltime:Object.fromEntries(playerMetricKeys.map((key,index) => [key,alltime[index]])) } }));
       let selectedPlayer = players.find(player => player.id === '3687283') || players[0];
       let selectedPlayerPeriod = selectedPlayer.current ? 'current' : 'alltime';
       const formatValue = value => value === null ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(value);
@@ -467,34 +602,101 @@
           target.appendChild(last);
         }
       };
+      const formatBirthDateAndAge = birthDate => {
+        if (!birthDate) return '—';
+        const [day,month,year] = birthDate.split('/').map(Number);
+        const today = new Date();
+        let age = today.getFullYear() - year;
+        if (today.getMonth() + 1 < month || (today.getMonth() + 1 === month && today.getDate() < day)) age -= 1;
+        return `${String(day).padStart(2,'0')}/${String(month).padStart(2,'0')}/${String(year).slice(-2)} (${age})`;
+      };
+      const jerseyNumber = number => {
+        const jersey = document.createElement('span');
+        jersey.className = 'lykos-shirt-number';
+        jersey.title = `Numéro de maillot : ${number ?? 'non renseigné'}`;
+        jersey.setAttribute('aria-label', jersey.title);
+        jersey.textContent = number ? `#${number}` : '#—';
+        return jersey;
+      };
+      const renderPlayerEssentials = player => {
+        const target = root.querySelector('[data-player-essentials]');
+        target.replaceChildren();
+        target.hidden = !player.current;
+        if (!player.current) return;
+        const details = player.essentials;
+        if (!details) { target.hidden = true; return; }
+        const items = [];
+        if (details.flags) items.push({value:details.flags,title:'Pays'});
+        if (details.birthDate) items.push({value:formatBirthDateAndAge(details.birthDate),title:'Date de naissance et âge'});
+        if (details.position) items.push({value:details.position,title:'Poste'});
+        if (details.arrivalYear) items.push({value:details.arrivalYear,title:"Année d’arrivée"});
+        if (details.shirtNumber) items.push({node:jerseyNumber(details.shirtNumber)});
+        target.hidden = !items.length;
+        items.forEach((item,index) => {
+          if (index) {
+            const separator = document.createElement('span'); separator.className = 'lykos-player-essential-separator'; separator.textContent = '|'; separator.setAttribute('aria-hidden','true'); target.appendChild(separator);
+          }
+          if (item.node) target.appendChild(item.node);
+          else { const value = document.createElement('span'); value.textContent = item.value; value.title = item.title; target.appendChild(value); }
+        });
+      };
+      const primaryPlayerMetrics = ['matchesPlayed','goals','assists','manOfMatch'];
+      const rankForMetric = (metric,period,player) => {
+        const value = player.stats[period][metric];
+        if (value === null) return null;
+        const values = players.map(item => item.stats[period][metric]).filter(item => item !== null).sort((a,b) => b - a);
+        const rank = values.findIndex(item => item === value);
+        return rank < 0 ? null : rank + 1;
+      };
+      const formatRank = rank => rank === null ? '' : `${rank}${rank === 1 ? 'er' : 'e'} de l’équipe`;
+      const renderPerformanceScore = score => {
+        const scoreNode = root.querySelector('[data-performance-score]');
+        const rankNode = root.querySelector('[data-performance-rank]');
+        scoreNode.removeAttribute('data-level');
+        scoreNode.textContent = score === null ? '—' : formatValue(score);
+        rankNode.textContent = score === null ? 'Indisponible' : '/ 100';
+        if (score === null) return;
+        scoreNode.dataset.level = score >= 80 ? 'excellent' : score >= 65 ? 'good' : score >= 50 ? 'average' : score >= 35 ? 'low' : 'very-low';
+      };
+      const playerHonours = new Map();
+      const renderPlayerHonours = player => {
+        const list = root.querySelector('[data-player-honours]');
+        const empty = root.querySelector('[data-player-honours-empty]');
+        const honours = playerHonours.get(player.id) ?? [];
+        list.replaceChildren();
+        honours.forEach(honour => {
+          const item = document.createElement('li');
+          item.textContent = honour;
+          list.appendChild(item);
+        });
+        list.hidden = !honours.length;
+        empty.hidden = Boolean(honours.length);
+      };
       const renderPlayerStats = () => {
         const values = selectedPlayer.stats[selectedPlayerPeriod];
         const container = root.querySelector('[data-player-statistics]');
         container.replaceChildren();
-        const available = playerMetricKeys.filter(key => values[key] !== null);
-        if (!available.length) {
-          const empty = document.createElement('div');
-          empty.className = 'lykos-panel lykos-empty-state';
-          empty.innerHTML = '<div><strong>Données indisponibles</strong><span>Aucune statistique disponible pour ce joueur sur cette période.</span></div>';
-          container.appendChild(empty);
-          return;
-        }
-        available.forEach(key => {
+        primaryPlayerMetrics.forEach(key => {
           const card = document.createElement('article');
-          card.className = 'lykos-panel lykos-stat-card';
+          card.className = 'lykos-panel lykos-player-kpi';
           const label = document.createElement('span'); label.textContent = playerMetricLabels[key];
           const value = document.createElement('strong'); value.textContent = formatValue(values[key]);
-          card.append(label,value); container.appendChild(card);
+          const rank = document.createElement('small'); rank.textContent = values[key] === null ? 'Indisponible' : formatRank(rankForMetric(key,selectedPlayerPeriod,selectedPlayer));
+          card.append(label,value,rank); container.appendChild(card);
         });
+        renderPerformanceScore(null);
+        renderPlayerHonours(selectedPlayer);
       };
       const selectPlayer = player => {
         selectedPlayer = player;
         selectedPlayerPeriod = player.current ? 'current' : 'alltime';
         root.querySelectorAll('[data-player]').forEach(item => item.toggleAttribute('aria-current', item.dataset.playerId === player.id));
         displayPlayerName(player.name);
-        root.querySelector('[data-selected-status]').textContent = player.current ? 'Joueur actuel' : 'Ancien joueur · All-time';
+        renderPlayerEssentials(player);
+        const status = root.querySelector('[data-selected-status]');
+        status.hidden = player.current;
+        status.textContent = player.current ? '' : `Ancien joueur | ${formerPlayerPeriods[player.id] ?? 'Période inconnue'}`;
         root.querySelector('[data-player-period]').hidden = !player.current;
-        root.querySelector('[data-player-initials]').textContent = player.name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
         root.querySelector('[data-player-period]').querySelectorAll('[data-period]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.period === selectedPlayerPeriod)));
         renderPlayerStats();
       };

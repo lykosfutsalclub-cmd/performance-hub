@@ -369,7 +369,7 @@
         </div>
         <div class="lykos-grid">
           <article class="lykos-panel lykos-chart-panel">
-            <div class="lykos-panel-title"><div><strong>Bilan sportif</strong><span>Valeurs disponibles</span></div></div>
+            <div class="lykos-panel-title"><div><strong>Bilan sportif</strong></div></div>
             <div class="lykos-player-list" style="margin-top:18px">
               <div class="lykos-player"><span class="lykos-player-rank">N</span><div><strong>Nuls</strong></div><b data-team-detail="draws">—</b></div>
               <div class="lykos-player"><span class="lykos-player-rank">D</span><div><strong>Défaites</strong></div><b data-team-detail="losses">—</b></div>
@@ -378,7 +378,7 @@
             </div>
           </article>
           <article class="lykos-panel lykos-roster">
-            <div class="lykos-panel-title"><div><strong>Référentiel joueurs</strong><span>Identités disponibles</span></div></div>
+            <div class="lykos-panel-title"><div><strong>Référentiel joueurs</strong></div></div>
             <div class="lykos-player-list">
               <div class="lykos-player"><span class="lykos-player-rank">✓</span><div><strong>Profils actuels recensés</strong><div class="lykos-progress"><i style="width:100%"></i></div></div><b>18</b></div>
               <div class="lykos-player"><span class="lykos-player-rank">ID</span><div><strong>Identifiant unique</strong><div class="lykos-progress"><i style="width:100%"></i></div></div><b>Actif</b></div>
@@ -386,7 +386,6 @@
             </div>
           </article>
         </div>
-        <div class="lykos-footer-note">Données validées · aucune présence, minute ou carton affiché</div>
       </section>
       <section class="lykos-content" data-view-panel="players" hidden>
         <div class="lykos-heading">
@@ -401,7 +400,6 @@
           </div>
         </div>
         <div class="lykos-stats-grid" data-player-statistics></div>
-        <div class="lykos-footer-note">Les valeurs absentes restent indisponibles</div>
       </section>
       <section class="lykos-content" data-view-panel="pantheon" hidden>
         <div class="lykos-heading">
@@ -477,7 +475,7 @@
         if (!available.length) {
           const empty = document.createElement('div');
           empty.className = 'lykos-panel lykos-empty-state';
-          empty.innerHTML = '<div><strong>Données indisponibles</strong><span>Aucune statistique validée pour ce joueur sur cette période. Aucun zéro fictif n’est affiché.</span></div>';
+          empty.innerHTML = '<div><strong>Données indisponibles</strong><span>Aucune statistique disponible pour ce joueur sur cette période.</span></div>';
           container.appendChild(empty);
           return;
         }
@@ -486,8 +484,7 @@
           card.className = 'lykos-panel lykos-stat-card';
           const label = document.createElement('span'); label.textContent = playerMetricLabels[key];
           const value = document.createElement('strong'); value.textContent = formatValue(values[key]);
-          const source = document.createElement('small'); source.textContent = key.includes('PerMatch') ? 'Calcul Lykos' : 'Valeur officielle';
-          card.append(label,value,source); container.appendChild(card);
+          card.append(label,value); container.appendChild(card);
         });
       };
       const selectPlayer = player => {

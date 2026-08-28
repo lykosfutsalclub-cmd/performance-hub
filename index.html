@@ -138,7 +138,7 @@
     #lykos-dashboard-preview .lykos-player-profile { min-height:576px; padding:30px 28px 42px; }
     #lykos-dashboard-preview .lykos-player-profile-top { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:start; }
     #lykos-dashboard-preview .lykos-player-identity { min-width:0; display:grid; grid-template-columns:184px minmax(0,1fr); gap:26px; align-items:end; }
-    #lykos-dashboard-preview .lykos-player-visual { position:relative; height:246px; margin:0; align-self:end; overflow:hidden; }
+    #lykos-dashboard-preview .lykos-player-visual { position:relative; height:220px; margin:0; align-self:end; overflow:hidden; }
     #lykos-dashboard-preview .lykos-player-visual::after { content:""; position:absolute; left:8%; right:8%; bottom:0; height:34px; background:radial-gradient(ellipse,rgba(0,0,0,.38),transparent 70%); filter:blur(6px); }
     #lykos-dashboard-preview .lykos-player-photo { position:relative; z-index:1; width:100%; height:100%; display:block; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 16px 18px rgba(0,0,0,.24)); }
     #lykos-dashboard-preview .lykos-player-name-wrap { min-width:0; padding-bottom:17px; }
@@ -168,18 +168,60 @@
     #lykos-dashboard-preview .lykos-performance-card { min-height:145px; padding:16px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:space-between; }
     #lykos-dashboard-preview .lykos-performance-card > span { color:#fff; font-size:10px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-performance-score { width:86px; height:86px; margin:8px 0 2px; border-radius:18px; background:rgba(255,255,255,.08); color:#fff; display:grid; place-items:center; font-family:"OMMarseille",Georgia,serif; font-size:36px; border:1px solid rgba(255,255,255,.12); }
-    #lykos-dashboard-preview .lykos-performance-score[data-level="excellent"] { background:#22c55e; color:#041b12; }
-    #lykos-dashboard-preview .lykos-performance-score[data-level="good"] { background:#84cc16; color:#172004; }
-    #lykos-dashboard-preview .lykos-performance-score[data-level="average"] { background:#facc15; color:#2c2300; }
-    #lykos-dashboard-preview .lykos-performance-score[data-level="low"] { background:#f97316; color:#2b0d00; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="excellent"] { background:#22c55e; color:#fff; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="good"] { background:#84cc16; color:#fff; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="average"] { background:#facc15; color:#fff; }
+    #lykos-dashboard-preview .lykos-performance-score[data-level="low"] { background:#f97316; color:#fff; }
     #lykos-dashboard-preview .lykos-performance-score[data-level="very-low"] { background:#ef4444; color:#fff; }
     #lykos-dashboard-preview .lykos-performance-card small { min-height:1.25em; color:var(--lykos-muted); font-size:9px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-player-prime { width:100%; margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,.1); color:var(--lykos-yellow); font-size:9px; line-height:1.35; }
     #lykos-dashboard-preview .lykos-honours { min-height:145px; padding:18px 20px; }
     #lykos-dashboard-preview .lykos-honours h2 { margin:0; font-family:"OMMarseille",Georgia,serif; font-size:24px; line-height:1; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-honours-list { margin:18px 0 0; padding:0; list-style:none; display:grid; gap:8px; }
     #lykos-dashboard-preview .lykos-honours-list li { color:#fff; font-size:11px; line-height:1.35; }
     #lykos-dashboard-preview .lykos-honours-empty { margin:20px 0 0; color:var(--lykos-muted); font-size:11px; line-height:1.5; }
-    #lykos-dashboard-preview .lykos-player-detail-extension { display:none; }
+    #lykos-dashboard-preview .lykos-player-detail-extension { display:grid; gap:16px; margin-top:20px; }
+    #lykos-dashboard-preview .lykos-secondary-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; align-items:stretch; }
+    #lykos-dashboard-preview .lykos-secondary-axis { position:relative; min-width:0; min-height:500px; padding:25px; display:flex; flex-direction:column; overflow:visible; border-radius:22px; background:radial-gradient(circle at 100% 0,rgba(32,91,154,.2),transparent 36%),linear-gradient(145deg,rgba(12,39,91,.98),rgba(5,27,66,.98)); border:1px solid rgba(140,181,226,.17); box-shadow:0 18px 45px rgba(0,7,28,.23),inset 0 1px 0 rgba(255,255,255,.035); }
+    #lykos-dashboard-preview .lykos-secondary-axis:hover, #lykos-dashboard-preview .lykos-secondary-axis:focus-within { z-index:8; }
+    #lykos-dashboard-preview .lykos-secondary-axis-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px; align-items:start; margin-bottom:21px; padding-bottom:18px; border-bottom:1px solid rgba(164,192,224,.13); }
+    #lykos-dashboard-preview .lykos-axis-heading h3 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:25px; line-height:1; letter-spacing:.055em; }
+    #lykos-dashboard-preview .lykos-axis-kicker { display:block; margin-top:8px; color:#8ba9c8; font-size:8px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-axis-score-wrap { min-width:76px; text-align:center; }
+    #lykos-dashboard-preview .lykos-axis-score { width:72px; height:64px; margin-left:auto; display:grid; place-items:center; border-radius:15px; background:linear-gradient(145deg,rgba(136,163,193,.23),rgba(74,100,131,.13)); border:1px solid rgba(175,202,229,.25); box-shadow:inset 0 1px 0 rgba(255,255,255,.09); color:#b9c9da; font-family:"OMMarseille",Georgia,serif; font-size:30px; line-height:1; }
+    #lykos-dashboard-preview .lykos-axis-score[data-rated="true"] { background:var(--score-tone); border-color:color-mix(in srgb,var(--score-tone) 75%,white); color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.45); box-shadow:0 7px 22px color-mix(in srgb,var(--score-tone) 24%,transparent),inset 0 1px 0 rgba(255,255,255,.35); }
+    #lykos-dashboard-preview .lykos-axis-score-unit { display:block; margin-top:5px; color:#fff; font-size:8px; font-weight:700; letter-spacing:.08em; }
+    #lykos-dashboard-preview .lykos-axis-rank { display:block; margin-top:4px; color:#7894b2; font-size:7px; line-height:1.2; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-axis-rows { display:grid; gap:7px; }
+    #lykos-dashboard-preview .lykos-axis-row { --fill:0%; --tone:#68829e; min-width:0; min-height:43px; display:grid; grid-template-columns:minmax(145px,1.32fr) minmax(76px,1fr) minmax(64px,.42fr); gap:11px; align-items:center; }
+    #lykos-dashboard-preview .lykos-axis-label { position:relative; min-width:0; color:#dce8f5; font-size:9px; line-height:1.25; }
+    #lykos-dashboard-preview .lykos-axis-info { position:relative; display:inline-grid; place-items:center; margin-left:4px; color:#9fb8d1; font-size:9px; cursor:help; outline:none; }
+    #lykos-dashboard-preview .lykos-axis-info::after { content:attr(data-tooltip); position:absolute; left:-8px; bottom:calc(100% + 9px); z-index:30; width:245px; padding:10px 12px; border:1px solid rgba(178,207,236,.28); border-radius:10px; background:#061b42; color:#eef6ff; box-shadow:0 12px 30px rgba(0,5,24,.48); font-family:Arial,sans-serif; font-size:10px; font-weight:400; line-height:1.45; letter-spacing:0; text-align:left; pointer-events:none; opacity:0; visibility:hidden; transform:translateY(4px); transition:opacity .15s ease,transform .15s ease,visibility .15s ease; }
+    #lykos-dashboard-preview .lykos-axis-info::before { content:""; position:absolute; left:2px; bottom:calc(100% + 4px); z-index:31; width:8px; height:8px; border-right:1px solid rgba(178,207,236,.28); border-bottom:1px solid rgba(178,207,236,.28); background:#061b42; opacity:0; visibility:hidden; transform:rotate(45deg); transition:opacity .15s ease,visibility .15s ease; }
+    #lykos-dashboard-preview .lykos-axis-info:hover::after, #lykos-dashboard-preview .lykos-axis-info:focus-visible::after { opacity:1; visibility:visible; transform:translateY(0); }
+    #lykos-dashboard-preview .lykos-axis-info:hover::before, #lykos-dashboard-preview .lykos-axis-info:focus-visible::before { opacity:1; visibility:visible; transform:rotate(45deg); }
+    #lykos-dashboard-preview .lykos-axis-rail { height:7px; overflow:hidden; border-radius:999px; background:rgba(2,15,39,.72); box-shadow:inset 0 1px 2px rgba(0,0,0,.38); }
+    #lykos-dashboard-preview .lykos-axis-fill { display:block; width:var(--fill); height:100%; border-radius:inherit; background:var(--tone); box-shadow:0 0 13px color-mix(in srgb,var(--tone) 55%,transparent); transition:width .35s ease; }
+    #lykos-dashboard-preview .lykos-axis-value { min-width:0; color:var(--tone); font-family:"OMMarseille",Georgia,serif; font-size:15px; line-height:1; text-align:right; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-axis-row[data-missing="true"] .lykos-axis-value { color:#7f96ad; }
+    #lykos-dashboard-preview .lykos-secondary-axis[data-axis="collective"] { grid-column:1/-1; min-height:0; }
+    #lykos-dashboard-preview .lykos-collective-threshold { align-self:start; padding:9px 12px; border:1px solid rgba(208,182,49,.3); border-radius:999px; background:rgba(208,182,49,.1); color:var(--lykos-yellow); font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-collective-relations { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; }
+    #lykos-dashboard-preview .lykos-collective-relation { min-width:0; min-height:154px; padding:16px; border:1px solid rgba(158,192,228,.15); border-radius:16px; background:linear-gradient(150deg,rgba(15,51,99,.72),rgba(5,25,58,.72)); }
+    #lykos-dashboard-preview .lykos-collective-label { min-height:28px; color:#8ba9c8; font-size:8px; font-weight:800; line-height:1.35; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-collective-name { display:block; min-height:38px; margin-top:12px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:17px; line-height:1.08; }
+    #lykos-dashboard-preview .lykos-collective-metric { display:block; margin-top:9px; color:var(--lykos-yellow); font-family:"OMMarseille",Georgia,serif; font-size:18px; }
+    #lykos-dashboard-preview .lykos-collective-meta { display:block; margin-top:5px; color:#8fa8c1; font-size:8px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-favorite-lineup { margin-top:20px; padding-top:20px; border-top:1px solid rgba(164,192,224,.13); }
+    #lykos-dashboard-preview .lykos-favorite-lineup-head { display:flex; justify-content:space-between; gap:16px; align-items:baseline; }
+    #lykos-dashboard-preview .lykos-favorite-lineup-head strong { color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:18px; letter-spacing:.045em; }
+    #lykos-dashboard-preview .lykos-favorite-lineup-head span { color:#7894b2; font-size:8px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-favorite-lineup-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:13px; }
+    #lykos-dashboard-preview .lykos-lineup-player { min-width:0; padding:14px 10px; border:1px solid rgba(151,185,221,.16); border-radius:14px; background:rgba(4,22,52,.64); text-align:center; }
+    #lykos-dashboard-preview .lykos-lineup-player[data-selected="true"] { border-color:rgba(208,182,49,.55); background:rgba(208,182,49,.12); }
+    #lykos-dashboard-preview .lykos-lineup-player strong { display:block; overflow:hidden; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:14px; line-height:1.12; text-overflow:ellipsis; }
+    #lykos-dashboard-preview .lykos-lineup-player small { display:block; margin-top:7px; color:#8fa8c1; font-size:8px; line-height:1.3; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-lineup-player[data-selected="true"] small { color:var(--lykos-yellow); }
     #lykos-dashboard-preview .lykos-data-pending { min-height:360px; padding:36px; display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-data-pending-mark { width:54px; height:54px; margin:0 auto 16px; border-radius:16px; background:rgba(208,182,49,.16); color:var(--lykos-yellow); border:1px solid rgba(208,182,49,.45); display:grid; place-items:center; font-size:22px; font-weight:700; }
     #lykos-dashboard-preview .lykos-data-pending strong { display:block; font-family:"OMMarseille", Georgia, serif; font-size:18px; letter-spacing:.04em; text-transform:uppercase; }
@@ -303,7 +345,7 @@
       #lykos-dashboard-preview .lykos-player-essentials { margin-top:14px; gap:6px; font-size:10px; }
       #lykos-dashboard-preview .lykos-player-status { margin-top:8px; font-size:9px; }
       #lykos-dashboard-preview .lykos-player-profile-top > .lykos-period { order:2; margin-top:0; }
-      #lykos-dashboard-preview .lykos-player-summary { grid-template-columns:1fr 1fr; gap:9px; margin-top:15px; }
+      #lykos-dashboard-preview .lykos-player-summary { grid-template-columns:1fr; gap:9px; margin-top:15px; }
       #lykos-dashboard-preview .lykos-player-kpis { order:3; grid-column:1/-1; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
       #lykos-dashboard-preview .lykos-performance-card { order:1; }
       #lykos-dashboard-preview .lykos-honours { order:2; }
@@ -314,6 +356,22 @@
       #lykos-dashboard-preview .lykos-honours { min-height:164px; padding:16px; }
       #lykos-dashboard-preview .lykos-honours h2 { font-size:20px; }
       #lykos-dashboard-preview .lykos-honours-empty { margin-top:16px; font-size:10px; }
+      #lykos-dashboard-preview .lykos-player-detail-extension { margin-top:16px; }
+      #lykos-dashboard-preview .lykos-secondary-grid { grid-template-columns:1fr; gap:13px; }
+      #lykos-dashboard-preview .lykos-secondary-axis { min-height:500px; padding:19px 17px; border-radius:19px; }
+      #lykos-dashboard-preview .lykos-secondary-axis-head { gap:12px; margin-bottom:17px; padding-bottom:15px; }
+      #lykos-dashboard-preview .lykos-axis-heading h3 { font-size:22px; }
+      #lykos-dashboard-preview .lykos-axis-score { width:64px; height:58px; font-size:27px; }
+      #lykos-dashboard-preview .lykos-axis-score-wrap { min-width:66px; }
+      #lykos-dashboard-preview .lykos-axis-row { grid-template-columns:minmax(115px,1.32fr) minmax(58px,.85fr) minmax(57px,.46fr); gap:8px; }
+      #lykos-dashboard-preview .lykos-axis-label { font-size:8px; }
+      #lykos-dashboard-preview .lykos-axis-value { font-size:14px; }
+      #lykos-dashboard-preview .lykos-collective-threshold { white-space:normal; text-align:right; }
+      #lykos-dashboard-preview .lykos-collective-relations { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+      #lykos-dashboard-preview .lykos-collective-relation { min-height:148px; padding:14px; }
+      #lykos-dashboard-preview .lykos-favorite-lineup-head { align-items:flex-start; flex-direction:column; gap:5px; }
+      #lykos-dashboard-preview .lykos-favorite-lineup-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      #lykos-dashboard-preview .lykos-lineup-player[data-selected="true"] { grid-column:1/-1; }
       #lykos-dashboard-preview .lykos-pantheon-grid {
         display:flex; gap:11px; margin:0 -14px; padding:0 14px 10px; overflow-x:auto;
         scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch;
@@ -468,9 +526,10 @@
           <div class="lykos-player-summary">
             <div class="lykos-player-kpis" data-player-statistics></div>
             <article class="lykos-panel lykos-performance-card">
-              <span>Indice de performance</span>
+              <span>Note Générale</span>
               <strong class="lykos-performance-score" data-performance-score>—</strong>
               <small data-performance-rank>Indisponible</small>
+              <div class="lykos-player-prime" data-player-prime>Prime indisponible</div>
             </article>
             <article class="lykos-panel lykos-honours">
               <h2>Palmarès</h2>
@@ -490,6 +549,7 @@
       </section>
     </main>
   </div>
+  <script src="player-secondary-data.js"></script>
   <script>
     (() => {
       const root = document.getElementById('lykos-dashboard-preview');
@@ -562,6 +622,11 @@
       let selectedPlayer = players.find(player => player.id === '3687283') || players[0];
       let selectedPlayerPeriod = selectedPlayer.current ? 'current' : 'alltime';
       const formatValue = value => value === null ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(value);
+      const secondaryPeriodKeys = { current:'current', previous:'previous', alltime:'allTime' };
+      const secondaryData = window.LYKOS_SECONDARY_STATS?.periods ?? {};
+      const playerPrimes = window.LYKOS_SECONDARY_STATS?.primeByPlayer ?? {};
+      const formatPercent = value => value === null ? '—' : `${new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value)} %`;
+      const formatSigned = value => value === null ? '—' : `${value > 0 ? '+' : ''}${formatValue(value)}`;
       const updateTeam = period => {
         const panel = root.querySelector('[data-view-panel="team"]');
         panel.querySelectorAll('[data-period]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.period === period)));
@@ -649,16 +714,35 @@
         return rank < 0 ? null : rank + 1;
       };
       const formatRank = rank => rank === null ? '' : `${rank}${rank === 1 ? 'er' : 'e'} de l’équipe`;
-      const renderPerformanceScore = score => {
+      const renderPerformanceScore = (score,ranking=null,awardBonus=0) => {
         const scoreNode = root.querySelector('[data-performance-score]');
         const rankNode = root.querySelector('[data-performance-rank]');
         scoreNode.removeAttribute('data-level');
         scoreNode.textContent = score === null ? '—' : formatValue(score);
-        rankNode.textContent = score === null ? 'Indisponible' : '/ 100';
+        rankNode.textContent = score === null ? 'Non noté' : `/ 99${ranking?.rank ? ` · ${formatRank(ranking.rank)}` : ''}${awardBonus > 0 ? ` · bonus palmarès +${awardBonus}` : ''}`;
         if (score === null) return;
-        scoreNode.dataset.level = score >= 80 ? 'excellent' : score >= 65 ? 'good' : score >= 50 ? 'average' : score >= 35 ? 'low' : 'very-low';
+        scoreNode.dataset.level = score >= 90 ? 'excellent' : score >= 70 ? 'good' : score >= 50 ? 'average' : score >= 30 ? 'low' : 'very-low';
       };
-      const playerHonours = new Map();
+      const annualAwardsByPlayer = window.LYKOS_SECONDARY_STATS?.calendarYearAwards?.byPlayer ?? {};
+      const awardPresentation = {
+        top_scorer:['⚽','Meilleur buteur'], top_assist_provider:['👟','Meilleur passeur'], player_of_year:['🌕','Meilleur joueur'],
+        best_prospect:['💫','Meilleur espoir'], best_recruit:['⭐','Meilleure recrue'], goal_of_year:['🎥',"But de l’année"],
+        honor_award:['📜',"Prix d’honneur"], team_of_year:['🏟️',"Équipe de l’année"],
+      };
+      const formatAnnualAward = award => {
+        const [icon,title] = awardPresentation[award.type] ?? ['🏆','Distinction'];
+        return `${icon} ${title} ${award.year}`;
+      };
+      const sportFairPlayCupWinners = new Set([
+        '3687303','7390140','5767549','6475207','3986244','6106021','8818435',
+      ]);
+      const playerHonours = new Map(players.map(player => [
+        player.id,
+        [
+          ...(sportFairPlayCupWinners.has(player.id) ? ['🏆 Sport&FairPlay Cup'] : []),
+          ...((annualAwardsByPlayer[player.id] ?? []).map(formatAnnualAward)),
+        ],
+      ]));
       const renderPlayerHonours = player => {
         const list = root.querySelector('[data-player-honours]');
         const empty = root.querySelector('[data-player-honours-empty]');
@@ -672,6 +756,181 @@
         list.hidden = !honours.length;
         empty.hidden = Boolean(honours.length);
       };
+      const renderPlayerPrime = player => {
+        const target = root.querySelector('[data-player-prime]');
+        const prime = playerPrimes[player.id];
+        if (!prime) { target.textContent = 'Prime indisponible · minimum 4 matchs dans un mois'; return; }
+        const date = new Date(`${prime.month}-01T12:00:00Z`);
+        const label = new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric',timeZone:'UTC'}).format(date);
+        target.textContent = `Prime · ${label} · ${prime.rating}/99 · ${prime.matches} matchs`;
+      };
+      const axisTone = score => score === null ? '#68829e' : `hsl(${Math.round((score - 1) / 99 * 125)} 84% 50%)`;
+      const ratingTone = score => score === null ? '#68829e' : `hsl(${Math.round((score - 1) / 98 * 125)} 84% 50%)`;
+      const getNestedValue = (object,path) => path.split('.').reduce((value,key) => value?.[key],object) ?? null;
+      const relativeAxisScore = (periodKey,path,value,inverse=false,comparisonPath=path) => {
+        if (!Number.isFinite(value)) return null;
+        const playerValues = Object.values(secondaryData[periodKey]?.players ?? {})
+          .map(player => getNestedValue(player,comparisonPath))
+          .filter(Number.isFinite)
+          .sort((a,b) => a - b);
+        if (!playerValues.length) return null;
+        if (playerValues.length === 1) return 50;
+        const minimum = playerValues[0];
+        const maximum = playerValues[playerValues.length - 1];
+        if (maximum === minimum) return 50;
+        const position = (value - minimum) / (maximum - minimum);
+        const proportionalScore = 1 + (inverse ? 1 - position : position) * 99;
+        return Math.max(1,Math.min(100,proportionalScore));
+      };
+      const formatAxisValue = (value,format='number') => {
+        if (!Number.isFinite(value)) return '—';
+        if (format === 'percent') return formatPercent(value);
+        if (format === 'signed') return formatSigned(value);
+        return formatValue(value);
+      };
+      const metricExplanations = {
+        'creation.assists':'Nombre total de passes décisives recensées pour le joueur sur la période sélectionnée.',
+        'creation.assistsPerGame':'Nombre moyen de passes décisives réalisées par le joueur à chaque match joué.',
+        'creation.gamesWithAssist':'Nombre de matchs où le joueur a délivré au moins une passe décisive.',
+        'creation.assistGameRate':'Pourcentage des matchs du joueur où il a délivré au moins une passe décisive.',
+        'creation.maxAssistsInGame':'Plus grand nombre de passes décisives réalisées par le joueur dans un même match.',
+        'creation.assistStreak':'Plus longue série de matchs consécutifs du joueur avec au moins une passe décisive.',
+        'creation.last5Assists':'Total des passes décisives réalisées lors des cinq dernières apparitions du joueur.',
+        'creation.teamAssistShare':'Part des passes décisives recensées du Lykos réalisée par le joueur lorsqu’il participe.',
+        'finishing.goals':'Nombre total de buts inscrits par le joueur sur la période sélectionnée.',
+        'finishing.goalsPerGame':'Nombre moyen de buts inscrits par le joueur à chaque match joué.',
+        'finishing.gamesWithGoal':'Nombre de matchs où le joueur a inscrit au moins un but.',
+        'finishing.scoringGameRate':'Pourcentage des matchs du joueur où il a inscrit au moins un but.',
+        'finishing.maxGoalsInGame':'Plus grand nombre de buts inscrits par le joueur dans un même match.',
+        'finishing.scoringStreak':'Plus longue série de matchs consécutifs du joueur avec au moins un but.',
+        'finishing.last5Goals':'Total des buts inscrits lors des cinq dernières apparitions du joueur.',
+        'finishing.teamGoalShare':'Part des buts du Lykos inscrite par le joueur pendant ses matchs dont le score collectif est disponible.',
+        'offensive.contributions':'Total des buts et des passes décisives recensés pour le joueur.',
+        'offensive.contributionsPerGame':'Nombre moyen de buts et passes décisives cumulés par match joué.',
+        'offensive.decisiveGames':'Nombre de matchs où le joueur a inscrit un but ou délivré une passe décisive.',
+        'offensive.decisiveGameRate':'Pourcentage des matchs du joueur où il a inscrit un but ou délivré une passe décisive.',
+        'offensive.maxContributionsInGame':'Plus grand total de buts et passes décisives réalisé par le joueur dans un même match.',
+        'offensive.decisiveStreak':'Plus longue série de matchs consécutifs avec au moins un but ou une passe décisive.',
+        'offensive.last5Contributions':'Total des buts et passes décisives lors des cinq dernières apparitions du joueur.',
+        'offensive.offensiveContributionIndex':'Part des contributions offensives recensées du Lykos réalisée par le joueur lorsqu’il participe.',
+        'defensive.goalsAgainst':'Total des buts encaissés par le Lykos pendant les matchs auxquels le joueur participe.',
+        'defensive.goalsAgainstPerGame':'Moyenne des buts encaissés par le Lykos lorsque le joueur participe.',
+        'defensive.goalsAgainstWithoutPlayer':'Moyenne des buts encaissés par le Lykos lorsque le joueur ne participe pas.',
+        'defensive.collectiveObservedImpact':'Différence entre la moyenne des buts encaissés sans le joueur et celle observée avec lui. Une valeur positive signifie que le Lykos encaisse moins lorsqu’il joue, sans établir de causalité individuelle.',
+        'defensive.gamesBelowTeamAverage':'Un match est considéré comme mieux défendu lorsque le Lykos encaisse moins de buts que sa moyenne sur la période sélectionnée. Cette valeur compte ces matchs lorsque le joueur participe.',
+        'defensive.gamesBelowTeamAverageRate':'Un match est considéré comme mieux défendu lorsque le Lykos encaisse moins de buts que sa moyenne sur la période sélectionnée. Cette valeur indique leur fréquence parmi les matchs du joueur.',
+        'defensive.bestDefensiveGame':'Plus petit nombre de buts encaissés par le Lykos dans un match auquel le joueur participe.',
+        'defensive.worstDefensiveGame':'Plus grand nombre de buts encaissés par le Lykos dans un match auquel le joueur participe.'
+      };
+      const createInfoTip = explanation => {
+        const info = document.createElement('span'); info.className = 'lykos-axis-info'; info.textContent = 'ⓘ'; info.dataset.tooltip = explanation; info.tabIndex = 0; info.setAttribute('aria-label',explanation); return info;
+      };
+      const createAxisRow = (metric,periodKey) => {
+        const row = document.createElement('div'); row.className = 'lykos-axis-row';
+        const value = metric.value;
+        const comparisonValue = metric.comparisonValue ?? value;
+        const performance = relativeAxisScore(periodKey,metric.path,comparisonValue,Boolean(metric.inverse),metric.comparisonPath ?? metric.path);
+        row.style.setProperty('--fill',`${performance ?? 0}%`);
+        row.style.setProperty('--tone',axisTone(performance));
+        row.dataset.missing = String(!Number.isFinite(value));
+        const label = document.createElement('span'); label.className = 'lykos-axis-label'; label.append(document.createTextNode(metric.label));
+        const explanation = metricExplanations[metric.path];
+        label.appendChild(createInfoTip(explanation));
+        const rail = document.createElement('span'); rail.className = 'lykos-axis-rail'; rail.setAttribute('aria-hidden','true');
+        const fill = document.createElement('span'); fill.className = 'lykos-axis-fill'; rail.appendChild(fill);
+        const valueNode = document.createElement('strong'); valueNode.className = 'lykos-axis-value'; valueNode.textContent = formatAxisValue(value,metric.format);
+        row.append(label,rail,valueNode); return row;
+      };
+      const createSecondaryAxis = ({title,axis,metrics,rating,ranking},periodKey) => {
+        const card = document.createElement('article'); card.className = 'lykos-secondary-axis'; card.dataset.axis = axis;
+        const head = document.createElement('div'); head.className = 'lykos-secondary-axis-head';
+        const headingWrap = document.createElement('div'); headingWrap.className = 'lykos-axis-heading';
+        const heading = document.createElement('h3'); heading.textContent = title;
+        const kicker = document.createElement('span'); kicker.className = 'lykos-axis-kicker'; kicker.textContent = 'Indicateur de performance';
+        headingWrap.append(heading,kicker);
+        const scoreWrap = document.createElement('div'); scoreWrap.className = 'lykos-axis-score-wrap';
+        const score = document.createElement('strong'); score.className = 'lykos-axis-score'; score.textContent = Number.isFinite(rating) ? formatValue(rating) : '—';
+        if (Number.isFinite(rating)) { score.dataset.rated = 'true'; score.style.setProperty('--score-tone',ratingTone(rating)); }
+        const unit = document.createElement('span'); unit.className = 'lykos-axis-score-unit'; unit.textContent = '/99';
+        const rank = document.createElement('span'); rank.className = 'lykos-axis-rank'; rank.textContent = ranking?.rank ? formatRank(ranking.rank) : 'Non noté';
+        scoreWrap.append(score,unit,rank); head.append(headingWrap,scoreWrap);
+        const rows = document.createElement('div'); rows.className = 'lykos-axis-rows';
+        metrics.forEach(metric => rows.appendChild(createAxisRow(metric,periodKey)));
+        card.append(head,rows); return card;
+      };
+      const createCollectiveRelation = ({title,partner,value,label,explanation}) => {
+        const card = document.createElement('article'); card.className = 'lykos-collective-relation';
+        const heading = document.createElement('div'); heading.className = 'lykos-collective-label'; heading.append(document.createTextNode(title),createInfoTip(explanation));
+        const name = document.createElement('strong'); name.className = 'lykos-collective-name'; name.textContent = partner?.playerName ?? '—';
+        const metric = document.createElement('strong'); metric.className = 'lykos-collective-metric'; metric.textContent = Number.isFinite(value) ? label(value) : '—';
+        const meta = document.createElement('span'); meta.className = 'lykos-collective-meta'; meta.textContent = Number.isFinite(partner?.matchesTogether) ? `${formatValue(partner.matchesTogether)} matchs ensemble` : 'Association indisponible';
+        card.append(heading,name,metric,meta); return card;
+      };
+      const createCollectiveAxis = collective => {
+        const card = document.createElement('article'); card.className = 'lykos-secondary-axis'; card.dataset.axis = 'collective';
+        const head = document.createElement('div'); head.className = 'lykos-secondary-axis-head';
+        const headingWrap = document.createElement('div'); headingWrap.className = 'lykos-axis-heading';
+        const heading = document.createElement('h3'); heading.textContent = 'COLLECTIF';
+        const kicker = document.createElement('span'); kicker.className = 'lykos-axis-kicker'; kicker.textContent = 'Avec quels coéquipiers fonctionne-t-il le mieux ?';
+        headingWrap.append(heading,kicker);
+        const threshold = document.createElement('span'); threshold.className = 'lykos-collective-threshold'; threshold.textContent = `Associations de ${collective?.minimumMatchesTogether ?? 5} match${collective?.minimumMatchesTogether === 1 ? '' : 's'} minimum`;
+        head.append(headingWrap,threshold);
+        const relations = document.createElement('div'); relations.className = 'lykos-collective-relations';
+        relations.append(
+          createCollectiveRelation({title:'Meilleur partenaire',partner:collective?.bestWinningPartner,value:collective?.bestWinningPartner?.winRate,label:formatPercent,explanation:'Le coéquipier avec lequel le joueur gagne le plus souvent, parmi les associations suffisamment représentées.'}),
+          createCollectiveRelation({title:'Plus faible association',partner:collective?.worstLosingPartner,value:collective?.worstLosingPartner?.lossRate,label:value=>`${formatPercent(value)} de défaites`,explanation:'Le coéquipier avec lequel le joueur perd le plus souvent, parmi les associations suffisamment représentées.'}),
+          createCollectiveRelation({title:'Meilleur partenaire offensif',partner:collective?.bestOffensivePartner,value:collective?.bestOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le plus de buts et passes décisives par match.'}),
+          createCollectiveRelation({title:'Association offensive la moins efficace',partner:collective?.worstOffensivePartner,value:collective?.worstOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le moins de buts et passes décisives par match.'})
+        );
+        const lineup = document.createElement('section'); lineup.className = 'lykos-favorite-lineup';
+        const lineupHead = document.createElement('div'); lineupHead.className = 'lykos-favorite-lineup-head';
+        const lineupTitle = document.createElement('strong'); lineupTitle.textContent = 'COMPOSITION FAVORITE';
+        const lineupCaption = document.createElement('span'); lineupCaption.textContent = 'Joueur sélectionné + 4 partenaires aux meilleurs résultats';
+        lineupHead.append(lineupTitle,lineupCaption);
+        const lineupGrid = document.createElement('div'); lineupGrid.className = 'lykos-favorite-lineup-grid';
+        const selected = document.createElement('article'); selected.className = 'lykos-lineup-player'; selected.dataset.selected = 'true';
+        const selectedName = document.createElement('strong'); selectedName.textContent = selectedPlayer.name;
+        const selectedMeta = document.createElement('small'); selectedMeta.textContent = 'Joueur sélectionné'; selected.append(selectedName,selectedMeta); lineupGrid.appendChild(selected);
+        for (const partner of collective?.favoriteLineup ?? []) {
+          const player = document.createElement('article'); player.className = 'lykos-lineup-player';
+          const playerName = document.createElement('strong'); playerName.textContent = partner.playerName;
+          const playerMeta = document.createElement('small'); playerMeta.textContent = `${formatPercent(partner.winRate)} · ${formatValue(partner.matchesTogether)} matchs`;
+          player.append(playerName,playerMeta); lineupGrid.appendChild(player);
+        }
+        while (lineupGrid.children.length < 5) {
+          const empty = document.createElement('article'); empty.className = 'lykos-lineup-player';
+          const emptyName = document.createElement('strong'); emptyName.textContent = '—';
+          const emptyMeta = document.createElement('small'); emptyMeta.textContent = 'Association indisponible'; empty.append(emptyName,emptyMeta); lineupGrid.appendChild(empty);
+        }
+        lineup.append(lineupHead,lineupGrid); card.append(head,relations,lineup); return card;
+      };
+      const renderSecondaryStats = () => {
+        const target = root.querySelector('[data-player-detail-extension]'); target.replaceChildren();
+        const periodKey = secondaryPeriodKeys[selectedPlayerPeriod];
+        const analytics = secondaryData[periodKey]?.players?.[selectedPlayer.id] ?? null;
+        const grid = document.createElement('div'); grid.className = 'lykos-secondary-grid';
+        const c = analytics?.creation ?? {}, f = analytics?.finishing ?? {}, o = analytics?.offensive ?? {}, d = analytics?.defensive ?? {}, collective = analytics?.collective ?? {}, p = analytics?.performance ?? {}, pr = p.rankings ?? {};
+        grid.append(
+          createSecondaryAxis({title:'CRÉATION',axis:'creation',rating:p.creation,ranking:pr.creation,metrics:[
+            {label:'Passes décisives',path:'creation.assists',value:c.assists},{label:'Passes / match',path:'creation.assistsPerGame',value:c.assistsPerGame},{label:'Matchs avec une passe',path:'creation.gamesWithAssist',value:c.gamesWithAssist,format:'matches'},{label:'Taux de matchs avec passe',path:'creation.assistGameRate',value:c.assistGameRate,format:'percent'},
+            {label:'Record sur un match',path:'creation.maxAssistsInGame',value:c.maxAssistsInGame},{label:'Plus longue série avec passe',path:'creation.assistStreak',value:c.assistStreak,format:'matches'},{label:'Passes - 5 derniers matchs',path:'creation.last5Assists',value:c.last5Assists},{label:'Part des passes recensées',path:'creation.teamAssistShare',value:c.teamAssistShare,format:'percent'}
+          ]},periodKey),
+          createSecondaryAxis({title:'FINITION',axis:'finishing',rating:p.finishing,ranking:pr.finishing,metrics:[
+            {label:'Buts',path:'finishing.goals',value:f.goals},{label:'Buts / match',path:'finishing.goalsPerGame',value:f.goalsPerGame},{label:'Matchs avec un but',path:'finishing.gamesWithGoal',value:f.gamesWithGoal,format:'matches'},{label:'Taux de matchs avec but',path:'finishing.scoringGameRate',value:f.scoringGameRate,format:'percent'},
+            {label:'Record sur un match',path:'finishing.maxGoalsInGame',value:f.maxGoalsInGame},{label:'Plus longue série de buts',path:'finishing.scoringStreak',value:f.scoringStreak,format:'matches'},{label:'Buts - 5 derniers matchs',path:'finishing.last5Goals',value:f.last5Goals},{label:'Part des buts de l’équipe',path:'finishing.teamGoalShare',value:f.teamGoalShare,format:'percent'}
+          ]},periodKey),
+          createSecondaryAxis({title:'OFFENSIF',axis:'offensive',rating:p.offensive,ranking:pr.offensive,metrics:[
+            {label:'Contributions G+A',path:'offensive.contributions',value:o.contributions},{label:'G+A / match',path:'offensive.contributionsPerGame',value:o.contributionsPerGame},{label:'Matchs décisifs',path:'offensive.decisiveGames',value:o.decisiveGames,format:'matches'},{label:'Taux de matchs décisifs',path:'offensive.decisiveGameRate',value:o.decisiveGameRate,format:'percent'},
+            {label:'Record G+A / match',path:'offensive.maxContributionsInGame',value:o.maxContributionsInGame},{label:'Plus longue série décisive',path:'offensive.decisiveStreak',value:o.decisiveStreak,format:'matches'},{label:'G+A - 5 derniers matchs',path:'offensive.last5Contributions',value:o.last5Contributions},{label:'Part des contributions recensées',path:'offensive.offensiveContributionIndex',value:o.offensiveContributionIndex,format:'percent'}
+          ]},periodKey),
+          createSecondaryAxis({title:'DÉFENSIF',axis:'defensive',rating:p.defensive,ranking:pr.defensive,metrics:[
+            {label:'Buts encaissés avec lui',path:'defensive.goalsAgainst',value:d.goalsAgainst,format:'conceded',inverse:true,comparisonPath:'defensive.goalsAgainstPerGame',comparisonValue:d.goalsAgainstPerGame},{label:'Buts encaissés / match avec lui',path:'defensive.goalsAgainstPerGame',value:d.goalsAgainstPerGame,inverse:true},{label:'Buts encaissés / match sans lui',path:'defensive.goalsAgainstWithoutPlayer',value:d.goalsAgainstWithoutPlayer},{label:'Écart avec / sans lui',path:'defensive.collectiveObservedImpact',value:d.collectiveObservedImpact,format:'signed'},
+            {label:'Matchs mieux défendus que la moyenne',path:'defensive.gamesBelowTeamAverage',value:d.gamesBelowTeamAverage,format:'matches'},{label:'Fréquence de matchs mieux défendus',path:'defensive.gamesBelowTeamAverageRate',value:d.gamesBelowTeamAverageRate,format:'percent'},{label:'Meilleur match défensif',path:'defensive.bestDefensiveGame',value:d.bestDefensiveGame,format:'conceded',inverse:true},{label:'Pire match défensif',path:'defensive.worstDefensiveGame',value:d.worstDefensiveGame,format:'conceded',inverse:true}
+          ]},periodKey),
+          createCollectiveAxis(collective)
+        );
+        target.appendChild(grid);
+      };
       const renderPlayerStats = () => {
         const values = selectedPlayer.stats[selectedPlayerPeriod];
         const container = root.querySelector('[data-player-statistics]');
@@ -684,8 +943,12 @@
           const rank = document.createElement('small'); rank.textContent = values[key] === null ? 'Indisponible' : formatRank(rankForMetric(key,selectedPlayerPeriod,selectedPlayer));
           card.append(label,value,rank); container.appendChild(card);
         });
-        renderPerformanceScore(null);
+        const periodKey = secondaryPeriodKeys[selectedPlayerPeriod];
+        const performance = secondaryData[periodKey]?.players?.[selectedPlayer.id]?.performance ?? null;
+        renderPerformanceScore(performance?.overall ?? null,performance?.rankings?.overall ?? null,performance?.awardBonus ?? 0);
+        renderPlayerPrime(selectedPlayer);
         renderPlayerHonours(selectedPlayer);
+        renderSecondaryStats();
       };
       const selectPlayer = player => {
         selectedPlayer = player;

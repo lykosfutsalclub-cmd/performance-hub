@@ -357,6 +357,7 @@
       #lykos-dashboard-preview .lykos-honours h2 { font-size:20px; }
       #lykos-dashboard-preview .lykos-honours-empty { margin-top:16px; font-size:10px; }
       #lykos-dashboard-preview .lykos-player-detail-extension { margin-top:16px; }
+      #lykos-dashboard-preview .lykos-player-page { padding-bottom:calc(118px + env(safe-area-inset-bottom)); }
       #lykos-dashboard-preview .lykos-secondary-grid { grid-template-columns:1fr; gap:13px; }
       #lykos-dashboard-preview .lykos-secondary-axis { min-height:500px; padding:19px 17px; border-radius:19px; }
       #lykos-dashboard-preview .lykos-secondary-axis-head { gap:12px; margin-bottom:17px; padding-bottom:15px; }
@@ -367,6 +368,8 @@
       #lykos-dashboard-preview .lykos-axis-label { font-size:8px; }
       #lykos-dashboard-preview .lykos-axis-value { font-size:14px; }
       #lykos-dashboard-preview .lykos-collective-threshold { white-space:normal; text-align:right; }
+      #lykos-dashboard-preview [data-axis="collective"] .lykos-secondary-axis-head { grid-template-columns:1fr; }
+      #lykos-dashboard-preview [data-axis="collective"] .lykos-collective-threshold { justify-self:start; max-width:100%; text-align:left; }
       #lykos-dashboard-preview .lykos-collective-relations { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
       #lykos-dashboard-preview .lykos-collective-relation { min-height:148px; padding:14px; }
       #lykos-dashboard-preview .lykos-favorite-lineup-head { align-items:flex-start; flex-direction:column; gap:5px; }

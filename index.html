@@ -206,6 +206,7 @@
     #lykos-dashboard-preview .lykos-axis-row[data-missing="true"] .lykos-axis-value { color:#7f96ad; }
     #lykos-dashboard-preview .lykos-secondary-axis[data-axis="collective"] { grid-column:1/-1; min-height:0; }
     #lykos-dashboard-preview .lykos-collective-threshold { align-self:start; padding:9px 12px; border:1px solid rgba(208,182,49,.3); border-radius:999px; background:rgba(208,182,49,.1); color:var(--lykos-yellow); font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-collective-threshold .lykos-axis-info::after { text-transform:none; }
     #lykos-dashboard-preview .lykos-collective-relations { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; }
     #lykos-dashboard-preview .lykos-collective-relation { min-width:0; min-height:154px; padding:16px; border:1px solid rgba(158,192,228,.15); border-radius:16px; background:linear-gradient(150deg,rgba(15,51,99,.72),rgba(5,25,58,.72)); }
     #lykos-dashboard-preview .lykos-collective-label { min-height:28px; color:#8ba9c8; font-size:8px; font-weight:800; line-height:1.35; letter-spacing:.08em; text-transform:uppercase; }
@@ -216,6 +217,7 @@
     #lykos-dashboard-preview .lykos-favorite-lineup-head { display:flex; justify-content:space-between; gap:16px; align-items:baseline; }
     #lykos-dashboard-preview .lykos-favorite-lineup-head strong { color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:18px; letter-spacing:.045em; }
     #lykos-dashboard-preview .lykos-favorite-lineup-head span { color:#7894b2; font-size:8px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-favorite-lineup-head .lykos-axis-info::after { text-transform:none; }
     #lykos-dashboard-preview .lykos-favorite-lineup-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:13px; }
     #lykos-dashboard-preview .lykos-lineup-player { min-width:0; padding:14px 10px; border:1px solid rgba(151,185,221,.16); border-radius:14px; background:rgba(4,22,52,.64); text-align:center; }
     #lykos-dashboard-preview .lykos-lineup-player[data-selected="true"] { border-color:rgba(208,182,49,.55); background:rgba(208,182,49,.12); }
@@ -367,6 +369,11 @@
       #lykos-dashboard-preview .lykos-axis-row { grid-template-columns:minmax(115px,1.32fr) minmax(58px,.85fr) minmax(57px,.46fr); gap:8px; }
       #lykos-dashboard-preview .lykos-axis-label { font-size:8px; }
       #lykos-dashboard-preview .lykos-axis-value { font-size:14px; }
+      #lykos-dashboard-preview .lykos-axis-info::after {
+        position:fixed; left:14px; right:14px; bottom:calc(96px + env(safe-area-inset-bottom)); z-index:120;
+        width:auto; max-width:none; transform:translateY(6px); font-size:11px; line-height:1.5;
+      }
+      #lykos-dashboard-preview .lykos-axis-info::before { display:none; }
       #lykos-dashboard-preview .lykos-collective-threshold { white-space:normal; text-align:right; }
       #lykos-dashboard-preview [data-axis="collective"] .lykos-secondary-axis-head { grid-template-columns:1fr; }
       #lykos-dashboard-preview [data-axis="collective"] .lykos-collective-threshold { justify-self:start; max-width:100%; text-align:left; }
@@ -876,19 +883,36 @@
         const heading = document.createElement('h3'); heading.textContent = 'COLLECTIF';
         const kicker = document.createElement('span'); kicker.className = 'lykos-axis-kicker'; kicker.textContent = 'Avec quels coéquipiers fonctionne-t-il le mieux ?';
         headingWrap.append(heading,kicker);
-        const threshold = document.createElement('span'); threshold.className = 'lykos-collective-threshold'; threshold.textContent = `Associations de ${collective?.minimumMatchesTogether ?? 5} match${collective?.minimumMatchesTogether === 1 ? '' : 's'} minimum`;
+        const threshold = document.createElement('span'); threshold.className = 'lykos-collective-threshold';
+        const collectiveAverage = collective?.averageMatchesTogether ?? collective?.favoriteLineupAverageMatches;
+        const collectiveMinimum = collective?.minimumMatchesTogether ?? collective?.favoriteLineupMinimumMatches;
+        threshold.append(
+          document.createTextNode(Number.isFinite(collectiveAverage) && Number.isFinite(collectiveMinimum)
+            ? `Moyenne X : ${formatValue(collectiveAverage)} · ${formatValue(collectiveMinimum)} matchs minimum`
+            : 'Moyenne X indisponible'),
+          createInfoTip('La moyenne X est le nombre moyen de matchs joués par ce joueur avec chacun de ses coéquipiers sur la période. Toutes les statistiques du bloc Collectif excluent les partenaires ayant joué moins que cette moyenne.'),
+        );
         head.append(headingWrap,threshold);
         const relations = document.createElement('div'); relations.className = 'lykos-collective-relations';
         relations.append(
-          createCollectiveRelation({title:'Meilleur partenaire',partner:collective?.bestWinningPartner,value:collective?.bestWinningPartner?.winRate,label:formatPercent,explanation:'Le coéquipier avec lequel le joueur gagne le plus souvent, parmi les associations suffisamment représentées.'}),
-          createCollectiveRelation({title:'Plus faible association',partner:collective?.worstLosingPartner,value:collective?.worstLosingPartner?.lossRate,label:value=>`${formatPercent(value)} de défaites`,explanation:'Le coéquipier avec lequel le joueur perd le plus souvent, parmi les associations suffisamment représentées.'}),
-          createCollectiveRelation({title:'Meilleur partenaire offensif',partner:collective?.bestOffensivePartner,value:collective?.bestOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le plus de buts et passes décisives par match.'}),
-          createCollectiveRelation({title:'Association offensive la moins efficace',partner:collective?.worstOffensivePartner,value:collective?.worstOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le moins de buts et passes décisives par match.'})
+          createCollectiveRelation({title:'Meilleur partenaire',partner:collective?.bestWinningPartner,value:collective?.bestWinningPartner?.winRate,label:formatPercent,explanation:'Le coéquipier avec lequel le joueur gagne le plus souvent, parmi ceux ayant joué avec lui au moins la moyenne X de la période.'}),
+          createCollectiveRelation({title:'Plus faible association',partner:collective?.worstLosingPartner,value:collective?.worstLosingPartner?.lossRate,label:value=>`${formatPercent(value)} de défaites`,explanation:'Le coéquipier avec lequel le joueur perd le plus souvent, parmi ceux ayant joué avec lui au moins la moyenne X de la période.'}),
+          createCollectiveRelation({title:'Meilleur partenaire offensif',partner:collective?.bestOffensivePartner,value:collective?.bestOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le plus de buts et passes décisives par match, parmi ceux atteignant la moyenne X.'}),
+          createCollectiveRelation({title:'Association offensive la moins efficace',partner:collective?.worstOffensivePartner,value:collective?.worstOffensivePartner?.playerContributionsPerGame,label:value=>`${formatValue(value)} G+A / match`,explanation:'Le coéquipier avec lequel le joueur inscrit ou délivre le moins de buts et passes décisives par match, parmi ceux atteignant la moyenne X.'})
         );
         const lineup = document.createElement('section'); lineup.className = 'lykos-favorite-lineup';
         const lineupHead = document.createElement('div'); lineupHead.className = 'lykos-favorite-lineup-head';
-        const lineupTitle = document.createElement('strong'); lineupTitle.textContent = 'COMPOSITION FAVORITE';
-        const lineupCaption = document.createElement('span'); lineupCaption.textContent = 'Joueur sélectionné + 4 partenaires aux meilleurs résultats';
+        const lineupTitle = document.createElement('strong');
+        lineupTitle.append(
+          document.createTextNode('COMPOSITION FAVORITE'),
+          createInfoTip('Les partenaires atteignant la moyenne X sont classés en priorité. S’ils sont moins de quatre, les meilleures associations restantes complètent automatiquement la composition afin de toujours afficher quatre joueurs lorsque quatre partenaires sont recensés.'),
+        );
+        const lineupCaption = document.createElement('span');
+        const lineupAverage = collective?.favoriteLineupAverageMatches;
+        const lineupMinimum = collective?.favoriteLineupMinimumMatches;
+        lineupCaption.textContent = Number.isFinite(lineupAverage) && Number.isFinite(lineupMinimum)
+          ? `Moyenne X : ${formatValue(lineupAverage)} · priorité dès ${formatValue(lineupMinimum)} matchs · 4 partenaires`
+          : 'Moyenne X indisponible';
         lineupHead.append(lineupTitle,lineupCaption);
         const lineupGrid = document.createElement('div'); lineupGrid.className = 'lykos-favorite-lineup-grid';
         const selected = document.createElement('article'); selected.className = 'lykos-lineup-player'; selected.dataset.selected = 'true';
@@ -897,7 +921,9 @@
         for (const partner of collective?.favoriteLineup ?? []) {
           const player = document.createElement('article'); player.className = 'lykos-lineup-player';
           const playerName = document.createElement('strong'); playerName.textContent = partner.playerName;
-          const playerMeta = document.createElement('small'); playerMeta.textContent = `${formatPercent(partner.winRate)} · ${formatValue(partner.matchesTogether)} matchs`;
+          const playerMeta = document.createElement('small');
+          const partnerResult = Number.isFinite(partner.winRate) ? formatPercent(partner.winRate) : 'Résultat non recensé';
+          playerMeta.textContent = `${partnerResult} · ${formatValue(partner.matchesTogether)} matchs${partner.belowAverageFallback ? ' · complément X' : ''}`;
           player.append(playerName,playerMeta); lineupGrid.appendChild(player);
         }
         while (lineupGrid.children.length < 5) {

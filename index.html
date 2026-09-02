@@ -66,16 +66,16 @@
     }
     #lykos-dashboard-preview .lykos-intro-mark::before,
     #lykos-dashboard-preview .lykos-intro-mark::after {
-      content:""; position:absolute; inset:-22%; border:1px solid rgba(208,182,49,.32); border-radius:50%;
-      opacity:0; transform:scale(.72); animation:lykosIntroRing 1.05s ease-out .18s both;
+      content:""; position:absolute; inset:-17%; border:1px solid rgba(208,182,49,.28); border-radius:50%;
+      opacity:0; transform:scale(.82); animation:lykosIntroRing 1.05s ease-out .18s both;
     }
-    #lykos-dashboard-preview .lykos-intro-mark::after { animation-delay:.34s; }
+    #lykos-dashboard-preview .lykos-intro-mark::after { inset:-31%; animation-delay:.34s; }
     #lykos-dashboard-preview .lykos-intro-logo-frame {
-      position:relative; z-index:2; width:100%; height:100%; overflow:hidden; border-radius:50%;
-      clip-path:circle(49.6% at 50% 50%); contain:paint; background:#fff;
-      box-shadow:0 18px 34px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.15);
+      position:relative; z-index:2; width:100%; height:100%; display:grid; place-items:center;
+      overflow:visible; border-radius:50%; contain:layout paint; background:transparent;
+      box-shadow:0 18px 34px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.08);
     }
-    #lykos-dashboard-preview .lykos-intro-logo { width:100%; height:100%; display:block; object-fit:cover; }
+    #lykos-dashboard-preview .lykos-intro-logo { width:100%; height:100%; display:block; object-fit:contain; object-position:center; }
     @keyframes lykosIntroLogo {
       0% { opacity:0; transform:scale(.76); }
       52% { opacity:1; transform:scale(1.045); }

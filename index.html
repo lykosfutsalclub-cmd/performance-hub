@@ -204,9 +204,9 @@
     #lykos-dashboard-preview .lykos-player-visual::after { content:""; position:absolute; left:8%; right:8%; bottom:0; height:34px; background:radial-gradient(ellipse,rgba(0,0,0,.38),transparent 70%); filter:blur(6px); }
     #lykos-dashboard-preview .lykos-player-photo { position:relative; z-index:1; width:100%; height:100%; display:block; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 16px 18px rgba(0,0,0,.24)); }
     #lykos-dashboard-preview .lykos-player-name-wrap { min-width:0; padding-bottom:17px; }
-    #lykos-dashboard-preview .lykos-player-name-wrap h1 { margin:0; color:#fff; font-size:clamp(46px,5.3vw,82px); line-height:.76; letter-spacing:.015em; text-shadow:0 5px 22px rgba(0,0,0,.25); }
+    #lykos-dashboard-preview .lykos-player-name-wrap h1 { margin:0; color:#fff; font-size:var(--player-name-fitted-size,clamp(46px,5.3vw,82px)); line-height:.76; letter-spacing:.015em; text-shadow:0 5px 22px rgba(0,0,0,.25); }
     #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-first-name,
-    #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-last-name { display:block; }
+    #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-last-name { display:block; white-space:nowrap; }
     #lykos-dashboard-preview .lykos-stat-table { width:100%; border-collapse:collapse; margin-top:15px; font-size:11px; }
     #lykos-dashboard-preview .lykos-stat-table th, #lykos-dashboard-preview .lykos-stat-table td { padding:10px 8px; border-bottom:1px solid var(--lykos-line); text-align:left; }
     #lykos-dashboard-preview .lykos-stat-table th { color:var(--lykos-muted); font-weight:600; }
@@ -416,7 +416,9 @@
       #lykos-dashboard-preview .lykos-player-identity { width:100%; grid-template-columns:112px minmax(0,1fr); gap:12px; align-items:end; }
       #lykos-dashboard-preview .lykos-player-visual { height:174px; }
       #lykos-dashboard-preview .lykos-player-name-wrap { padding-bottom:12px; }
-      #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:clamp(34px,12vw,52px); line-height:.8; }
+      #lykos-dashboard-preview .lykos-player-name-wrap h1 { width:100%; max-width:100%; font-size:var(--player-name-fitted-size,clamp(30px,11vw,46px)); line-height:.8; }
+      #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-first-name,
+      #lykos-dashboard-preview .lykos-player-name-wrap .lykos-player-last-name { max-width:100%; white-space:nowrap; }
       #lykos-dashboard-preview .lykos-player-essentials { margin-top:14px; gap:6px; font-size:10px; flex-wrap:wrap; overflow-x:visible; white-space:normal; }
       #lykos-dashboard-preview .lykos-player-status { margin-top:8px; font-size:9px; }
       #lykos-dashboard-preview .lykos-player-profile-top > .lykos-period { order:2; margin-top:0; }
@@ -448,6 +450,9 @@
         transform:translateY(6px); font-size:11px; line-height:1.5;
       }
       #lykos-dashboard-preview .lykos-axis-info::before { display:none; }
+      #lykos-dashboard-preview .lykos-axis-info:not([data-open="true"])::after {
+        opacity:0 !important; visibility:hidden !important; transform:translateY(6px) !important;
+      }
       #lykos-dashboard-preview .lykos-collective-threshold { white-space:normal; text-align:right; }
       #lykos-dashboard-preview [data-axis="collective"] .lykos-secondary-axis-head { grid-template-columns:1fr; }
       #lykos-dashboard-preview [data-axis="collective"] .lykos-collective-threshold { justify-self:start; max-width:100%; text-align:left; }
@@ -482,7 +487,7 @@
       #lykos-dashboard-preview .lykos-headnav { left:8px; right:8px; }
       #lykos-dashboard-preview .lykos-player-identity { grid-template-columns:94px minmax(0,1fr); gap:9px; }
       #lykos-dashboard-preview .lykos-player-visual { height:150px; }
-      #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:clamp(30px,11.5vw,43px); }
+      #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:var(--player-name-fitted-size,clamp(27px,10.5vw,40px)); }
     }
     @media (prefers-reduced-motion: reduce) {
       #lykos-dashboard-preview *, #lykos-dashboard-preview *::before, #lykos-dashboard-preview *::after {
@@ -855,6 +860,25 @@
         if (view === 'players') showPlayerPicker();
         else root.querySelector('.lykos-shell').classList.remove('player-mode','player-picker-mode');
       }));
+      let playerNameFitFrame = 0;
+      const fitPlayerName = () => {
+        const target = root.querySelector('[data-selected-player]');
+        target.style.removeProperty('--player-name-fitted-size');
+        if (target.offsetParent === null) return;
+        const lines = [...target.querySelectorAll('.lykos-player-first-name,.lykos-player-last-name')];
+        const availableWidth = target.clientWidth;
+        const widestLine = Math.max(0,...lines.map(line => line.scrollWidth));
+        const baseSize = parseFloat(getComputedStyle(target).fontSize);
+        if (!availableWidth || !widestLine || !baseSize) return;
+        const fittedSize = Math.max(18,Math.floor(baseSize * Math.min(1,availableWidth / widestLine) * 100) / 100);
+        target.style.setProperty('--player-name-fitted-size',`${fittedSize}px`);
+      };
+      const schedulePlayerNameFit = () => {
+        cancelAnimationFrame(playerNameFitFrame);
+        playerNameFitFrame = requestAnimationFrame(fitPlayerName);
+      };
+      window.addEventListener('resize',schedulePlayerNameFit,{passive:true});
+      document.fonts?.ready.then(schedulePlayerNameFit);
       const displayPlayerName = (name) => {
         const parts = name.trim().split(/\s+/).filter(Boolean);
         const firstName = parts.shift() || '';
@@ -872,6 +896,7 @@
           last.textContent = lastName;
           target.appendChild(last);
         }
+        schedulePlayerNameFit();
       };
       const formatBirthDateAndAge = birthDate => {
         if (!birthDate) return '—';
@@ -1027,6 +1052,19 @@
         'defensive.bestDefensiveGame':'Plus petit nombre de buts encaissés par le Lykos dans un match auquel le joueur participe.',
         'defensive.worstDefensiveGame':'Plus grand nombre de buts encaissés par le Lykos dans un match auquel le joueur participe.'
       };
+      const closeInfoTips = except => {
+        root.querySelectorAll('.lykos-axis-info[data-open="true"]').forEach(node => {
+          if (node === except) return;
+          node.dataset.open = 'false'; node.setAttribute('aria-expanded','false'); node.blur();
+        });
+      };
+      root.addEventListener('click',event => {
+        if (!event.target.closest?.('.lykos-axis-info')) closeInfoTips();
+      });
+      root.addEventListener('touchmove',() => closeInfoTips(),{passive:true});
+      window.addEventListener('scroll',() => closeInfoTips(),{passive:true});
+      window.addEventListener('resize',() => closeInfoTips(),{passive:true});
+      root.addEventListener('keydown',event => { if (event.key === 'Escape') closeInfoTips(); });
       const createInfoTip = explanation => {
         const info = document.createElement('span');
         info.className = 'lykos-axis-info'; info.textContent = 'ⓘ'; info.dataset.tooltip = explanation; info.tabIndex = 0;
@@ -1034,7 +1072,7 @@
         info.addEventListener('click',event => {
           event.stopPropagation();
           const shouldOpen = info.dataset.open !== 'true';
-          document.querySelectorAll('.lykos-axis-info[data-open="true"]').forEach(node => { node.dataset.open = 'false'; node.setAttribute('aria-expanded','false'); });
+          closeInfoTips(info);
           info.dataset.open = String(shouldOpen); info.setAttribute('aria-expanded',String(shouldOpen));
           if (shouldOpen) info.focus(); else info.blur();
         });

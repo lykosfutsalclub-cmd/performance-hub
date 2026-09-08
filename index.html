@@ -163,6 +163,12 @@
     #lykos-dashboard-preview .lykos-footer-note { margin-top:14px; color:rgba(255,255,255,.82); font-size:9px; text-align:right; text-shadow:0 1px 5px rgba(0,0,0,.35); }
     #lykos-dashboard-preview .lykos-team-signals { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
     #lykos-dashboard-preview .lykos-team-heading-actions { display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
+    #lykos-dashboard-preview .lykos-team-overview { display:contents; }
+    @media (min-width:781px) {
+      #lykos-dashboard-preview .lykos-team-overview { display:grid; grid-template-columns:210px minmax(0,1fr); gap:16px; align-items:stretch; margin-bottom:16px; }
+      #lykos-dashboard-preview .lykos-team-overview .lykos-team-form-rating { width:100%; display:flex; flex-direction:column; justify-content:center; }
+      #lykos-dashboard-preview .lykos-team-overview .lykos-team-signals { margin-bottom:0; grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
     #lykos-dashboard-preview .lykos-team-form-rating { width:210px; padding:12px 14px 10px; text-align:center; }
     #lykos-dashboard-preview .lykos-team-form-rating > span { display:block; color:#8fa8c1; font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-team-rating-gauge { position:relative; width:142px; height:70px; margin:7px auto 0; overflow:hidden; }
@@ -1006,6 +1012,21 @@
   <script>
     (() => {
       const root = document.getElementById('lykos-dashboard-preview');
+      // Une seule jauge : intégrée à la synthèse sur ordinateur, position mobile conservée.
+      const teamRatingCard = root.querySelector('[data-team-rating-card]');
+      const teamHeadingActions = root.querySelector('.lykos-team-heading-actions');
+      const teamSignals = root.querySelector('.lykos-team-signals');
+      const teamOverview = document.createElement('div');
+      teamOverview.className = 'lykos-team-overview';
+      teamSignals.before(teamOverview);
+      teamOverview.append(teamSignals);
+      const teamDesktopLayout = window.matchMedia('(min-width:781px)');
+      const placeTeamRating = () => {
+        if (teamDesktopLayout.matches) teamOverview.prepend(teamRatingCard);
+        else teamHeadingActions.prepend(teamRatingCard);
+      };
+      placeTeamRating();
+      teamDesktopLayout.addEventListener('change', placeTeamRating);
       root.querySelector('.lykos-headbar-title').textContent = '';
       const teamPeriods = window.LYKOS_TEAM_STATS?.periods ?? {};
       const teamSeasons = window.LYKOS_TEAM_STATS?.seasons ?? [];

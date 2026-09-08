@@ -207,7 +207,7 @@
     #lykos-dashboard-preview .lykos-team-goal-totals div:last-child strong { color:var(--metron-negative); }
     #lykos-dashboard-preview .lykos-team-goal-totals span { display:block; margin-top:4px; color:var(--lykos-muted); font-size:9px; }
     #lykos-dashboard-preview .lykos-team-charts { margin-top:16px; align-items:stretch; }
-    #lykos-dashboard-preview .lykos-comparison-card { margin-top:16px; padding:20px; overflow:hidden; }
+    #lykos-dashboard-preview .lykos-comparison-card { position:relative; margin-top:16px; padding:20px; overflow:visible; }
     #lykos-dashboard-preview .lykos-comparison-card h2 { margin:0; font-family:"OMMarseille",Georgia,serif; font-size:19px; letter-spacing:.04em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-comparison-head { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
     #lykos-dashboard-preview .lykos-comparison-filters { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
@@ -217,13 +217,28 @@
     #lykos-dashboard-preview .lykos-comparison-legend span { display:flex; align-items:center; gap:6px; }
     #lykos-dashboard-preview .lykos-comparison-legend i { width:18px; height:3px; border-radius:999px; background:var(--metron-positive); box-shadow:0 0 8px rgba(34,197,94,.4); }
     #lykos-dashboard-preview .lykos-comparison-legend span:nth-child(2) i { background:#4da3ff; box-shadow:0 0 8px rgba(77,163,255,.4); }
+    #lykos-dashboard-preview .lykos-comparison-axis-guide { display:flex; flex-wrap:wrap; justify-content:space-between; gap:7px 18px; margin-top:12px; color:#8fa8c1; font-size:8px; line-height:1.4; }
+    #lykos-dashboard-preview .lykos-comparison-axis-guide strong { color:#d9e7f4; font-weight:800; }
     #lykos-dashboard-preview .lykos-comparison-chart { width:100%; min-height:275px; margin-top:8px; overflow-x:auto; }
     #lykos-dashboard-preview .lykos-comparison-chart svg { display:block; width:100%; min-width:650px; height:275px; overflow:visible; }
     #lykos-dashboard-preview .lykos-comparison-grid { stroke:rgba(255,255,255,.08); stroke-width:1; }
     #lykos-dashboard-preview .lykos-comparison-axis-label { fill:#7894b2; font:8px Arial,sans-serif; }
     #lykos-dashboard-preview .lykos-comparison-line { fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
-    #lykos-dashboard-preview .lykos-comparison-point { stroke:#071d49; stroke-width:2; cursor:pointer; }
+    #lykos-dashboard-preview .lykos-comparison-point { stroke:#071d49; stroke-width:2; cursor:pointer; transition:r .15s ease,filter .15s ease; }
+    #lykos-dashboard-preview .lykos-comparison-point:hover, #lykos-dashboard-preview .lykos-comparison-point:focus, #lykos-dashboard-preview .lykos-comparison-point[data-open="true"] { r:7px; filter:drop-shadow(0 0 5px currentColor); outline:none; }
     #lykos-dashboard-preview .lykos-comparison-empty { min-height:230px; display:grid; place-items:center; color:#8fa8c1; font-size:11px; }
+    #lykos-dashboard-preview .lykos-comparison-popover, #lykos-dashboard-preview .lykos-team-help-popover { position:fixed; z-index:260; width:min(330px,calc(100vw - 28px)); padding:14px; border:1px solid rgba(164,196,229,.3); border-radius:15px; background:rgba(4,22,55,.985); color:#fff; box-shadow:0 22px 56px rgba(0,5,24,.62); }
+    #lykos-dashboard-preview .lykos-comparison-popover[hidden], #lykos-dashboard-preview .lykos-team-help-popover[hidden] { display:none; }
+    #lykos-dashboard-preview .lykos-comparison-popover-head, #lykos-dashboard-preview .lykos-team-help-popover-head { display:flex; justify-content:space-between; gap:12px; align-items:start; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.1); }
+    #lykos-dashboard-preview .lykos-comparison-popover-head strong, #lykos-dashboard-preview .lykos-team-help-popover-head strong { display:block; font-family:"OMMarseille",Georgia,serif; font-size:14px; line-height:1.15; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-comparison-popover-head small { display:block; margin-top:4px; color:#8fa8c1; font-size:8px; }
+    #lykos-dashboard-preview .lykos-comparison-popover-close, #lykos-dashboard-preview .lykos-team-help-popover-close { width:28px; height:28px; flex:0 0 28px; padding:0; border:1px solid rgba(255,255,255,.18); border-radius:8px; background:rgba(255,255,255,.07); color:#fff; cursor:pointer; font-size:18px; line-height:1; }
+    #lykos-dashboard-preview .lykos-comparison-popover-value { display:block; margin-top:13px; color:var(--lykos-yellow); font-family:"OMMarseille",Georgia,serif; font-size:24px; }
+    #lykos-dashboard-preview .lykos-comparison-popover-meta { display:grid; gap:6px; margin-top:10px; color:#c9d9e9; font-size:10px; line-height:1.4; }
+    #lykos-dashboard-preview .lykos-comparison-popover-meta b { color:#fff; }
+    #lykos-dashboard-preview .lykos-team-help { width:17px; height:17px; display:inline-grid; place-items:center; flex:0 0 17px; margin-left:5px; padding:0; border:1px solid rgba(159,184,209,.58); border-radius:50%; background:rgba(255,255,255,.04); color:#b8cce0; font:700 10px/1 Arial,sans-serif; cursor:help; vertical-align:middle; }
+    #lykos-dashboard-preview .lykos-team-help:hover, #lykos-dashboard-preview .lykos-team-help:focus-visible, #lykos-dashboard-preview .lykos-team-help[data-open="true"] { border-color:var(--lykos-yellow); color:var(--lykos-yellow); outline:none; }
+    #lykos-dashboard-preview .lykos-team-help-popover p { margin:11px 0 0; color:#d8e5f2; font-size:10px; line-height:1.55; }
     #lykos-dashboard-preview .lykos-score-distribution-wrap { margin-top:22px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.22) transparent; }
     #lykos-dashboard-preview .lykos-score-distribution { display:grid; grid-template-columns:repeat(var(--score-bin-count,1),minmax(9px,1fr)); gap:4px; align-items:end; min-width:620px; height:205px; padding:15px 4px 26px; border-bottom:1px solid var(--lykos-line); }
     #lykos-dashboard-preview .lykos-score-bin { position:relative; height:100%; min-width:0; padding:0; border:0; background:transparent; display:flex; align-items:flex-end; cursor:pointer; }
@@ -520,6 +535,14 @@
       #lykos-dashboard-preview .lykos-comparison-filter:first-child { grid-column:1/-1; }
       #lykos-dashboard-preview .lykos-comparison-filter select { width:100%; min-width:0; }
       #lykos-dashboard-preview .lykos-comparison-chart { margin-left:-8px; margin-right:-8px; width:calc(100% + 16px); }
+      #lykos-dashboard-preview .lykos-comparison-axis-guide { display:grid; gap:5px; }
+      #lykos-dashboard-preview .lykos-comparison-popover,
+      #lykos-dashboard-preview .lykos-team-help-popover {
+        left:max(10px,env(safe-area-inset-left)) !important; right:max(10px,env(safe-area-inset-right)) !important;
+        top:auto !important; bottom:calc(96px + env(safe-area-inset-bottom)); width:auto;
+        max-height:min(48dvh,360px); overflow:auto; border-radius:18px;
+      }
+      #lykos-dashboard-preview .lykos-team-help { cursor:pointer; }
       #lykos-dashboard-preview .lykos-team-signal { min-height:104px; padding:14px; }
       #lykos-dashboard-preview .lykos-team-signal strong { font-size:25px; }
       #lykos-dashboard-preview .lykos-team-layout, #lykos-dashboard-preview .lykos-team-streak-grid { grid-template-columns:1fr; gap:12px; }
@@ -731,7 +754,7 @@
           <div><h1>Statistiques Équipe</h1><div class="lykos-subtitle">Les indicateurs essentiels de ton équipe, en un coup d’œil.</div></div>
           <div class="lykos-team-heading-actions">
             <article class="lykos-panel lykos-team-form-rating" data-team-rating-card>
-              <span>Note de forme</span>
+              <span>Note de forme <button class="lykos-team-help" type="button" data-team-help-title="Note de forme" data-team-help="Une note sur 100 calculée match par match. Elle combine les notes individuelles disponibles, la note collective du match et le contexte du résultat. Sa pondération n’a pas été modifiée." aria-label="Comprendre la note de forme">i</button></span>
               <div class="lykos-team-rating-gauge" aria-hidden="true"><div class="lykos-team-rating-arc"></div><i class="lykos-team-rating-needle" data-team-rating-needle></i></div>
               <strong class="lykos-team-rating-value" data-team-rating-value>—</strong>
               <small class="lykos-team-rating-label" data-team-rating-label>INDISPONIBLE</small>
@@ -745,37 +768,25 @@
         </div>
         <div class="lykos-team-signals" aria-label="Indicateurs clés de l’équipe">
           <article class="lykos-panel lykos-team-signal" data-team-signal-card="matchesPlayed">
-            <div class="lykos-team-signal-head"><span>Matchs analysés</span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span></div>
+            <div class="lykos-team-signal-head"><span>Matchs analysés <button class="lykos-team-help" type="button" data-team-help-title="Matchs analysés" data-team-help="Nombre de matchs terminés dont le score est disponible pour la période choisie. La saison actuelle s’affiche dès le premier match disponible." aria-label="Comprendre les matchs analysés">i</button></span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span></div>
             <strong data-team-value="matchesPlayed">—</strong><small>Donnée directe</small>
           </article>
           <article class="lykos-panel lykos-team-signal" data-team-signal-card="winRate">
-            <div class="lykos-team-signal-head"><span>Taux de victoire</span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg></span></div>
+            <div class="lykos-team-signal-head"><span>Taux de victoire <button class="lykos-team-help" type="button" data-team-help-title="Taux de victoire" data-team-help="Pourcentage de matchs gagnés : nombre de victoires divisé par nombre de matchs analysés." aria-label="Comprendre le taux de victoire">i</button></span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg></span></div>
             <strong data-team-percent="winRate">—</strong><small>Victoires ÷ matchs</small>
           </article>
           <article class="lykos-panel lykos-team-signal" data-team-signal-card="goalDifference">
-            <div class="lykos-team-signal-head"><span>Différence de buts</span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></span></div>
+            <div class="lykos-team-signal-head"><span>Différence de buts <button class="lykos-team-help" type="button" data-team-help-title="Différence de buts" data-team-help="Total des buts marqués moins le total des buts encaissés. Un nombre positif signifie que l’équipe a davantage marqué qu’encaissé." aria-label="Comprendre la différence de buts">i</button></span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></span></div>
             <strong data-team-signed="goalDifference">—</strong><small>Marqués − encaissés</small>
           </article>
           <article class="lykos-panel lykos-team-signal" data-team-signal-card="recentFormScore">
-            <div class="lykos-team-signal-head"><span>Dynamique récente</span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h8l-1 8 9-12h-8z"/></svg></span></div>
+            <div class="lykos-team-signal-head"><span>Dynamique récente <button class="lykos-team-help" type="button" data-team-help-title="Dynamique récente" data-team-help="Pourcentage des points pris sur les dix derniers matchs disponibles : trois points pour une victoire, un pour un nul et zéro pour une défaite." aria-label="Comprendre la dynamique récente">i</button></span><span class="lykos-team-signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h8l-1 8 9-12h-8z"/></svg></span></div>
             <strong data-team-percent="recentFormScore">—</strong><small>Points pris sur les 10 derniers</small>
           </article>
         </div>
-        <article class="lykos-panel lykos-comparison-card">
-          <div class="lykos-comparison-head">
-            <div><h2>Comparer les saisons</h2><span class="lykos-team-card-subtitle">Observe l’évolution d’une statistique match après match</span></div>
-            <div class="lykos-comparison-filters">
-              <label class="lykos-comparison-filter">Statistique<select data-comparison-metric aria-label="Statistique à comparer"></select></label>
-              <label class="lykos-comparison-filter">Saison A<select data-comparison-season-a aria-label="Première saison à comparer"></select></label>
-              <label class="lykos-comparison-filter">Saison B<select data-comparison-season-b aria-label="Deuxième saison à comparer"></select></label>
-            </div>
-          </div>
-          <div class="lykos-comparison-legend"><span><i></i><b data-comparison-label-a>Saison A</b></span><span><i></i><b data-comparison-label-b>Saison B</b></span></div>
-          <div class="lykos-comparison-chart" data-comparison-chart role="img" aria-label="Comparaison statistique de deux saisons"></div>
-        </article>
         <div class="lykos-team-layout">
           <article class="lykos-panel lykos-team-card">
-            <h2>Résultats</h2>
+            <h2>Résultats <button class="lykos-team-help" type="button" data-team-help-title="Résultats" data-team-help="Répartition des matchs terminés entre victoires, matchs nuls et défaites pour la période choisie." aria-label="Comprendre les résultats">i</button></h2>
             <span class="lykos-team-card-subtitle">Répartition complète de la période</span>
             <div class="lykos-team-results">
               <div class="lykos-outcome-pie" data-team-outcome-pie data-empty="true"><span><b data-team-value="matchesPlayed">—</b><br>matchs</span></div>
@@ -787,7 +798,7 @@
             </div>
           </article>
           <article class="lykos-panel lykos-team-card lykos-team-goals">
-            <h2>Buts</h2>
+            <h2>Buts <button class="lykos-team-help" type="button" data-team-help-title="Buts" data-team-help="Comparaison du nombre total de buts marqués et encaissés sur les matchs analysés de la période." aria-label="Comprendre les buts">i</button></h2>
             <span class="lykos-team-card-subtitle">Marqués et encaissés</span>
             <div class="lykos-team-goal-donut" data-team-goal-donut aria-hidden="true"></div>
             <div class="lykos-team-goal-totals">
@@ -798,7 +809,7 @@
         </div>
         <div class="lykos-team-layout lykos-team-charts">
           <article class="lykos-panel lykos-team-card lykos-team-score-card">
-            <h2>Matchs selon l’écart de score</h2>
+            <h2>Matchs selon l’écart de score <button class="lykos-team-help" type="button" data-team-help-title="Écart de score" data-team-help="Chaque barre regroupe les matchs ayant la même différence entre buts marqués et encaissés. Une barre positive correspond à une victoire, zéro à un nul et une barre négative à une défaite." aria-label="Comprendre l’écart de score">i</button></h2>
             <span class="lykos-team-card-subtitle">Survole ou touche une barre pour voir les matchs et leurs dates</span>
             <div class="lykos-score-distribution-wrap" data-score-distribution></div>
             <aside class="lykos-score-popover" data-score-popover role="dialog" aria-modal="false" aria-label="Matchs correspondant à l’écart sélectionné" hidden>
@@ -807,7 +818,7 @@
             </aside>
           </article>
           <article class="lykos-panel lykos-team-card">
-            <h2>Score moyen</h2>
+            <h2>Score moyen <button class="lykos-team-help" type="button" data-team-help-title="Score moyen" data-team-help="Moyenne des buts marqués et encaissés par match pour la période sélectionnée." aria-label="Comprendre le score moyen">i</button></h2>
             <span class="lykos-team-card-subtitle">Moyenne par match</span>
             <div class="lykos-team-average-bars" data-team-averages>
               <div class="lykos-team-average" data-team-average="goalsForPerMatch"><strong>—</strong><i></i><span>buts marqués</span></div>
@@ -816,7 +827,7 @@
           </article>
         </div>
         <article class="lykos-panel lykos-team-card lykos-team-form">
-          <h2>Dynamique récente</h2>
+          <h2>Dynamique récente <button class="lykos-team-help" type="button" data-team-help-title="Dix derniers résultats" data-team-help="Les dix derniers matchs disponibles sont affichés dans l’ordre : V pour victoire, N pour nul et D pour défaite." aria-label="Comprendre les dix derniers résultats">i</button></h2>
           <span class="lykos-team-card-subtitle">Lecture des 10 derniers résultats, du plus ancien au plus récent</span>
           <div class="lykos-team-form-body">
             <div class="lykos-form-score" data-team-form-score><span><b data-team-percent="recentFormScore">—</b><small>forme</small></span></div>
@@ -825,20 +836,42 @@
         </article>
         <div class="lykos-team-streak-grid">
           <article class="lykos-panel lykos-team-card">
-            <h2>Meilleures séries</h2>
+            <h2>Meilleures séries <button class="lykos-team-help" type="button" data-team-help-title="Meilleures séries" data-team-help="Plus longues suites de victoires et de matchs sans défaite sur la période sélectionnée." aria-label="Comprendre les meilleures séries">i</button></h2>
             <div class="lykos-team-streak-list">
               <div class="lykos-team-streak-row" data-team-streak="wins"><strong>Victoires consécutives</strong><b>—</b><div class="lykos-team-streak-track"><i></i></div><span class="lykos-team-streak-dates">Donnée indisponible</span></div>
               <div class="lykos-team-streak-row" data-team-streak="unbeaten"><strong>Matchs sans défaite</strong><b>—</b><div class="lykos-team-streak-track"><i></i></div><span class="lykos-team-streak-dates">Donnée indisponible</span></div>
             </div>
           </article>
           <article class="lykos-panel lykos-team-card">
-            <h2>Pires séries</h2>
+            <h2>Pires séries <button class="lykos-team-help" type="button" data-team-help-title="Pires séries" data-team-help="Plus longues suites de défaites et de matchs sans victoire sur la période sélectionnée." aria-label="Comprendre les pires séries">i</button></h2>
             <div class="lykos-team-streak-list">
               <div class="lykos-team-streak-row loss" data-team-streak="losses"><strong>Défaites consécutives</strong><b>—</b><div class="lykos-team-streak-track"><i></i></div><span class="lykos-team-streak-dates">Donnée indisponible</span></div>
               <div class="lykos-team-streak-row loss" data-team-streak="winless"><strong>Matchs sans victoire</strong><b>—</b><div class="lykos-team-streak-track"><i></i></div><span class="lykos-team-streak-dates">Donnée indisponible</span></div>
             </div>
           </article>
         </div>
+        <article class="lykos-panel lykos-comparison-card">
+          <div class="lykos-comparison-head">
+            <div><h2>Comparer les saisons <button class="lykos-team-help" type="button" data-team-help-title="Comparer les saisons" data-team-help="Chaque courbe représente une saison. Chaque point correspond à un match. Touche ou survole un point pour connaître le match, la date, le score et la valeur exacte." aria-label="Comprendre la comparaison des saisons">i</button></h2><span class="lykos-team-card-subtitle">Observe l’évolution d’une statistique match après match</span></div>
+            <div class="lykos-comparison-filters">
+              <label class="lykos-comparison-filter">Statistique<select data-comparison-metric aria-label="Statistique à comparer"></select></label>
+              <label class="lykos-comparison-filter">Saison A<select data-comparison-season-a aria-label="Première saison à comparer"></select></label>
+              <label class="lykos-comparison-filter">Saison B<select data-comparison-season-b aria-label="Deuxième saison à comparer"></select></label>
+            </div>
+          </div>
+          <div class="lykos-comparison-legend"><span><i></i><b data-comparison-label-a>Saison A</b></span><span><i></i><b data-comparison-label-b>Saison B</b></span></div>
+          <div class="lykos-comparison-axis-guide"><span><strong>Ordonnée (verticale) :</strong> <b data-comparison-axis-y>valeur de la statistique</b></span><span><strong>Abscisse (horizontale) :</strong> matchs de la saison dans l’ordre chronologique</span></div>
+          <div class="lykos-comparison-chart" data-comparison-chart role="img" aria-label="Comparaison statistique de deux saisons"></div>
+          <aside class="lykos-comparison-popover" data-comparison-popover role="dialog" aria-modal="false" aria-label="Détail du point sélectionné" hidden>
+            <div class="lykos-comparison-popover-head"><div><strong data-comparison-popover-title>Détail du match</strong><small data-comparison-popover-season></small></div><button class="lykos-comparison-popover-close" data-comparison-popover-close type="button" aria-label="Fermer">×</button></div>
+            <strong class="lykos-comparison-popover-value" data-comparison-popover-value>—</strong>
+            <div class="lykos-comparison-popover-meta"><span><b>Adversaire :</b> <span data-comparison-popover-opponent>—</span></span><span><b>Score :</b> <span data-comparison-popover-score>—</span></span><span data-comparison-popover-explanation></span></div>
+          </aside>
+        </article>
+        <aside class="lykos-team-help-popover" data-team-help-popover role="dialog" aria-modal="false" aria-label="Explication de la statistique" hidden>
+          <div class="lykos-team-help-popover-head"><strong data-team-help-popover-title>Explication</strong><button class="lykos-team-help-popover-close" data-team-help-popover-close type="button" aria-label="Fermer">×</button></div>
+          <p data-team-help-popover-text></p>
+        </aside>
       </section>
       <section class="lykos-content lykos-player-page" data-view-panel="players" hidden>
         <div class="lykos-player-picker" data-player-picker>
@@ -1049,15 +1082,51 @@
       const formatPercent = value => value === null ? '—' : `${new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value)} %`;
       const formatSigned = value => value === null ? '—' : `${value > 0 ? '+' : ''}${formatValue(value)}`;
       const comparisonMetrics = {
-        teamForm:{ label:'Note de forme', suffix:' / 100', decimals:0 },
-        winRate:{ label:'Taux de victoire', suffix:' %', decimals:1 },
-        goalsForPerMatch:{ label:'Buts marqués / match', suffix:'', decimals:2 },
-        goalsAgainstPerMatch:{ label:'Buts encaissés / match', suffix:'', decimals:2 },
-        goalDifferencePerMatch:{ label:'Différence moyenne', suffix:'', decimals:2 },
+        teamForm:{ label:'Note de forme', axis:'note du match sur 100', suffix:' / 100', decimals:0, explanation:'Valeur de la note de forme calculée pour ce match précis.' },
+        winRate:{ label:'Taux de victoire', axis:'taux de victoire cumulé en %', suffix:' %', decimals:1, explanation:'Pourcentage de victoires obtenu depuis le début de la saison jusqu’à ce match inclus.' },
+        goalsForPerMatch:{ label:'Buts marqués / match', axis:'moyenne cumulée de buts marqués', suffix:'', decimals:2, explanation:'Moyenne des buts marqués depuis le début de la saison jusqu’à ce match inclus.' },
+        goalsAgainstPerMatch:{ label:'Buts encaissés / match', axis:'moyenne cumulée de buts encaissés', suffix:'', decimals:2, explanation:'Moyenne des buts encaissés depuis le début de la saison jusqu’à ce match inclus.' },
+        goalDifferencePerMatch:{ label:'Différence moyenne', axis:'différence moyenne de buts', suffix:'', decimals:2, explanation:'Différence moyenne entre buts marqués et encaissés depuis le début de la saison jusqu’à ce match inclus.' },
       };
       const formatTeamDate = value => value
         ? new Intl.DateTimeFormat('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(value))
         : null;
+      const placeFixedPopover = (popover,anchor) => {
+        if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        const anchorBox = anchor.getBoundingClientRect();
+        const popoverBox = popover.getBoundingClientRect();
+        const left = Math.max(12,Math.min(innerWidth - popoverBox.width - 12,anchorBox.left + anchorBox.width / 2 - popoverBox.width / 2));
+        const below = anchorBox.bottom + 10;
+        const top = below + popoverBox.height <= innerHeight - 12 ? below : Math.max(12,anchorBox.top - popoverBox.height - 10);
+        popover.style.left = `${left}px`; popover.style.top = `${top}px`;
+      };
+      const teamHelpPopover = root.querySelector('[data-team-help-popover]');
+      let activeTeamHelp = null, teamHelpCloseTimer = null;
+      const closeTeamHelp = () => {
+        if (!teamHelpPopover) return;
+        teamHelpPopover.hidden = true;
+        if (activeTeamHelp) delete activeTeamHelp.dataset.open;
+        activeTeamHelp = null;
+      };
+      const openTeamHelp = button => {
+        if (!teamHelpPopover) return;
+        clearTimeout(teamHelpCloseTimer);
+        if (activeTeamHelp && activeTeamHelp !== button) delete activeTeamHelp.dataset.open;
+        activeTeamHelp = button; button.dataset.open = 'true';
+        teamHelpPopover.querySelector('[data-team-help-popover-title]').textContent = button.dataset.teamHelpTitle ?? 'Explication';
+        teamHelpPopover.querySelector('[data-team-help-popover-text]').textContent = button.dataset.teamHelp ?? '';
+        teamHelpPopover.hidden = false; placeFixedPopover(teamHelpPopover,button);
+      };
+      root.querySelectorAll('[data-team-help]').forEach(button => {
+        button.addEventListener('mouseenter',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) openTeamHelp(button); });
+        button.addEventListener('mouseleave',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) teamHelpCloseTimer = setTimeout(closeTeamHelp,180); });
+        button.addEventListener('click',event => { event.stopPropagation(); if (activeTeamHelp === button && !teamHelpPopover.hidden) closeTeamHelp(); else openTeamHelp(button); });
+      });
+      teamHelpPopover?.addEventListener('mouseenter',() => clearTimeout(teamHelpCloseTimer));
+      teamHelpPopover?.addEventListener('mouseleave',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) teamHelpCloseTimer = setTimeout(closeTeamHelp,180); });
+      teamHelpPopover?.querySelector('[data-team-help-popover-close]')?.addEventListener('click',closeTeamHelp);
+      document.addEventListener('click',event => { if (teamHelpPopover && !teamHelpPopover.hidden && !teamHelpPopover.contains(event.target) && !event.target.closest('[data-team-help]')) closeTeamHelp(); });
+      document.addEventListener('keydown',event => { if (event.key === 'Escape') closeTeamHelp(); });
       const renderTeamEmpty = (container,message) => {
         container.replaceChildren();
         const empty = document.createElement('div');
@@ -1192,6 +1261,33 @@
       const comparisonSeasonASelect = root.querySelector('[data-comparison-season-a]');
       const comparisonSeasonBSelect = root.querySelector('[data-comparison-season-b]');
       const comparisonChart = root.querySelector('[data-comparison-chart]');
+      const comparisonPopover = root.querySelector('[data-comparison-popover]');
+      let activeComparisonPoint = null, comparisonCloseTimer = null;
+      const closeComparisonPopover = () => {
+        if (!comparisonPopover) return;
+        comparisonPopover.hidden = true;
+        activeComparisonPoint?.setAttribute('aria-expanded','false');
+        if (activeComparisonPoint) delete activeComparisonPoint.dataset.open;
+        activeComparisonPoint = null;
+      };
+      const openComparisonPopover = (anchor,point,definition,season,matchNumber) => {
+        if (!comparisonPopover) return;
+        clearTimeout(comparisonCloseTimer);
+        if (activeComparisonPoint && activeComparisonPoint !== anchor) { activeComparisonPoint.setAttribute('aria-expanded','false'); delete activeComparisonPoint.dataset.open; }
+        activeComparisonPoint = anchor; anchor.setAttribute('aria-expanded','true'); anchor.dataset.open = 'true';
+        comparisonPopover.querySelector('[data-comparison-popover-title]').textContent = `Match ${matchNumber} · ${formatTeamDate(point.date) ?? 'date inconnue'}`;
+        comparisonPopover.querySelector('[data-comparison-popover-season]').textContent = season?.label ?? 'Saison non renseignée';
+        comparisonPopover.querySelector('[data-comparison-popover-value]').textContent = `${definition.label} : ${metricDisplay(point[comparisonMetricSelect.value],definition)}`;
+        comparisonPopover.querySelector('[data-comparison-popover-opponent]').textContent = point.opponent ?? 'Non renseigné';
+        comparisonPopover.querySelector('[data-comparison-popover-score]').textContent = point.score ?? 'Non renseigné';
+        comparisonPopover.querySelector('[data-comparison-popover-explanation]').textContent = definition.explanation;
+        comparisonPopover.hidden = false; placeFixedPopover(comparisonPopover,anchor);
+      };
+      comparisonPopover?.addEventListener('mouseenter',() => clearTimeout(comparisonCloseTimer));
+      comparisonPopover?.addEventListener('mouseleave',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) comparisonCloseTimer = setTimeout(closeComparisonPopover,180); });
+      comparisonPopover?.querySelector('[data-comparison-popover-close]')?.addEventListener('click',closeComparisonPopover);
+      document.addEventListener('click',event => { if (comparisonPopover && !comparisonPopover.hidden && !comparisonPopover.contains(event.target) && !event.target.closest('.lykos-comparison-point')) closeComparisonPopover(); });
+      document.addEventListener('keydown',event => { if (event.key === 'Escape') closeComparisonPopover(); });
       const createSvgNode = (name,attributes = {}) => {
         const node = document.createElementNS('http://www.w3.org/2000/svg',name);
         Object.entries(attributes).forEach(([key,value]) => node.setAttribute(key,String(value)));
@@ -1219,11 +1315,13 @@
         comparisonSeasonBSelect.value = seasonsWithMatches[1]?.id ?? seasonsWithMatches[0]?.id ?? teamSeasons[0]?.id ?? '';
       };
       const renderComparisonChart = () => {
+        closeComparisonPopover();
         const definition = comparisonMetrics[comparisonMetricSelect.value] ?? comparisonMetrics.teamForm;
         const seasonA = teamSeasons.find(season => season.id === comparisonSeasonASelect.value);
         const seasonB = teamSeasons.find(season => season.id === comparisonSeasonBSelect.value);
         root.querySelector('[data-comparison-label-a]').textContent = seasonA?.label ?? 'Saison A';
         root.querySelector('[data-comparison-label-b]').textContent = seasonB?.label ?? 'Saison B';
+        root.querySelector('[data-comparison-axis-y]').textContent = definition.axis;
         const rawSeries = [seasonA,seasonB].map(season => (season?.series ?? []).filter(point => Number.isFinite(point[comparisonMetricSelect.value])));
         const allValues = rawSeries.flatMap(series => series.map(point => point[comparisonMetricSelect.value]));
         comparisonChart.replaceChildren();
@@ -1250,7 +1348,7 @@
         const maxPoints = Math.max(2,...rawSeries.map(series => series.length));
         const x = index => margin.left + (index / (maxPoints - 1)) * innerWidth;
         const y = value => margin.top + (maximum - value) / (maximum - minimum) * innerHeight;
-        const svg = createSvgNode('svg',{viewBox:`0 0 ${width} ${height}`,'aria-hidden':'true'});
+        const svg = createSvgNode('svg',{viewBox:`0 0 ${width} ${height}`,role:'group','aria-label':'Points de comparaison interactifs'});
         const defs = createSvgNode('defs');
         const gradient = createSvgNode('linearGradient',{id:'lykos-comparison-area',x1:'0',y1:'0',x2:'0',y2:'1'});
         gradient.append(createSvgNode('stop',{offset:'0%','stop-color':'#22c55e','stop-opacity':'.28'}),createSvgNode('stop',{offset:'100%','stop-color':'#22c55e','stop-opacity':'0'}));
@@ -1278,10 +1376,17 @@
           }
           svg.append(createSvgNode('path',{d:pathData,stroke:colors[seriesIndex],class:'lykos-comparison-line'}));
           series.forEach((point,index) => {
-            const circle = createSvgNode('circle',{cx:x(index),cy:y(point[comparisonMetricSelect.value]),r:4,fill:colors[seriesIndex],class:'lykos-comparison-point',tabindex:'0'});
+            const matchNumber = point.index ?? index + 1;
+            const accessibleLabel = `${seriesIndex === 0 ? seasonA?.label : seasonB?.label} · match ${matchNumber} · ${formatTeamDate(point.date) ?? 'date inconnue'} · ${point.opponent ?? 'adversaire non renseigné'} · score ${point.score ?? 'non renseigné'} · ${definition.label} ${metricDisplay(point[comparisonMetricSelect.value],definition)}`;
+            const circle = createSvgNode('circle',{cx:x(index),cy:y(point[comparisonMetricSelect.value]),r:4,fill:colors[seriesIndex],class:'lykos-comparison-point',tabindex:'0',role:'button','aria-label':accessibleLabel,'aria-expanded':'false'});
             const title = createSvgNode('title');
-            title.textContent = `${formatTeamDate(point.date) ?? 'Date inconnue'} · ${point.opponent} · ${point.score} · ${definition.label} : ${metricDisplay(point[comparisonMetricSelect.value],definition)}`;
-            circle.append(title); svg.append(circle);
+            title.textContent = accessibleLabel; circle.append(title);
+            const pointSeason = seriesIndex === 0 ? seasonA : seasonB;
+            circle.addEventListener('mouseenter',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) openComparisonPopover(circle,point,definition,pointSeason,matchNumber); });
+            circle.addEventListener('mouseleave',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) comparisonCloseTimer = setTimeout(closeComparisonPopover,180); });
+            circle.addEventListener('click',event => { event.stopPropagation(); const touchMode = !matchMedia('(hover: hover) and (pointer: fine)').matches; if (touchMode && activeComparisonPoint === circle && !comparisonPopover.hidden) closeComparisonPopover(); else openComparisonPopover(circle,point,definition,pointSeason,matchNumber); });
+            circle.addEventListener('keydown',event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openComparisonPopover(circle,point,definition,pointSeason,matchNumber); } });
+            svg.append(circle);
           });
         });
         comparisonChart.append(svg);

@@ -943,9 +943,9 @@
       </section>
       <section class="lykos-content lykos-metron-page" data-view-panel="metron" hidden>
         <!-- METRON_CONTENT_START -->
-        <!-- Configuration Metron synchronisée automatiquement : {"rating":[1,99],"matches":{"TEST_MATCH":1,"COMPETITION":1.25,"PROTOUR":1.5},"roles":{"G":{"creation":0.1,"finishing":0,"defensive":0.75},"D":{"creation":0.3,"finishing":0.15,"defensive":0.4},"M":{"creation":0.4,"finishing":0.225,"defensive":0.225},"A":{"creation":0.25,"finishing":0.4,"defensive":0.2},"DEFAULT":{"creation":0.4,"finishing":0.225,"defensive":0.225}},"grade":0.15,"manOfTheMatch":{"total":0.35,"perMatch":0.65},"manOfTheMatchBonusMax":3,"tenure":[0.5,3],"awards":{"top_scorer":2,"top_assist_provider":2,"player_of_year":4},"samples":[10,15],"positionPolicy":"latest-sporteasy-position-no-hybrid"} -->
+        <!-- Configuration Metron synchronisée automatiquement : {"version":"METRON 1.0.1","effectiveDate":"2026-09-08","rating":[1,99],"matches":{"TEST_MATCH":1,"COMPETITION":1.25,"PROTOUR":1.5},"roles":{"G":{"creation":0.1,"finishing":0,"defensive":0.75},"D":{"creation":0.3,"finishing":0.15,"defensive":0.4},"M":{"creation":0.4,"finishing":0.225,"defensive":0.225},"A":{"creation":0.25,"finishing":0.4,"defensive":0.2},"DEFAULT":{"creation":0.4,"finishing":0.225,"defensive":0.225}},"grade":0.15,"manOfTheMatch":{"total":0.35,"perMatch":0.65},"manOfTheMatchBonusMax":3,"tenure":[0.5,3],"awards":{"top_scorer":2,"top_assist_provider":2,"player_of_year":4},"samples":[10,15],"currentMinimumMatches":1,"positionPolicy":"latest-sporteasy-position-no-hybrid"} -->
         <div class="lykos-heading">
-          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC.</div></div>
+          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC · METRON 1.0.1, en vigueur depuis le 8 septembre 2026.</div></div>
         </div>
         <p class="lykos-metron-intro">Metron transforme les données réelles issues de SportEasy en notes comparatives de 1 à 99. Son objectif n’est pas de résumer un joueur à un chiffre, mais de replacer ses performances dans le contexte de son poste, de la période, du niveau des matchs et du reste de l’effectif.</p>
 
@@ -953,7 +953,7 @@
           <h2>1. Ce que Metron utilise</h2>
           <p>La source de vérité reste SportEasy : matchs joués, buts, passes décisives, Hommes du match, notes et résultats collectifs. Les statistiques visibles restent toujours les valeurs réelles. La pondération n’est utilisée qu’à l’intérieur du calcul des notes.</p>
           <p>Metron recalcule séparément la saison actuelle, la saison précédente et l’historique All-time. Une statistique d’une période n’est jamais comparée à la population d’une autre période.</p>
-          <div class="lykos-metron-callout">Une donnée absente n’est jamais transformée en zéro. Elle est retirée du calcul et les poids encore disponibles sont rééquilibrés. Si la couverture devient insuffisante, la note affichée est « — ».</div>
+          <div class="lykos-metron-callout">Une donnée absente n’est jamais transformée en zéro. Elle est retirée du calcul et les poids encore disponibles sont rééquilibrés. Exception contrôlée : un but ou une passe décisive omis sur une fiche de match vaut zéro uniquement lorsque la participation du joueur est confirmée et que les totaux restent conciliés avec SportEasy. Une note d’axe exige 60 % de couverture ; la note générale en exige 85 %. Sinon, la note affichée est « — ».</div>
         </article>
 
         <article class="lykos-metron-section">
@@ -998,7 +998,7 @@
           <h3>Hommes du match</h3><p>Metron combine leur fréquence par match (65 %) et leur total (35 %). Seuls les profils situés au-dessus de la médiane obtiennent un bonus permettant de distinguer les joueurs qui sortent régulièrement du lot. Ce bonus est limité à +3.</p>
           <h3>Ancienneté</h3><p>Chaque saison SportEasy connue après la première apporte +0,5 point, avec un maximum de +3. Le bonus reste volontairement léger : il reconnaît la continuité au club sans remplacer la performance.</p>
           <h3>Palmarès individuel</h3><p>Les distinctions officielles déjà recensées restent prises en compte : meilleur buteur +2, meilleur passeur +2 et joueur de l’année +4.</p>
-          <h3>Taille de l’échantillon</h3><p>La note générale demande au moins 10 matchs sur la période. Jusqu’à 15 matchs, les notes des joueurs actuels sont rapprochées progressivement de 50 pour éviter qu’une poignée de rencontres produise immédiatement une note extrême. Les anciens joueurs ayant moins de 10 matchs ne sont pas notés et ne participent pas aux comparaisons.</p>
+          <h3>Taille de l’échantillon</h3><p>Sur la saison actuelle, Metron calcule les notes dès 1 match joué, sous réserve de données suffisantes. Sans apparition, aucune note n’est attribuée. La saison précédente et l’historique All-time demandent au moins 10 matchs pour la note générale. Jusqu’à 15 matchs, les notes d’axe des joueurs actuels sont rapprochées progressivement de 50 : les premières notes restent provisoires et évoluent avec les matchs. Les anciens joueurs ayant moins de 10 matchs en carrière ne sont pas notés et ne participent pas aux comparaisons.</p>
         </article>
 
         <article class="lykos-metron-section">

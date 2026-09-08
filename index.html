@@ -90,6 +90,7 @@
     #lykos-dashboard-preview .lykos-headnav { display:flex; align-self:stretch; gap:5px; flex:1; justify-content:center; }
     #lykos-dashboard-preview .lykos-headnav button { position:relative; border:0; background:transparent; color:#a9bfd5; padding:0 18px; font-size:13px; font-weight:650; cursor:pointer; }
     #lykos-dashboard-preview .lykos-headnav button:hover { color:#fff; background:rgba(255,255,255,.05); }
+    @media (max-width:780px) { #lykos-dashboard-preview .lykos-headnav button[aria-label="Accéder au eStaff"]::before { content:"💬"; background:none; font-size:20px; line-height:21px; } }
     #lykos-dashboard-preview .lykos-headnav button[aria-selected="true"] { color:#fff; }
     #lykos-dashboard-preview .lykos-headnav button[aria-selected="true"]::after { content:""; position:absolute; left:18px; right:18px; bottom:0; height:3px; border-radius:3px 3px 0 0; background:var(--lykos-yellow); }
     #lykos-dashboard-preview .lykos-shell { display: grid; grid-template-columns:minmax(0, 1fr); min-height:648px; }
@@ -683,6 +684,7 @@
       <button data-view="team" data-mobile-label="ÉQUIPE" aria-selected="true">STATISTIQUES ÉQUIPE</button>
       <button data-view="players" data-mobile-label="JOUEURS" aria-selected="false">STATISTIQUES JOUEURS</button>
       <button data-view="pantheon" data-mobile-label="PANTHÉON" aria-selected="false">PANTHÉON</button>
+      <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">eStaff 💬</button>
     </nav>
   </header>
   <div class="lykos-shell">

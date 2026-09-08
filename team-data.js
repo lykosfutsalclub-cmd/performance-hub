@@ -1,32 +1,57 @@
 window.LYKOS_TEAM_STATS = {
   "periods": {
     "current": {
-      "matchesPlayed": 0,
-      "wins": 0,
+      "matchesPlayed": 1,
+      "wins": 1,
       "draws": 0,
       "losses": 0,
-      "goalsFor": 0,
-      "goalsAgainst": 0,
-      "goalsForPerMatch": null,
-      "goalsAgainstPerMatch": null,
-      "winRate": null,
-      "goalDifference": null,
-      "averageGoalDifference": null,
-      "recentFormScore": null,
-      "scoreDistribution": [],
-      "recentResults": [],
+      "goalsFor": 12,
+      "goalsAgainst": 10,
+      "goalsForPerMatch": 12,
+      "goalsAgainstPerMatch": 10,
+      "winRate": 100,
+      "goalDifference": 2,
+      "averageGoalDifference": 2,
+      "recentFormScore": 100,
+      "scoreDistribution": [
+        {
+          "difference": 2,
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "51050727",
+              "date": "2026-09-02",
+              "opponent": "Équipe Anonyme Le Complexe",
+              "scoreFor": 12,
+              "scoreAgainst": 10,
+              "difference": 2
+            }
+          ]
+        }
+      ],
+      "recentResults": [
+        "victory"
+      ],
       "streaks": {
-        "wins": null,
-        "unbeaten": null,
+        "wins": {
+          "count": 1,
+          "startAt": "2026-09-02",
+          "endAt": "2026-09-02"
+        },
+        "unbeaten": {
+          "count": 1,
+          "startAt": "2026-09-02",
+          "endAt": "2026-09-02"
+        },
         "losses": null,
         "winless": null
       },
       "form": {
-        "value": null,
-        "label": "INDISPONIBLE",
-        "matchCount": 0,
-        "eventRatingCoverage": 0,
-        "gradeCoverage": 0
+        "value": 77,
+        "label": "BONNE",
+        "matchCount": 1,
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 100
       }
     },
     "previous": {
@@ -696,17 +721,17 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 154,
-      "wins": 72,
+      "matchesPlayed": 155,
+      "wins": 73,
       "draws": 7,
       "losses": 75,
-      "goalsFor": 1729,
-      "goalsAgainst": 1579,
+      "goalsFor": 1741,
+      "goalsAgainst": 1589,
       "goalsForPerMatch": 11.23,
       "goalsAgainstPerMatch": 10.25,
-      "winRate": 46.8,
-      "goalDifference": 150,
-      "averageGoalDifference": 0.97,
+      "winRate": 47.1,
+      "goalDifference": 152,
+      "averageGoalDifference": 0.98,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -1543,8 +1568,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 2,
-          "matches": 6,
+          "matches": 7,
           "fixtures": [
+            {
+              "eventId": "51050727",
+              "date": "2026-09-02",
+              "opponent": "Équipe Anonyme Le Complexe",
+              "scoreFor": 12,
+              "scoreAgainst": 10,
+              "difference": 2
+            },
             {
               "eventId": "47442799",
               "date": "2026-04-27",
@@ -2170,6 +2203,7 @@ window.LYKOS_TEAM_STATS = {
         }
       ],
       "recentResults": [
+        "victory",
         "defeat",
         "defeat",
         "defeat",
@@ -2178,8 +2212,7 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
-        "defeat",
-        "victory"
+        "defeat"
       ],
       "streaks": {
         "wins": {
@@ -2204,7 +2237,7 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 53.7,
+        "value": 52.7,
         "label": "MOYENNE",
         "matchCount": 10,
         "eventRatingCoverage": 60,
@@ -2217,14 +2250,42 @@ window.LYKOS_TEAM_STATS = {
       "id": "2766614",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 0,
-      "series": [],
+      "matchCount": 1,
+      "series": [
+        {
+          "eventId": "51050727",
+          "index": 1,
+          "date": "2026-09-02",
+          "opponent": "Équipe Anonyme Le Complexe",
+          "score": "12–10",
+          "winRate": 100,
+          "goalsForPerMatch": 12,
+          "goalsAgainstPerMatch": 10,
+          "goalDifferencePerMatch": 2,
+          "teamForm": 77,
+          "formTrace": {
+            "value": 77,
+            "playerGradeAverage": 6.67,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 4,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 92.5,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "anonymous-median"
+            },
+            "importance": 1,
+            "availableWeight": 1
+          }
+        }
+      ],
       "form": {
-        "value": null,
-        "label": "INDISPONIBLE",
-        "matchCount": 0,
-        "eventRatingCoverage": 0,
-        "gradeCoverage": 0
+        "value": 77,
+        "label": "BONNE",
+        "matchCount": 1,
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 100
       }
     },
     {

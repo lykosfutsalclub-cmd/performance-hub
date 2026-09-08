@@ -1080,6 +1080,21 @@
       const formatValue = value => value === null ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(value);
       const secondaryPeriodKeys = { current:'current', previous:'previous', alltime:'allTime' };
       const secondaryData = window.LYKOS_SECONDARY_STATS?.periods ?? {};
+      // La saison actuelle devient exploitable dès la première apparition recensée.
+      // Metron garde ses propres seuils de notation, mais les données brutes ne sont jamais masquées.
+      players.forEach(player => {
+        const analytics = secondaryData.current?.players?.[player.id] ?? null;
+        if (!analytics?.primary) return;
+        player.stats.current = {
+          matchesPlayed: analytics.primary.matches,
+          goals: analytics.primary.goals,
+          assists: analytics.primary.assists,
+          manOfMatch: analytics.primary.manOfTheMatch,
+          gradeAverage: analytics.primary.averageRating,
+          goalsPerMatch: analytics.finishing?.goalsPerGame ?? null,
+          assistsPerMatch: analytics.creation?.assistsPerGame ?? null,
+        };
+      });
       const playerPrimes = window.LYKOS_SECONDARY_STATS?.primeByPlayer ?? {};
       const formatPercent = value => value === null ? '—' : `${new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value)} %`;
       const formatSigned = value => value === null ? '—' : `${value > 0 ? '+' : ''}${formatValue(value)}`;

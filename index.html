@@ -489,13 +489,32 @@
     #lykos-dashboard-preview .lykos-pantheon-ranking-row:last-child { border-bottom:0; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-position { color:#718da8; font-size:10px; font-weight:800; }
     #lykos-dashboard-preview .lykos-pantheon-player { min-width:0; padding:6px 0; border:0; background:transparent; color:#e8f0f8; font:700 11px/1.25 inherit; text-align:left; cursor:help; }
-    #lykos-dashboard-preview .lykos-pantheon-ranking-value { min-width:42px; padding:7px 9px; border:1px solid color-mix(in srgb,var(--rank-color) 55%,transparent); border-radius:10px; background:color-mix(in srgb,var(--rank-color) 17%,transparent); color:var(--rank-color); font-size:14px; font-weight:900; text-align:center; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking.wide { grid-column:1/-1; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value { min-width:42px; padding:7px 9px; border:1px solid rgba(255,255,255,.14); border-radius:10px; background:#68829e; color:#fff; font-size:14px; font-weight:900; text-align:center; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value[data-level="excellent"], #lykos-dashboard-preview .lykos-five-player-score[data-level="excellent"] { background:#22c55e; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value[data-level="good"], #lykos-dashboard-preview .lykos-five-player-score[data-level="good"] { background:#84cc16; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value[data-level="average"], #lykos-dashboard-preview .lykos-five-player-score[data-level="average"] { background:#facc15; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value[data-level="low"], #lykos-dashboard-preview .lykos-five-player-score[data-level="low"] { background:#f97316; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value[data-level="very-low"], #lykos-dashboard-preview .lykos-five-player-score[data-level="very-low"] { background:#ef4444; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-value.honours { --rank-color:var(--lykos-yellow); }
     #lykos-dashboard-preview .lykos-pantheon-player-summary { position:absolute; z-index:30; left:28px; top:42px; width:min(270px,calc(100vw - 54px)); padding:10px 12px; pointer-events:none; opacity:0; transform:translateY(-4px); border:1px solid rgba(151,185,221,.28); border-radius:11px; background:rgba(1,18,43,.98); box-shadow:0 14px 32px rgba(0,0,0,.38); color:#c8d7e6; font-size:9px; line-height:1.5; transition:opacity .15s ease,transform .15s ease; }
     #lykos-dashboard-preview .lykos-pantheon-player:hover + .lykos-pantheon-player-summary,
     #lykos-dashboard-preview .lykos-pantheon-player:focus + .lykos-pantheon-player-summary,
     #lykos-dashboard-preview .lykos-pantheon-ranking-row[data-open="true"] .lykos-pantheon-player-summary { opacity:1; transform:none; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-empty { padding:28px 4px 10px; color:#829db8; font-size:10px; line-height:1.5; }
+    #lykos-dashboard-preview .lykos-pantheon-five { grid-column:1/-1; padding:20px; overflow:hidden; background:linear-gradient(145deg,rgba(10,42,87,.94),rgba(4,22,52,.96)); }
+    #lykos-dashboard-preview .lykos-five-court { position:relative; min-height:440px; margin-top:16px; padding:25px 15%; display:grid; grid-template-columns:repeat(2,minmax(150px,1fr)); grid-template-rows:1fr 1fr .8fr; align-items:center; gap:20px 18%; overflow:hidden; border:1px solid rgba(208,182,49,.28); border-radius:22px; background:radial-gradient(circle at 50% 50%,rgba(18,91,144,.28),transparent 38%),linear-gradient(180deg,rgba(6,61,105,.5),rgba(3,35,72,.54)); }
+    #lykos-dashboard-preview .lykos-five-court::before { content:""; position:absolute; inset:8%; border:1px solid rgba(255,255,255,.12); border-radius:12px; background:linear-gradient(90deg,transparent calc(50% - .5px),rgba(255,255,255,.1) 50%,transparent calc(50% + .5px)); }
+    #lykos-dashboard-preview .lykos-five-court::after { content:""; position:absolute; left:50%; top:50%; width:92px; height:92px; border:1px solid rgba(255,255,255,.1); border-radius:50%; transform:translate(-50%,-50%); }
+    #lykos-dashboard-preview .lykos-five-player { --rank-color:#8ba4bd; position:relative; z-index:2; width:100%; max-width:230px; min-height:92px; justify-self:center; padding:12px; border:1px solid color-mix(in srgb,var(--rank-color) 44%,transparent); border-radius:16px; background:rgba(3,24,57,.93); box-shadow:0 14px 28px rgba(0,0,0,.24); color:#fff; text-align:center; }
+    #lykos-dashboard-preview .lykos-five-player[data-line="front"] { grid-row:1; }
+    #lykos-dashboard-preview .lykos-five-player[data-line="back"] { grid-row:2; }
+    #lykos-dashboard-preview .lykos-five-player[data-line="goalkeeper"] { grid-row:3; grid-column:1/-1; width:min(230px,72%); }
+    #lykos-dashboard-preview .lykos-five-player-role { display:block; color:var(--rank-color); font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-five-player strong { display:block; margin-top:7px; font-family:"OMMarseille",Georgia,serif; font-size:15px; line-height:1.1; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-five-player-score { display:inline-block; margin-top:8px; padding:5px 9px; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:#68829e; color:#fff; font-size:11px; font-weight:900; }
+    #lykos-dashboard-preview .lykos-five-player small { display:block; margin-top:6px; color:#7f99b3; font-size:7px; line-height:1.3; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-five-empty { grid-column:1/-1; position:relative; z-index:2; color:#91a9c1; font-size:11px; text-align:center; }
     #lykos-dashboard-preview .lykos-pantheon-empty { grid-column:1/-1; min-height:260px; padding:32px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(4,22,52,.62); display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-pantheon-empty b { display:block; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:22px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-pantheon-empty span { display:block; max-width:420px; margin-top:8px; color:#8fa8c1; font-size:11px; line-height:1.5; }
@@ -714,6 +733,10 @@
       #lykos-dashboard-preview .lykos-pantheon-ranking { padding:16px; }
       #lykos-dashboard-preview .lykos-pantheon-player { cursor:pointer; }
       #lykos-dashboard-preview .lykos-pantheon-player-summary { position:fixed; left:12px; right:12px; top:auto; bottom:calc(92px + env(safe-area-inset-bottom)); width:auto; }
+      #lykos-dashboard-preview .lykos-pantheon-five { padding:16px; }
+      #lykos-dashboard-preview .lykos-five-court { min-height:410px; padding:22px 7%; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 8%; border-radius:18px; }
+      #lykos-dashboard-preview .lykos-five-player { min-height:88px; padding:10px 7px; }
+      #lykos-dashboard-preview .lykos-five-player strong { font-size:13px; }
       #lykos-dashboard-preview .lykos-metron-page, #lykos-dashboard-preview .lykos-metron-section, #lykos-dashboard-preview .lykos-metron-section p, #lykos-dashboard-preview .lykos-metron-callout { max-width:100%; overflow-wrap:anywhere; }
       #lykos-dashboard-preview .lykos-metron-section { padding:18px 15px; }
       #lykos-dashboard-preview .lykos-metron-table-wrap { overflow:visible; }
@@ -1684,7 +1707,7 @@
         scoreNode.textContent = score === null ? '—' : formatValue(score);
         rankNode.textContent = score === null ? 'Non noté' : `/ 99${ranking?.rank ? ` · ${formatRank(ranking.rank)}` : ''}${awardBonus > 0 ? ` · bonus palmarès +${awardBonus}` : ''}`;
         if (score === null) return;
-        scoreNode.dataset.level = score >= 90 ? 'excellent' : score >= 70 ? 'good' : score >= 50 ? 'average' : score >= 30 ? 'low' : 'very-low';
+        scoreNode.dataset.level = metronLevel(score);
       };
       const annualAwardsByPlayer = window.LYKOS_SECONDARY_STATS?.calendarYearAwards?.byPlayer ?? {};
       const awardPresentation = {
@@ -1729,6 +1752,7 @@
       };
       const axisTone = score => score === null ? '#68829e' : `hsl(${Math.round(score / 100 * 125)} 84% 50%)`;
       const ratingTone = score => score === null ? '#68829e' : `hsl(${Math.round((score - 1) / 98 * 125)} 84% 50%)`;
+      const metronLevel = score => score >= 90 ? 'excellent' : score >= 70 ? 'good' : score >= 50 ? 'average' : score >= 30 ? 'low' : 'very-low';
       const getNestedValue = (object,path) => path.split('.').reduce((value,key) => value?.[key],object) ?? null;
       const relativeAxisPercentile = (periodKey,path,value,inverse=false,comparisonPath=path) => {
         if (!Number.isFinite(value)) return null;
@@ -2081,9 +2105,9 @@
           const position = document.createElement('span'); position.className = 'lykos-pantheon-ranking-position'; position.textContent = `${rank}.`;
           const playerButton = document.createElement('button'); playerButton.type = 'button'; playerButton.className = 'lykos-pantheon-player'; playerButton.textContent = entry.player.name; playerButton.setAttribute('aria-expanded','false');
           const summary = document.createElement('span'); summary.className = 'lykos-pantheon-player-summary'; summary.textContent = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime');
-          const score = document.createElement('span'); score.className = `lykos-pantheon-ranking-value${kind === 'honours' ? ' honours' : ''}`; score.textContent = kind === 'metron' ? `${formatValue(entry.value)}/99` : formatValue(entry.value);
+          const score = document.createElement('span'); score.className = `lykos-pantheon-ranking-value${kind === 'honours' ? ' honours' : ''}`; score.textContent = formatValue(entry.value);
           score.setAttribute('aria-label',kind === 'metron' ? `Note Metron ${formatValue(entry.value)} sur 99` : `${formatValue(entry.value)} distinctions`);
-          if (kind === 'metron') score.style.setProperty('--rank-color',ratingTone(entry.value));
+          if (kind === 'metron') score.dataset.level = metronLevel(entry.value);
           playerButton.addEventListener('click',() => {
             const willOpen = item.dataset.open !== 'true';
             pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
@@ -2094,22 +2118,93 @@
         });
         panel.appendChild(list); return panel;
       };
+      const buildPantheonFive = metronRows => {
+        const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
+        const goalkeepers = metronRows.filter(entry => positionOf(entry).includes('G'));
+        const goalkeeper = goalkeepers[0] ?? null;
+        const field = metronRows.filter(entry => entry !== goalkeeper && !positionOf(entry).includes('G'));
+        if (!goalkeeper || field.length < 4) return null;
+        const suitability = (entry,line) => {
+          const position = positionOf(entry);
+          const offensive = Number.isFinite(entry.analytics?.performance?.offensive) ? entry.analytics.performance.offensive : 50;
+          const defensive = Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : 50;
+          const matches = Number.isFinite(entry.analytics?.primary?.matches) && entry.analytics.primary.matches > 0 ? entry.analytics.primary.matches : 1;
+          const goalsPerMatch = Number.isFinite(entry.analytics?.primary?.goals) ? entry.analytics.primary.goals / matches : 0;
+          const assistsPerMatch = Number.isFinite(entry.analytics?.primary?.assists) ? entry.analytics.primary.assists / matches : 0;
+          const roleBonus = line === 'front'
+            ? (position.includes('ATT') ? 8 : position.includes('DEF') ? -100 : 0)
+            : (position.includes('DEF') ? 8 : position.includes('ATT') ? -100 : 0);
+          const defensiveProfile = (defensive - offensive) * .6;
+          const attackingProduction = goalsPerMatch * 4 + assistsPerMatch * 2;
+          const polyvalentBackPenalty = line === 'back' && position === 'M' ? attackingProduction * 2 : 0;
+          return entry.value + roleBonus + (line === 'front' ? -defensiveProfile + attackingProduction : defensiveProfile - polyvalentBackPenalty);
+        };
+        let best = null;
+        for (let firstBack = 0; firstBack < field.length - 1; firstBack += 1) {
+          for (let secondBack = firstBack + 1; secondBack < field.length; secondBack += 1) {
+            const backs = [field[firstBack],field[secondBack]];
+            const remaining = field.filter(entry => !backs.includes(entry));
+            for (let firstFront = 0; firstFront < remaining.length - 1; firstFront += 1) {
+              for (let secondFront = firstFront + 1; secondFront < remaining.length; secondFront += 1) {
+                const fronts = [remaining[firstFront],remaining[secondFront]];
+                const score = backs.reduce((sum,entry) => sum + suitability(entry,'back'),0) + fronts.reduce((sum,entry) => sum + suitability(entry,'front'),0);
+                if (!best || score > best.score) best = {score,backs,fronts,goalkeeper};
+              }
+            }
+          }
+        }
+        return best;
+      };
+      const createPantheonFivePanel = ({metronRows,isCurrent}) => {
+        const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-five';
+        const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
+        const heading = document.createElement('div');
+        const title = document.createElement('h2'); title.textContent = 'Le cinq type';
+        const subtitle = document.createElement('span'); subtitle.textContent = `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : 'All-time'} · carré 2 derrière / 2 devant`;
+        heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
+        const court = document.createElement('div'); court.className = 'lykos-five-court';
+        const formation = buildPantheonFive(metronRows);
+        if (!formation) {
+          const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.';
+          court.appendChild(empty); panel.appendChild(court); return panel;
+        }
+        const appendPlayer = (entry,line) => {
+          const position = (entry.player.essentials?.position || 'M').toUpperCase();
+          const card = document.createElement('div'); card.className = 'lykos-five-player'; card.dataset.line = line; card.style.setProperty('--rank-color',ratingTone(entry.value));
+          const role = document.createElement('span'); role.className = 'lykos-five-player-role'; role.textContent = line === 'goalkeeper' ? 'Gardien' : line === 'back' ? 'Derrière' : 'Devant';
+          const name = document.createElement('strong'); name.textContent = entry.player.name;
+          const score = document.createElement('span'); score.className = 'lykos-five-player-score'; score.dataset.level = metronLevel(entry.value); score.textContent = formatValue(entry.value); score.setAttribute('aria-label',`Note Metron ${formatValue(entry.value)} sur 99`);
+          const detail = document.createElement('small');
+          detail.textContent = line === 'goalkeeper' ? 'Poste gardien renseigné' : position === 'M' ? `Profil polyvalent placé ${line === 'back' ? 'derrière' : 'devant'}` : position.includes(line === 'back' ? 'DEF' : 'ATT') ? 'Poste renseigné' : 'Repositionné selon ses statistiques';
+          card.title = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime');
+          card.append(role,name,score,detail); court.appendChild(card);
+        };
+        formation.fronts.forEach(entry => appendPlayer(entry,'front'));
+        formation.backs.forEach(entry => appendPlayer(entry,'back'));
+        appendPlayer(formation.goalkeeper,'goalkeeper');
+        panel.appendChild(court); return panel;
+      };
       const renderPantheonRankings = isCurrent => {
         pantheonRankings.replaceChildren();
         const secondaryKey = isCurrent ? 'current' : 'allTime';
-        const metronRows = players.map(player => ({player,value:secondaryData[secondaryKey]?.players?.[player.id]?.performance?.overall ?? null}))
+        const metronRows = players.map(player => { const analytics = secondaryData[secondaryKey]?.players?.[player.id] ?? null; return {player,analytics,value:analytics?.performance?.overall ?? null}; })
           .filter(entry => Number.isFinite(entry.value)).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
         const seasonLabel = pantheonSource?.seasonLabel ? `Saison ${pantheonSource.seasonLabel} · classement cumulatif` : 'Saison actuelle · classement cumulatif';
-        pantheonRankings.appendChild(createPantheonRankingPanel({
+        const metronPanel = createPantheonRankingPanel({
           title:'Les mieux notés par Metron', subtitle:isCurrent ? seasonLabel : 'Historique complet', rows:metronRows, kind:'metron',
           empty:'Aucune note Metron certifiable pour cette période.',
-        }));
-        const honoursRows = players.map(player => ({player,value:(playerHonours.get(player.id) ?? []).length}))
-          .filter(entry => entry.value > 0).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
-        pantheonRankings.appendChild(createPantheonRankingPanel({
-          title:'Les plus gros palmarès', subtitle:'Distinctions historiques recensées', rows:honoursRows, kind:'honours',
-          empty:'Aucune distinction recensée.',
-        }));
+        });
+        if (isCurrent) metronPanel.classList.add('wide');
+        pantheonRankings.appendChild(metronPanel);
+        if (!isCurrent) {
+          const honoursRows = players.map(player => ({player,value:(playerHonours.get(player.id) ?? []).length}))
+            .filter(entry => entry.value > 0).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+          pantheonRankings.appendChild(createPantheonRankingPanel({
+            title:'Les plus gros palmarès', subtitle:'Distinctions historiques recensées', rows:honoursRows, kind:'honours',
+            empty:'Aucune distinction recensée.',
+          }));
+        }
+        pantheonRankings.appendChild(createPantheonFivePanel({metronRows,isCurrent}));
       };
       const renderPantheon = () => {
         pantheon.replaceChildren();

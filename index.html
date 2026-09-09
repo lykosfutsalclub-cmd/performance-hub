@@ -2122,9 +2122,18 @@
         });
         panel.appendChild(list); return panel;
       };
+      const pantheonParticipationThreshold = isCurrent => {
+        if (isCurrent) return 1;
+        const matchCounts = players
+          .map(player => player.stats.alltime?.matchesPlayed)
+          .filter(value => Number.isFinite(value) && value > 0);
+        if (!matchCounts.length) return null;
+        return Math.ceil(matchCounts.reduce((sum,value) => sum + value,0) / matchCounts.length);
+      };
       const buildPantheonFive = (metronRows,{isCurrent=false}={}) => {
         const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
-        const minimumMatches = isCurrent ? 1 : 30;
+        const minimumMatches = pantheonParticipationThreshold(isCurrent);
+        if (!Number.isFinite(minimumMatches)) return null;
         const periodStats = entry => entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
         const matchesOf = entry => periodStats(entry).matchesPlayed;
         const goalsOf = entry => Number.isFinite(periodStats(entry).goals) ? periodStats(entry).goals : -1;
@@ -2169,16 +2178,21 @@
         const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
+        const minimumMatches = pantheonParticipationThreshold(isCurrent);
         const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
           ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · poste + Metron + note moyenne`
-          : 'All-time · minimum 30 matchs · poste + Metron + note moyenne';
+          : Number.isFinite(minimumMatches)
+            ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne`
+            : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
         heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
         const formation = buildPantheonFive(metronRows,{isCurrent});
         if (!formation) {
           const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = isCurrent
             ? 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.'
-            : 'Composition indisponible : cinq joueurs notés, dont un gardien, doivent avoir disputé au moins 30 matchs.';
+            : Number.isFinite(minimumMatches)
+              ? `Composition indisponible : cinq joueurs notés, dont un gardien, doivent avoir disputé au moins ${minimumMatches} matchs (moyenne des participations All-time).`
+              : 'Composition indisponible : la moyenne des participations All-time ne peut pas être calculée.';
           court.appendChild(empty); panel.appendChild(court); return panel;
         }
         const appendPlayer = (entry,line,tacticalRole) => {

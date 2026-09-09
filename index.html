@@ -2227,7 +2227,9 @@
         const goalsOf = entry => Number.isFinite(periodStats(entry).goals) ? periodStats(entry).goals : -1;
         const assistsOf = entry => Number.isFinite(periodStats(entry).assists) ? periodStats(entry).assists : -1;
         const contributionsOf = entry => goalsOf(entry) < 0 || assistsOf(entry) < 0 ? -1 : goalsOf(entry) + assistsOf(entry);
-        const eligibleRows = metronRows.filter(entry => Number.isFinite(matchesOf(entry)) && matchesOf(entry) >= minimumMatches);
+        const eligibleRows = metronRows.filter(entry => Number.isFinite(matchesOf(entry))
+          && matchesOf(entry) >= minimumMatches
+          && (mode.key !== 'balanced' || Number.isFinite(entry.value)));
         const averageMatches = eligibleRows.length ? eligibleRows.reduce((sum,entry) => sum + matchesOf(entry),0) / eligibleRows.length : minimumMatches;
         const averageRatingOf = entry => Number.isFinite(entry.analytics?.primary?.averageRating) ? entry.analytics.primary.averageRating : null;
         const selectionReliability = entry => isCurrent ? 1 : .9 + .1 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
@@ -2387,8 +2389,9 @@
       const renderPantheonRankings = isCurrent => {
         pantheonRankings.replaceChildren();
         const secondaryKey = isCurrent ? 'current' : 'allTime';
-        const metronRows = players.map(player => { const analytics = secondaryData[secondaryKey]?.players?.[player.id] ?? null; return {player,analytics,value:analytics?.performance?.overall ?? null}; })
-          .filter(entry => Number.isFinite(entry.value)).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        const compositionRows = players.map(player => { const analytics = secondaryData[secondaryKey]?.players?.[player.id] ?? null; return {player,analytics,value:analytics?.performance?.overall ?? null}; });
+        const metronRows = compositionRows.filter(entry => Number.isFinite(entry.value))
+          .sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
         const seasonLabel = pantheonSource?.seasonLabel ? `Saison ${pantheonSource.seasonLabel} · classement cumulatif` : 'Saison actuelle · classement cumulatif';
         const metronPanel = createPantheonRankingPanel({
           title:'Les mieux notés par Metron', subtitle:isCurrent ? seasonLabel : 'Historique complet', rows:metronRows, kind:'metron',
@@ -2410,7 +2413,7 @@
           honoursPanel.classList.add('wide');
           pantheonRankings.appendChild(honoursPanel);
         }
-        pantheonRankings.appendChild(createPantheonFivePanel({metronRows,isCurrent}));
+        pantheonRankings.appendChild(createPantheonFivePanel({metronRows:compositionRows,isCurrent}));
       };
       const renderPantheon = () => {
         pantheon.replaceChildren();

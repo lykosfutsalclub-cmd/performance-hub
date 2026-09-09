@@ -463,6 +463,8 @@
     #lykos-dashboard-preview .lykos-record-rank { display:flex; align-items:center; justify-content:space-between; gap:10px; }
     #lykos-dashboard-preview .lykos-record-rank > span { color:var(--lykos-yellow); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
     #lykos-dashboard-preview .lykos-record-icon { width:34px; height:34px; display:grid; place-items:center; border:1px solid rgba(208,182,49,.25); border-radius:11px; background:rgba(208,182,49,.09); color:var(--lykos-yellow); font-size:17px; }
+    #lykos-dashboard-preview .lykos-record-scope { position:relative; z-index:3; width:100%; min-height:34px; margin-top:12px; padding:6px 28px 6px 9px; border:1px solid rgba(151,185,221,.22); border-radius:9px; outline:0; background:#061f48; color:#dce8f5; font:700 9px/1.2 Arial,sans-serif; cursor:pointer; }
+    #lykos-dashboard-preview .lykos-record-scope:focus-visible { box-shadow:0 0 0 3px rgba(208,182,49,.18); }
     #lykos-dashboard-preview .lykos-record-leaders { position:relative; z-index:1; margin-top:24px; }
     #lykos-dashboard-preview .lykos-record-leader-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; }
     #lykos-dashboard-preview .lykos-record strong { display:block; margin-top:3px; overflow-wrap:anywhere; font-family:"OMMarseille",Georgia,serif; font-size:19px; line-height:1.05; text-transform:uppercase; }
@@ -1116,7 +1118,7 @@
   <footer class="lykos-site-footer"><span>Méthode de notation du Performance Hub</span><button data-view="metron" aria-selected="false">Comprendre Metron</button></footer>
   <script src="team-data.js"></script>
   <script src="player-secondary-data.js"></script>
-  <script src="pantheon-data.js"></script>
+  <script src="pantheon-data.js?v=records-20260909"></script>
   <script>
     (() => {
       const root = document.getElementById('lykos-dashboard-preview');
@@ -2076,6 +2078,8 @@
       ];
       const pantheon = root.querySelector('[data-pantheon]');
       const pantheonSource = window.LYKOS_PANTHEON_STATS?.currentSeason ?? null;
+      const pantheonRecordData = window.LYKOS_PANTHEON_STATS?.recordScopes ?? {season:[],month:[],match:[]};
+      const pantheonRecordPrecision = new Map(pantheonMetrics.map(({key}) => [key,'period']));
       const pantheonMonth = root.querySelector('[data-pantheon-month]');
       const pantheonMonthWrap = root.querySelector('[data-pantheon-month-wrap]');
       const pantheonTitle = root.querySelector('[data-pantheon-title]');
@@ -2415,6 +2419,41 @@
         }
         pantheonRankings.appendChild(createPantheonFivePanel({metronRows:compositionRows,isCurrent}));
       };
+      const pantheonRecordPrecisionLabels = {
+        period:'Cumul de la période',
+        season:'Record sur une saison',
+        month:'Record sur un mois',
+        match:'Record sur un match',
+      };
+      const formatPantheonRecordDate = value => {
+        const parts = String(value ?? '').slice(0,10).split('-');
+        return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : 'Date inconnue';
+      };
+      const formatPantheonRecordMonth = value => {
+        const [year,month] = String(value ?? '').split('-').map(Number);
+        return Number.isInteger(year) && Number.isInteger(month)
+          ? new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(new Date(year,month - 1,1))
+          : 'Mois inconnu';
+      };
+      const pantheonScopedRecordRows = ({metric,precision,isCurrent,periodRows,periodContext}) => {
+        if (precision === 'period') return periodRows.map(row => ({...row,recordContext:periodContext}));
+        const scopes = (pantheonRecordData[precision] ?? []).filter(scope => !isCurrent || String(scope.seasonId) === String(pantheonSource?.seasonId));
+        const bestByPlayer = new Map();
+        scopes.forEach(scope => Object.values(scope.players ?? {}).forEach(player => {
+          const value = player[metric];
+          if (!Number.isFinite(value)) return;
+          const context = precision === 'season'
+            ? `Saison ${scope.label}`
+            : precision === 'month'
+              ? formatPantheonRecordMonth(scope.monthKey)
+              : `${formatPantheonRecordDate(scope.date)} · ${scope.opponentName}`;
+          const recency = String(scope.date ?? scope.startDate ?? scope.key ?? '');
+          const candidate = {...player,recordContext:context,recordRecency:recency};
+          const existing = bestByPlayer.get(player.playerId);
+          if (!existing || value > existing[metric] || (value === existing[metric] && recency > existing.recordRecency)) bestByPlayer.set(player.playerId,candidate);
+        }));
+        return [...bestByPlayer.values()];
+      };
       const renderPantheon = () => {
         pantheon.replaceChildren();
         const isCurrent = pantheonPeriod === 'current';
@@ -2440,8 +2479,12 @@
           empty.innerHTML = `<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès qu’un match ${isSeasonOverview ? 'de cette saison' : 'de ce mois'} disposera de statistiques individuelles complètes.</span></div>`;
           pantheon.appendChild(empty); return;
         }
+        const periodContext = isCurrent
+          ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month.label
+          : 'All-time';
         pantheonMetrics.forEach(({key,label,icon}) => {
-          const ranked = rows
+          const precision = pantheonRecordPrecision.get(key) ?? 'period';
+          const ranked = pantheonScopedRecordRows({metric:key,precision,isCurrent,periodRows:rows,periodContext})
             .filter(row => row[key] !== null && row[key] !== undefined)
             .sort((a,b) => b[key] - a[key] || a.playerName.localeCompare(b.playerName,'fr'));
           if (!ranked.length) return;
@@ -2454,7 +2497,14 @@
             return (Number.isFinite(scoreB) ? scoreB : -1) - (Number.isFinite(scoreA) ? scoreA : -1) || a.playerName.localeCompare(b.playerName,'fr');
           })[0];
           const card = document.createElement('article'); card.className = 'lykos-panel lykos-record';
-          card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${isCurrent ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month.label : 'All-time'}</small>`;
+          card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${leader.recordContext}</small>`;
+          const scopeSelect = document.createElement('select'); scopeSelect.className = 'lykos-record-scope'; scopeSelect.setAttribute('aria-label',`${label} : précision du record`);
+          Object.entries(pantheonRecordPrecisionLabels).forEach(([scopeKey,scopeLabel]) => {
+            const option = document.createElement('option'); option.value = scopeKey; option.textContent = scopeLabel; scopeSelect.appendChild(option);
+          });
+          scopeSelect.value = precision;
+          scopeSelect.addEventListener('change',() => { pantheonRecordPrecision.set(key,scopeSelect.value); renderPantheon(); });
+          card.querySelector('.lykos-record-rank').after(scopeSelect);
           const leaderWrap = card.querySelector('.lykos-record-leaders');
           const leaderLine = document.createElement('div'); leaderLine.className = 'lykos-record-leader-line';
           const name = document.createElement('strong'); name.textContent = leader.playerName; leaderLine.appendChild(name);
@@ -2471,7 +2521,7 @@
               const rank = player[key] === previousValue ? previousRank : previousRank + 1;
             const item = document.createElement('li');
             const position = document.createElement('span'); position.className = 'lykos-record-position'; position.textContent = `${rank}.`;
-            const name = document.createElement('span'); name.className = 'lykos-record-player'; name.textContent = player.playerName;
+            const name = document.createElement('span'); name.className = 'lykos-record-player'; name.textContent = player.playerName; name.title = player.recordContext;
             const playerValue = document.createElement('span'); playerValue.className = 'lykos-record-value'; playerValue.textContent = formatValue(player[key]);
             item.append(position,name,playerValue); list.appendChild(item);
             previousValue = player[key]; previousRank = rank;

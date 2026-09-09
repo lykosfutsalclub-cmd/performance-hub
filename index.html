@@ -1028,8 +1028,8 @@
               <button type="button" data-pantheon-period-value="alltime" aria-pressed="false">All-time</button>
             </div>
             <label class="lykos-pantheon-month" data-pantheon-month-wrap>
-              <span class="lykos-sr-only">Choisir un mois</span>
-              <select data-pantheon-month aria-label="Choisir le mois de la saison actuelle"></select>
+              <span class="lykos-sr-only">Choisir une période de la saison</span>
+              <select data-pantheon-month aria-label="Choisir un mois ou toute la saison actuelle"></select>
             </label>
           </div>
         </div>
@@ -2065,6 +2065,9 @@
       const today = new Date();
       const localMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2,'0')}`;
       const pantheonMonths = Object.values(pantheonSource?.months ?? {});
+      const seasonOption = document.createElement('option');
+      seasonOption.value = 'season'; seasonOption.textContent = `Toute la saison ${pantheonSource?.seasonLabel ?? 'actuelle'}`;
+      pantheonMonth.appendChild(seasonOption);
       pantheonMonths.forEach(month => {
         const option = document.createElement('option');
         option.value = month.key; option.textContent = month.label;
@@ -2198,7 +2201,7 @@
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
         const minimumMatches = pantheonParticipationThreshold(isCurrent);
         const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
-          ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · poste + Metron + note moyenne`
+          ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · performance au poste + Metron + note moyenne`
           : Number.isFinite(minimumMatches)
             ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
             : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
@@ -2273,20 +2276,26 @@
       const renderPantheon = () => {
         pantheon.replaceChildren();
         const isCurrent = pantheonPeriod === 'current';
+        const isSeasonOverview = isCurrent && pantheonMonth.value === 'season';
         const month = pantheonSource?.months?.[pantheonMonth.value] ?? null;
         const rows = isCurrent
-          ? Object.values(month?.players ?? {})
+          ? isSeasonOverview
+            ? players.map(player => ({playerId:player.id,playerName:player.name,...player.stats.current}))
+              .filter(row => Number.isFinite(row.matchesPlayed) && row.matchesPlayed > 0)
+            : Object.values(month?.players ?? {})
           : players.map(player => ({ playerId:player.id,playerName:player.name,...player.stats.alltime }));
         pantheonMonthWrap.hidden = !isCurrent;
-        pantheonSubtitle.textContent = isCurrent ? 'Les leaders de la saison, mois après mois.' : 'Les grands records du club depuis la première saison recensée.';
-        pantheonTitle.textContent = isCurrent ? month?.label ?? 'Saison actuelle' : 'Les records du club';
+        pantheonSubtitle.textContent = isCurrent ? 'Les leaders de la saison, sur l’ensemble de la période ou mois après mois.' : 'Les grands records du club depuis la première saison recensée.';
+        pantheonTitle.textContent = isCurrent ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month?.label ?? 'Saison actuelle' : 'Les records du club';
         pantheonContext.textContent = isCurrent
-          ? `${month?.matchCount ?? 0} ${month?.matchCount === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
+          ? isSeasonOverview
+            ? `${secondaryData.current?.matchCount ?? 0} ${(secondaryData.current?.matchCount ?? 0) === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
+            : `${month?.matchCount ?? 0} ${month?.matchCount === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
           : 'Historique complet';
         renderPantheonRankings(isCurrent);
-        if (isCurrent && (!month || month.matchCount === 0 || rows.length === 0)) {
+        if (isCurrent && ((!isSeasonOverview && (!month || month.matchCount === 0)) || rows.length === 0)) {
           const empty = document.createElement('div'); empty.className = 'lykos-pantheon-empty';
-          empty.innerHTML = '<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès qu’un match de ce mois disposera de statistiques individuelles complètes.</span></div>';
+          empty.innerHTML = `<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès qu’un match ${isSeasonOverview ? 'de cette saison' : 'de ce mois'} disposera de statistiques individuelles complètes.</span></div>`;
           pantheon.appendChild(empty); return;
         }
         pantheonMetrics.forEach(({key,label,icon}) => {
@@ -2303,7 +2312,7 @@
             return (Number.isFinite(scoreB) ? scoreB : -1) - (Number.isFinite(scoreA) ? scoreA : -1) || a.playerName.localeCompare(b.playerName,'fr');
           })[0];
           const card = document.createElement('article'); card.className = 'lykos-panel lykos-record';
-          card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${isCurrent ? month.label : 'All-time'}</small>`;
+          card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${isCurrent ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month.label : 'All-time'}</small>`;
           const leaderWrap = card.querySelector('.lykos-record-leaders');
           const leaderLine = document.createElement('div'); leaderLine.className = 'lykos-record-leader-line';
           const name = document.createElement('strong'); name.textContent = leader.playerName; leaderLine.appendChild(name);

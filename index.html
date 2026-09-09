@@ -2160,7 +2160,7 @@
         const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
-        const subtitle = document.createElement('span'); subtitle.textContent = `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : 'All-time'} · carré 2 derrière / 2 devant`;
+        const subtitle = document.createElement('span'); subtitle.textContent = `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : 'All-time'} · organisation en carré`;
         heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
         const formation = buildPantheonFive(metronRows);
@@ -2168,20 +2168,26 @@
           const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.';
           court.appendChild(empty); panel.appendChild(court); return panel;
         }
-        const appendPlayer = (entry,line) => {
+        const appendPlayer = (entry,line,tacticalRole) => {
           const position = (entry.player.essentials?.position || 'M').toUpperCase();
           const card = document.createElement('div'); card.className = 'lykos-five-player'; card.dataset.line = line; card.style.setProperty('--rank-color',ratingTone(entry.value));
-          const role = document.createElement('span'); role.className = 'lykos-five-player-role'; role.textContent = line === 'goalkeeper' ? 'Gardien' : line === 'back' ? 'Derrière' : 'Devant';
+          const role = document.createElement('span'); role.className = 'lykos-five-player-role'; role.textContent = tacticalRole;
           const name = document.createElement('strong'); name.textContent = entry.player.name;
           const score = document.createElement('span'); score.className = 'lykos-five-player-score'; score.dataset.level = metronLevel(entry.value); score.textContent = formatValue(entry.value); score.setAttribute('aria-label',`Note Metron ${formatValue(entry.value)} sur 99`);
           const detail = document.createElement('small');
-          detail.textContent = line === 'goalkeeper' ? 'Poste gardien renseigné' : position === 'M' ? `Profil polyvalent placé ${line === 'back' ? 'derrière' : 'devant'}` : position.includes(line === 'back' ? 'DEF' : 'ATT') ? 'Poste renseigné' : 'Repositionné selon ses statistiques';
+          detail.textContent = position.includes('G') ? 'Gardien' : position.includes('DEF') ? 'Défenseur' : position.includes('ATT') ? 'Attaquant' : 'Milieu polyvalent';
           card.title = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime');
           card.append(role,name,score,detail); court.appendChild(card);
         };
-        formation.fronts.forEach(entry => appendPlayer(entry,'front'));
-        formation.backs.forEach(entry => appendPlayer(entry,'back'));
-        appendPlayer(formation.goalkeeper,'goalkeeper');
+        const defensiveScore = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : -1;
+        const goalCount = entry => Number.isFinite(entry.analytics?.primary?.goals) ? entry.analytics.primary.goals : -1;
+        const backs = [...formation.backs].sort((a,b) => defensiveScore(b) - defensiveScore(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        const fronts = [...formation.fronts].sort((a,b) => goalCount(b) - goalCount(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        appendPlayer(fronts[0],'front','Pivot');
+        appendPlayer(fronts[1],'front','Attaquant avancé');
+        appendPlayer(backs[0],'back','Pointe basse');
+        appendPlayer(backs[1],'back','Latéral');
+        appendPlayer(formation.goalkeeper,'goalkeeper','Gardien');
         panel.appendChild(court); return panel;
       };
       const renderPantheonRankings = isCurrent => {

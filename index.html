@@ -2213,9 +2213,14 @@
         if (!matchCounts.length) return null;
         return Math.ceil(matchCounts.reduce((sum,value) => sum + value,0) / matchCounts.length);
       };
+      const pantheonFiveMinimumMatches = (isCurrent,modeKey) => {
+        if (isCurrent) return 1;
+        return modeKey === 'balanced' ? pantheonParticipationThreshold(false) : 10;
+      };
       const buildPantheonFive = (metronRows,{isCurrent=false,modeKey='balanced'}={}) => {
         const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
-        const minimumMatches = pantheonParticipationThreshold(isCurrent);
+        const mode = pantheonFiveModeByKey.get(modeKey) ?? pantheonFiveModeByKey.get('balanced');
+        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,mode.key);
         if (!Number.isFinite(minimumMatches)) return null;
         const periodStats = entry => entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
         const matchesOf = entry => periodStats(entry).matchesPlayed;
@@ -2259,7 +2264,6 @@
         const field = eligibleRows.filter(entry => !positionOf(entry).includes('G'));
         const frontPool = field.filter(entry => !positionOf(entry).includes('DEF'));
         const goalkeeperPool = eligibleRows.filter(entry => positionOf(entry).includes('G'));
-        const mode = pantheonFiveModeByKey.get(modeKey) ?? pantheonFiveModeByKey.get('balanced');
         if (mode.key !== 'balanced') {
           const sortByMode = pool => pool
             .filter(entry => Number.isFinite(pantheonFiveMetricValue(entry,mode.key,isCurrent)))
@@ -2311,11 +2315,11 @@
         const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
-        const minimumMatches = pantheonParticipationThreshold(isCurrent);
         const activeMode = pantheonFiveModeByKey.get(pantheonFiveMode) ?? pantheonFiveModeByKey.get('balanced');
+        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,activeMode.key);
         const subtitle = document.createElement('span');
         subtitle.textContent = activeMode.key !== 'balanced'
-          ? `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : `All-time · seuil moyen ${minimumMatches} matchs`} · sélection poste par poste selon « ${activeMode.label} »`
+          ? `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : `All-time · minimum ${minimumMatches} matchs`} · sélection poste par poste selon « ${activeMode.label} »`
           : isCurrent
             ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · performance au poste + Metron + note moyenne`
             : Number.isFinite(minimumMatches)
@@ -2339,7 +2343,7 @@
           const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = isCurrent
             ? 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.'
             : Number.isFinite(minimumMatches)
-              ? `Composition indisponible : cinq joueurs notés, dont un gardien, doivent avoir disputé au moins ${minimumMatches} matchs (moyenne des participations All-time).`
+              ? `Composition indisponible : cinq joueurs notés, dont un gardien, doivent avoir disputé au moins ${minimumMatches} matchs.`
               : 'Composition indisponible : la moyenne des participations All-time ne peut pas être calculée.';
           court.appendChild(empty); panel.appendChild(court); return panel;
         }

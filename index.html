@@ -467,6 +467,16 @@
     #lykos-dashboard-preview .lykos-record strong { display:block; margin-top:3px; overflow-wrap:anywhere; font-family:"OMMarseille",Georgia,serif; font-size:19px; line-height:1.05; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-record b { position:relative; z-index:1; display:block; margin-top:12px; color:#fff; font-size:36px; line-height:1; }
     #lykos-dashboard-preview .lykos-record small { position:relative; z-index:1; display:block; margin-top:9px; color:var(--lykos-muted); font-size:9px; line-height:1.35; }
+    #lykos-dashboard-preview .lykos-record-top { position:relative; z-index:2; margin-top:18px; border-top:1px solid rgba(151,185,221,.16); }
+    #lykos-dashboard-preview .lykos-record-top summary { min-height:42px; display:flex; align-items:center; justify-content:space-between; gap:10px; color:#b6c8da; font-size:9px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; cursor:pointer; list-style:none; }
+    #lykos-dashboard-preview .lykos-record-top summary::-webkit-details-marker { display:none; }
+    #lykos-dashboard-preview .lykos-record-top summary::after { content:"⌄"; color:var(--lykos-yellow); font-size:15px; transform:translateY(-2px); transition:transform .18s ease; }
+    #lykos-dashboard-preview .lykos-record-top[open] summary::after { transform:rotate(180deg) translateY(2px); }
+    #lykos-dashboard-preview .lykos-record-top-list { margin:0; padding:2px 0 4px; list-style:none; }
+    #lykos-dashboard-preview .lykos-record-top-list li { min-height:35px; display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:center; gap:8px; border-top:1px solid rgba(151,185,221,.09); }
+    #lykos-dashboard-preview .lykos-record-top-list .lykos-record-position { color:#6f8dab; font-size:9px; font-weight:800; }
+    #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { min-width:0; overflow:hidden; color:#dbe6f1; font-size:10px; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-record-top-list .lykos-record-value { color:var(--lykos-yellow); font-size:12px; font-weight:900; font-variant-numeric:tabular-nums; }
     #lykos-dashboard-preview .lykos-pantheon-empty { grid-column:1/-1; min-height:260px; padding:32px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(4,22,52,.62); display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-pantheon-empty b { display:block; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:22px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-pantheon-empty span { display:block; max-width:420px; margin-top:8px; color:#8fa8c1; font-size:11px; line-height:1.5; }
@@ -677,6 +687,10 @@
       #lykos-dashboard-preview .lykos-record { min-height:194px; padding:16px; }
       #lykos-dashboard-preview .lykos-record strong { font-size:16px; }
       #lykos-dashboard-preview .lykos-record b { font-size:31px; }
+      #lykos-dashboard-preview .lykos-record-top { margin-top:14px; }
+      #lykos-dashboard-preview .lykos-record-top summary { min-height:40px; }
+      #lykos-dashboard-preview .lykos-record-top-list li { grid-template-columns:18px minmax(0,1fr) auto; gap:5px; }
+      #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { font-size:9px; }
       #lykos-dashboard-preview .lykos-metron-page, #lykos-dashboard-preview .lykos-metron-section, #lykos-dashboard-preview .lykos-metron-section p, #lykos-dashboard-preview .lykos-metron-callout { max-width:100%; overflow-wrap:anywhere; }
       #lykos-dashboard-preview .lykos-metron-section { padding:18px 15px; }
       #lykos-dashboard-preview .lykos-metron-table-wrap { overflow:visible; }
@@ -2031,7 +2045,9 @@
           pantheon.appendChild(empty); return;
         }
         pantheonMetrics.forEach(({key,label,icon}) => {
-          const ranked = rows.filter(row => row[key] !== null && row[key] !== undefined).sort((a,b) => b[key] - a[key]);
+          const ranked = rows
+            .filter(row => row[key] !== null && row[key] !== undefined)
+            .sort((a,b) => b[key] - a[key] || a.playerName.localeCompare(b.playerName,'fr'));
           if (!ranked.length) return;
           const value = ranked[0][key];
           const leaders = ranked.filter(row => row[key] === value);
@@ -2039,6 +2055,21 @@
           card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${isCurrent ? month.label : 'All-time'}</small>`;
           const leaderWrap = card.querySelector('.lykos-record-leaders');
           leaders.forEach(leader => { const name = document.createElement('strong'); name.textContent = leader.playerName; leaderWrap.appendChild(name); });
+          const details = document.createElement('details'); details.className = 'lykos-record-top';
+          const summary = document.createElement('summary'); summary.textContent = 'Voir le Top 5';
+          const list = document.createElement('ol'); list.className = 'lykos-record-top-list';
+          let previousValue = null;
+          let previousRank = 0;
+          ranked.slice(0,5).forEach((player,index) => {
+            const rank = player[key] === previousValue ? previousRank : index + 1;
+            const item = document.createElement('li');
+            const position = document.createElement('span'); position.className = 'lykos-record-position'; position.textContent = `${rank}.`;
+            const name = document.createElement('span'); name.className = 'lykos-record-player'; name.textContent = player.playerName;
+            const playerValue = document.createElement('span'); playerValue.className = 'lykos-record-value'; playerValue.textContent = formatValue(player[key]);
+            item.append(position,name,playerValue); list.appendChild(item);
+            previousValue = player[key]; previousRank = rank;
+          });
+          details.append(summary,list); card.appendChild(details);
           pantheon.appendChild(card);
         });
       };

@@ -2180,13 +2180,21 @@
           card.append(role,name,score,detail); court.appendChild(card);
         };
         const defensiveScore = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : -1;
+        const decisivePerMatch = entry => {
+          const matches = entry.analytics?.primary?.matches;
+          if (!Number.isFinite(matches) || matches <= 0) return -1;
+          const goals = entry.analytics?.primary?.goals;
+          const assists = entry.analytics?.primary?.assists;
+          if (!Number.isFinite(goals) || !Number.isFinite(assists)) return -1;
+          return (goals + assists) / matches;
+        };
         const goalCount = entry => Number.isFinite(entry.analytics?.primary?.goals) ? entry.analytics.primary.goals : -1;
-        const backs = [...formation.backs].sort((a,b) => defensiveScore(b) - defensiveScore(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        const backs = [...formation.backs].sort((a,b) => decisivePerMatch(b) - decisivePerMatch(a) || defensiveScore(b) - defensiveScore(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
         const fronts = [...formation.fronts].sort((a,b) => goalCount(b) - goalCount(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
         appendPlayer(fronts[0],'front','Pivot');
         appendPlayer(fronts[1],'front','Attaquant avancé');
-        appendPlayer(backs[0],'back','Pointe basse');
-        appendPlayer(backs[1],'back','Latéral');
+        appendPlayer(backs[0],'back','Latéral');
+        appendPlayer(backs[1],'back','Pointe basse');
         appendPlayer(formation.goalkeeper,'goalkeeper','Gardien');
         panel.appendChild(court); return panel;
       };

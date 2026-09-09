@@ -484,6 +484,8 @@
     #lykos-dashboard-preview .lykos-pantheon-ranking-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding-bottom:14px; border-bottom:1px solid rgba(151,185,221,.15); }
     #lykos-dashboard-preview .lykos-pantheon-ranking-head h2 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:19px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-head span { display:block; margin-top:5px; color:#829db8; font-size:9px; }
+    #lykos-dashboard-preview .lykos-five-filter { display:grid; gap:5px; min-width:min(310px,46%); color:#829db8; font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-five-filter select { width:100%; min-height:36px; padding:7px 30px 7px 10px; border:1px solid rgba(151,185,221,.24); border-radius:10px; outline:0; background:#061f48; color:#eef5fc; font:700 10px/1.2 inherit; text-transform:none; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-list { margin:0; padding:4px 0 0; list-style:none; }
     #lykos-dashboard-preview .lykos-pantheon-ranking-row { position:relative; min-height:48px; display:grid; grid-template-columns:25px minmax(0,1fr) auto; align-items:center; gap:9px; border-bottom:1px solid rgba(151,185,221,.09); }
     #lykos-dashboard-preview .lykos-pantheon-ranking-row:last-child { border-bottom:0; }
@@ -513,6 +515,7 @@
     #lykos-dashboard-preview .lykos-five-player-role { display:block; color:var(--rank-color); font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-five-player strong { display:block; margin-top:7px; font-family:"OMMarseille",Georgia,serif; font-size:15px; line-height:1.1; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-five-player-score { display:inline-block; margin-top:8px; padding:5px 9px; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:#68829e; color:#fff; font-size:11px; font-weight:900; }
+    #lykos-dashboard-preview .lykos-five-player-metric { display:block; margin-top:6px; color:var(--lykos-yellow); font-size:9px; font-weight:800; font-variant-numeric:tabular-nums; }
     #lykos-dashboard-preview .lykos-five-player small { display:block; margin-top:6px; color:#7f99b3; font-size:7px; line-height:1.3; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-five-empty { grid-column:1/-1; position:relative; z-index:2; color:#91a9c1; font-size:11px; text-align:center; }
     #lykos-dashboard-preview .lykos-pantheon-empty { grid-column:1/-1; min-height:260px; padding:32px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(4,22,52,.62); display:grid; place-items:center; text-align:center; }
@@ -731,6 +734,8 @@
       #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { font-size:9px; }
       #lykos-dashboard-preview .lykos-pantheon-rankings { grid-template-columns:1fr; gap:10px; }
       #lykos-dashboard-preview .lykos-pantheon-ranking { padding:16px; }
+      #lykos-dashboard-preview .lykos-pantheon-five .lykos-pantheon-ranking-head { display:grid; }
+      #lykos-dashboard-preview .lykos-five-filter { min-width:0; width:100%; }
       #lykos-dashboard-preview .lykos-pantheon-player { cursor:pointer; }
       #lykos-dashboard-preview .lykos-pantheon-player-summary { position:fixed; left:12px; right:12px; top:auto; bottom:calc(92px + env(safe-area-inset-bottom)); width:auto; }
       #lykos-dashboard-preview .lykos-pantheon-five { padding:16px; }
@@ -2125,6 +2130,65 @@
         });
         panel.appendChild(list); return panel;
       };
+      const pantheonFiveModes = [
+        {key:'balanced',group:'Synthèse',label:'Équilibré · Metron et performance'},
+        {key:'concededTotalMin',group:'Buts encaissés',label:'Moins de buts encaissés',direction:'asc',unit:'buts encaissés'},
+        {key:'concededTotalMax',group:'Buts encaissés',label:'Plus de buts encaissés',direction:'desc',unit:'buts encaissés'},
+        {key:'concededAverageMin',group:'Buts encaissés',label:'Moins encaissés par match',direction:'asc',unit:'encaissés / match'},
+        {key:'concededAverageMax',group:'Buts encaissés',label:'Plus encaissés par match',direction:'desc',unit:'encaissés / match'},
+        {key:'goalsTotalMin',group:'Buts marqués',label:'Moins de buts marqués',direction:'asc',unit:'buts'},
+        {key:'goalsTotalMax',group:'Buts marqués',label:'Plus de buts marqués',direction:'desc',unit:'buts'},
+        {key:'goalsAverageMin',group:'Buts marqués',label:'Moins de buts par match',direction:'asc',unit:'buts / match'},
+        {key:'goalsAverageMax',group:'Buts marqués',label:'Plus de buts par match',direction:'desc',unit:'buts / match'},
+        {key:'assistsTotalMin',group:'Création',label:'Moins de passes décisives',direction:'asc',unit:'passes'},
+        {key:'assistsTotalMax',group:'Création',label:'Plus de passes décisives',direction:'desc',unit:'passes'},
+        {key:'assistsAverageMin',group:'Création',label:'Moins de passes par match',direction:'asc',unit:'passes / match'},
+        {key:'assistsAverageMax',group:'Création',label:'Plus de passes par match',direction:'desc',unit:'passes / match'},
+        {key:'contributionsTotalMin',group:'Actions décisives',label:'Moins d’actions décisives',direction:'asc',unit:'buts + passes'},
+        {key:'contributionsTotalMax',group:'Actions décisives',label:'Plus d’actions décisives',direction:'desc',unit:'buts + passes'},
+        {key:'contributionsAverageMin',group:'Actions décisives',label:'Moins d’actions décisives par match',direction:'asc',unit:'G+A / match'},
+        {key:'contributionsAverageMax',group:'Actions décisives',label:'Plus d’actions décisives par match',direction:'desc',unit:'G+A / match'},
+        {key:'metronMin',group:'Notes',label:'Metron le plus faible',direction:'asc',unit:'Metron'},
+        {key:'metronMax',group:'Notes',label:'Metron le plus élevé',direction:'desc',unit:'Metron'},
+        {key:'averageRatingMin',group:'Notes',label:'Note moyenne la plus faible',direction:'asc',unit:'note moyenne'},
+        {key:'averageRatingMax',group:'Notes',label:'Note moyenne la plus élevée',direction:'desc',unit:'note moyenne'},
+        {key:'creationMax',group:'Axes Metron',label:'Meilleure création Metron',direction:'desc',unit:'création'},
+        {key:'finishingMax',group:'Axes Metron',label:'Meilleure finition Metron',direction:'desc',unit:'finition'},
+        {key:'offensiveMax',group:'Axes Metron',label:'Meilleur impact offensif Metron',direction:'desc',unit:'offensif'},
+        {key:'defensiveMax',group:'Axes Metron',label:'Meilleur impact défensif Metron',direction:'desc',unit:'défensif'},
+      ];
+      const pantheonFiveModeByKey = new Map(pantheonFiveModes.map(mode => [mode.key,mode]));
+      let pantheonFiveMode = 'balanced';
+      const pantheonFiveMetricLabel = (mode,value) => {
+        if (!Number.isFinite(value)) return '';
+        if (value !== 1) return mode.unit;
+        if (mode.key.startsWith('goalsTotal')) return 'but';
+        if (mode.key.startsWith('concededTotal')) return 'but encaissé';
+        if (mode.key.startsWith('assistsTotal')) return 'passe';
+        if (mode.key.startsWith('contributionsTotal')) return 'action décisive';
+        return mode.unit;
+      };
+      const pantheonFiveMetricValue = (entry,modeKey,isCurrent) => {
+        const stats = entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
+        const analytics = entry.analytics ?? {};
+        switch (modeKey) {
+          case 'concededTotalMin': case 'concededTotalMax': return analytics.defensive?.goalsAgainst;
+          case 'concededAverageMin': case 'concededAverageMax': return analytics.defensive?.goalsAgainstPerGame;
+          case 'goalsTotalMin': case 'goalsTotalMax': return stats.goals;
+          case 'goalsAverageMin': case 'goalsAverageMax': return stats.goalsPerMatch;
+          case 'assistsTotalMin': case 'assistsTotalMax': return stats.assists;
+          case 'assistsAverageMin': case 'assistsAverageMax': return stats.assistsPerMatch;
+          case 'contributionsTotalMin': case 'contributionsTotalMax': return Number.isFinite(stats.goals) && Number.isFinite(stats.assists) ? stats.goals + stats.assists : null;
+          case 'contributionsAverageMin': case 'contributionsAverageMax': return Number.isFinite(stats.goals) && Number.isFinite(stats.assists) && Number.isFinite(stats.matchesPlayed) && stats.matchesPlayed > 0 ? (stats.goals + stats.assists) / stats.matchesPlayed : null;
+          case 'metronMin': case 'metronMax': return entry.value;
+          case 'averageRatingMin': case 'averageRatingMax': return analytics.primary?.averageRating;
+          case 'creationMax': return analytics.performance?.creation;
+          case 'finishingMax': return analytics.performance?.finishing;
+          case 'offensiveMax': return analytics.performance?.offensive;
+          case 'defensiveMax': return analytics.performance?.defensive;
+          default: return null;
+        }
+      };
       const pantheonParticipationThreshold = isCurrent => {
         if (isCurrent) return 1;
         const matchCounts = players
@@ -2133,7 +2197,7 @@
         if (!matchCounts.length) return null;
         return Math.ceil(matchCounts.reduce((sum,value) => sum + value,0) / matchCounts.length);
       };
-      const buildPantheonFive = (metronRows,{isCurrent=false}={}) => {
+      const buildPantheonFive = (metronRows,{isCurrent=false,modeKey='balanced'}={}) => {
         const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
         const minimumMatches = pantheonParticipationThreshold(isCurrent);
         if (!Number.isFinite(minimumMatches)) return null;
@@ -2176,11 +2240,43 @@
         };
         const byName = (a,b) => a.player.name.localeCompare(b.player.name,'fr');
         const defensiveValue = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? Math.max(0,Math.min(1,entry.analytics.performance.defensive / 99)) : null;
-        const goalkeepers = eligibleRows.filter(entry => positionOf(entry).includes('G'))
-          .sort((a,b) => weightedSelectionScore(b,defensiveValue(b)) - weightedSelectionScore(a,defensiveValue(a)) || matchesOf(b) - matchesOf(a) || byName(a,b));
-        const goalkeeper = goalkeepers[0] ?? null;
         const field = eligibleRows.filter(entry => !positionOf(entry).includes('G'));
         const frontPool = field.filter(entry => !positionOf(entry).includes('DEF'));
+        const goalkeeperPool = eligibleRows.filter(entry => positionOf(entry).includes('G'));
+        const mode = pantheonFiveModeByKey.get(modeKey) ?? pantheonFiveModeByKey.get('balanced');
+        if (mode.key !== 'balanced') {
+          const sortByMode = pool => pool
+            .filter(entry => Number.isFinite(pantheonFiveMetricValue(entry,mode.key,isCurrent)))
+            .sort((a,b) => {
+              const difference = pantheonFiveMetricValue(a,mode.key,isCurrent) - pantheonFiveMetricValue(b,mode.key,isCurrent);
+              return (mode.direction === 'asc' ? difference : -difference)
+                || (Number.isFinite(b.value) ? b.value : -1) - (Number.isFinite(a.value) ? a.value : -1)
+                || (averageRatingOf(b) ?? -1) - (averageRatingOf(a) ?? -1)
+                || matchesOf(b) - matchesOf(a)
+                || byName(a,b);
+            });
+          const goalkeeper = sortByMode(goalkeeperPool)[0] ?? null;
+          let fronts = sortByMode(frontPool).slice(0,2);
+          let backs = sortByMode(field.filter(entry => !fronts.includes(entry) && !positionOf(entry).includes('ATT'))).slice(0,2);
+          if (backs.length < 2) {
+            const flexibleFronts = [...fronts].reverse().filter(entry => !positionOf(entry).includes('ATT') && !positionOf(entry).includes('DEF'));
+            for (const flexible of flexibleFronts) {
+              const retainedFronts = fronts.filter(entry => entry !== flexible);
+              const candidateBacks = sortByMode(field.filter(entry => !retainedFronts.includes(entry) && !positionOf(entry).includes('ATT'))).slice(0,2);
+              const candidateFronts = sortByMode(frontPool.filter(entry => !candidateBacks.includes(entry))).slice(0,2);
+              if (candidateBacks.length === 2 && candidateFronts.length === 2) {
+                backs = candidateBacks;
+                fronts = candidateFronts;
+                break;
+              }
+            }
+          }
+          if (!goalkeeper || fronts.length < 2 || backs.length < 2) return null;
+          return {backs,fronts,goalkeeper,mode};
+        }
+        const goalkeepers = goalkeeperPool
+          .sort((a,b) => weightedSelectionScore(b,defensiveValue(b)) - weightedSelectionScore(a,defensiveValue(a)) || matchesOf(b) - matchesOf(a) || byName(a,b));
+        const goalkeeper = goalkeepers[0] ?? null;
         const maximumGoals = Math.max(1,...frontPool.map(goalsOf).filter(value => value >= 0));
         const pivot = [...frontPool].sort((a,b) => weightedSelectionScore(b,goalsOf(b) < 0 ? null : goalsOf(b) / maximumGoals) - weightedSelectionScore(a,goalsOf(a) < 0 ? null : goalsOf(a) / maximumGoals) || goalsOf(b) - goalsOf(a) || matchesOf(b) - matchesOf(a) || byName(a,b))[0] ?? null;
         const advancedPool = frontPool.filter(entry => entry !== pivot);
@@ -2192,7 +2288,7 @@
           .sort((a,b) => weightedSelectionScore(b,defensiveValue(b)) - weightedSelectionScore(a,defensiveValue(a)) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b));
         const backs = backPool.slice(0,2);
         if (!goalkeeper || !pivot || !advanced || backs.length < 2) return null;
-        return {backs,fronts:[pivot,advanced],goalkeeper};
+        return {backs,fronts:[pivot,advanced],goalkeeper,mode};
       };
       const createPantheonFivePanel = ({metronRows,isCurrent}) => {
         const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-five';
@@ -2200,14 +2296,29 @@
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
         const minimumMatches = pantheonParticipationThreshold(isCurrent);
-        const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
-          ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · performance au poste + Metron + note moyenne`
-          : Number.isFinite(minimumMatches)
-            ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
-            : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
-        heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
+        const activeMode = pantheonFiveModeByKey.get(pantheonFiveMode) ?? pantheonFiveModeByKey.get('balanced');
+        const subtitle = document.createElement('span');
+        subtitle.textContent = activeMode.key !== 'balanced'
+          ? `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : `All-time · seuil moyen ${minimumMatches} matchs`} · sélection poste par poste selon « ${activeMode.label} »`
+          : isCurrent
+            ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · performance au poste + Metron + note moyenne`
+            : Number.isFinite(minimumMatches)
+              ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
+              : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
+        heading.append(title,subtitle);
+        const filter = document.createElement('label'); filter.className = 'lykos-five-filter'; filter.append(document.createTextNode('Orienter la composition'));
+        const select = document.createElement('select'); select.setAttribute('aria-label','Orienter le cinq type selon une statistique');
+        const groups = new Map();
+        pantheonFiveModes.forEach(mode => {
+          let group = groups.get(mode.group);
+          if (!group) { group = document.createElement('optgroup'); group.label = mode.group; groups.set(mode.group,group); select.appendChild(group); }
+          const option = document.createElement('option'); option.value = mode.key; option.textContent = mode.label; group.appendChild(option);
+        });
+        select.value = activeMode.key;
+        select.addEventListener('change',() => { pantheonFiveMode = select.value; renderPantheonRankings(isCurrent); });
+        filter.appendChild(select); head.append(heading,filter); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
-        const formation = buildPantheonFive(metronRows,{isCurrent});
+        const formation = buildPantheonFive(metronRows,{isCurrent,modeKey:activeMode.key});
         if (!formation) {
           const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = isCurrent
             ? 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.'
@@ -2222,10 +2333,14 @@
           const role = document.createElement('span'); role.className = 'lykos-five-player-role'; role.textContent = tacticalRole;
           const name = document.createElement('strong'); name.textContent = entry.player.name;
           const score = document.createElement('span'); score.className = 'lykos-five-player-score'; score.dataset.level = metronLevel(entry.value); score.textContent = formatValue(entry.value); score.setAttribute('aria-label',`Note Metron ${formatValue(entry.value)} sur 99`);
+          const metric = document.createElement('span'); metric.className = 'lykos-five-player-metric';
+          const metricValue = pantheonFiveMetricValue(entry,activeMode.key,isCurrent);
+          metric.textContent = activeMode.key === 'balanced' || !Number.isFinite(metricValue) ? '' : `${formatValue(metricValue)} ${pantheonFiveMetricLabel(activeMode,metricValue)}`;
+          metric.hidden = !metric.textContent;
           const detail = document.createElement('small');
           detail.textContent = position.includes('G') ? 'Gardien' : position.includes('DEF') ? 'Défenseur' : position.includes('ATT') ? 'Attaquant' : 'Milieu polyvalent';
           card.title = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime',entry.analytics);
-          card.append(role,name,score,detail); court.appendChild(card);
+          card.append(role,name,score,metric,detail); court.appendChild(card);
         };
         const defensiveScore = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : -1;
         const decisivePerMatch = entry => {

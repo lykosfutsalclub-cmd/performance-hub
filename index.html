@@ -464,7 +464,9 @@
     #lykos-dashboard-preview .lykos-record-rank > span { color:var(--lykos-yellow); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
     #lykos-dashboard-preview .lykos-record-icon { width:34px; height:34px; display:grid; place-items:center; border:1px solid rgba(208,182,49,.25); border-radius:11px; background:rgba(208,182,49,.09); color:var(--lykos-yellow); font-size:17px; }
     #lykos-dashboard-preview .lykos-record-leaders { position:relative; z-index:1; margin-top:24px; }
+    #lykos-dashboard-preview .lykos-record-leader-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; }
     #lykos-dashboard-preview .lykos-record strong { display:block; margin-top:3px; overflow-wrap:anywhere; font-family:"OMMarseille",Georgia,serif; font-size:19px; line-height:1.05; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-record-tie { color:#91a9c1; font-size:8px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-record b { position:relative; z-index:1; display:block; margin-top:12px; color:#fff; font-size:36px; line-height:1; }
     #lykos-dashboard-preview .lykos-record small { position:relative; z-index:1; display:block; margin-top:9px; color:var(--lykos-muted); font-size:9px; line-height:1.35; }
     #lykos-dashboard-preview .lykos-record-top { position:relative; z-index:2; margin-top:18px; border-top:1px solid rgba(151,185,221,.16); }
@@ -477,6 +479,23 @@
     #lykos-dashboard-preview .lykos-record-top-list .lykos-record-position { color:#6f8dab; font-size:9px; font-weight:800; }
     #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { min-width:0; overflow:hidden; color:#dbe6f1; font-size:10px; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
     #lykos-dashboard-preview .lykos-record-top-list .lykos-record-value { color:var(--lykos-yellow); font-size:12px; font-weight:900; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-pantheon-rankings { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:16px; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking { padding:20px; background:linear-gradient(145deg,rgba(10,42,87,.94),rgba(4,22,52,.95)); }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding-bottom:14px; border-bottom:1px solid rgba(151,185,221,.15); }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-head h2 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:19px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-head span { display:block; margin-top:5px; color:#829db8; font-size:9px; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-list { margin:0; padding:4px 0 0; list-style:none; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-row { position:relative; min-height:48px; display:grid; grid-template-columns:25px minmax(0,1fr) auto; align-items:center; gap:9px; border-bottom:1px solid rgba(151,185,221,.09); }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-row:last-child { border-bottom:0; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-position { color:#718da8; font-size:10px; font-weight:800; }
+    #lykos-dashboard-preview .lykos-pantheon-player { min-width:0; padding:6px 0; border:0; background:transparent; color:#e8f0f8; font:700 11px/1.25 inherit; text-align:left; cursor:help; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value { min-width:42px; padding:7px 9px; border:1px solid color-mix(in srgb,var(--rank-color) 55%,transparent); border-radius:10px; background:color-mix(in srgb,var(--rank-color) 17%,transparent); color:var(--rank-color); font-size:14px; font-weight:900; text-align:center; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-value.honours { --rank-color:var(--lykos-yellow); }
+    #lykos-dashboard-preview .lykos-pantheon-player-summary { position:absolute; z-index:30; left:28px; top:42px; width:min(270px,calc(100vw - 54px)); padding:10px 12px; pointer-events:none; opacity:0; transform:translateY(-4px); border:1px solid rgba(151,185,221,.28); border-radius:11px; background:rgba(1,18,43,.98); box-shadow:0 14px 32px rgba(0,0,0,.38); color:#c8d7e6; font-size:9px; line-height:1.5; transition:opacity .15s ease,transform .15s ease; }
+    #lykos-dashboard-preview .lykos-pantheon-player:hover + .lykos-pantheon-player-summary,
+    #lykos-dashboard-preview .lykos-pantheon-player:focus + .lykos-pantheon-player-summary,
+    #lykos-dashboard-preview .lykos-pantheon-ranking-row[data-open="true"] .lykos-pantheon-player-summary { opacity:1; transform:none; }
+    #lykos-dashboard-preview .lykos-pantheon-ranking-empty { padding:28px 4px 10px; color:#829db8; font-size:10px; line-height:1.5; }
     #lykos-dashboard-preview .lykos-pantheon-empty { grid-column:1/-1; min-height:260px; padding:32px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(4,22,52,.62); display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-pantheon-empty b { display:block; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:22px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-pantheon-empty span { display:block; max-width:420px; margin-top:8px; color:#8fa8c1; font-size:11px; line-height:1.5; }
@@ -691,6 +710,10 @@
       #lykos-dashboard-preview .lykos-record-top summary { min-height:40px; }
       #lykos-dashboard-preview .lykos-record-top-list li { grid-template-columns:18px minmax(0,1fr) auto; gap:5px; }
       #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { font-size:9px; }
+      #lykos-dashboard-preview .lykos-pantheon-rankings { grid-template-columns:1fr; gap:10px; }
+      #lykos-dashboard-preview .lykos-pantheon-ranking { padding:16px; }
+      #lykos-dashboard-preview .lykos-pantheon-player { cursor:pointer; }
+      #lykos-dashboard-preview .lykos-pantheon-player-summary { position:fixed; left:12px; right:12px; top:auto; bottom:calc(92px + env(safe-area-inset-bottom)); width:auto; }
       #lykos-dashboard-preview .lykos-metron-page, #lykos-dashboard-preview .lykos-metron-section, #lykos-dashboard-preview .lykos-metron-section p, #lykos-dashboard-preview .lykos-metron-callout { max-width:100%; overflow-wrap:anywhere; }
       #lykos-dashboard-preview .lykos-metron-section { padding:18px 15px; }
       #lykos-dashboard-preview .lykos-metron-table-wrap { overflow:visible; }
@@ -989,6 +1012,7 @@
         </div>
         <div class="lykos-pantheon-context"><strong data-pantheon-title></strong><span data-pantheon-context></span></div>
         <div class="lykos-pantheon-grid" data-pantheon></div>
+        <div class="lykos-pantheon-rankings" data-pantheon-rankings></div>
         <div class="lykos-footer-note">Aucun record lié aux cartons, aux présences ou aux minutes de jeu</div>
       </section>
       <section class="lykos-content lykos-metron-page" data-view-panel="metron" hidden>
@@ -2012,6 +2036,7 @@
       const pantheonTitle = root.querySelector('[data-pantheon-title]');
       const pantheonContext = root.querySelector('[data-pantheon-context]');
       const pantheonSubtitle = root.querySelector('[data-pantheon-subtitle]');
+      const pantheonRankings = root.querySelector('[data-pantheon-rankings]');
       let pantheonPeriod = 'current';
       const today = new Date();
       const localMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2,'0')}`;
@@ -2026,6 +2051,66 @@
         .filter(month => new Date(month.year,month.month - 1,1) <= new Date(today.getFullYear(),today.getMonth(),1))
         .map(month => month.key);
       pantheonMonth.value = availableMonthKeys.includes(localMonthKey) ? localMonthKey : availableMonthKeys.at(-1) ?? '';
+      const pantheonSummary = (player,periodKey) => {
+        const stats = player?.stats?.[periodKey] ?? {};
+        const parts = [
+          ['Matchs',stats.matchesPlayed],
+          ['Buts',stats.goals],
+          ['Passes',stats.assists],
+          ['HDM',stats.manOfMatch],
+        ].filter(([,value]) => value !== null && value !== undefined).map(([label,value]) => `${label} : ${formatValue(value)}`);
+        return parts.length ? parts.join(' · ') : 'Statistiques principales indisponibles pour cette période.';
+      };
+      const createPantheonRankingPanel = ({title,subtitle,rows,kind,empty}) => {
+        const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-ranking';
+        const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
+        const heading = document.createElement('div');
+        const headingTitle = document.createElement('h2'); headingTitle.textContent = title;
+        const headingSubtitle = document.createElement('span'); headingSubtitle.textContent = subtitle;
+        heading.append(headingTitle,headingSubtitle); head.appendChild(heading); panel.appendChild(head);
+        if (!rows.length) {
+          const message = document.createElement('div'); message.className = 'lykos-pantheon-ranking-empty'; message.textContent = empty;
+          panel.appendChild(message); return panel;
+        }
+        const list = document.createElement('ol'); list.className = 'lykos-pantheon-ranking-list';
+        let previousValue = null;
+        let previousRank = 0;
+        rows.slice(0,5).forEach((entry,index) => {
+          const rank = entry.value === previousValue ? previousRank : index + 1;
+          const item = document.createElement('li'); item.className = 'lykos-pantheon-ranking-row';
+          const position = document.createElement('span'); position.className = 'lykos-pantheon-ranking-position'; position.textContent = `${rank}.`;
+          const playerButton = document.createElement('button'); playerButton.type = 'button'; playerButton.className = 'lykos-pantheon-player'; playerButton.textContent = entry.player.name; playerButton.setAttribute('aria-expanded','false');
+          const summary = document.createElement('span'); summary.className = 'lykos-pantheon-player-summary'; summary.textContent = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime');
+          const score = document.createElement('span'); score.className = `lykos-pantheon-ranking-value${kind === 'honours' ? ' honours' : ''}`; score.textContent = kind === 'metron' ? `${formatValue(entry.value)}/99` : formatValue(entry.value);
+          score.setAttribute('aria-label',kind === 'metron' ? `Note Metron ${formatValue(entry.value)} sur 99` : `${formatValue(entry.value)} distinctions`);
+          if (kind === 'metron') score.style.setProperty('--rank-color',ratingTone(entry.value));
+          playerButton.addEventListener('click',() => {
+            const willOpen = item.dataset.open !== 'true';
+            pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
+            item.dataset.open = String(willOpen); playerButton.setAttribute('aria-expanded',String(willOpen));
+          });
+          item.append(position,playerButton,summary,score); list.appendChild(item);
+          previousValue = entry.value; previousRank = rank;
+        });
+        panel.appendChild(list); return panel;
+      };
+      const renderPantheonRankings = isCurrent => {
+        pantheonRankings.replaceChildren();
+        const secondaryKey = isCurrent ? 'current' : 'allTime';
+        const metronRows = players.map(player => ({player,value:secondaryData[secondaryKey]?.players?.[player.id]?.performance?.overall ?? null}))
+          .filter(entry => Number.isFinite(entry.value)).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        const seasonLabel = pantheonSource?.seasonLabel ? `Saison ${pantheonSource.seasonLabel} · classement cumulatif` : 'Saison actuelle · classement cumulatif';
+        pantheonRankings.appendChild(createPantheonRankingPanel({
+          title:'Les mieux notés par Metron', subtitle:isCurrent ? seasonLabel : 'Historique complet', rows:metronRows, kind:'metron',
+          empty:'Aucune note Metron certifiable pour cette période.',
+        }));
+        const honoursRows = players.map(player => ({player,value:(playerHonours.get(player.id) ?? []).length}))
+          .filter(entry => entry.value > 0).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        pantheonRankings.appendChild(createPantheonRankingPanel({
+          title:'Les plus gros palmarès', subtitle:'Distinctions historiques recensées', rows:honoursRows, kind:'honours',
+          empty:'Aucune distinction recensée.',
+        }));
+      };
       const renderPantheon = () => {
         pantheon.replaceChildren();
         const isCurrent = pantheonPeriod === 'current';
@@ -2039,6 +2124,7 @@
         pantheonContext.textContent = isCurrent
           ? `${month?.matchCount ?? 0} ${month?.matchCount === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
           : 'Historique complet';
+        renderPantheonRankings(isCurrent);
         if (isCurrent && (!month || month.matchCount === 0 || rows.length === 0)) {
           const empty = document.createElement('div'); empty.className = 'lykos-pantheon-empty';
           empty.innerHTML = '<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès qu’un match de ce mois disposera de statistiques individuelles complètes.</span></div>';
@@ -2051,25 +2137,37 @@
           if (!ranked.length) return;
           const value = ranked[0][key];
           const leaders = ranked.filter(row => row[key] === value);
+          const analyticsKey = isCurrent ? 'current' : 'allTime';
+          const leader = [...leaders].sort((a,b) => {
+            const scoreA = secondaryData[analyticsKey]?.players?.[a.playerId]?.performance?.overall;
+            const scoreB = secondaryData[analyticsKey]?.players?.[b.playerId]?.performance?.overall;
+            return (Number.isFinite(scoreB) ? scoreB : -1) - (Number.isFinite(scoreA) ? scoreA : -1) || a.playerName.localeCompare(b.playerName,'fr');
+          })[0];
           const card = document.createElement('article'); card.className = 'lykos-panel lykos-record';
           card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${isCurrent ? month.label : 'All-time'}</small>`;
           const leaderWrap = card.querySelector('.lykos-record-leaders');
-          leaders.forEach(leader => { const name = document.createElement('strong'); name.textContent = leader.playerName; leaderWrap.appendChild(name); });
-          const details = document.createElement('details'); details.className = 'lykos-record-top';
-          const summary = document.createElement('summary'); summary.textContent = 'Voir le Top 5';
-          const list = document.createElement('ol'); list.className = 'lykos-record-top-list';
-          let previousValue = null;
-          let previousRank = 0;
-          ranked.slice(0,5).forEach((player,index) => {
-            const rank = player[key] === previousValue ? previousRank : index + 1;
+          const leaderLine = document.createElement('div'); leaderLine.className = 'lykos-record-leader-line';
+          const name = document.createElement('strong'); name.textContent = leader.playerName; leaderLine.appendChild(name);
+          if (leaders.length > 1) { const tie = document.createElement('span'); tie.className = 'lykos-record-tie'; tie.textContent = `${leaders.length} joueurs ex æquo`; leaderLine.appendChild(tie); }
+          leaderWrap.appendChild(leaderLine);
+          const following = ranked.filter(player => player[key] < value).slice(0,4);
+          if (following.length) {
+            const details = document.createElement('details'); details.className = 'lykos-record-top';
+            const summary = document.createElement('summary'); summary.textContent = 'Voir les rangs 2 à 5';
+            const list = document.createElement('ol'); list.className = 'lykos-record-top-list';
+            let previousValue = value;
+            let previousRank = 1;
+            following.forEach(player => {
+              const rank = player[key] === previousValue ? previousRank : previousRank + 1;
             const item = document.createElement('li');
             const position = document.createElement('span'); position.className = 'lykos-record-position'; position.textContent = `${rank}.`;
             const name = document.createElement('span'); name.className = 'lykos-record-player'; name.textContent = player.playerName;
             const playerValue = document.createElement('span'); playerValue.className = 'lykos-record-value'; playerValue.textContent = formatValue(player[key]);
             item.append(position,name,playerValue); list.appendChild(item);
             previousValue = player[key]; previousRank = rank;
-          });
-          details.append(summary,list); card.appendChild(details);
+            });
+            details.append(summary,list); card.appendChild(details);
+          }
           pantheon.appendChild(card);
         });
       };
@@ -2079,6 +2177,14 @@
         renderPantheon();
       }));
       pantheonMonth.addEventListener('change',renderPantheon);
+      root.addEventListener('click',event => {
+        if (event.target.closest('.lykos-pantheon-ranking-row')) return;
+        pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
+      });
+      root.addEventListener('keydown',event => {
+        if (event.key !== 'Escape') return;
+        pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
+      });
       renderPantheon();
       const sourceLogo = root.querySelector('[data-lykos-source]');
       const applyLogo = () => {

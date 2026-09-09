@@ -468,7 +468,10 @@
     #lykos-dashboard-preview .lykos-record-leaders { position:relative; z-index:1; margin-top:24px; }
     #lykos-dashboard-preview .lykos-record-leader-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; }
     #lykos-dashboard-preview .lykos-record strong { display:block; margin-top:3px; overflow-wrap:anywhere; font-family:"OMMarseille",Georgia,serif; font-size:19px; line-height:1.05; text-transform:uppercase; }
-    #lykos-dashboard-preview .lykos-record-tie { color:#91a9c1; font-size:8px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-record-tie { position:relative; z-index:5; padding:0; border:0; outline:0; background:transparent; color:#91a9c1; font:700 8px/1.2 Arial,sans-serif; letter-spacing:.04em; text-align:left; text-transform:uppercase; cursor:help; }
+    #lykos-dashboard-preview .lykos-record-tie-names { position:absolute; left:0; top:calc(100% + 7px); z-index:40; width:max-content; max-width:min(270px,calc(100vw - 42px)); max-height:180px; padding:9px 11px; overflow:auto; border:1px solid rgba(151,185,221,.3); border-radius:10px; background:#041936; box-shadow:0 14px 32px rgba(0,0,0,.42); color:#e8f1fa; font-size:9px; font-weight:600; line-height:1.45; letter-spacing:0; text-transform:none; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s ease,transform .15s ease,visibility .15s ease; }
+    #lykos-dashboard-preview .lykos-record-tie:hover .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie:focus-visible .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie[data-open="true"] .lykos-record-tie-names { opacity:1; visibility:visible; transform:translateY(0); }
+    #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie:hover), #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie:focus-visible), #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie[data-open="true"]) { overflow:visible; z-index:10; }
     #lykos-dashboard-preview .lykos-record b { position:relative; z-index:1; display:block; margin-top:12px; color:#fff; font-size:36px; line-height:1; }
     #lykos-dashboard-preview .lykos-record small { position:relative; z-index:1; display:block; margin-top:9px; color:var(--lykos-muted); font-size:9px; line-height:1.35; }
     #lykos-dashboard-preview .lykos-record-top { position:relative; z-index:2; margin-top:18px; border-top:1px solid rgba(151,185,221,.16); }
@@ -2508,7 +2511,26 @@
           const leaderWrap = card.querySelector('.lykos-record-leaders');
           const leaderLine = document.createElement('div'); leaderLine.className = 'lykos-record-leader-line';
           const name = document.createElement('strong'); name.textContent = leader.playerName; leaderLine.appendChild(name);
-          if (leaders.length > 1) { const tie = document.createElement('span'); tie.className = 'lykos-record-tie'; tie.textContent = `${leaders.length} joueurs ex æquo`; leaderLine.appendChild(tie); }
+          if (leaders.length > 1) {
+            const tie = document.createElement('button');
+            tie.type = 'button';
+            tie.className = 'lykos-record-tie';
+            tie.dataset.open = 'false';
+            tie.setAttribute('aria-expanded','false');
+            tie.appendChild(document.createTextNode(`${leaders.length} joueurs ex æquo`));
+            const tieNames = document.createElement('span');
+            tieNames.className = 'lykos-record-tie-names';
+            tieNames.textContent = [...leaders].sort((a,b) => a.playerName.localeCompare(b.playerName,'fr')).map(player => player.playerName).join(' · ');
+            tie.appendChild(tieNames);
+            tie.addEventListener('click',event => {
+              event.stopPropagation();
+              const shouldOpen = tie.dataset.open !== 'true';
+              root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
+              tie.dataset.open = String(shouldOpen);
+              tie.setAttribute('aria-expanded',String(shouldOpen));
+            });
+            leaderLine.appendChild(tie);
+          }
           leaderWrap.appendChild(leaderLine);
           const following = ranked.filter(player => player[key] < value).slice(0,4);
           if (following.length) {
@@ -2538,11 +2560,13 @@
       }));
       pantheonMonth.addEventListener('change',renderPantheon);
       root.addEventListener('click',event => {
+        if (!event.target.closest('.lykos-record-tie')) root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
         if (event.target.closest('.lykos-pantheon-ranking-row')) return;
         pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
       });
       root.addEventListener('keydown',event => {
         if (event.key !== 'Escape') return;
+        root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
         pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
       });
       renderPantheon();

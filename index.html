@@ -2125,48 +2125,35 @@
       const buildPantheonFive = (metronRows,{isCurrent=false}={}) => {
         const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
         const minimumMatches = isCurrent ? 1 : 30;
-        const eligibleRows = metronRows.filter(entry => Number.isFinite(entry.analytics?.primary?.matches) && entry.analytics.primary.matches >= minimumMatches);
-        const averageMatches = eligibleRows.length ? eligibleRows.reduce((sum,entry) => sum + entry.analytics.primary.matches,0) / eligibleRows.length : minimumMatches;
-        const experienceBonus = entry => {
-          if (isCurrent) return 0;
-          const range = Math.max(1,averageMatches - minimumMatches);
-          return Math.min(6,Math.max(0,(entry.analytics.primary.matches - minimumMatches) / range) * 6);
+        const periodStats = entry => entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
+        const matchesOf = entry => periodStats(entry).matchesPlayed;
+        const goalsOf = entry => Number.isFinite(periodStats(entry).goals) ? periodStats(entry).goals : -1;
+        const assistsOf = entry => Number.isFinite(periodStats(entry).assists) ? periodStats(entry).assists : -1;
+        const contributionsOf = entry => goalsOf(entry) < 0 || assistsOf(entry) < 0 ? -1 : goalsOf(entry) + assistsOf(entry);
+        const eligibleRows = metronRows.filter(entry => Number.isFinite(matchesOf(entry)) && matchesOf(entry) >= minimumMatches);
+        const averageMatches = eligibleRows.length ? eligibleRows.reduce((sum,entry) => sum + matchesOf(entry),0) / eligibleRows.length : minimumMatches;
+        const reliableRating = (entry,path) => {
+          const rating = entry.analytics?.performance?.[path];
+          if (!Number.isFinite(rating)) return -1;
+          if (isCurrent) return rating;
+          const reliability = .85 + .15 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
+          return rating * reliability;
         };
+        const byName = (a,b) => a.player.name.localeCompare(b.player.name,'fr');
         const goalkeepers = eligibleRows.filter(entry => positionOf(entry).includes('G'))
-          .sort((a,b) => (b.value + experienceBonus(b)) - (a.value + experienceBonus(a)) || a.player.name.localeCompare(b.player.name,'fr'));
+          .sort((a,b) => reliableRating(b,'overall') - reliableRating(a,'overall') || matchesOf(b) - matchesOf(a) || byName(a,b));
         const goalkeeper = goalkeepers[0] ?? null;
-        const field = eligibleRows.filter(entry => entry !== goalkeeper && !positionOf(entry).includes('G'));
-        if (!goalkeeper || field.length < 4) return null;
-        const suitability = (entry,line) => {
-          const position = positionOf(entry);
-          const offensive = Number.isFinite(entry.analytics?.performance?.offensive) ? entry.analytics.performance.offensive : 50;
-          const defensive = Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : 50;
-          const matches = Number.isFinite(entry.analytics?.primary?.matches) && entry.analytics.primary.matches > 0 ? entry.analytics.primary.matches : 1;
-          const goalsPerMatch = Number.isFinite(entry.analytics?.primary?.goals) ? entry.analytics.primary.goals / matches : 0;
-          const assistsPerMatch = Number.isFinite(entry.analytics?.primary?.assists) ? entry.analytics.primary.assists / matches : 0;
-          const roleBonus = line === 'front'
-            ? (position.includes('ATT') ? 8 : position.includes('DEF') ? -100 : 0)
-            : (position.includes('DEF') ? 8 : position.includes('ATT') ? -100 : 0);
-          const defensiveProfile = (defensive - offensive) * .6;
-          const attackingProduction = goalsPerMatch * 4 + assistsPerMatch * 2;
-          const polyvalentBackPenalty = line === 'back' && position === 'M' ? attackingProduction * 2 : 0;
-          return entry.value + experienceBonus(entry) + roleBonus + (line === 'front' ? -defensiveProfile + attackingProduction : defensiveProfile - polyvalentBackPenalty);
-        };
-        let best = null;
-        for (let firstBack = 0; firstBack < field.length - 1; firstBack += 1) {
-          for (let secondBack = firstBack + 1; secondBack < field.length; secondBack += 1) {
-            const backs = [field[firstBack],field[secondBack]];
-            const remaining = field.filter(entry => !backs.includes(entry));
-            for (let firstFront = 0; firstFront < remaining.length - 1; firstFront += 1) {
-              for (let secondFront = firstFront + 1; secondFront < remaining.length; secondFront += 1) {
-                const fronts = [remaining[firstFront],remaining[secondFront]];
-                const score = backs.reduce((sum,entry) => sum + suitability(entry,'back'),0) + fronts.reduce((sum,entry) => sum + suitability(entry,'front'),0);
-                if (!best || score > best.score) best = {score,backs,fronts,goalkeeper};
-              }
-            }
-          }
-        }
-        return best;
+        const field = eligibleRows.filter(entry => !positionOf(entry).includes('G'));
+        const frontPool = field.filter(entry => !positionOf(entry).includes('DEF'));
+        const pivot = [...frontPool].sort((a,b) => goalsOf(b) - goalsOf(a) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b))[0] ?? null;
+        const advanced = frontPool.filter(entry => entry !== pivot)
+          .sort((a,b) => contributionsOf(b) - contributionsOf(a) || assistsOf(b) - assistsOf(a) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b))[0] ?? null;
+        const reserved = new Set([pivot,advanced,goalkeeper].filter(Boolean));
+        const backPool = field.filter(entry => !reserved.has(entry) && !positionOf(entry).includes('ATT'))
+          .sort((a,b) => reliableRating(b,'defensive') - reliableRating(a,'defensive') || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b));
+        const backs = backPool.slice(0,2);
+        if (!goalkeeper || !pivot || !advanced || backs.length < 2) return null;
+        return {backs,fronts:[pivot,advanced],goalkeeper};
       };
       const createPantheonFivePanel = ({metronRows,isCurrent}) => {
         const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-five';
@@ -2175,7 +2162,7 @@
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
         const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
           ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · organisation en carré`
-          : 'All-time · minimum 30 matchs · expérience pondérée';
+          : 'All-time · minimum 30 matchs · sélection poste par poste';
         heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
         const formation = buildPantheonFive(metronRows,{isCurrent});
@@ -2205,9 +2192,8 @@
           if (!Number.isFinite(goals) || !Number.isFinite(assists)) return -1;
           return (goals + assists) / matches;
         };
-        const goalCount = entry => Number.isFinite(entry.analytics?.primary?.goals) ? entry.analytics.primary.goals : -1;
         const backs = [...formation.backs].sort((a,b) => decisivePerMatch(b) - decisivePerMatch(a) || defensiveScore(b) - defensiveScore(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
-        const fronts = [...formation.fronts].sort((a,b) => goalCount(b) - goalCount(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
+        const fronts = formation.fronts;
         appendPlayer(fronts[0],'front','Pivot');
         appendPlayer(fronts[1],'front','Attaquant avancé');
         appendPlayer(backs[0],'back','Latéral');

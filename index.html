@@ -2132,25 +2132,34 @@
         const contributionsOf = entry => goalsOf(entry) < 0 || assistsOf(entry) < 0 ? -1 : goalsOf(entry) + assistsOf(entry);
         const eligibleRows = metronRows.filter(entry => Number.isFinite(matchesOf(entry)) && matchesOf(entry) >= minimumMatches);
         const averageMatches = eligibleRows.length ? eligibleRows.reduce((sum,entry) => sum + matchesOf(entry),0) / eligibleRows.length : minimumMatches;
-        const reliableRating = (entry,path) => {
-          const rating = entry.analytics?.performance?.[path];
-          if (!Number.isFinite(rating)) return -1;
-          if (isCurrent) return rating;
-          const reliability = .85 + .15 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
-          return rating * reliability;
+        const averageRatingOf = entry => Number.isFinite(entry.analytics?.primary?.averageRating) ? entry.analytics.primary.averageRating : null;
+        const selectionReliability = entry => isCurrent ? 1 : .85 + .15 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
+        const weightedSelectionScore = (entry,roleValue) => {
+          const criteria = [
+            [roleValue,.5],
+            [Number.isFinite(entry.value) ? Math.max(0,Math.min(1,entry.value / 99)) : null,.3],
+            [averageRatingOf(entry) === null ? null : Math.max(0,Math.min(1,averageRatingOf(entry) / 10)),.2],
+          ].filter(([value]) => value !== null && Number.isFinite(value));
+          if (!criteria.length) return -1;
+          const totalWeight = criteria.reduce((sum,[,weight]) => sum + weight,0);
+          return criteria.reduce((sum,[value,weight]) => sum + value * weight,0) / totalWeight * 100 * selectionReliability(entry);
         };
         const byName = (a,b) => a.player.name.localeCompare(b.player.name,'fr');
+        const defensiveValue = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? Math.max(0,Math.min(1,entry.analytics.performance.defensive / 99)) : null;
         const goalkeepers = eligibleRows.filter(entry => positionOf(entry).includes('G'))
-          .sort((a,b) => reliableRating(b,'overall') - reliableRating(a,'overall') || matchesOf(b) - matchesOf(a) || byName(a,b));
+          .sort((a,b) => weightedSelectionScore(b,defensiveValue(b)) - weightedSelectionScore(a,defensiveValue(a)) || matchesOf(b) - matchesOf(a) || byName(a,b));
         const goalkeeper = goalkeepers[0] ?? null;
         const field = eligibleRows.filter(entry => !positionOf(entry).includes('G'));
         const frontPool = field.filter(entry => !positionOf(entry).includes('DEF'));
-        const pivot = [...frontPool].sort((a,b) => goalsOf(b) - goalsOf(a) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b))[0] ?? null;
-        const advanced = frontPool.filter(entry => entry !== pivot)
-          .sort((a,b) => contributionsOf(b) - contributionsOf(a) || assistsOf(b) - assistsOf(a) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b))[0] ?? null;
+        const maximumGoals = Math.max(1,...frontPool.map(goalsOf).filter(value => value >= 0));
+        const pivot = [...frontPool].sort((a,b) => weightedSelectionScore(b,goalsOf(b) < 0 ? null : goalsOf(b) / maximumGoals) - weightedSelectionScore(a,goalsOf(a) < 0 ? null : goalsOf(a) / maximumGoals) || goalsOf(b) - goalsOf(a) || matchesOf(b) - matchesOf(a) || byName(a,b))[0] ?? null;
+        const advancedPool = frontPool.filter(entry => entry !== pivot);
+        const maximumContributions = Math.max(1,...advancedPool.map(contributionsOf).filter(value => value >= 0));
+        const advanced = advancedPool
+          .sort((a,b) => weightedSelectionScore(b,contributionsOf(b) < 0 ? null : contributionsOf(b) / maximumContributions) - weightedSelectionScore(a,contributionsOf(a) < 0 ? null : contributionsOf(a) / maximumContributions) || contributionsOf(b) - contributionsOf(a) || matchesOf(b) - matchesOf(a) || byName(a,b))[0] ?? null;
         const reserved = new Set([pivot,advanced,goalkeeper].filter(Boolean));
         const backPool = field.filter(entry => !reserved.has(entry) && !positionOf(entry).includes('ATT'))
-          .sort((a,b) => reliableRating(b,'defensive') - reliableRating(a,'defensive') || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b));
+          .sort((a,b) => weightedSelectionScore(b,defensiveValue(b)) - weightedSelectionScore(a,defensiveValue(a)) || matchesOf(b) - matchesOf(a) || b.value - a.value || byName(a,b));
         const backs = backPool.slice(0,2);
         if (!goalkeeper || !pivot || !advanced || backs.length < 2) return null;
         return {backs,fronts:[pivot,advanced],goalkeeper};
@@ -2161,8 +2170,8 @@
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
         const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
-          ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · organisation en carré`
-          : 'All-time · minimum 30 matchs · sélection poste par poste';
+          ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · poste + Metron + note moyenne`
+          : 'All-time · minimum 30 matchs · poste + Metron + note moyenne';
         heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
         const formation = buildPantheonFive(metronRows,{isCurrent});

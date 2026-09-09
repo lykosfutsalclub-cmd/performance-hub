@@ -2142,13 +2142,31 @@
         const eligibleRows = metronRows.filter(entry => Number.isFinite(matchesOf(entry)) && matchesOf(entry) >= minimumMatches);
         const averageMatches = eligibleRows.length ? eligibleRows.reduce((sum,entry) => sum + matchesOf(entry),0) / eligibleRows.length : minimumMatches;
         const averageRatingOf = entry => Number.isFinite(entry.analytics?.primary?.averageRating) ? entry.analytics.primary.averageRating : null;
-        const selectionReliability = entry => isCurrent ? 1 : .85 + .15 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
+        const selectionReliability = entry => isCurrent ? 1 : .9 + .1 * Math.min(1,matchesOf(entry) / Math.max(minimumMatches,averageMatches));
+        const dominanceOf = entry => {
+          if (isCurrent) return null;
+          const ranking = entry.analytics?.performance?.rankings?.overall;
+          const rankingValue = Number.isFinite(ranking?.rank) && Number.isFinite(ranking?.eligiblePlayers)
+            ? ranking.eligiblePlayers <= 1 ? 1 : 1 - (ranking.rank - 1) / (ranking.eligiblePlayers - 1)
+            : null;
+          const primeRating = window.LYKOS_SECONDARY_STATS?.primeByPlayer?.[entry.player.id]?.rating;
+          const primeValue = Number.isFinite(primeRating) ? Math.max(0,Math.min(1,primeRating / 99)) : null;
+          const values = [[rankingValue,.6],[primeValue,.4]].filter(([value]) => value !== null && Number.isFinite(value));
+          if (!values.length) return null;
+          const totalWeight = values.reduce((sum,[,weight]) => sum + weight,0);
+          return values.reduce((sum,[value,weight]) => sum + value * weight,0) / totalWeight;
+        };
         const weightedSelectionScore = (entry,roleValue) => {
-          const criteria = [
+          const criteria = (isCurrent ? [
             [roleValue,.5],
             [Number.isFinite(entry.value) ? Math.max(0,Math.min(1,entry.value / 99)) : null,.3],
             [averageRatingOf(entry) === null ? null : Math.max(0,Math.min(1,averageRatingOf(entry) / 10)),.2],
-          ].filter(([value]) => value !== null && Number.isFinite(value));
+          ] : [
+            [roleValue,.35],
+            [Number.isFinite(entry.value) ? Math.max(0,Math.min(1,entry.value / 99)) : null,.25],
+            [averageRatingOf(entry) === null ? null : Math.max(0,Math.min(1,averageRatingOf(entry) / 10)),.15],
+            [dominanceOf(entry),.25],
+          ]).filter(([value]) => value !== null && Number.isFinite(value));
           if (!criteria.length) return -1;
           const totalWeight = criteria.reduce((sum,[,weight]) => sum + weight,0);
           return criteria.reduce((sum,[value,weight]) => sum + value * weight,0) / totalWeight * 100 * selectionReliability(entry);
@@ -2182,7 +2200,7 @@
         const subtitle = document.createElement('span'); subtitle.textContent = isCurrent
           ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · poste + Metron + note moyenne`
           : Number.isFinite(minimumMatches)
-            ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne`
+            ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
             : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
         heading.append(title,subtitle); head.appendChild(heading); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';

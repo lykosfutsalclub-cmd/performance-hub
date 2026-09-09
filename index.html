@@ -1167,6 +1167,18 @@
         "3421204":{flags:"🇫🇷",birthDate:"19/08/2000",position:"ATT",arrivalYear:"2023",shirtNumber:"19"}
       };
       currentPlayerEssentials["11010517"] = {flags:null,birthDate:null,position:null,arrivalYear:null,shirtNumber:null};
+      // Référentiel des postes confirmé par le club. Les profils sans poste explicite restent milieux polyvalents.
+      const playerRoleReference = {
+        "5767653":{position:"G"},
+        "6448277":{position:"DEF"},
+        "5923952":{position:"DEF"},
+        "7431379":{position:"ATT"},
+        "3687373":{position:"DEF"},
+        "6475207":{position:"DEF"},
+        "8818435":{position:"ATT"},
+        "7390140":{position:"ATT",tacticalRole:"advanced"},
+        "5767725":{position:"ATT",tacticalRole:"pivot"},
+      };
       // Première et dernière années de présence connues dans les saisons SportEasy.
       const formerPlayerPeriods = {
         "2458065":"2022 - 2023",
@@ -1203,7 +1215,11 @@
       };
       const playerMetricKeys = ['matchesPlayed','goals','assists','manOfMatch','gradeAverage','goalsPerMatch','assistsPerMatch'];
       const playerMetricLabels = { matchesPlayed:'Matchs joués', goals:'Buts', assists:'Passes décisives', manOfMatch:'Homme du match', gradeAverage:'Note moyenne', goalsPerMatch:'Buts par match', assistsPerMatch:'Passes par match' };
-      const players = officialPlayerRows.map(([id,name,current,previous,alltime]) => ({ id,name,current,essentials:current ? currentPlayerEssentials[id] ?? null : null,stats:{ current:Object.fromEntries(playerMetricKeys.map(key => [key,null])), previous:Object.fromEntries(playerMetricKeys.map((key,index) => [key,previous[index]])), alltime:Object.fromEntries(playerMetricKeys.map((key,index) => [key,alltime[index]])) } }));
+      const players = officialPlayerRows.map(([id,name,current,previous,alltime]) => {
+        const currentEssentials = current ? currentPlayerEssentials[id] ?? {} : {};
+        const confirmedRole = playerRoleReference[id] ?? {};
+        return { id,name,current,tacticalRole:confirmedRole.tacticalRole ?? null,essentials:{...currentEssentials,position:confirmedRole.position ?? currentEssentials.position ?? 'M'},stats:{ current:Object.fromEntries(playerMetricKeys.map(key => [key,null])), previous:Object.fromEntries(playerMetricKeys.map((key,index) => [key,previous[index]])), alltime:Object.fromEntries(playerMetricKeys.map((key,index) => [key,alltime[index]])) } };
+      });
       let selectedPlayer = players.find(player => player.id === '3687283') || players[0];
       let selectedPlayerPeriod = selectedPlayer.current ? 'current' : 'alltime';
       const formatValue = value => value === null ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(value);
@@ -2353,8 +2369,12 @@
         };
         const backs = [...formation.backs].sort((a,b) => decisivePerMatch(b) - decisivePerMatch(a) || defensiveScore(b) - defensiveScore(a) || b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
         const fronts = formation.fronts;
-        appendPlayer(fronts[0],'front','Pivot');
-        appendPlayer(fronts[1],'front','Attaquant avancé');
+        const pivot = fronts.find(entry => entry.player.tacticalRole === 'pivot')
+          ?? fronts.find(entry => entry.player.tacticalRole !== 'advanced')
+          ?? fronts[0];
+        const advanced = fronts.find(entry => entry !== pivot) ?? fronts[1];
+        appendPlayer(pivot,'front','Pivot');
+        appendPlayer(advanced,'front','Attaquant avancé');
         appendPlayer(backs[0],'back','Latéral');
         appendPlayer(backs[1],'back','Pointe basse');
         appendPlayer(formation.goalkeeper,'goalkeeper','Gardien');

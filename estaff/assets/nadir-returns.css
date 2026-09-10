@@ -1,0 +1,53 @@
+.lykos-agent-report-content {
+  margin-top: 14px;
+  border-top: 1px solid #526b91;
+  padding-top: 12px;
+}
+
+.lykos-agent-report-content > summary {
+  cursor: pointer;
+  color: #e2cf60;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.lykos-agent-report-full {
+  margin-top: 14px;
+  white-space: pre-wrap;
+  color: #eef4fc;
+  font-size: 15px;
+  line-height: 1.58;
+}
+
+.lykos-agent-report-status {
+  display: block;
+  margin: 0 0 8px;
+  color: #9fe2bc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lykos-notification-preview,
+.lykos-notification-full {
+  white-space: pre-wrap;
+}
+
+.lykos-notification-toggle {
+  display: inline;
+  margin: 0 0 0 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #e2cf60;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lykos-notification-toggle:focus-visible {
+  outline: 2px solid #e2cf60;
+  outline-offset: 3px;
+  border-radius: 2px;
+}

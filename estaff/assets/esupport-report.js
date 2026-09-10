@@ -3,13 +3,22 @@
   const originalFetch = window.fetch.bind(window);
   let sessionToken = "";
   let latestReport = null;
+  let latestReturns = [];
   let scheduled = false;
   let selectedService = "";
   let selectedAgent = "";
   let agentFeedOpen = false;
+  const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
   const esupportRoles = {
+    Nadir: {
+      title:"Analyse tactique vidéo",
+      summary:"Relier les images au style de jeu demandé par les coachs.",
+      purpose:"Nadir observe les situations visibles, les confronte aux principes demandés par les coachs et en tire des points forts, des axes d’amélioration et des priorités concrètes pour l’entraînement et le prochain match. Il ne produit plus de statistiques vidéo.",
+      when:"Après chaque vidéo de match suffisamment exploitable pour une lecture tactique.",
+      output:"Une analyse critique horodatée : 3 ou 4 points forts, 3 ou 4 axes d’amélioration et les prochains focus terrain.",
+    },
     Oscar: {
       title:"Supervision et validation finale",
       summary:"Superviser la chaîne eSupport et confirmer son verdict final.",
@@ -59,20 +68,62 @@
     return Number.isNaN(date.getTime()) ? "heure indisponible" : date.toLocaleString("fr-FR", {dateStyle:"medium", timeStyle:"short"});
   }
 
+  function makeCollapsibleParagraph(text, className = "") {
+    const paragraph = document.createElement("p");
+    if (className) paragraph.className = className;
+    const normalized = String(text || "").trim();
+    if (normalized.length <= COLLAPSE_THRESHOLD) {
+      paragraph.textContent = normalized;
+      return paragraph;
+    }
+    paragraph.classList.add("lykos-collapsible-notification");
+    paragraph.dataset.lykosCollapsible = "true";
+    const preview = document.createElement("span");
+    preview.className = "lykos-notification-preview";
+    preview.textContent = `${normalized.slice(0, COLLAPSE_THRESHOLD).trimEnd()}…`;
+    const full = document.createElement("span");
+    full.className = "lykos-notification-full";
+    full.textContent = normalized;
+    full.hidden = true;
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "lykos-notification-toggle";
+    toggle.textContent = "… Lire la suite";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      preview.hidden = !expanded;
+      full.hidden = expanded;
+      toggle.textContent = expanded ? "… Lire la suite" : "Réduire";
+    });
+    paragraph.append(preview, full, toggle);
+    return paragraph;
+  }
+
+  function collapseLongExistingNotifications(container) {
+    for (const paragraph of container?.querySelectorAll(":scope > div > p") || []) {
+      if (paragraph.dataset.lykosCollapsible === "true" || paragraph.textContent.trim().length <= COLLAPSE_THRESHOLD) continue;
+      paragraph.replaceWith(makeCollapsibleParagraph(paragraph.textContent, paragraph.className));
+    }
+  }
+
   function selectedConversation() {
     return [...document.querySelectorAll("section[aria-label]")].find(node => node.getAttribute("aria-label")?.startsWith("Espace de ")) || null;
   }
 
   function reportEntries() {
-    if (Array.isArray(latestReport?.history)) return latestReport.history;
-    if (Array.isArray(latestReport?.feed)) return [...latestReport.feed].reverse();
-    if (!latestReport?.summary) return [];
-    return [{
+    let esupportEntries = [];
+    if (Array.isArray(latestReport?.history)) esupportEntries = latestReport.history;
+    else if (Array.isArray(latestReport?.feed)) esupportEntries = [...latestReport.feed].reverse();
+    else if (latestReport?.summary) esupportEntries = [{
       missionId:"esupport-legacy", sequence:4, agent:"Oscar", type:"supervision",
       status:latestReport.status === "operational" ? "confirme" : "attention",
       title:latestReport.status === "operational" ? "Service confirmé opérationnel" : "Service non confirmé",
       summary:latestReport.summary, occurredAt:latestReport.checkedAt, service:"eSupport",
     }];
+    return [...latestReturns, ...esupportEntries]
+      .sort((a,b) => Date.parse(b.occurredAt || 0) - Date.parse(a.occurredAt || 0));
   }
 
   function reportCard(entry) {
@@ -82,11 +133,24 @@
     label.textContent = `${entry.agent.toLocaleUpperCase("fr")} · ${String(entry.type || "récapitulatif").toLocaleUpperCase("fr")}`;
     const title = document.createElement("strong");
     title.textContent = entry.title || "Récapitulatif eSupport";
-    const summary = document.createElement("p");
-    summary.textContent = entry.summary || "Aucun détail supplémentaire.";
+    const summary = makeCollapsibleParagraph(entry.summary || "Aucun détail supplémentaire.");
+    const status = document.createElement("span");
+    status.className = "lykos-agent-report-status";
+    status.textContent = `Statut · ${entry.statusLabel || entry.status || "information"}`;
     const time = document.createElement("time");
     time.textContent = formatDate(entry.occurredAt);
-    card.append(label, title, summary, time);
+    card.append(label, title, summary, status, time);
+    if (entry.content) {
+      const disclosure = document.createElement("details");
+      disclosure.className = "lykos-agent-report-content";
+      const toggle = document.createElement("summary");
+      toggle.textContent = "Lire l’analyse complète";
+      const full = document.createElement("div");
+      full.className = "lykos-agent-report-full";
+      full.textContent = entry.content;
+      disclosure.append(toggle, full);
+      card.append(disclosure);
+    }
     return card;
   }
 
@@ -152,6 +216,7 @@
 
     const messages = conversation.querySelector('[aria-live="polite"]');
     if (messages) messages.classList.add("lykos-agent-feed-content");
+    collapseLongExistingNotifications(messages);
     conversation.querySelector(".lykos-oneway-notice")?.remove();
 
     const roleSource = messages?.querySelector("details");
@@ -271,12 +336,22 @@
   async function loadReport(token) {
     sessionToken = token;
     try {
-      const response = await originalFetch(`${API}/esupport`, {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}});
-      if (response.status === 401) { sessionToken = ""; latestReport = null; scheduleReadOnlyMode(); return; }
-      if (!response.ok) throw new Error("report_unavailable");
-      latestReport = await response.json();
+      const options = {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}};
+      const [response, stateResponse] = await Promise.all([
+        originalFetch(`${API}/esupport`, options),
+        originalFetch(`${API}/state`, options),
+      ]);
+      if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
+      latestReport = response.ok ? await response.json() : null;
+      const state = stateResponse.ok ? await stateResponse.json() : {};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard"};
+      latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
+        ...entry,
+        agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
+      }));
     } catch {
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
+      latestReturns = [];
     }
     scheduleReadOnlyMode();
   }
@@ -305,6 +380,7 @@
     if (sessionToken && document.body.textContent.includes("Code d’accès")) {
       sessionToken = "";
       latestReport = null;
+      latestReturns = [];
     }
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});

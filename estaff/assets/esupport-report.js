@@ -5,6 +5,8 @@
   let latestReport = null;
   let scheduled = false;
   let selectedService = "";
+  let selectedAgent = "";
+  let agentFeedOpen = false;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
   const esupportRoles = {
@@ -120,6 +122,10 @@
     if (!conversation) return;
     installServiceButtons();
     const agent = conversation.getAttribute("aria-label").replace("Espace de ", "");
+    if (agent !== selectedAgent) {
+      selectedAgent = agent;
+      agentFeedOpen = false;
+    }
     const textarea = conversation.querySelector('textarea[aria-label^="Message à "]');
     const composer = textarea?.closest("form") || textarea?.parentElement;
     if (composer) composer.hidden = true;
@@ -128,10 +134,24 @@
     const chatHeader = conversation.querySelector("header");
     const tabs = conversation.querySelector('nav[aria-label="Contenu de l’agent"]');
     const tabButtons = tabs?.querySelectorAll("button") || [];
-    if (tabButtons[0] && tabButtons[0].textContent !== "💬 Fil de l’agent") tabButtons[0].textContent = "💬 Fil de l’agent";
+    if (tabButtons[0]) {
+      const feedToggle = tabButtons[0];
+      feedToggle.classList.add("lykos-agent-feed-toggle");
+      feedToggle.textContent = "💬 Fil de l’agent";
+      feedToggle.setAttribute("aria-expanded", String(agentFeedOpen));
+      feedToggle.setAttribute("aria-label", `${agentFeedOpen ? "Replier" : "Dérouler"} le fil de ${agent}`);
+      if (!feedToggle.dataset.lykosFeedToggle) {
+        feedToggle.dataset.lykosFeedToggle = "true";
+        feedToggle.addEventListener("click", () => {
+          agentFeedOpen = !agentFeedOpen;
+          scheduleReadOnlyMode();
+        });
+      }
+    }
     if (tabButtons[1]) tabButtons[1].hidden = true;
 
     const messages = conversation.querySelector('[aria-live="polite"]');
+    if (messages) messages.classList.add("lykos-agent-feed-content");
     conversation.querySelector(".lykos-oneway-notice")?.remove();
 
     const roleSource = messages?.querySelector("details");
@@ -198,7 +218,7 @@
     if (chatHeader) chatHeader.hidden = serviceMode;
     if (roleDisclosure) roleDisclosure.hidden = serviceMode;
     if (tabs) tabs.hidden = serviceMode;
-    if (messages) messages.hidden = serviceMode;
+    if (messages) messages.hidden = serviceMode || !agentFeedOpen;
 
     const agentStatus = conversation.querySelector("header > span:last-child");
     if (agentStatus && /^(Prêt|Prête|Installé|Installée)$/.test(agentStatus.textContent)) {

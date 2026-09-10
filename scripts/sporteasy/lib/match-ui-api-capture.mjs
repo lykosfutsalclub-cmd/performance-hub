@@ -27,9 +27,14 @@ export function buildApiEquivalentMatchCapture({ event, statistics, report, capt
   const entries = [];
   const seen = new Set();
   for (const group of event.attendees ?? []) {
+    const groupStatus = group?.attendance_status === "present"
+      ? "present"
+      : group?.attendance_status === "absent"
+        ? "absent"
+        : "";
     for (const attendee of group?.results ?? []) {
       const profileId = positiveId(attendee?.profile?.id, "Identifiant de présence");
-      const status = String(attendee?.presence?.slug_name ?? "").trim();
+      const status = String(attendee?.presence?.slug_name ?? groupStatus).trim();
       if (!status) throw new Error(`Statut de présence absent pour ${profileId}.`);
       if (seen.has(profileId)) throw new Error(`Présence dupliquée pour ${profileId}.`);
       seen.add(profileId);

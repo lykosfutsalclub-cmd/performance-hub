@@ -1,6 +1,8 @@
 name: Contrôle quotidien eSupport
 
 on:
+  push:
+    branches: [main]
   schedule:
     # Deux créneaux UTC couvrent minuit à Paris toute l’année ; le contrôle
     # Europe/Paris ci-dessous n’en exécute qu’un seul.
@@ -32,6 +34,7 @@ jobs:
         with:
           script: |
             const isManual = context.eventName === "workflow_dispatch";
+            const isPush = context.eventName === "push";
             const parisHour = new Intl.DateTimeFormat("fr-FR", {
               timeZone: "Europe/Paris",
               hour: "2-digit",
@@ -43,7 +46,7 @@ jobs:
             }).format(new Date());
             const isDigestWindow = ["Mon", "Thu"].includes(parisWeekday) && parisHour === "07";
             const isDailyWindow = parisHour === "00";
-            if (!isManual && !isDailyWindow && !isDigestWindow) {
+            if (!isManual && !isPush && !isDailyWindow && !isDigestWindow) {
               core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
               return;
             }

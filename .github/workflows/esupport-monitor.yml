@@ -50,7 +50,7 @@ jobs:
               core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
               return;
             }
-            const mode = isDigestWindow ? "digest" : "daily";
+            const mode = isDigestWindow ? "digest" : isPush ? "release" : isManual ? "manual" : "daily";
 
             const identity = await core.getIDToken("lykos-estaff-esupport");
             const response = await fetch(process.env.ESTAFF_SERVICE_URL, {

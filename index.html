@@ -344,7 +344,7 @@
     #lykos-dashboard-preview .lykos-performance-metric span { color:#829bb4; font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-performance-metric strong { display:block; margin-top:19px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:35px; font-variant-numeric:tabular-nums; }
     #lykos-dashboard-preview .lykos-performance-metric small { display:block; margin-top:7px; color:#8099b2; font-size:8px; line-height:1.4; }
-    #lykos-dashboard-preview .lykos-performance-sections { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+    #lykos-dashboard-preview .lykos-performance-sections { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr); gap:14px; align-items:start; margin-top:14px; }
     #lykos-dashboard-preview .lykos-performance-section { padding:24px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(6,29,69,.88); }
     #lykos-dashboard-preview .lykos-performance-section h2 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:22px; }
     #lykos-dashboard-preview .lykos-performance-section > p { margin:9px 0 0; color:#91aac2; font-size:10px; line-height:1.55; }
@@ -354,21 +354,29 @@
     #lykos-dashboard-preview .lykos-performance-breakdown-row b { color:var(--lykos-yellow); font-size:16px; font-variant-numeric:tabular-nums; }
     #lykos-dashboard-preview .lykos-performance-track { grid-column:1/-1; height:5px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.08); }
     #lykos-dashboard-preview .lykos-performance-track i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#d0b631,#f1dd68); }
-    #lykos-dashboard-preview .lykos-performance-systems { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
     #lykos-dashboard-preview .lykos-performance-system { display:flex; flex-direction:column; min-height:190px; padding:20px; border:1px solid rgba(151,185,221,.17); border-radius:17px; background:rgba(1,24,52,.52); }
     #lykos-dashboard-preview .lykos-performance-system > span { color:var(--lykos-yellow); font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-performance-system h3 { margin:10px 0 7px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:21px; }
     #lykos-dashboard-preview .lykos-performance-system p { margin:0; color:#91aac2; font-size:9px; line-height:1.55; }
     #lykos-dashboard-preview .lykos-performance-system a, #lykos-dashboard-preview .lykos-performance-system button { align-self:flex-start; margin-top:auto; padding:9px 12px; border:1px solid rgba(208,182,49,.42); border-radius:999px; background:rgba(208,182,49,.08); color:var(--lykos-yellow); font-size:9px; font-weight:800; text-decoration:none; cursor:pointer; }
-    #lykos-dashboard-preview .lykos-estaff-system { grid-column:1/-1; min-height:0; }
-    #lykos-dashboard-preview .lykos-estaff-system > p { max-width:820px; font-size:10px; }
-    #lykos-dashboard-preview .lykos-estaff-roster { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:18px 0; }
-    #lykos-dashboard-preview .lykos-estaff-service { padding:14px; border:1px solid rgba(151,185,221,.14); border-radius:13px; background:rgba(0,16,39,.42); }
-    #lykos-dashboard-preview .lykos-estaff-service h4 { margin:0 0 10px; color:var(--lykos-yellow); font-size:9px; letter-spacing:.08em; text-transform:uppercase; }
-    #lykos-dashboard-preview .lykos-estaff-member + .lykos-estaff-member { margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.08); }
-    #lykos-dashboard-preview .lykos-estaff-member strong { display:block; color:#fff; font-size:11px; }
-    #lykos-dashboard-preview .lykos-estaff-member small { display:block; margin-top:2px; color:#a9bfd5; font-size:8px; font-weight:800; }
-    #lykos-dashboard-preview .lykos-estaff-member p { margin-top:5px; color:#7893ad; font-size:8px; line-height:1.45; }
+    #lykos-dashboard-preview .lykos-performance-metron { min-height:100%; padding:0; border:0; background:transparent; }
+    #lykos-dashboard-preview .lykos-performance-metron .lykos-performance-system { min-height:302px; height:100%; }
+    #lykos-dashboard-preview .lykos-performance-system ul { display:grid; gap:9px; margin:18px 0 22px; padding:0; list-style:none; }
+    #lykos-dashboard-preview .lykos-performance-system li { position:relative; padding-left:15px; color:#b8cbe0; font-size:10px; line-height:1.45; }
+    #lykos-dashboard-preview .lykos-performance-system li::before { content:""; position:absolute; left:0; top:.48em; width:6px; height:6px; border-radius:50%; background:var(--lykos-yellow); box-shadow:0 0 12px rgba(208,182,49,.34); }
+    #lykos-dashboard-preview .lykos-estaff-overview { grid-column:1/-1; padding:30px; background:radial-gradient(circle at 88% 0,rgba(24,86,145,.22),transparent 34%),rgba(6,29,69,.9); }
+    #lykos-dashboard-preview .lykos-estaff-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px; align-items:end; }
+    #lykos-dashboard-preview .lykos-estaff-head > div { max-width:820px; }
+    #lykos-dashboard-preview .lykos-estaff-head span { display:block; margin-bottom:8px; color:var(--lykos-yellow); font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-estaff-head p { margin:9px 0 0; color:#a7bdd2; font-size:11px; line-height:1.6; }
+    #lykos-dashboard-preview .lykos-estaff-link { display:inline-flex; min-height:38px; align-items:center; padding:9px 14px; border:1px solid rgba(208,182,49,.46); border-radius:999px; background:rgba(208,182,49,.09); color:var(--lykos-yellow); font-size:9px; font-weight:800; text-decoration:none; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-estaff-roster { columns:3 260px; column-gap:12px; margin-top:24px; }
+    #lykos-dashboard-preview .lykos-estaff-service { display:inline-block; width:100%; margin:0 0 12px; padding:17px; break-inside:avoid; border:1px solid rgba(151,185,221,.16); border-radius:15px; background:rgba(0,16,39,.48); }
+    #lykos-dashboard-preview .lykos-estaff-service h4 { margin:0 0 13px; color:var(--lykos-yellow); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-estaff-member + .lykos-estaff-member { margin-top:13px; padding-top:13px; border-top:1px solid rgba(255,255,255,.09); }
+    #lykos-dashboard-preview .lykos-estaff-member strong { display:block; color:#fff; font-size:13px; }
+    #lykos-dashboard-preview .lykos-estaff-member small { display:block; margin-top:3px; color:#b4c8dc; font-size:9px; font-weight:800; line-height:1.35; }
+    #lykos-dashboard-preview .lykos-estaff-member p { margin:7px 0 0; color:#829db7; font-size:9px; line-height:1.5; }
     #lykos-dashboard-preview .lykos-metron-page { max-width:980px; margin:0 auto; color:#dce8f5; }
     #lykos-dashboard-preview .lykos-metron-intro { max-width:760px; margin:0 0 24px; color:#b8cbe0; font-size:13px; line-height:1.7; }
     #lykos-dashboard-preview .lykos-metron-section { margin-top:14px; padding:22px 24px; border:1px solid rgba(255,255,255,.12); border-radius:17px; background:rgba(6,29,69,.88); }
@@ -829,8 +837,14 @@
       #lykos-dashboard-preview .lykos-performance-total strong { font-size:clamp(72px,24vw,108px); }
       #lykos-dashboard-preview .lykos-performance-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
       #lykos-dashboard-preview .lykos-performance-metric { min-height:122px; padding:16px; }
-      #lykos-dashboard-preview .lykos-performance-sections, #lykos-dashboard-preview .lykos-performance-systems, #lykos-dashboard-preview .lykos-estaff-roster { grid-template-columns:1fr; }
+      #lykos-dashboard-preview .lykos-performance-sections { grid-template-columns:1fr; }
       #lykos-dashboard-preview .lykos-performance-section { padding:18px 16px; }
+      #lykos-dashboard-preview .lykos-performance-metron { padding:0; }
+      #lykos-dashboard-preview .lykos-performance-metron .lykos-performance-system { min-height:0; }
+      #lykos-dashboard-preview .lykos-estaff-overview { padding:20px 16px; }
+      #lykos-dashboard-preview .lykos-estaff-head { grid-template-columns:1fr; gap:16px; align-items:start; }
+      #lykos-dashboard-preview .lykos-estaff-link { justify-self:start; }
+      #lykos-dashboard-preview .lykos-estaff-roster { columns:1; }
       #lykos-dashboard-preview .lykos-metron-section { padding:18px 15px; }
       #lykos-dashboard-preview .lykos-metron-table-wrap { overflow:visible; }
       #lykos-dashboard-preview .lykos-metron-table { display:block; width:100%; min-width:0; }
@@ -1167,15 +1181,24 @@
               <div class="lykos-performance-breakdown-row"><span>Statistiques collectives</span><b data-performance-team-breakdown>—</b><div class="lykos-performance-track"><i data-performance-team-bar></i></div></div>
             </div>
           </article>
-          <article class="lykos-performance-section">
-            <h2>Les moteurs du Hub</h2>
-            <p>La donnée brute reste visible. Ces outils l’organisent, l’expliquent ou l’utilisent pour aider le club sans inventer de précision.</p>
-            <div class="lykos-performance-systems">
-              <div class="lykos-performance-system"><span>Notation</span><h3>Metron</h3><p>Le système de notation compare les joueurs dans le contexte de leur poste et de leur période. Il combine création, finition, observation défensive collective, note moyenne, reconnaissance et fiabilité de l’échantillon.</p><button type="button" data-view="metron" aria-selected="false">Comprendre Metron</button></div>
-              <div class="lykos-performance-system lykos-estaff-system">
-                <span>Équipe du club</span><h3>eStaff</h3>
+          <article class="lykos-performance-section lykos-performance-metron">
+            <div class="lykos-performance-system"><span>Système de notation</span><h3>Metron</h3><p>Metron interprète la performance de chaque joueur dans le contexte de son poste et de sa période.</p>
+              <ul>
+                <li>Création, finition et impact collectif.</li>
+                <li>Note moyenne et reconnaissance individuelle.</li>
+                <li>Fiabilité adaptée au nombre de matchs observés.</li>
+              </ul>
+              <button type="button" data-view="metron" aria-selected="false">Comprendre Metron</button>
+            </div>
+          </article>
+          <article class="lykos-performance-section lykos-estaff-overview">
+            <div class="lykos-estaff-head">
+              <div><span>Équipe du club</span><h2>eStaff</h2>
                 <p>eStaff réunit 27 agents : 19 responsables et spécialistes principaux, accompagnés de 8 spécialistes dédiés. Chaque agent possède une identité, un poste et une responsabilité propres au sein de huit services complémentaires.</p>
-                <div class="lykos-estaff-roster">
+              </div>
+              <a class="lykos-estaff-link" href="./estaff/">Rencontrer l’équipe</a>
+            </div>
+            <div class="lykos-estaff-roster">
                   <section class="lykos-estaff-service"><h4>eChief · Coordination</h4>
                     <div class="lykos-estaff-member"><strong>Oscar</strong><small>Responsable du eStaff</small><p>Coordonne les missions, fixe les priorités et rassemble les retours de l’équipe.</p></div>
                   </section>
@@ -1219,9 +1242,6 @@
                     <div class="lykos-estaff-member"><strong>Thiago</strong><small>Sécurité des intégrations</small><p>Vérifie les liens, destinations et protections des intégrations.</p></div>
                     <div class="lykos-estaff-member"><strong>Jefferson</strong><small>Réponse aux incidents</small><p>Surveille les signaux, conserve les preuves et structure la réponse.</p></div>
                   </section>
-                </div>
-                <a href="./estaff/">Rencontrer l’équipe eStaff</a>
-              </div>
             </div>
           </article>
         </div>

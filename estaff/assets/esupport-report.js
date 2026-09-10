@@ -7,6 +7,36 @@
   let selectedService = "";
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
+  const esupportRoles = {
+    Oscar: {
+      title:"Supervision et validation finale",
+      summary:"Superviser la chaîne eSupport et confirmer son verdict final.",
+      purpose:"Oscar rassemble les constats de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
+      when:"À la fin de chaque contrôle eSupport et lors des rapports du lundi et du jeudi.",
+      output:"Une conclusion claire : service confirmé, à surveiller ou bloqué, avec la raison.",
+    },
+    Patricia: {
+      title:"Surveillance SportEasy",
+      summary:"Surveiller SportEasy et détecter les données manquantes.",
+      purpose:"Patricia contrôle la disponibilité des routes SportEasy, l’authentification, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
+      when:"Chaque nuit, après une mise en ligne et lors des rapports du lundi et du jeudi.",
+      output:"Un relevé précis des contrôles réussis et des anomalies transmis à Gaston.",
+    },
+    Gaston: {
+      title:"Diagnostic et correction technique",
+      summary:"Diagnostiquer les anomalies et préparer leur correction technique.",
+      purpose:"Gaston reçoit les anomalies détectées par Patricia, en recherche la cause et prépare une correction sans modifier Metron ni écrire dans SportEasy.",
+      when:"Dès qu’un contrôle de Patricia échoue ou qu’une route SportEasy change.",
+      output:"Un diagnostic reproductible, une correction vérifiée ou la confirmation qu’aucun correctif n’est nécessaire.",
+    },
+    Véronique: {
+      title:"Contrôle et mise en ligne",
+      summary:"Contrôler la correction, autoriser la mise en ligne et confirmer le résultat.",
+      purpose:"Véronique vérifie les contrôles et les corrections de Gaston. Elle prononce un GO ou un NO-GO avant qu’Oscar ne rende sa conclusion finale.",
+      when:"Après chaque diagnostic ou mise en ligne et pendant chaque cycle eSupport.",
+      output:"Un verdict qualité explicite et la confirmation de la version publique lorsqu’elle est conforme.",
+    },
+  };
 
   function formatDate(value) {
     const date = new Date(value);
@@ -62,6 +92,12 @@
       button.addEventListener("click", () => {selectedService = service; scheduleReadOnlyMode();});
       heading.replaceChildren(button);
     }
+    for (const button of document.querySelectorAll('button[aria-pressed]')) {
+      const name = button.querySelector("strong")?.textContent?.trim();
+      const role = esupportRoles[name];
+      const title = button.querySelector("strong")?.nextElementSibling;
+      if (role && title?.tagName === "SMALL") title.textContent = role.title;
+    }
   }
 
   function enforceReadOnlyMode() {
@@ -98,7 +134,17 @@
       }
     }
     if (roleDisclosure) {
-
+      const role = esupportRoles[agent];
+      if (role) {
+        const summary = roleDisclosure.querySelector("summary");
+        const summaryText = summary?.querySelector(".roleSummary") || summary?.querySelector("strong")?.nextElementSibling;
+        const purpose = roleDisclosure.querySelector(":scope > p");
+        const details = roleDisclosure.querySelectorAll("dd");
+        if (summaryText) summaryText.textContent = role.summary;
+        if (purpose) purpose.textContent = role.purpose;
+        if (details[0]) details[0].textContent = role.when;
+        if (details[1]) details[1].textContent = role.output;
+      }
       const roleLabels = roleDisclosure.querySelectorAll("dt");
       const isFemale = femaleAgents.has(agent);
       if (roleLabels[0]) roleLabels[0].textContent = isFemale ? "Quand la solliciter" : "Quand le solliciter";
@@ -160,6 +206,9 @@
     if (activity && activity.textContent !== "Rapports automatiques · lecture seule") activity.textContent = "Rapports automatiques · lecture seule";
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
+    for (const version of document.querySelectorAll("small")) {
+      if (version.textContent.trim() === "Rulebook 1.1.0") version.textContent = "Rulebook 2.3.0";
+    }
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;

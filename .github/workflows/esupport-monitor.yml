@@ -14,8 +14,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
+  pages: write
 
 concurrency:
   group: esupport-monitor
@@ -25,9 +26,153 @@ jobs:
   chaine-esupport:
     name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
+      - name: Déterminer la mission eSupport
+        id: mission
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const isManual = context.eventName === "workflow_dispatch";
+            const isPush = context.eventName === "push";
+            const parisHour = new Intl.DateTimeFormat("fr-FR", {
+              timeZone:"Europe/Paris", hour:"2-digit", hourCycle:"h23",
+            }).format(new Date());
+            const parisWeekday = new Intl.DateTimeFormat("en-US", {
+              timeZone:"Europe/Paris", weekday:"short",
+            }).format(new Date());
+            const daily = parisHour === "00";
+            const digest = ["Mon", "Thu"].includes(parisWeekday) && parisHour === "07";
+            const active = isManual || isPush || daily || digest;
+            core.setOutput("active", String(active));
+            core.setOutput("sync", String(isManual || daily));
+            core.setOutput("mode", digest ? "digest" : isPush ? "release" : isManual ? "manual" : "daily");
+            if (!active) core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
+
+      - name: Récupérer le Performance Hub
+        if: steps.mission.outputs.active == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Préparer Node.js
+        if: steps.mission.outputs.sync == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Patricia prépare la collecte privée
+        if: steps.mission.outputs.sync == 'true'
+        run: |
+          mkdir -p data/private/sporteasy github-pages sites-app/public
+          cp automation/sporteasy-seed/*.json data/private/sporteasy/
+
+      - name: Obtenir l’identité temporaire de Patricia
+        if: steps.mission.outputs.sync == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const token = await core.getIDToken("lykos-estaff-esupport");
+            core.setSecret(token);
+            core.exportVariable("SPORTEASY_PROXY_TOKEN", token);
+
+      - name: Patricia synchronise l’effectif et les sources statistiques
+        if: steps.mission.outputs.sync == 'true'
+        env:
+          SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
+          SPORTEASY_TEAM_ID: "1080887"
+          SPORTEASY_REQUEST_TIMEOUT_MS: "30000"
+        run: |
+          node scripts/sporteasy/sync-players.mjs
+          node scripts/sporteasy/capture-statistics-sources.mjs
+          node scripts/sporteasy/capture-statistics-details.mjs
+          node scripts/sporteasy/capture-statistics-aggregate.mjs
+
+      - name: Renouveler l’identité temporaire de Patricia
+        if: steps.mission.outputs.sync == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const token = await core.getIDToken("lykos-estaff-esupport");
+            core.setSecret(token);
+            core.exportVariable("SPORTEASY_PROXY_TOKEN", token);
+
+      - name: Patricia synchronise chaque match, présence et compte rendu
+        if: steps.mission.outputs.sync == 'true'
+        env:
+          SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
+          SPORTEASY_TEAM_ID: "1080887"
+          SPORTEASY_REQUEST_TIMEOUT_MS: "30000"
+        run: |
+          node scripts/sporteasy/capture-event-statistics-all.mjs
+          node scripts/sporteasy/capture-event-details-all.mjs
+          node scripts/sporteasy/capture-match-ui-api-all.mjs
+
+      - name: Gaston reconstruit les données sans modifier Metron
+        if: steps.mission.outputs.sync == 'true'
+        env:
+          ESTAFF_SKIP_METRON_DOCS: "1"
+        run: |
+          node scripts/sporteasy/build-statistics-repository.mjs
+          node scripts/sporteasy/build-match-repository.mjs
+          node scripts/sporteasy/build-player-secondary-statistics.mjs
+
+      - name: Véronique contrôle et autorise la publication
+        if: steps.mission.outputs.sync == 'true'
+        run: |
+          node scripts/sporteasy/audit-match-repository.mjs
+          node scripts/sporteasy/audit-player-secondary-statistics.mjs
+          node scripts/sporteasy/publish-player-secondary-statistics.mjs
+          node scripts/sporteasy/build-team-dashboard-data.mjs
+          test -s github-pages/player-secondary-data.js
+          test -s github-pages/team-data.js
+
+      - name: Installer uniquement les fichiers validés
+        if: steps.mission.outputs.sync == 'true'
+        id: publication
+        run: |
+          cp github-pages/player-secondary-data.js player-secondary-data.js
+          cp github-pages/team-data.js team-data.js
+          if git diff --quiet -- player-secondary-data.js team-data.js; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Véronique publie la synchronisation validée
+        if: steps.publication.outputs.changed == 'true'
+        run: |
+          git config user.name "eSupport Lykos"
+          git config user.email "lykosfutsalclub@gmail.com"
+          git add -- player-secondary-data.js team-data.js
+          git commit -m "Synchronisation SportEasy validée par eSupport"
+          git push origin HEAD:main
+
+      - name: Demander la reconstruction de la version publique
+        if: steps.publication.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
+
+      - name: Attendre les données validées sur le site public
+        if: steps.publication.outputs.changed == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const localText = require("fs").readFileSync("player-secondary-data.js", "utf8");
+            const generatedAt = localText.match(/"generatedAt":"([^"]+)"/)?.[1];
+            if (!generatedAt) throw new Error("Date de génération locale introuvable.");
+            const url = "https://lykosfutsalclub-cmd.github.io/performance-hub/player-secondary-data.js";
+            for (let attempt = 1; attempt <= 18; attempt += 1) {
+              const response = await fetch(`${url}?validation=${Date.now()}`, {cache:"no-store"});
+              const text = response.ok ? await response.text() : "";
+              if (text.includes(`"generatedAt":"${generatedAt}"`)) return;
+              await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+            throw new Error("La version publique n’a pas confirmé la synchronisation dans le délai prévu.");
+
       - name: Vérifier l’heure de Paris puis lancer le contrôle privé
+        if: steps.mission.outputs.active == 'true'
         uses: actions/github-script@v8
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check

@@ -1,0 +1,34 @@
+{
+  "source": "Palmarès officiel communiqué par le club",
+  "throughYear": 2025,
+  "awards": [
+    { "year": 2025, "type": "top_scorer", "playerId": "7390140" },
+    { "year": 2025, "type": "top_assist_provider", "playerId": "7649102" },
+    { "year": 2025, "type": "player_of_year", "playerId": "7390140" },
+    { "year": 2025, "type": "best_prospect", "playerId": "9557397" },
+    { "year": 2025, "type": "best_recruit", "playerId": "2633439" },
+    { "year": 2025, "type": "honor_award", "playerId": "6106021" },
+    { "year": 2025, "type": "team_of_year", "playerId": "7649102" },
+    { "year": 2025, "type": "team_of_year", "playerId": "3986244" },
+    { "year": 2025, "type": "team_of_year", "playerId": "7390140" },
+    { "year": 2025, "type": "team_of_year", "playerId": "8464161" },
+
+    { "year": 2024, "type": "top_scorer", "playerId": "5767725" },
+    { "year": 2024, "type": "top_assist_provider", "playerId": "6106021" },
+    { "year": 2024, "type": "player_of_year", "playerId": "3687303" },
+    { "year": 2024, "type": "best_prospect", "playerId": "7352538" },
+    { "year": 2024, "type": "best_recruit", "playerId": "7390140" },
+    { "year": 2024, "type": "goal_of_year", "playerId": "3687304" },
+    { "year": 2024, "type": "honor_award", "playerId": "5767725" },
+    { "year": 2024, "type": "team_of_year", "playerId": "6436983" },
+    { "year": 2024, "type": "team_of_year", "playerId": "6106021" },
+    { "year": 2024, "type": "team_of_year", "playerId": "5767725" },
+    { "year": 2024, "type": "team_of_year", "playerId": "5767549" },
+
+    { "year": 2023, "type": "top_scorer", "playerId": "5767725" },
+    { "year": 2023, "type": "top_assist_provider", "playerId": "6106021" },
+    { "year": 2023, "type": "player_of_year", "playerId": "3687303" },
+    { "year": 2023, "type": "goal_of_year", "playerId": "6475207" },
+    { "year": 2023, "type": "honor_award", "playerId": "3687304" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "source": "SportEasy",
+  "purpose": "Positions strictement nécessaires au calcul de la dernière version de Metron",
+  "players": [
+    {"sporteasyId":"8623360","position":null},
+    {"sporteasyId":"7649102","position":"DEF"},
+    {"sporteasyId":"3687304","position":"ATT"},
+    {"sporteasyId":"10737114","position":null},
+    {"sporteasyId":"3986244","position":"DEF"},
+    {"sporteasyId":"8464161","position":"ATT"},
+    {"sporteasyId":"11010517","position":null},
+    {"sporteasyId":"2633439","position":"ATT"},
+    {"sporteasyId":"1737291","position":null},
+    {"sporteasyId":"7552192","position":"ATT"},
+    {"sporteasyId":"10268311","position":null},
+    {"sporteasyId":"9557397","position":null},
+    {"sporteasyId":"10724984","position":null},
+    {"sporteasyId":"6106021","position":"ATT"},
+    {"sporteasyId":"3687283","position":"G"},
+    {"sporteasyId":"3687303","position":"G"},
+    {"sporteasyId":"6436983","position":"DEF"},
+    {"sporteasyId":"6448277","position":"DEF"},
+    {"sporteasyId":"3421204","position":"ATT"}
+  ]
+}

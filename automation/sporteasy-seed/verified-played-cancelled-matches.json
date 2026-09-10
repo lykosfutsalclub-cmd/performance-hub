@@ -1,0 +1,57 @@
+{
+  "source": "SportEasy authenticated event statistics UI",
+  "verifiedAt": "2026-08-28T09:00:00.000Z",
+  "policy": "A SportEasy event marked cancelled is restored as played only when individual player statistics are filled in.",
+  "excludedCalendarAwardYears": [2022],
+  "matches": [
+    {
+      "eventId": "19876361",
+      "playerStatistics": [
+        { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 4, "man_of_event": true } },
+        { "profileId": "5767725", "playerName": "Dylan Perier", "metrics": { "presence": "on_time", "player_goals": 6, "player_assists": 3, "man_of_event": true } },
+        { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 3, "man_of_event": false } },
+        { "profileId": "3687303", "playerName": "Gabriel Perals", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": false } },
+        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 6, "player_assists": 2, "man_of_event": true } },
+        { "profileId": "5767549", "playerName": "Quentin Souberan", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 2, "man_of_event": false } }
+      ]
+    },
+    {
+      "eventId": "20000020",
+      "playerStatistics": [
+        { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 1, "man_of_event": true } },
+        { "profileId": "5767725", "playerName": "Dylan Perier", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 3, "man_of_event": false } },
+        { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 0, "man_of_event": false } },
+        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 3, "man_of_event": false } }
+      ]
+    },
+    {
+      "eventId": "20262701",
+      "playerStatistics": [
+        { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 7, "player_assists": 4, "man_of_event": false } },
+        { "profileId": "3687303", "playerName": "Gabriel Perals", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": true } },
+        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 3, "man_of_event": false } },
+        { "profileId": "5767549", "playerName": "Quentin Souberan", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 3, "man_of_event": false } }
+      ]
+    },
+    {
+      "eventId": "20336169",
+      "playerStatistics": [
+        { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 5, "man_of_event": true } },
+        { "profileId": "5767725", "playerName": "Dylan Perier", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 3, "man_of_event": true } },
+        { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 0, "man_of_event": false } },
+        { "profileId": "3687303", "playerName": "Gabriel Perals", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": false } }
+      ]
+    },
+    {
+      "eventId": "20855318",
+      "playerStatistics": [
+        { "profileId": "3421204", "playerName": "Adrien Zammut", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 2, "man_of_event": true } },
+        { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 4, "player_assists": 1, "man_of_event": false } },
+        { "profileId": "5923952", "playerName": "Benjamin Blavier", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 2, "man_of_event": false } },
+        { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 1, "man_of_event": false } },
+        { "profileId": "5767653", "playerName": "Jeremy Bizot", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": false } },
+        { "profileId": "2458065", "playerName": "Ricky Carrot", "metrics": { "presence": "on_time", "player_goals": 4, "player_assists": 1, "man_of_event": false } }
+      ]
+    }
+  ]
+}

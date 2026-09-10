@@ -38,10 +38,17 @@
     },
     Giannis: {
       title:"Analyse des données et de Metron",
-      summary:"Analyser les données du Hub et expliquer Metron sans en modifier les règles.",
-      purpose:"Giannis transforme les données actuelles et historiques en constats simples. Il cite toujours la période, la taille de l’échantillon, la fiabilité des données et la version de Metron utilisée.",
-      when:"Après une synchronisation post-match, puis chaque mois pour les synthèses prévues par le Rulebook.",
-      output:"Des faits, calculs et interprétations séparés, avec une limite explicite lorsque les données ne suffisent pas.",
+      summary:"Interpréter les données du Hub et transmettre ses rapports à Sandrine.",
+      purpose:"Giannis transforme les données disponibles en rapports sportifs contextualisés. Il ne cherche pas prioritairement à établir des Top 3 ou 5 : il explique ce que montrent les données, leurs limites et la version de Metron utilisée.",
+      when:"Après une synchronisation, dès qu’une période comporte au moins deux matchs.",
+      output:"Un rapport séparant faits, calculs, interprétation et limites, puis transmis automatiquement à Sandrine.",
+    },
+    Sandrine: {
+      title:"Amélioration du Performance Hub",
+      summary:"Remettre en question le Hub à partir des rapports de Giannis.",
+      purpose:"Sandrine reçoit les rapports de Giannis, cherche ce que le Performance Hub explique mal ou ne mesure pas encore, puis prépare des idées d’amélioration utiles et réalisables.",
+      when:"Après chaque nouveau rapport de Giannis et lors de ses audits ciblés du Hub.",
+      output:"Des propositions priorisées qui apportent une compréhension sportive nouvelle, sans modifier elle-même Metron ni le site.",
     },
   };
 
@@ -214,7 +221,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 2.4.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 2.5.0";
     }
 
     document.getElementById("lykos-esupport-report")?.remove();

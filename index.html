@@ -469,6 +469,7 @@
     #lykos-dashboard-preview .lykos-record-leader-line { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px; }
     #lykos-dashboard-preview .lykos-record strong { display:block; margin-top:3px; overflow-wrap:anywhere; font-family:"OMMarseille",Georgia,serif; font-size:19px; line-height:1.05; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-record-tie { position:relative; z-index:5; padding:0; border:0; outline:0; background:transparent; color:#91a9c1; font:700 8px/1.2 Arial,sans-serif; letter-spacing:.04em; text-align:left; text-transform:uppercase; cursor:help; }
+    #lykos-dashboard-preview .lykos-record-tie:focus-visible { outline:2px solid var(--lykos-yellow); outline-offset:3px; border-radius:4px; }
     #lykos-dashboard-preview .lykos-record-tie-names { position:absolute; left:0; top:calc(100% + 7px); z-index:40; width:max-content; max-width:min(270px,calc(100vw - 42px)); max-height:180px; padding:9px 11px; overflow:auto; border:1px solid rgba(151,185,221,.3); border-radius:10px; background:#041936; box-shadow:0 14px 32px rgba(0,0,0,.42); color:#e8f1fa; font-size:9px; font-weight:600; line-height:1.45; letter-spacing:0; text-transform:none; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s ease,transform .15s ease,visibility .15s ease; }
     #lykos-dashboard-preview .lykos-record-tie:hover .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie:focus-visible .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie[data-open="true"] .lykos-record-tie-names { opacity:1; visibility:visible; transform:translateY(0); }
     #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie:hover), #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie:focus-visible), #lykos-dashboard-preview .lykos-record:has(.lykos-record-tie[data-open="true"]) { overflow:visible; z-index:10; }
@@ -731,12 +732,18 @@
       #lykos-dashboard-preview .lykos-pantheon-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:0; padding:0; overflow:visible; }
       #lykos-dashboard-preview .lykos-pantheon-grid::-webkit-scrollbar { display:none; }
       #lykos-dashboard-preview .lykos-record { min-height:194px; padding:16px; }
+      #lykos-dashboard-preview .lykos-record-scope { min-height:44px; padding:8px 30px 8px 10px; font-size:10px; }
+      #lykos-dashboard-preview .lykos-record-leaders { margin-top:17px; }
       #lykos-dashboard-preview .lykos-record strong { font-size:16px; }
+      #lykos-dashboard-preview .lykos-record-tie { min-height:32px; display:inline-flex; align-items:center; cursor:pointer; }
+      #lykos-dashboard-preview .lykos-record-tie-names { position:fixed; left:max(12px,env(safe-area-inset-left)); right:max(12px,env(safe-area-inset-right)); top:auto; bottom:calc(92px + env(safe-area-inset-bottom)); width:auto; max-width:none; max-height:min(42dvh,260px); margin:0; padding:12px 14px; font-size:11px; line-height:1.55; transform:translateY(6px); }
+      #lykos-dashboard-preview .lykos-record-tie:hover .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie:focus-visible .lykos-record-tie-names, #lykos-dashboard-preview .lykos-record-tie[data-open="true"] .lykos-record-tie-names { opacity:1 !important; visibility:visible !important; transform:translateY(0); }
       #lykos-dashboard-preview .lykos-record b { font-size:31px; }
       #lykos-dashboard-preview .lykos-record-top { margin-top:14px; }
+      #lykos-dashboard-preview .lykos-record:has(.lykos-record-top[open]) { grid-column:1/-1; }
       #lykos-dashboard-preview .lykos-record-top summary { min-height:40px; }
-      #lykos-dashboard-preview .lykos-record-top-list li { grid-template-columns:18px minmax(0,1fr) auto; gap:5px; }
-      #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { font-size:9px; }
+      #lykos-dashboard-preview .lykos-record-top-list li { min-height:40px; grid-template-columns:18px minmax(0,1fr) auto; gap:6px; }
+      #lykos-dashboard-preview .lykos-record-top-list .lykos-record-player { font-size:10px; }
       #lykos-dashboard-preview .lykos-pantheon-rankings { grid-template-columns:1fr; gap:10px; }
       #lykos-dashboard-preview .lykos-pantheon-ranking { padding:16px; }
       #lykos-dashboard-preview .lykos-pantheon-five .lykos-pantheon-ranking-head { display:grid; }
@@ -768,6 +775,8 @@
       #lykos-dashboard-preview .lykos-player-identity { grid-template-columns:94px minmax(0,1fr); gap:9px; }
       #lykos-dashboard-preview .lykos-player-visual { height:150px; }
       #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:var(--player-name-fitted-size,clamp(27px,10.5vw,40px)); }
+      #lykos-dashboard-preview .lykos-pantheon-grid { grid-template-columns:1fr; }
+      #lykos-dashboard-preview .lykos-record { min-height:0; }
     }
     @media (prefers-reduced-motion: reduce) {
       #lykos-dashboard-preview *, #lykos-dashboard-preview *::before, #lykos-dashboard-preview *::after {
@@ -2457,7 +2466,16 @@
         }));
         return [...bestByPlayer.values()];
       };
+      const closeRecordTies = except => root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => {
+        if (item === except) return;
+        item.dataset.open = 'false';
+        item.setAttribute('aria-expanded','false');
+        const panel = item.querySelector('.lykos-record-tie-names');
+        if (panel?.matches(':popover-open')) panel.hidePopover();
+        panel?.removeAttribute('popover');
+      });
       const renderPantheon = () => {
+        closeRecordTies();
         pantheon.replaceChildren();
         const isCurrent = pantheonPeriod === 'current';
         const isSeasonOverview = isCurrent && pantheonMonth.value === 'season';
@@ -2525,9 +2543,17 @@
             tie.addEventListener('click',event => {
               event.stopPropagation();
               const shouldOpen = tie.dataset.open !== 'true';
-              root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
+              closeRecordTies(tie);
+              if (!shouldOpen) {
+                closeRecordTies();
+                return;
+              }
               tie.dataset.open = String(shouldOpen);
               tie.setAttribute('aria-expanded',String(shouldOpen));
+              if (window.matchMedia('(max-width: 780px)').matches && typeof tieNames.showPopover === 'function') {
+                tieNames.setAttribute('popover','manual');
+                tieNames.showPopover();
+              }
             });
             leaderLine.appendChild(tie);
           }
@@ -2560,13 +2586,13 @@
       }));
       pantheonMonth.addEventListener('change',renderPantheon);
       root.addEventListener('click',event => {
-        if (!event.target.closest('.lykos-record-tie')) root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
+        if (!event.target.closest('.lykos-record-tie')) closeRecordTies();
         if (event.target.closest('.lykos-pantheon-ranking-row')) return;
         pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
       });
       root.addEventListener('keydown',event => {
         if (event.key !== 'Escape') return;
-        root.querySelectorAll('.lykos-record-tie[data-open="true"]').forEach(item => { item.dataset.open = 'false'; item.setAttribute('aria-expanded','false'); });
+        closeRecordTies();
         pantheonRankings.querySelectorAll('.lykos-pantheon-ranking-row[data-open="true"]').forEach(row => { row.dataset.open = 'false'; row.querySelector('.lykos-pantheon-player')?.setAttribute('aria-expanded','false'); });
       });
       renderPantheon();

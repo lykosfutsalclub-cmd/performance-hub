@@ -8,6 +8,7 @@
   let selectedService = "";
   let selectedAgent = "";
   let agentFeedOpen = false;
+  const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
@@ -200,6 +201,8 @@
       selectedAgent = agent;
       agentFeedOpen = false;
     }
+    const agentEntries = reportEntries().filter(entry => entry.agent === agent);
+    if (agentEntries.length && !manuallyCollapsedAgentFeeds.has(agent)) agentFeedOpen = true;
     const textarea = conversation.querySelector('textarea[aria-label^="Message à "]');
     const composer = textarea?.closest("form") || textarea?.parentElement;
     if (composer) composer.hidden = true;
@@ -211,13 +214,15 @@
     if (tabButtons[0]) {
       const feedToggle = tabButtons[0];
       feedToggle.classList.add("lykos-agent-feed-toggle");
-      feedToggle.textContent = "💬 Fil de l’agent";
+      feedToggle.textContent = agentEntries.length ? `💬 Fil de l’agent · ${agentEntries.length}` : "💬 Fil de l’agent";
       feedToggle.setAttribute("aria-expanded", String(agentFeedOpen));
       feedToggle.setAttribute("aria-label", `${agentFeedOpen ? "Replier" : "Dérouler"} le fil de ${agent}`);
       if (!feedToggle.dataset.lykosFeedToggle) {
         feedToggle.dataset.lykosFeedToggle = "true";
         feedToggle.addEventListener("click", () => {
           agentFeedOpen = !agentFeedOpen;
+          if (agentFeedOpen) manuallyCollapsedAgentFeeds.delete(selectedAgent);
+          else manuallyCollapsedAgentFeeds.add(selectedAgent);
           scheduleReadOnlyMode();
         });
       }
@@ -321,20 +326,19 @@
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
-    const entries = reportEntries().filter(entry => entry.agent === agent);
     let agentReports = messages.querySelector(".lykos-agent-reports");
-    if (entries.length) {
+    if (agentEntries.length) {
       if (!agentReports) {
         agentReports = document.createElement("div");
         agentReports.className = "lykos-agent-reports";
         messages.prepend(agentReports);
       }
-      renderCards(agentReports, entries, entries.map(entry => `${entry.missionId}-${entry.sequence}-${entry.status}`).join("|"));
+      renderCards(agentReports, agentEntries, agentEntries.map(entry => `${entry.missionId}-${entry.sequence}-${entry.status}`).join("|"));
     } else {
       agentReports?.remove();
     }
     const emptyState = [...messages.querySelectorAll("h3")].find(node => node.textContent.includes("Aucun autre récapitulatif"))?.parentElement;
-    if (emptyState) emptyState.hidden = entries.length > 0;
+    if (emptyState) emptyState.hidden = agentEntries.length > 0;
   }
 
   function scheduleReadOnlyMode() {

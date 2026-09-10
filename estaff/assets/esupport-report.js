@@ -214,7 +214,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (version.textContent.trim() === "Rulebook 1.1.0") version.textContent = "Rulebook 2.3.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 2.4.0";
     }
 
     document.getElementById("lykos-esupport-report")?.remove();

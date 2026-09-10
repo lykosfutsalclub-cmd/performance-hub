@@ -4,7 +4,9 @@
   let sessionToken = "";
   let latestReport = null;
   let scheduled = false;
+  let selectedService = "";
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
+  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
 
   function formatDate(value) {
     const date = new Date(value);
@@ -15,16 +17,65 @@
     return [...document.querySelectorAll("section[aria-label]")].find(node => node.getAttribute("aria-label")?.startsWith("Espace de ")) || null;
   }
 
+  function reportEntries() {
+    if (Array.isArray(latestReport?.history)) return latestReport.history;
+    if (Array.isArray(latestReport?.feed)) return [...latestReport.feed].reverse();
+    if (!latestReport?.summary) return [];
+    return [{
+      missionId:"esupport-legacy", sequence:4, agent:"Oscar", type:"supervision",
+      status:latestReport.status === "operational" ? "confirme" : "attention",
+      title:latestReport.status === "operational" ? "Service confirmé opérationnel" : "Service non confirmé",
+      summary:latestReport.summary, occurredAt:latestReport.checkedAt, service:"eSupport",
+    }];
+  }
+
+  function reportCard(entry) {
+    const card = document.createElement("article");
+    card.className = `lykos-agent-report is-${String(entry.status || "attention").replace(/[^a-z-]/g, "")}`;
+    const label = document.createElement("small");
+    label.textContent = `${entry.agent.toLocaleUpperCase("fr")} · ${String(entry.type || "récapitulatif").toLocaleUpperCase("fr")}`;
+    const title = document.createElement("strong");
+    title.textContent = entry.title || "Récapitulatif eSupport";
+    const summary = document.createElement("p");
+    summary.textContent = entry.summary || "Aucun détail supplémentaire.";
+    const time = document.createElement("time");
+    time.textContent = formatDate(entry.occurredAt);
+    card.append(label, title, summary, time);
+    return card;
+  }
+
+  function renderCards(container, entries, signature) {
+    if (container.dataset.signature === signature) return;
+    container.replaceChildren(...entries.map(reportCard));
+    container.dataset.signature = signature;
+  }
+
+  function installServiceButtons() {
+    for (const heading of document.querySelectorAll("h3[data-service]")) {
+      const service = heading.dataset.service;
+      if (!serviceLabels[service] || heading.querySelector(".lykos-service-button")) continue;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "lykos-service-button";
+      button.textContent = serviceLabels[service];
+      button.setAttribute("aria-label", `Voir le fil global ${serviceLabels[service]}`);
+      button.addEventListener("click", () => {selectedService = service; scheduleReadOnlyMode();});
+      heading.replaceChildren(button);
+    }
+  }
+
   function enforceReadOnlyMode() {
     scheduled = false;
     const conversation = selectedConversation();
     if (!conversation) return;
+    installServiceButtons();
     const agent = conversation.getAttribute("aria-label").replace("Espace de ", "");
     const textarea = conversation.querySelector('textarea[aria-label^="Message à "]');
     const composer = textarea?.closest("form") || textarea?.parentElement;
     if (composer) composer.hidden = true;
     if (composer?.nextElementSibling) composer.nextElementSibling.hidden = true;
 
+    const chatHeader = conversation.querySelector("header");
     const tabs = conversation.querySelector('nav[aria-label="Contenu de l’agent"]');
     const tabButtons = tabs?.querySelectorAll("button") || [];
     if (tabButtons[0] && tabButtons[0].textContent !== "💬 Fil de l’agent") tabButtons[0].textContent = "💬 Fil de l’agent";
@@ -56,6 +107,39 @@
       if (roleFooter) roleFooter.textContent = `${isFemale ? "Agente installée" : "Agent installé"} dans le moteur privé OpenClaw du club. Ses outils restent cloisonnés selon sa mission.`;
     }
 
+    let serviceFeed = conversation.querySelector(".lykos-service-feed");
+    const serviceMode = Boolean(selectedService);
+    if (serviceMode && tabs) {
+      if (!serviceFeed) {
+        serviceFeed = document.createElement("section");
+        serviceFeed.className = "lykos-service-feed";
+        tabs.before(serviceFeed);
+      }
+      const serviceName = serviceLabels[selectedService];
+      const entries = reportEntries().filter(entry => entry.service === serviceName);
+      const signature = `${serviceName}:${entries.map(entry => `${entry.missionId}-${entry.sequence}-${entry.status}`).join("|")}`;
+      if (serviceFeed.dataset.signature !== signature) {
+        const header = document.createElement("header");
+        const heading = document.createElement("h2");
+        heading.textContent = `Fil global ${serviceName}`;
+        const description = document.createElement("p");
+        description.textContent = entries.length
+          ? "Tous les contrôles, diagnostics, validations et conclusions du service, du plus récent au plus ancien."
+          : "Aucun récapitulatif publié par ce service pour le moment.";
+        header.append(heading, description);
+        const list = document.createElement("div");
+        list.className = "lykos-service-feed-list";
+        renderCards(list, entries, signature);
+        serviceFeed.replaceChildren(header, list);
+        serviceFeed.dataset.signature = signature;
+      }
+    }
+    if (serviceFeed) serviceFeed.hidden = !serviceMode;
+    if (chatHeader) chatHeader.hidden = serviceMode;
+    if (roleDisclosure) roleDisclosure.hidden = serviceMode;
+    if (tabs) tabs.hidden = serviceMode;
+    if (messages) messages.hidden = serviceMode;
+
     const agentStatus = conversation.querySelector("header > span:last-child");
     if (agentStatus && /^(Prêt|Prête|Installé|Installée)$/.test(agentStatus.textContent)) {
       const isReady = agentStatus.textContent.startsWith("Prêt");
@@ -77,23 +161,22 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
 
-    let card = document.getElementById("lykos-esupport-report");
-    if (agent !== "Oscar" || !latestReport || !messages) { card?.remove(); return; }
-    if (!card) {
-      card = document.createElement("article");
-      card.id = "lykos-esupport-report";
-      card.setAttribute("aria-label", "Récapitulatif automatique d’Oscar");
-      card.innerHTML = `<small>OSCAR · RÉCAPITULATIF eSUPPORT</small><strong></strong><p></p><time></time>`;
-      messages.prepend(card);
+    document.getElementById("lykos-esupport-report")?.remove();
+    if (!messages) return;
+    const entries = reportEntries().filter(entry => entry.agent === agent);
+    let agentReports = messages.querySelector(".lykos-agent-reports");
+    if (entries.length) {
+      if (!agentReports) {
+        agentReports = document.createElement("div");
+        agentReports.className = "lykos-agent-reports";
+        messages.prepend(agentReports);
+      }
+      renderCards(agentReports, entries, entries.map(entry => `${entry.missionId}-${entry.sequence}-${entry.status}`).join("|"));
+    } else {
+      agentReports?.remove();
     }
-    const className = `lykos-esupport-report is-${latestReport.status || "pending"}`;
-    const title = latestReport.status === "operational" ? "Tout est opérationnel" : latestReport.status === "blocked" ? "Intervention nécessaire" : "Point à surveiller";
-    const summary = latestReport.summary || "Le premier contrôle automatique est en attente.";
-    const publishedAt = `Publié automatiquement le ${formatDate(latestReport.checkedAt)}`;
-    if (card.className !== className) card.className = className;
-    if (card.querySelector("strong").textContent !== title) card.querySelector("strong").textContent = title;
-    if (card.querySelector("p").textContent !== summary) card.querySelector("p").textContent = summary;
-    if (card.querySelector("time").textContent !== publishedAt) card.querySelector("time").textContent = publishedAt;
+    const emptyState = [...messages.querySelectorAll("h3")].find(node => node.textContent.includes("Aucun autre récapitulatif"))?.parentElement;
+    if (emptyState) emptyState.hidden = entries.length > 0;
   }
 
   function scheduleReadOnlyMode() {
@@ -125,6 +208,15 @@
     }
     return response;
   };
+
+  document.addEventListener("click", event => {
+    const button = event.target.closest?.("button[aria-pressed]");
+    const conversation = selectedConversation();
+    if (selectedService && button && !conversation?.contains(button)) {
+      selectedService = "";
+      scheduleReadOnlyMode();
+    }
+  });
 
   new MutationObserver(() => {
     if (sessionToken && document.body.textContent.includes("Code d’accès")) {

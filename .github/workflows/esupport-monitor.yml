@@ -6,6 +6,9 @@ on:
     # Europe/Paris ci-dessous n’en exécute qu’un seul.
     - cron: "7 22 * * *"
     - cron: "7 23 * * *"
+    # Rapport de synthèse chaque lundi et jeudi à 07 h 17 à Paris.
+    - cron: "17 5 * * 1,4"
+    - cron: "17 6 * * 1,4"
   workflow_dispatch:
 
 permissions:
@@ -17,8 +20,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  patricia:
-    name: Patricia contrôle, Oscar conclut
+  chaine-esupport:
+    name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -34,10 +37,17 @@ jobs:
               hour: "2-digit",
               hourCycle: "h23",
             }).format(new Date());
-            if (!isManual && parisHour !== "00") {
+            const parisWeekday = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Europe/Paris",
+              weekday: "short",
+            }).format(new Date());
+            const isDigestWindow = ["Mon", "Thu"].includes(parisWeekday) && parisHour === "07";
+            const isDailyWindow = parisHour === "00";
+            if (!isManual && !isDailyWindow && !isDigestWindow) {
               core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
               return;
             }
+            const mode = isDigestWindow ? "digest" : "daily";
 
             const identity = await core.getIDToken("lykos-estaff-esupport");
             const response = await fetch(process.env.ESTAFF_SERVICE_URL, {
@@ -46,7 +56,7 @@ jobs:
                 Authorization: `Bearer ${identity}`,
                 "Content-Type": "application/json",
               },
-              body: "{}",
+              body: JSON.stringify({mode}),
             });
             const report = await response.json().catch(() => ({}));
             if (!response.ok) {

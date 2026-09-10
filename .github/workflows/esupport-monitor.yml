@@ -77,3 +77,10 @@ jobs:
               });
               if (!briefResponse.ok) core.setFailed(`Le brief quotidien d’Oscar a échoué (${briefResponse.status}).`);
             }
+            if (report.status === "operational" && (mode === "release" || mode === "manual")) {
+              const giannisResponse = await fetch(process.env.ESTAFF_SERVICE_URL.replace("esupport-check", "giannis-analysis"), {
+                method: "POST",
+                headers: {Authorization: `Bearer ${identity}`},
+              });
+              if (!giannisResponse.ok) core.setFailed(`L’analyse de Giannis a échoué (${giannisResponse.status}).`);
+            }

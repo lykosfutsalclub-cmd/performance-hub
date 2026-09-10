@@ -36,6 +36,13 @@
       when:"Après chaque diagnostic ou mise en ligne et pendant chaque cycle eSupport.",
       output:"Un verdict qualité explicite et la confirmation de la version publique lorsqu’elle est conforme.",
     },
+    Giannis: {
+      title:"Analyse des données et de Metron",
+      summary:"Analyser les données du Hub et expliquer Metron sans en modifier les règles.",
+      purpose:"Giannis transforme les données actuelles et historiques en constats simples. Il cite toujours la période, la taille de l’échantillon, la fiabilité des données et la version de Metron utilisée.",
+      when:"Après une synchronisation post-match, puis chaque mois pour les synthèses prévues par le Rulebook.",
+      output:"Des faits, calculs et interprétations séparés, avec une limite explicite lorsque les données ne suffisent pas.",
+    },
   };
 
   function formatDate(value) {

@@ -4,11 +4,23 @@
   padding-top: 12px;
 }
 
-.lykos-agent-report-content > summary {
+.lykos-agent-report-content-toggle {
   cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: #e2cf60;
+  font: inherit;
   font-size: 14px;
   font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lykos-agent-report-content-toggle:focus-visible {
+  outline: 2px solid #e2cf60;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .lykos-agent-report-full {

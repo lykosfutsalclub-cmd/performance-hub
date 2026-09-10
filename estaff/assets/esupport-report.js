@@ -141,13 +141,23 @@
     time.textContent = formatDate(entry.occurredAt);
     card.append(label, title, summary, status, time);
     if (entry.content) {
-      const disclosure = document.createElement("details");
+      const disclosure = document.createElement("div");
       disclosure.className = "lykos-agent-report-content";
-      const toggle = document.createElement("summary");
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "lykos-agent-report-content-toggle";
       toggle.textContent = "Lire l’analyse complète";
+      toggle.setAttribute("aria-expanded", "false");
       const full = document.createElement("div");
       full.className = "lykos-agent-report-full";
       full.textContent = entry.content;
+      full.hidden = true;
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        toggle.textContent = expanded ? "Lire l’analyse complète" : "Replier l’analyse complète";
+        full.hidden = expanded;
+      });
       disclosure.append(toggle, full);
       card.append(disclosure);
     }

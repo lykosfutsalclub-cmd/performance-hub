@@ -1,0 +1,59 @@
+name: Contrôle quotidien eSupport
+
+on:
+  schedule:
+    # Deux créneaux UTC couvrent minuit à Paris toute l’année ; le contrôle
+    # Europe/Paris ci-dessous n’en exécute qu’un seul.
+    - cron: "7 22 * * *"
+    - cron: "7 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: esupport-monitor
+  cancel-in-progress: false
+
+jobs:
+  patricia:
+    name: Patricia contrôle, Oscar conclut
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Vérifier l’heure de Paris puis lancer le contrôle privé
+        uses: actions/github-script@v8
+        env:
+          ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
+        with:
+          script: |
+            const isManual = context.eventName === "workflow_dispatch";
+            const parisHour = new Intl.DateTimeFormat("fr-FR", {
+              timeZone: "Europe/Paris",
+              hour: "2-digit",
+              hourCycle: "h23",
+            }).format(new Date());
+            if (!isManual && parisHour !== "00") {
+              core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
+              return;
+            }
+
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.ESTAFF_SERVICE_URL, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${identity}`,
+                "Content-Type": "application/json",
+              },
+              body: "{}",
+            });
+            const report = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              core.setFailed(`Le service eSupport a refusé le contrôle (${response.status}).`);
+              return;
+            }
+            core.notice(report.summary || "Contrôle eSupport terminé.");
+            if (report.status !== "operational") {
+              core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
+            }

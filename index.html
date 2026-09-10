@@ -326,6 +326,40 @@
     #lykos-dashboard-preview .lykos-stat-inventory-row span { color:#9eb4ca; }
     #lykos-dashboard-preview .lykos-stat-inventory-row b { color:var(--lykos-yellow); font-size:10px; font-variant-numeric:tabular-nums; }
     #lykos-dashboard-preview .lykos-stat-inventory-note { display:block; margin-top:8px; color:#738da7; font-size:8px; line-height:1.45; }
+    #lykos-dashboard-preview .lykos-performance-page { max-width:1180px; margin:0 auto; color:#dce8f5; }
+    #lykos-dashboard-preview .lykos-performance-hero { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr); gap:30px; align-items:end; min-height:330px; padding:38px; border:1px solid rgba(151,185,221,.2); border-radius:24px; background:radial-gradient(circle at 82% 25%,rgba(208,182,49,.22),transparent 28%),linear-gradient(135deg,rgba(4,38,83,.98),rgba(2,24,52,.96)); box-shadow:0 26px 60px rgba(0,0,0,.24); }
+    #lykos-dashboard-preview .lykos-performance-hero::after { content:""; position:absolute; right:-90px; bottom:-150px; width:390px; aspect-ratio:1; border:1px solid rgba(208,182,49,.16); border-radius:50%; box-shadow:0 0 0 45px rgba(208,182,49,.035),0 0 0 90px rgba(208,182,49,.025); }
+    #lykos-dashboard-preview .lykos-performance-kicker { display:block; color:var(--lykos-yellow); font-size:9px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-hero h1 { max-width:720px; margin:13px 0 10px; font-size:clamp(38px,5.4vw,74px); letter-spacing:.01em; }
+    #lykos-dashboard-preview .lykos-performance-hero p { max-width:650px; margin:0; color:#a9bfd5; font-size:12px; line-height:1.6; }
+    #lykos-dashboard-preview .lykos-performance-total { position:relative; z-index:1; text-align:right; }
+    #lykos-dashboard-preview .lykos-performance-total strong { display:block; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:clamp(76px,10vw,132px); letter-spacing:-.045em; line-height:.72; font-variant-numeric:tabular-nums; text-shadow:0 0 34px rgba(208,182,49,.18); }
+    #lykos-dashboard-preview .lykos-performance-total span { display:block; margin-top:20px; color:var(--lykos-yellow); font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-total small { display:block; margin-top:7px; color:#7892ab; font-size:8px; }
+    #lykos-dashboard-preview .lykos-performance-mini { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+    #lykos-dashboard-preview .lykos-performance-mini span { padding:7px 10px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background:rgba(255,255,255,.045); color:#b8cbe0; font-size:9px; }
+    #lykos-dashboard-preview .lykos-performance-mini b { color:#fff; }
+    #lykos-dashboard-preview .lykos-performance-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:14px; }
+    #lykos-dashboard-preview .lykos-performance-metric { min-height:145px; padding:20px; border:1px solid rgba(151,185,221,.17); border-radius:18px; background:rgba(6,29,69,.88); }
+    #lykos-dashboard-preview .lykos-performance-metric span { color:#829bb4; font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-metric strong { display:block; margin-top:19px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:35px; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-performance-metric small { display:block; margin-top:7px; color:#8099b2; font-size:8px; line-height:1.4; }
+    #lykos-dashboard-preview .lykos-performance-sections { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+    #lykos-dashboard-preview .lykos-performance-section { padding:24px; border:1px solid rgba(151,185,221,.17); border-radius:20px; background:rgba(6,29,69,.88); }
+    #lykos-dashboard-preview .lykos-performance-section h2 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:22px; }
+    #lykos-dashboard-preview .lykos-performance-section > p { margin:9px 0 0; color:#91aac2; font-size:10px; line-height:1.55; }
+    #lykos-dashboard-preview .lykos-performance-breakdown { display:grid; gap:12px; margin-top:21px; }
+    #lykos-dashboard-preview .lykos-performance-breakdown-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:end; }
+    #lykos-dashboard-preview .lykos-performance-breakdown-row span { color:#b8cbe0; font-size:10px; }
+    #lykos-dashboard-preview .lykos-performance-breakdown-row b { color:var(--lykos-yellow); font-size:16px; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-performance-track { grid-column:1/-1; height:5px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.08); }
+    #lykos-dashboard-preview .lykos-performance-track i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#d0b631,#f1dd68); }
+    #lykos-dashboard-preview .lykos-performance-systems { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    #lykos-dashboard-preview .lykos-performance-system { display:flex; flex-direction:column; min-height:190px; padding:20px; border:1px solid rgba(151,185,221,.17); border-radius:17px; background:rgba(1,24,52,.52); }
+    #lykos-dashboard-preview .lykos-performance-system > span { color:var(--lykos-yellow); font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-performance-system h3 { margin:10px 0 7px; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:21px; }
+    #lykos-dashboard-preview .lykos-performance-system p { margin:0; color:#91aac2; font-size:9px; line-height:1.55; }
+    #lykos-dashboard-preview .lykos-performance-system a, #lykos-dashboard-preview .lykos-performance-system button { align-self:flex-start; margin-top:auto; padding:9px 12px; border:1px solid rgba(208,182,49,.42); border-radius:999px; background:rgba(208,182,49,.08); color:var(--lykos-yellow); font-size:9px; font-weight:800; text-decoration:none; cursor:pointer; }
     #lykos-dashboard-preview .lykos-metron-page { max-width:980px; margin:0 auto; color:#dce8f5; }
     #lykos-dashboard-preview .lykos-metron-intro { max-width:760px; margin:0 0 24px; color:#b8cbe0; font-size:13px; line-height:1.7; }
     #lykos-dashboard-preview .lykos-metron-section { margin-top:14px; padding:22px 24px; border:1px solid rgba(255,255,255,.12); border-radius:17px; background:rgba(6,29,69,.88); }
@@ -597,6 +631,10 @@
         -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 2H6v3H2v3c0 3 2.2 5.5 5.1 6A6 6 0 0 0 11 17.9V20H7v2h10v-2h-4v-2.1a6 6 0 0 0 3.9-3.9c2.9-.5 5.1-3 5.1-6V5h-4V2ZM6 11.8A4 4 0 0 1 4 8V7h2v4.8ZM20 8a4 4 0 0 1-2 3.8V7h2v1Z'/%3E%3C/svg%3E");
         mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 2H6v3H2v3c0 3 2.2 5.5 5.1 6A6 6 0 0 0 11 17.9V20H7v2h10v-2h-4v-2.1a6 6 0 0 0 3.9-3.9c2.9-.5 5.1-3 5.1-6V5h-4V2ZM6 11.8A4 4 0 0 1 4 8V7h2v4.8ZM20 8a4 4 0 0 1-2 3.8V7h2v1Z'/%3E%3C/svg%3E");
       }
+      #lykos-dashboard-preview .lykos-headnav button[data-view="performance"]::before {
+        -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 20V10h4v10H3Zm7 0V4h4v16h-4Zm7 0v-7h4v7h-4ZM2 22h20v-2H2v2Z'/%3E%3C/svg%3E");
+        mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 20V10h4v10H3Zm7 0V4h4v16h-4Zm7 0v-7h4v7h-4ZM2 22h20v-2H2v2Z'/%3E%3C/svg%3E");
+      }
       #lykos-dashboard-preview .lykos-headnav button[aria-selected="true"] {
         color:var(--lykos-navy); background:var(--lykos-yellow); transform:translateY(-1px);
       }
@@ -776,6 +814,14 @@
       #lykos-dashboard-preview .lykos-five-player { min-height:88px; padding:10px 7px; }
       #lykos-dashboard-preview .lykos-five-player strong { font-size:13px; }
       #lykos-dashboard-preview .lykos-metron-page, #lykos-dashboard-preview .lykos-metron-section, #lykos-dashboard-preview .lykos-metron-section p, #lykos-dashboard-preview .lykos-metron-callout { max-width:100%; overflow-wrap:anywhere; }
+      #lykos-dashboard-preview .lykos-performance-hero { grid-template-columns:1fr; min-height:0; padding:24px 18px; }
+      #lykos-dashboard-preview .lykos-performance-hero h1 { font-size:clamp(34px,11vw,52px); }
+      #lykos-dashboard-preview .lykos-performance-total { text-align:left; }
+      #lykos-dashboard-preview .lykos-performance-total strong { font-size:clamp(72px,24vw,108px); }
+      #lykos-dashboard-preview .lykos-performance-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+      #lykos-dashboard-preview .lykos-performance-metric { min-height:122px; padding:16px; }
+      #lykos-dashboard-preview .lykos-performance-sections, #lykos-dashboard-preview .lykos-performance-systems { grid-template-columns:1fr; }
+      #lykos-dashboard-preview .lykos-performance-section { padding:18px 16px; }
       #lykos-dashboard-preview .lykos-metron-section { padding:18px 15px; }
       #lykos-dashboard-preview .lykos-metron-table-wrap { overflow:visible; }
       #lykos-dashboard-preview .lykos-metron-table { display:block; width:100%; min-width:0; }
@@ -827,6 +873,7 @@
       <button data-view="players" data-mobile-label="JOUEURS" aria-selected="false">STATISTIQUES JOUEURS</button>
       <button data-view="pantheon" data-mobile-label="PANTHÉON" aria-selected="false">PANTHÉON</button>
       <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">ESTAFF</button>
+      <button data-view="performance" data-mobile-label="PERF." aria-selected="false">PERFORMANCE</button>
     </nav>
   </header>
   <div class="lykos-shell">
@@ -1084,6 +1131,43 @@
         <div class="lykos-pantheon-rankings" data-pantheon-rankings></div>
         <div class="lykos-footer-note">Aucun record lié aux cartons, aux présences ou aux minutes de jeu</div>
       </section>
+      <section class="lykos-content lykos-performance-page" data-view-panel="performance" hidden>
+        <article class="lykos-performance-hero">
+          <div>
+            <span class="lykos-performance-kicker">La puissance du Performance Hub</span>
+            <h1>La donnée du Lykos, à pleine échelle.</h1>
+            <p>Ce compteur additionne toutes les valeurs statistiques réellement renseignées pour chaque joueur, chaque période et l’équipe. Les données inconnues ne gonflent jamais le résultat.</p>
+            <div class="lykos-performance-mini"><span><b data-performance-profiles>—</b> profils</span><span><b data-performance-periods>—</b> périodes</span><span><b data-performance-types>—</b> typologies, périodes comprises</span></div>
+          </div>
+          <div class="lykos-performance-total"><strong data-performance-total>—</strong><span>valeurs statistiques recensées</span><small>Compteur vivant · recalculé avec les données du Hub</small></div>
+        </article>
+        <div class="lykos-performance-metrics">
+          <article class="lykos-performance-metric"><span>Valeurs primaires</span><strong data-performance-primary>—</strong><small>Résultats et données fondamentales directement exploitables.</small></article>
+          <article class="lykos-performance-metric"><span>Valeurs secondaires</span><strong data-performance-secondary>—</strong><small>Ratios, séries, comparaisons, associations et notes calculées.</small></article>
+          <article class="lykos-performance-metric"><span>Valeurs individuelles</span><strong data-performance-player>—</strong><small>Tous les joueurs et toutes les périodes, sans convertir l’absence en zéro.</small></article>
+          <article class="lykos-performance-metric"><span>Valeurs collectives</span><strong data-performance-team>—</strong><small>Résultats, buts, formes, séries et distributions de l’équipe.</small></article>
+        </div>
+        <div class="lykos-performance-sections">
+          <article class="lykos-performance-section">
+            <h2>Ce que le chiffre mesure</h2>
+            <p>Une statistique est comptée à nouveau lorsqu’elle concerne un autre joueur ou une autre période. Un zéro réel est une information et compte. Une valeur absente ou inconnue ne compte pas. Les classements du Panthéon ne sont pas ajoutés une seconde fois lorsqu’ils réemploient une statistique déjà recensée.</p>
+            <div class="lykos-performance-breakdown">
+              <div class="lykos-performance-breakdown-row"><span>Saison actuelle · joueurs</span><b data-performance-current>—</b><div class="lykos-performance-track"><i data-performance-current-bar></i></div></div>
+              <div class="lykos-performance-breakdown-row"><span>Saison dernière · joueurs</span><b data-performance-previous>—</b><div class="lykos-performance-track"><i data-performance-previous-bar></i></div></div>
+              <div class="lykos-performance-breakdown-row"><span>All-time · joueurs</span><b data-performance-alltime>—</b><div class="lykos-performance-track"><i data-performance-alltime-bar></i></div></div>
+              <div class="lykos-performance-breakdown-row"><span>Statistiques collectives</span><b data-performance-team-breakdown>—</b><div class="lykos-performance-track"><i data-performance-team-bar></i></div></div>
+            </div>
+          </article>
+          <article class="lykos-performance-section">
+            <h2>Les moteurs du Hub</h2>
+            <p>La donnée brute reste visible. Ces outils l’organisent, l’expliquent ou l’utilisent pour aider le club sans inventer de précision.</p>
+            <div class="lykos-performance-systems">
+              <div class="lykos-performance-system"><span>Notation</span><h3>Metron</h3><p>Le système de notation compare les joueurs dans le contexte de leur poste et de leur période. Il combine création, finition, observation défensive collective, note moyenne, reconnaissance et fiabilité de l’échantillon.</p><button type="button" data-view="metron" aria-selected="false">Comprendre Metron</button></div>
+              <div class="lykos-performance-system"><span>Assistant du club</span><h3>eStaff</h3><p>L’assistant opérationnel rassemble les questions de coordination, d’organisation, de sport et de données dans un espace conçu pour le fonctionnement quotidien du Lykos.</p><a href="./estaff/">Ouvrir eStaff</a></div>
+            </div>
+          </article>
+        </div>
+      </section>
       <section class="lykos-content lykos-metron-page" data-view-panel="metron" hidden>
         <!-- METRON_CONTENT_START -->
         <!-- Configuration Metron synchronisée automatiquement : {"version":"METRON 1.0.1","effectiveDate":"2026-09-08","rating":[1,99],"matches":{"TEST_MATCH":1,"COMPETITION":1.25,"PROTOUR":1.5},"roles":{"G":{"creation":0.1,"finishing":0,"defensive":0.75},"D":{"creation":0.3,"finishing":0.15,"defensive":0.4},"M":{"creation":0.4,"finishing":0.225,"defensive":0.225},"A":{"creation":0.25,"finishing":0.4,"defensive":0.2},"DEFAULT":{"creation":0.4,"finishing":0.225,"defensive":0.225}},"grade":0.15,"manOfTheMatch":{"total":0.35,"perMatch":0.65},"manOfTheMatchBonusMax":3,"tenure":[0.5,3],"awards":{"top_scorer":2,"top_assist_provider":2,"player_of_year":4},"samples":[10,15],"currentMinimumMatches":1,"positionPolicy":"latest-sporteasy-position-no-hybrid"} -->
@@ -1149,7 +1233,7 @@
           <p>Metron n’invente aucune donnée absente. Il ne produit pas de xG, tirs, possession, tacles, interceptions, duels, kilomètres parcourus ou heatmaps. Il décrit les performances recensées et les résultats collectifs observés, sans transformer une corrélation en causalité.</p>
           <p>La note doit donc être lue comme un outil de comparaison et de discussion, complémentaire à l’observation des matchs et jamais comme un jugement définitif sur un joueur.</p>
         </article>
-        <button class="lykos-metron-back" data-view="players" aria-selected="false">Retour aux statistiques joueurs</button>
+        <button class="lykos-metron-back" data-view="performance" aria-selected="false">Retour à Performance</button>
         <!-- METRON_CONTENT_END -->
       </section>
     </main>
@@ -1157,7 +1241,7 @@
   <footer class="lykos-site-footer">
     <span>Méthode de notation du Performance Hub</span><button data-view="metron" aria-selected="false">Comprendre Metron</button>
     <span class="lykos-stat-inventory" data-stat-inventory>
-      <button class="lykos-stat-inventory-toggle" type="button" data-stat-inventory-toggle aria-expanded="false" aria-describedby="lykos-stat-inventory-panel"><b data-stat-total>—</b> statistiques recensées</button>
+      <button class="lykos-stat-inventory-toggle" type="button" data-stat-inventory-toggle aria-expanded="false" aria-describedby="lykos-stat-inventory-panel"><b data-stat-total>—</b> typologies statistiques</button>
       <span class="lykos-stat-inventory-panel" id="lykos-stat-inventory-panel" role="tooltip">
         <strong>Inventaire du Performance Hub</strong>
         <span class="lykos-stat-inventory-summary"><b><span data-stat-primary-total>—</span> primaires</b><b><span data-stat-secondary-total>—</span> secondaires</b></span>
@@ -1283,17 +1367,17 @@
       const statisticsInventory = {
         team: {
           primary: ['matchesPlayed','wins','draws','losses','goalsFor','goalsAgainst'],
-          secondary: ['goalsForPerMatch','goalsAgainstPerMatch','winRate','goalDifference','averageGoalDifference','recentFormScore','scoreDistribution','recentResults','streakWins','streakUnbeaten','streakLosses','streakWinless','form']
+          secondary: ['goalsForPerMatch','goalsAgainstPerMatch','winRate','goalDifference','averageGoalDifference','recentFormScore','scoreDistribution','recentResults','streaks.wins','streaks.unbeaten','streaks.losses','streaks.winless','form.value']
         },
         player: {
-          primary: ['matchesPlayed','goals','assists','manOfMatch','gradeAverage'],
+          primary: ['primary.matches','primary.goals','primary.assists','primary.manOfTheMatch','primary.averageRating'],
           secondary: [
-            'assistsPerGame','gamesWithAssist','assistGameRate','maxAssistsInGame','assistStreak','last5Assists','teamAssistShare',
-            'goalsPerGame','gamesWithGoal','scoringGameRate','maxGoalsInGame','scoringStreak','last5Goals','teamGoalShare',
-            'contributions','contributionsPerGame','decisiveGames','decisiveGameRate','maxContributionsInGame','decisiveStreak','last5Contributions','offensiveContributionIndex',
-            'goalsAgainst','goalsAgainstPerGame','goalsAgainstWithoutPlayer','collectiveObservedImpact','gamesBelowTeamAverage','gamesBelowTeamAverageRate','bestDefensiveGame','worstDefensiveGame',
-            'metronCreation','metronFinishing','metronOffensive','metronDefensive','metronOverall',
-            'bestWinningPartner','worstLosingPartner','bestOffensivePartner','worstOffensivePartner','favoriteLineup'
+            'creation.assistsPerGame','creation.gamesWithAssist','creation.assistGameRate','creation.maxAssistsInGame','creation.assistStreak','creation.last5Assists','creation.teamAssistShare',
+            'finishing.goalsPerGame','finishing.gamesWithGoal','finishing.scoringGameRate','finishing.maxGoalsInGame','finishing.scoringStreak','finishing.last5Goals','finishing.teamGoalShare',
+            'offensive.contributions','offensive.contributionsPerGame','offensive.decisiveGames','offensive.decisiveGameRate','offensive.maxContributionsInGame','offensive.decisiveStreak','offensive.last5Contributions','offensive.offensiveContributionIndex',
+            'defensive.goalsAgainst','defensive.goalsAgainstPerGame','defensive.goalsAgainstWithoutPlayer','defensive.collectiveObservedImpact','defensive.gamesBelowTeamAverage','defensive.gamesBelowTeamAverageRate','defensive.bestDefensiveGame','defensive.worstDefensiveGame',
+            'performance.creation','performance.finishing','performance.offensive','performance.defensive','performance.overall',
+            'collective.bestWinningPartner','collective.worstLosingPartner','collective.bestOffensivePartner','collective.worstOffensivePartner','collective.favoriteLineup'
           ]
         }
       };
@@ -1318,6 +1402,50 @@
       setInventoryValue('[data-stat-primary-player]',inventoryCounts.primaryPlayer);
       setInventoryValue('[data-stat-secondary-team]',inventoryCounts.secondaryTeam);
       setInventoryValue('[data-stat-secondary-player]',inventoryCounts.secondaryPlayer);
+      const inventoryValueAt = (source,path) => path.split('.').reduce((value,key) => value?.[key],source);
+      const isInventoryValuePresent = value => value !== null && value !== undefined && (!Array.isArray(value) || value.length > 0);
+      const countInventoryValues = (source,definitions) => definitions.reduce((count,path) => count + Number(isInventoryValuePresent(inventoryValueAt(source,path))),0);
+      const actualInventory = { primaryTeam:0, secondaryTeam:0, primaryPlayer:0, secondaryPlayer:0, playerPeriods:{} };
+      Object.values(teamPeriods).forEach(period => {
+        actualInventory.primaryTeam += countInventoryValues(period,statisticsInventory.team.primary);
+        actualInventory.secondaryTeam += countInventoryValues(period,statisticsInventory.team.secondary);
+      });
+      Object.entries(secondaryData).forEach(([periodKey,period]) => {
+        const periodCount = { primary:0, secondary:0 };
+        Object.values(period.players ?? {}).forEach(player => {
+          periodCount.primary += countInventoryValues(player,statisticsInventory.player.primary);
+          periodCount.secondary += countInventoryValues(player,statisticsInventory.player.secondary);
+        });
+        actualInventory.playerPeriods[periodKey] = periodCount.primary + periodCount.secondary;
+        actualInventory.primaryPlayer += periodCount.primary;
+        actualInventory.secondaryPlayer += periodCount.secondary;
+      });
+      actualInventory.primary = actualInventory.primaryTeam + actualInventory.primaryPlayer;
+      actualInventory.secondary = actualInventory.secondaryTeam + actualInventory.secondaryPlayer;
+      actualInventory.team = actualInventory.primaryTeam + actualInventory.secondaryTeam;
+      actualInventory.player = actualInventory.primaryPlayer + actualInventory.secondaryPlayer;
+      actualInventory.total = actualInventory.primary + actualInventory.secondary;
+      const setPerformanceValue = (selector,value) => { root.querySelector(selector).textContent = formatValue(value); };
+      setPerformanceValue('[data-performance-total]',actualInventory.total);
+      setPerformanceValue('[data-performance-primary]',actualInventory.primary);
+      setPerformanceValue('[data-performance-secondary]',actualInventory.secondary);
+      setPerformanceValue('[data-performance-player]',actualInventory.player);
+      setPerformanceValue('[data-performance-team]',actualInventory.team);
+      setPerformanceValue('[data-performance-profiles]',players.length);
+      setPerformanceValue('[data-performance-periods]',playerPeriodCount);
+      setPerformanceValue('[data-performance-types]',inventoryCounts.total);
+      setPerformanceValue('[data-performance-current]',actualInventory.playerPeriods.current ?? 0);
+      setPerformanceValue('[data-performance-previous]',actualInventory.playerPeriods.previous ?? 0);
+      setPerformanceValue('[data-performance-alltime]',actualInventory.playerPeriods.allTime ?? 0);
+      setPerformanceValue('[data-performance-team-breakdown]',actualInventory.team);
+      const performanceBreakdowns = [
+        ['[data-performance-current-bar]',actualInventory.playerPeriods.current ?? 0],
+        ['[data-performance-previous-bar]',actualInventory.playerPeriods.previous ?? 0],
+        ['[data-performance-alltime-bar]',actualInventory.playerPeriods.allTime ?? 0],
+        ['[data-performance-team-bar]',actualInventory.team]
+      ];
+      const largestPerformanceBreakdown = Math.max(1,...performanceBreakdowns.map(([,value]) => value));
+      performanceBreakdowns.forEach(([selector,value]) => { root.querySelector(selector).style.width = `${Math.max(2,(value / largestPerformanceBreakdown) * 100)}%`; });
       const closeStatisticsInventory = () => {
         inventory.dataset.open = 'false';
         inventoryToggle.setAttribute('aria-expanded','false');
@@ -1737,6 +1865,7 @@
       root.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
         const view = button.dataset.view;
         root.querySelectorAll('[data-view]').forEach(item => item.setAttribute('aria-selected', String(item === button)));
+        if (view === 'metron') root.querySelector('.lykos-headnav [data-view="performance"]')?.setAttribute('aria-selected','true');
         root.querySelectorAll('[data-view-panel]').forEach(panel => panel.hidden = panel.dataset.viewPanel !== view);
         if (view === 'players') showPlayerPicker();
         else root.querySelector('.lykos-shell').classList.remove('player-mode','player-picker-mode');

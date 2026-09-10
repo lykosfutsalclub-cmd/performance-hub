@@ -1137,7 +1137,7 @@
             <span class="lykos-performance-kicker">La puissance du Performance Hub</span>
             <h1>La donnée du Lykos, à pleine échelle.</h1>
             <p>Ce compteur additionne toutes les valeurs statistiques réellement renseignées pour chaque joueur, chaque période et l’équipe. Les données inconnues ne gonflent jamais le résultat.</p>
-            <div class="lykos-performance-mini"><span><b data-performance-profiles>—</b> profils</span><span><b data-performance-periods>—</b> périodes</span><span><b data-performance-types>—</b> typologies, périodes comprises</span></div>
+            <div class="lykos-performance-mini"><span><b data-performance-profiles>—</b> profils</span><span><b>Depuis 2019</b></span><span><b data-performance-types>—</b> typologies, périodes comprises</span></div>
           </div>
           <div class="lykos-performance-total"><strong data-performance-total>—</strong><span>valeurs statistiques recensées</span><small>Compteur vivant · recalculé avec les données du Hub</small></div>
         </article>
@@ -1238,21 +1238,6 @@
       </section>
     </main>
   </div>
-  <footer class="lykos-site-footer">
-    <span>Méthode de notation du Performance Hub</span><button data-view="metron" aria-selected="false">Comprendre Metron</button>
-    <span class="lykos-stat-inventory" data-stat-inventory>
-      <button class="lykos-stat-inventory-toggle" type="button" data-stat-inventory-toggle aria-expanded="false" aria-describedby="lykos-stat-inventory-panel"><b data-stat-total>—</b> typologies statistiques</button>
-      <span class="lykos-stat-inventory-panel" id="lykos-stat-inventory-panel" role="tooltip">
-        <strong>Inventaire du Performance Hub</strong>
-        <span class="lykos-stat-inventory-summary"><b><span data-stat-primary-total>—</span> primaires</b><b><span data-stat-secondary-total>—</span> secondaires</b></span>
-        <span class="lykos-stat-inventory-row"><span>Primaires · collectives</span><b data-stat-primary-team>—</b></span>
-        <span class="lykos-stat-inventory-row"><span>Primaires · individuelles</span><b data-stat-primary-player>—</b></span>
-        <span class="lykos-stat-inventory-row"><span>Secondaires · collectives</span><b data-stat-secondary-team>—</b></span>
-        <span class="lykos-stat-inventory-row"><span>Secondaires · individuelles</span><b data-stat-secondary-player>—</b></span>
-        <small class="lykos-stat-inventory-note">Chaque statistique est comptée séparément pour Saison actuelle, Saison dernière et All-time. Une répétition visuelle sur une autre carte n’est pas recomptée.</small>
-      </span>
-    </span>
-  </footer>
   <script src="team-data.js"></script>
   <script src="player-secondary-data.js"></script>
   <script src="pantheon-data.js?v=records-20260909"></script>
@@ -1392,16 +1377,6 @@
       inventoryCounts.primaryTotal = inventoryCounts.primaryTeam + inventoryCounts.primaryPlayer;
       inventoryCounts.secondaryTotal = inventoryCounts.secondaryTeam + inventoryCounts.secondaryPlayer;
       inventoryCounts.total = inventoryCounts.primaryTotal + inventoryCounts.secondaryTotal;
-      const inventory = root.querySelector('[data-stat-inventory]');
-      const inventoryToggle = root.querySelector('[data-stat-inventory-toggle]');
-      const setInventoryValue = (selector,value) => { root.querySelector(selector).textContent = formatValue(value); };
-      setInventoryValue('[data-stat-total]',inventoryCounts.total);
-      setInventoryValue('[data-stat-primary-total]',inventoryCounts.primaryTotal);
-      setInventoryValue('[data-stat-secondary-total]',inventoryCounts.secondaryTotal);
-      setInventoryValue('[data-stat-primary-team]',inventoryCounts.primaryTeam);
-      setInventoryValue('[data-stat-primary-player]',inventoryCounts.primaryPlayer);
-      setInventoryValue('[data-stat-secondary-team]',inventoryCounts.secondaryTeam);
-      setInventoryValue('[data-stat-secondary-player]',inventoryCounts.secondaryPlayer);
       const inventoryValueAt = (source,path) => path.split('.').reduce((value,key) => value?.[key],source);
       const isInventoryValuePresent = value => value !== null && value !== undefined && (!Array.isArray(value) || value.length > 0);
       const countInventoryValues = (source,definitions) => definitions.reduce((count,path) => count + Number(isInventoryValuePresent(inventoryValueAt(source,path))),0);
@@ -1432,7 +1407,6 @@
       setPerformanceValue('[data-performance-player]',actualInventory.player);
       setPerformanceValue('[data-performance-team]',actualInventory.team);
       setPerformanceValue('[data-performance-profiles]',players.length);
-      setPerformanceValue('[data-performance-periods]',playerPeriodCount);
       setPerformanceValue('[data-performance-types]',inventoryCounts.total);
       setPerformanceValue('[data-performance-current]',actualInventory.playerPeriods.current ?? 0);
       setPerformanceValue('[data-performance-previous]',actualInventory.playerPeriods.previous ?? 0);
@@ -1446,18 +1420,6 @@
       ];
       const largestPerformanceBreakdown = Math.max(1,...performanceBreakdowns.map(([,value]) => value));
       performanceBreakdowns.forEach(([selector,value]) => { root.querySelector(selector).style.width = `${Math.max(2,(value / largestPerformanceBreakdown) * 100)}%`; });
-      const closeStatisticsInventory = () => {
-        inventory.dataset.open = 'false';
-        inventoryToggle.setAttribute('aria-expanded','false');
-      };
-      inventoryToggle.addEventListener('click',event => {
-        event.stopPropagation();
-        const shouldOpen = inventory.dataset.open !== 'true';
-        inventory.dataset.open = String(shouldOpen);
-        inventoryToggle.setAttribute('aria-expanded',String(shouldOpen));
-      });
-      document.addEventListener('click',event => { if (!event.target.closest?.('[data-stat-inventory]')) closeStatisticsInventory(); });
-      document.addEventListener('keydown',event => { if (event.key === 'Escape') closeStatisticsInventory(); });
       // La saison actuelle devient exploitable dès la première apparition recensée.
       // Metron garde ses propres seuils de notation, mais les données brutes ne sont jamais masquées.
       players.forEach(player => {

@@ -29,14 +29,8 @@
     if (tabButtons[0] && tabButtons[0].textContent !== "💬 Fil de l’agent") tabButtons[0].textContent = "💬 Fil de l’agent";
     if (tabButtons[1]) tabButtons[1].hidden = true;
 
-    let notice = conversation.querySelector(".lykos-oneway-notice");
     const messages = conversation.querySelector('[aria-live="polite"]');
-    if (messages && !notice) {
-      notice = document.createElement("p");
-      notice.className = "lykos-oneway-notice";
-      messages.before(notice);
-    }
-    if (notice) notice.textContent = `Lecture seule · seul ${agent} publie ses récapitulatifs dans ce fil.`;
+    conversation.querySelector(".lykos-oneway-notice")?.remove();
 
     const emptyTitle = [...(messages?.querySelectorAll("h3") || [])].find(node => node.textContent.includes("est prêt"));
     if (emptyTitle) {

@@ -70,7 +70,7 @@ jobs:
             if (report.status !== "operational") {
               core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
             }
-            if (mode === "daily") {
+            if (mode === "daily" || mode === "manual") {
               const briefResponse = await fetch(process.env.ESTAFF_SERVICE_URL.replace("esupport-check", "oscar-brief"), {
                 method: "POST",
                 headers: {Authorization: `Bearer ${identity}`},

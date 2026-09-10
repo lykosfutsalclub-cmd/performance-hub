@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   schedule:
+    # Léonard vérifie chaque heure si ses quatre sources sont enfin complètes.
+    # La vérification reste silencieuse et ne crée aucune mission si une donnée manque.
+    - cron: "37 * * * *"
     # Deux créneaux UTC couvrent minuit à Paris toute l’année ; le contrôle
     # Europe/Paris ci-dessous n’en exécute qu’un seul.
     - cron: "7 22 * * *"
@@ -23,6 +26,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  porte-leonard:
+    name: Porte de complétude de Léonard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Vérifier les quatre sources sans produire de rapport incomplet
+        uses: actions/github-script@v8
+        env:
+          LEONARD_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/leonard-analysis
+        with:
+          script: |
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.LEONARD_SERVICE_URL, {
+              method: "POST",
+              headers: {Authorization: `Bearer ${identity}`},
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              core.setFailed(`La porte de Léonard a refusé la vérification (${response.status}).`);
+              return;
+            }
+            if (result.status === "queued") core.notice("Les quatre sources sont complètes : Léonard est activé.");
+            else if (result.status === "complete") core.notice("Le brief de Léonard existe déjà pour cet événement.");
+            else core.notice("Léonard reste silencieux : le dossier complet n’est pas encore réuni.");
+
   chaine-esupport:
     name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest

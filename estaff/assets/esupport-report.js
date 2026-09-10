@@ -38,8 +38,16 @@
     }
     if (notice) notice.textContent = `Lecture seule · seul ${agent} publie ses récapitulatifs dans ce fil.`;
 
+    const emptyTitle = [...(messages?.querySelectorAll("h3") || [])].find(node => node.textContent.includes("est prêt"));
+    if (emptyTitle) {
+      emptyTitle.textContent = "Aucun autre récapitulatif pour le moment";
+      if (emptyTitle.nextElementSibling) emptyTitle.nextElementSibling.textContent = `${agent} publiera ici ses prochains travaux et ce qu’il prévoit de faire.`;
+    }
+
     const activity = document.querySelector('section[aria-label="Activité"] p');
     if (activity && activity.textContent !== "Rapports automatiques · lecture seule") activity.textContent = "Rapports automatiques · lecture seule";
+    const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
+    if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
 
     let card = document.getElementById("lykos-esupport-report");
     if (agent !== "Oscar" || !latestReport || !messages) { card?.remove(); return; }

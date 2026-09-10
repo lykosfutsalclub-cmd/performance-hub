@@ -4,6 +4,7 @@
   let sessionToken = "";
   let latestReport = null;
   let scheduled = false;
+  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
 
   function formatDate(value) {
     const date = new Date(value);
@@ -32,10 +33,43 @@
     const messages = conversation.querySelector('[aria-live="polite"]');
     conversation.querySelector(".lykos-oneway-notice")?.remove();
 
+    const roleSource = messages?.querySelector("details");
+    let roleDisclosure = conversation.querySelector("details.lykos-agent-purpose");
+    if (roleSource && tabs) {
+      roleSource.hidden = true;
+      if (!roleDisclosure || roleDisclosure.dataset.agent !== agent) {
+        roleDisclosure?.remove();
+        roleDisclosure = roleSource.cloneNode(true);
+        roleDisclosure.hidden = false;
+        roleDisclosure.classList.add("lykos-agent-purpose");
+        roleDisclosure.dataset.agent = agent;
+        tabs.before(roleDisclosure);
+      }
+    }
+    if (roleDisclosure) {
+
+      const roleLabels = roleDisclosure.querySelectorAll("dt");
+      const isFemale = femaleAgents.has(agent);
+      if (roleLabels[0]) roleLabels[0].textContent = isFemale ? "Quand la solliciter" : "Quand le solliciter";
+      if (roleLabels[1]) roleLabels[1].textContent = isFemale ? "Ce qu’elle prépare" : "Ce qu’il prépare";
+      const roleFooter = roleDisclosure.querySelector("footer");
+      if (roleFooter) roleFooter.textContent = `${isFemale ? "Agente installée" : "Agent installé"} dans le moteur privé OpenClaw du club. Ses outils restent cloisonnés selon sa mission.`;
+    }
+
+    const agentStatus = conversation.querySelector("header > span:last-child");
+    if (agentStatus && /^(Prêt|Prête|Installé|Installée)$/.test(agentStatus.textContent)) {
+      const isReady = agentStatus.textContent.startsWith("Prêt");
+      agentStatus.textContent = femaleAgents.has(agent)
+        ? (isReady ? "Prête" : "Installée")
+        : (isReady ? "Prêt" : "Installé");
+    }
+
     const emptyTitle = [...(messages?.querySelectorAll("h3") || [])].find(node => node.textContent.includes("est prêt"));
     if (emptyTitle) {
       emptyTitle.textContent = "Aucun autre récapitulatif pour le moment";
-      if (emptyTitle.nextElementSibling) emptyTitle.nextElementSibling.textContent = `${agent} publiera ici ses prochains travaux et ce qu’il prévoit de faire.`;
+      if (emptyTitle.nextElementSibling) emptyTitle.nextElementSibling.textContent = femaleAgents.has(agent)
+        ? `${agent} publiera ici ses prochains travaux et ce qu’elle prévoit de faire.`
+        : `${agent} publiera ici ses prochains travaux et ce qu’il prévoit de faire.`;
     }
 
     const activity = document.querySelector('section[aria-label="Activité"] p');

@@ -10,7 +10,7 @@
   let agentFeedOpen = false;
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
-  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce"]);
+  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité"};
   const esupportRoles = {
     Nadir: {
@@ -76,6 +76,14 @@
       when:"Pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit aux couleurs du club.",
       output:"Un Brand Opportunity Brief : constat, public visé, proposition, bénéfices, risques, effort estimé et prochaine décision attendue.",
     },
+    Élise: {title:"Rapprochement des sources",summary:"Comparer les sources administratives utiles pour Sophie.",purpose:"Élise rapproche les informations autorisées de SportEasy, Gmail et Drive pour repérer contradictions, doublons et dossiers incomplets.",when:"Quand Sophie doit vérifier plusieurs sources sur un même dossier.",output:"Un tableau factuel des concordances, écarts et informations manquantes."},
+    Samir: {title:"Indexation vidéo",summary:"Préparer les repères techniques et temporels pour Nadir.",purpose:"Samir prépare un index des vidéos autorisées sans interpréter la tactique ni produire de statistiques de jeu.",when:"Après le dépôt d’une vidéo autorisée.",output:"Un index des séquences examinables et des limites de l’image."},
+    Roman: {title:"Confidentialité Académie",summary:"Contrôler la protection des informations pour Alice.",purpose:"Roman vérifie que les informations Académie sont nécessaires, protégées et destinées aux bonnes personnes.",when:"Avant tout partage contenant des données de l’Académie.",output:"Un constat de confidentialité avec les protections à appliquer."},
+    Camélia: {title:"Assiduité factuelle",summary:"Préparer les séries de présence pour Victor.",purpose:"Camélia calcule à partir des statuts réellement saisis sans interpréter la motivation ou la disponibilité future.",when:"Quand Victor doit comparer les présences sur une période.",output:"Des calculs documentés avec dénominateurs, inconnues et limites."},
+    Francisco: {title:"Contrôle des données",summary:"Vérifier la qualité des données pour Giannis.",purpose:"Francisco contrôle les sources, périodes, doublons, unités, valeurs manquantes et la version Metron.",when:"Avant chaque interprétation de Giannis.",output:"Un contrôle de qualité et de reproductibilité des calculs."},
+    Tamara: {title:"Tests de régression",summary:"Exécuter les contrôles techniques pour Véronique.",purpose:"Tamara vérifie qu’une correction ne réintroduit pas une ancienne panne et consigne les tests non exécutés.",when:"Après chaque correction et avant une validation technique.",output:"Des résultats reproductibles avec versions, scénarios et preuves."},
+    Inès: {title:"Compréhension Data/UX",summary:"Vérifier la clarté des données pour Sandrine.",purpose:"Inès contrôle que les statistiques et interfaces sont compréhensibles, fidèles et utilisables sur ordinateur comme sur mobile.",when:"Lorsqu’une donnée ou une interface doit être rendue plus claire.",output:"Un audit de compréhension avec difficultés et corrections proposées."},
+    Giorgios: {title:"Observation des canaux publics",summary:"Observer les canaux officiels pour Kostantinos.",purpose:"Giorgios relève les changements et mesures publiques agrégées sans connexion, publication ni collecte d’identités.",when:"Pendant la veille des contenus, partenaires et produits publics.",output:"Un relevé sourcé avec URL, date, valeur observée et niveau de preuve."},
     Amara: {
       title:"Responsable eSécurité",
       summary:"Diriger les contrôles et consolider les décisions de sécurité.",
@@ -388,10 +396,10 @@
       if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.7.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
-    if (activityCounters[0]) activityCounters[0].textContent = "19";
-    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "19";
+    if (activityCounters[0]) activityCounters[0].textContent = "27";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "27";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "19 installés";
+    if (rosterCount) rosterCount.textContent = "27 installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -427,7 +435,7 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

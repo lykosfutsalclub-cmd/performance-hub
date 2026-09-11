@@ -10,8 +10,8 @@
   let agentFeedOpen = false;
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
-  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia"]);
-  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand"};
+  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce"]);
+  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité"};
   const esupportRoles = {
     Nadir: {
       title:"Analyse tactique vidéo",
@@ -75,6 +75,48 @@
       purpose:"Konstantinos analyse l’image du club, la cohérence des contenus, les opportunités de partenariat et les idées de produits. Il transforme ses observations en recommandations concrètes pour Oscar et les dirigeants.",
       when:"Pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit aux couleurs du club.",
       output:"Un Brand Opportunity Brief : constat, public visé, proposition, bénéfices, risques, effort estimé et prochaine décision attendue.",
+    },
+    Amara: {
+      title:"Responsable eSécurité",
+      summary:"Diriger les contrôles et consolider les décisions de sécurité.",
+      purpose:"Amara attribue les contrôles aux cinq spécialistes, classe les risques, garantit l’indépendance des validations et transmet un verdict consolidé à Oscar.",
+      when:"À chaque alerte concernant un accès, un secret, une donnée, une intégration ou un incident.",
+      output:"Un bulletin de sécurité avec faits, gravité, mesure conservatoire, décision attendue et condition de reprise.",
+    },
+    Elena: {
+      title:"Contrôle des accès",
+      summary:"Vérifier les identités, les droits et les protections de connexion.",
+      purpose:"Elena contrôle que chaque accès aux supports Lykos correspond à un besoin approuvé, sans modifier elle-même les comptes.",
+      when:"Chaque semaine et après tout changement d’accès.",
+      output:"Une matrice des comptes et droits, limitée aux écarts et décisions utiles.",
+    },
+    Akira: {
+      title:"Protection des secrets",
+      summary:"Détecter les secrets exposés sans jamais les afficher.",
+      purpose:"Akira contrôle les mots de passe, clés API, jetons et cookies de session dans le code et les journaux, sans jamais recopier leur valeur.",
+      when:"Chaque jour et après une modification du code ou un déploiement.",
+      output:"Un constat expurgé précisant le risque, sa portée et l’action attendue.",
+    },
+    Joyce: {
+      title:"Protection des données",
+      summary:"Contrôler la nécessité, l’exposition et la conservation des données.",
+      purpose:"Joyce protège les données personnelles des joueurs, dirigeants, parents et mineurs dans tout l’écosystème Lykos.",
+      when:"Chaque semaine et à chaque nouveau flux, partage ou publication de données.",
+      output:"Une fiche de confidentialité factuelle qui ne reproduit pas inutilement les données sensibles.",
+    },
+    Thiago: {
+      title:"Sécurité des intégrations",
+      summary:"Vérifier les liens, destinations et protections des intégrations.",
+      purpose:"Thiago contrôle la sécurité des liens techniques entre le Performance Hub et les supports du club, sans intervenir sur le fonctionnement métier des API.",
+      when:"Toutes les heures et après chaque changement d’intégration.",
+      output:"Une carte des liens et protections, accompagnée des anomalies reproductibles.",
+    },
+    Jefferson: {
+      title:"Réponse aux incidents",
+      summary:"Surveiller les signaux, conserver les preuves et structurer la réponse.",
+      purpose:"Jefferson surveille les signaux de sécurité et ouvre une chronologie factuelle dès qu’un incident est suspecté.",
+      when:"En continu et à chaque signal significatif.",
+      output:"Un dossier d’incident avec heures, preuves, mesures conservatoires et condition de clôture.",
     },
   };
 
@@ -343,13 +385,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.1.1";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.7.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
-    if (activityCounters[0]) activityCounters[0].textContent = "13";
-    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "13";
+    if (activityCounters[0]) activityCounters[0].textContent = "19";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "19";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "13 installés";
+    if (rosterCount) rosterCount.textContent = "19 installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -385,7 +427,7 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

@@ -21,7 +21,7 @@ window.LYKOS_TEAM_STATS = {
             {
               "eventId": "51050729",
               "date": "2026-09-09",
-              "opponent": "Équipe Anonyme Le Complexe",
+              "opponent": "Mannschaft",
               "scoreFor": 9,
               "scoreAgainst": 14,
               "difference": -5
@@ -65,7 +65,7 @@ window.LYKOS_TEAM_STATS = {
             {
               "eventId": "51050727",
               "date": "2026-09-02",
-              "opponent": "Équipe Anonyme Le Complexe",
+              "opponent": "FC Lançon",
               "scoreFor": 12,
               "scoreAgainst": 10,
               "difference": 2
@@ -1096,7 +1096,7 @@ window.LYKOS_TEAM_STATS = {
             {
               "eventId": "51050729",
               "date": "2026-09-09",
-              "opponent": "Équipe Anonyme Le Complexe",
+              "opponent": "Mannschaft",
               "scoreFor": 9,
               "scoreAgainst": 14,
               "difference": -5
@@ -1634,7 +1634,7 @@ window.LYKOS_TEAM_STATS = {
             {
               "eventId": "51050727",
               "date": "2026-09-02",
-              "opponent": "Équipe Anonyme Le Complexe",
+              "opponent": "FC Lançon",
               "scoreFor": 12,
               "scoreAgainst": 10,
               "difference": 2
@@ -2317,7 +2317,7 @@ window.LYKOS_TEAM_STATS = {
           "eventId": "51050727",
           "index": 1,
           "date": "2026-09-02",
-          "opponent": "Équipe Anonyme Le Complexe",
+          "opponent": "FC Lançon",
           "score": "12–10",
           "winRate": 100,
           "goalsForPerMatch": 12,
@@ -2333,8 +2333,8 @@ window.LYKOS_TEAM_STATS = {
             "contextualResult": 92.5,
             "opponentDifficulty": {
               "value": 50,
-              "sampleSize": 0,
-              "policy": "anonymous-median"
+              "sampleSize": 2,
+              "policy": "previous-head-to-head"
             },
             "importance": 1,
             "availableWeight": 1
@@ -2344,7 +2344,7 @@ window.LYKOS_TEAM_STATS = {
           "eventId": "51050729",
           "index": 2,
           "date": "2026-09-09",
-          "opponent": "Équipe Anonyme Le Complexe",
+          "opponent": "Mannschaft",
           "score": "9–14",
           "winRate": 50,
           "goalsForPerMatch": 10.5,
@@ -2361,7 +2361,7 @@ window.LYKOS_TEAM_STATS = {
             "opponentDifficulty": {
               "value": 50,
               "sampleSize": 0,
-              "policy": "anonymous-median"
+              "policy": "no-history-median"
             },
             "importance": 1,
             "availableWeight": 1

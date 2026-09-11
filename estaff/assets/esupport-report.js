@@ -11,7 +11,7 @@
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
-  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport"};
+  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand"};
   const esupportRoles = {
     Nadir: {
       title:"Analyse tactique vidéo",
@@ -61,6 +61,13 @@
       purpose:"Sandrine reçoit les rapports de Giannis, cherche ce que le Performance Hub explique mal ou ne mesure pas encore, puis prépare des idées d’amélioration utiles et réalisables.",
       when:"Après chaque nouveau rapport de Giannis et lors de ses audits ciblés du Hub.",
       output:"Des propositions priorisées qui apportent une compréhension sportive nouvelle, sans modifier elle-même Metron ni le site.",
+    },
+    Konstantinos: {
+      title:"Marque, contenus et partenariats",
+      summary:"Développer eBrand en restant fidèle à l’identité du Lykos FC.",
+      purpose:"Konstantinos analyse l’image du club, la cohérence des contenus, les opportunités de partenariat et les idées de produits. Il transforme ses observations en recommandations concrètes pour Oscar et les dirigeants.",
+      when:"Pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit aux couleurs du club.",
+      output:"Un Brand Opportunity Brief : constat, public visé, proposition, bénéfices, risques, effort estimé et prochaine décision attendue.",
     },
   };
 
@@ -321,7 +328,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 2.5.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.0.0";
     }
 
     document.getElementById("lykos-esupport-report")?.remove();
@@ -358,7 +365,7 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

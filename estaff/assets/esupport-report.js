@@ -138,7 +138,14 @@
       summary:latestReport.summary, occurredAt:latestReport.checkedAt, service:"eSupport",
     }];
     return [...latestReturns, ...esupportEntries]
-      .map(entry => entry.agent === "Milo" ? {...entry, agent:"Sonia"} : entry)
+      .map(entry => entry.agent === "Milo" ? {
+        ...entry,
+        agent:"Sonia",
+        type:entry.type === "connexion" ? "identifiants" : entry.type,
+        summary:String(entry.summary || "").startsWith("Milo a détecté l’expiration")
+          ? "Sonia a détecté la déconnexion et relié les identifiants chiffrés au mécanisme d’authentification. La session est de nouveau utilisable ; aucun secret n’a été affiché."
+          : entry.summary,
+      } : entry)
       .sort((a,b) => Date.parse(b.occurredAt || 0) - Date.parse(a.occurredAt || 0));
   }
 

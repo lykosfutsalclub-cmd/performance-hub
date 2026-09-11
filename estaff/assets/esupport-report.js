@@ -10,7 +10,7 @@
   let agentFeedOpen = false;
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
-  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine"]);
+  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand"};
   const esupportRoles = {
     Nadir: {
@@ -23,21 +23,21 @@
     Oscar: {
       title:"Supervision et validation finale",
       summary:"Superviser la chaîne eSupport et confirmer son verdict final.",
-      purpose:"Oscar rassemble la preuve de connexion de Milo, les constats de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
+      purpose:"Oscar rassemble l’état des identifiants fourni par Sonia, les constats API et données de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
       when:"À la fin de chaque contrôle eSupport et lors des rapports du lundi et du jeudi.",
       output:"Une conclusion claire : service confirmé, à surveiller ou bloqué, avec la raison.",
     },
-    Milo: {
-      title:"Connexion SportEasy",
-      summary:"Maintenir la session SportEasy disponible et la rétablir automatiquement.",
-      purpose:"Milo vérifie la connexion SportEasy avant chaque lecture. Si la session a expiré, il tente une seule reconnexion avec les identifiants chiffrés, reprend les contrôles et transmet la preuve à Véronique.",
-      when:"Avant chaque synchronisation SportEasy et dès qu’une déconnexion est détectée.",
-      output:"Une confirmation de connexion, une preuve de reconnexion ou un blocage clair lorsqu’une validation humaine est nécessaire.",
+    Sonia: {
+      title:"Gestion des identifiants",
+      summary:"Relier les identifiants SportEasy à la session sans intervenir sur l’API.",
+      purpose:"Sonia gère exclusivement le lien sécurisé entre les identifiants chiffrés et la session SportEasy. Elle confirme si la session est utilisable, mais ne contrôle jamais l’API, ses routes, ses données ou la synchronisation.",
+      when:"Avant chaque synchronisation SportEasy et lorsqu’une session déconnectée ou un identifiant refusé est détecté.",
+      output:"Un état des identifiants et de la session transmis à Patricia, puis une preuve à Véronique, sans aucun secret affiché.",
     },
     Patricia: {
       title:"Surveillance des données",
       summary:"Contrôler les routes SportEasy et détecter les données manquantes.",
-      purpose:"Après validation de la connexion par Milo, Patricia contrôle les routes SportEasy, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
+      purpose:"Après confirmation de la session par Sonia, Patricia contrôle l’API, les routes SportEasy, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
       when:"Chaque nuit, après une mise en ligne et lors des rapports du lundi et du jeudi.",
       output:"Un relevé précis des contrôles réussis et des anomalies transmis à Gaston.",
     },
@@ -138,6 +138,7 @@
       summary:latestReport.summary, occurredAt:latestReport.checkedAt, service:"eSupport",
     }];
     return [...latestReturns, ...esupportEntries]
+      .map(entry => entry.agent === "Milo" ? {...entry, agent:"Sonia"} : entry)
       .sort((a,b) => Date.parse(b.occurredAt || 0) - Date.parse(a.occurredAt || 0));
   }
 
@@ -335,7 +336,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.1.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.1.1";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "13";
@@ -377,7 +378,7 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",milo:"Milo",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

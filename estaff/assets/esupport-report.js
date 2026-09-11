@@ -23,14 +23,21 @@
     Oscar: {
       title:"Supervision et validation finale",
       summary:"Superviser la chaîne eSupport et confirmer son verdict final.",
-      purpose:"Oscar rassemble les constats de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
+      purpose:"Oscar rassemble la preuve de connexion de Milo, les constats de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
       when:"À la fin de chaque contrôle eSupport et lors des rapports du lundi et du jeudi.",
       output:"Une conclusion claire : service confirmé, à surveiller ou bloqué, avec la raison.",
     },
+    Milo: {
+      title:"Connexion SportEasy",
+      summary:"Maintenir la session SportEasy disponible et la rétablir automatiquement.",
+      purpose:"Milo vérifie la connexion SportEasy avant chaque lecture. Si la session a expiré, il tente une seule reconnexion avec les identifiants chiffrés, reprend les contrôles et transmet la preuve à Véronique.",
+      when:"Avant chaque synchronisation SportEasy et dès qu’une déconnexion est détectée.",
+      output:"Une confirmation de connexion, une preuve de reconnexion ou un blocage clair lorsqu’une validation humaine est nécessaire.",
+    },
     Patricia: {
-      title:"Surveillance SportEasy",
-      summary:"Surveiller SportEasy et détecter les données manquantes.",
-      purpose:"Patricia contrôle la disponibilité des routes SportEasy, l’authentification, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
+      title:"Surveillance des données",
+      summary:"Contrôler les routes SportEasy et détecter les données manquantes.",
+      purpose:"Après validation de la connexion par Milo, Patricia contrôle les routes SportEasy, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
       when:"Chaque nuit, après une mise en ligne et lors des rapports du lundi et du jeudi.",
       output:"Un relevé précis des contrôles réussis et des anomalies transmis à Gaston.",
     },
@@ -42,9 +49,9 @@
       output:"Un diagnostic reproductible, une correction vérifiée ou la confirmation qu’aucun correctif n’est nécessaire.",
     },
     Véronique: {
-      title:"Contrôle et mise en ligne",
-      summary:"Contrôler la correction, autoriser la mise en ligne et confirmer le résultat.",
-      purpose:"Véronique vérifie les contrôles et les corrections de Gaston. Elle prononce un GO ou un NO-GO avant qu’Oscar ne rende sa conclusion finale.",
+      title:"Responsable eSupport",
+      summary:"Valider les connexions, contrôler la qualité et répartir les missions.",
+      purpose:"Véronique dirige eSupport. Elle valide l’état des connexions et les preuves produites, contrôle les corrections de Gaston et répartit la charge entre les agents avant de prononcer un GO ou un NO-GO.",
       when:"Après chaque diagnostic ou mise en ligne et pendant chaque cycle eSupport.",
       output:"Un verdict qualité explicite et la confirmation de la version publique lorsqu’elle est conforme.",
     },
@@ -328,8 +335,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.0.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.1.0";
     }
+    const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
+    if (activityCounters[0]) activityCounters[0].textContent = "13";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "13";
+    const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
+    if (rosterCount) rosterCount.textContent = "13 installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -365,7 +377,7 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",milo:"Milo",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

@@ -1,0 +1,14 @@
+{
+  "id": "/performance-hub/estaff/",
+  "name": "Lykos eStaff",
+  "short_name": "eStaff",
+  "description": "Supervision privée du eStaff du Lykos FC",
+  "start_url": "/performance-hub/estaff/",
+  "scope": "/performance-hub/estaff/",
+  "display": "standalone",
+  "background_color": "#011834",
+  "theme_color": "#011834",
+  "icons": [
+    {"src": "../lykos-app-icon.jpg", "sizes": "any", "type": "image/jpeg", "purpose": "any maskable"}
+  ]
+}

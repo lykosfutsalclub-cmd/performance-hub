@@ -6,7 +6,8 @@ import theme from "./theme.module.css";
 
 const SERVICE = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff";
 const OSCAR_ID = "oscar";
-const ACTIVE_SPECIALISTS = 18;
+const ESTAFF_AGENT_COUNT = 27;
+const ACTIVE_CONTRIBUTORS = 26;
 const TOTAL_REPORT_PROMPT = "Rapport total : sollicite tous les agents actifs et autorisés. Attends leurs retours, indique clairement qui a répondu, qui est bloqué ou sans réponse, puis livre-moi une synthèse globale avec les priorités, les décisions à prendre, les responsables et les échéances.";
 
 type ChatMessage = { role: "user" | "agent"; text: string };
@@ -100,7 +101,8 @@ export default function Supervision({onLogout, sessionToken}: {onLogout: () => v
 
     <section className={styles.commandBar} aria-label="Fonctionnement d’Oscar">
       <div><strong>1</strong><span>interlocuteur unique</span></div>
-      <div><strong>{ACTIVE_SPECIALISTS}</strong><span>spécialistes mobilisables</span></div>
+      <div><strong>{ESTAFF_AGENT_COUNT}</strong><span>agents eStaff, Oscar compris</span></div>
+      <div><strong>{ACTIVE_CONTRIBUTORS}</strong><span>contributeurs mobilisables</span></div>
       <p className={bridge === "ready" ? styles.online : styles.waiting}><i aria-hidden="true" />{statusText}</p>
     </section>
 
@@ -147,7 +149,7 @@ export default function Supervision({onLogout, sessionToken}: {onLogout: () => v
           <li><strong>Contrôler</strong><span>Il vérifie les sources, leur date et les contradictions.</span></li>
           <li><strong>Décider ou remonter</strong><span>Il arbitre dans son mandat et vous soumet le reste.</span></li>
         </ol>
-        <div className={styles.totalReport}><span>RAPPORT TOTAL</span><p>Les {ACTIVE_SPECIALISTS} agents actifs sont sollicités. Oscar attend chaque retour et signale toute absence ou tout blocage avant sa synthèse.</p></div>
+        <div className={styles.totalReport}><span>RAPPORT TOTAL</span><p>Les {ACTIVE_CONTRIBUTORS} contributeurs sont sollicités : 18 agents directs et 8 sous-agents spécialisés. Oscar attend chaque retour et signale toute absence ou tout blocage avant sa synthèse.</p></div>
       </aside>
     </div>
 

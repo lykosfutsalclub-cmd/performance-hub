@@ -11,7 +11,8 @@ const css = readFileSync("estaff-src/supervision.module.css", "utf8");
 test("Oscar est l’unique interlocuteur affiché", () => {
   assert.ok(html.includes("Quelle mission dois-je piloter ?"));
   assert.ok(html.includes("Canal privé · Oscar uniquement"));
-  assert.ok(html.includes("18</strong><span>spécialistes mobilisables"));
+  assert.ok(html.includes("27</strong><span>agents eStaff, Oscar compris"));
+  assert.ok(html.includes("26</strong><span>contributeurs mobilisables"));
   assert.ok(!html.includes("Rechercher un agent"));
   for (const name of ["Sophie", "Nadir", "Kostantinos", "Amara", "Jefferson"]) {
     assert.ok(!html.includes(`>${name}<`), name);
@@ -29,6 +30,7 @@ test("le rapport total exige tous les retours et rend les absences visibles", ()
   assert.ok(html.includes("Rapport total"));
   assert.ok(source.includes("sollicite tous les agents actifs et autorisés"));
   assert.ok(source.includes("qui est bloqué ou sans réponse"));
+  assert.ok(html.includes("18 agents directs et 8 sous-agents spécialisés"));
   assert.ok(html.includes("Oscar attend chaque retour et signale toute absence ou tout blocage"));
 });
 

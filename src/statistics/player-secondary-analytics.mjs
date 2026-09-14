@@ -1057,8 +1057,8 @@ export function buildPlayerSecondaryRepository({
     const teamFormByEvent = buildTeamFormByEvent(periodMatches, normalizedMatches);
     const annualRankingConfig = {
       ...config,
-      MIN_MATCHES_FOR_TOTAL_RANKING: config.MIN_MATCHS_CALENDAR_YEAR,
-      MIN_MATCHES_FOR_RATE_RANKING: config.MIN_MATCHS_CALENDAR_YEAR,
+      MIN_MATCHES_FOR_TOTAL_RANKING: config.MIN_MATCHES_CALENDAR_YEAR,
+      MIN_MATCHES_FOR_RATE_RANKING: config.MIN_MATCHES_CALENDAR_YEAR,
     };
     const playerPeriods = players.map((player) => ({
       playerId: String(player.sporteasyId),

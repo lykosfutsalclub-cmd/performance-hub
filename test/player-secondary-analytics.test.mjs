@@ -200,6 +200,7 @@ test("les années civiles sont reconstruites match par match et Metron exige exa
   });
   assert.equal(built.calendarYears["2025"].players[PLAYER_ID].primary.matches, 8);
   assert.equal(built.calendarYears["2025"].players[PLAYER_ID].performance.overall, null);
+  assert.equal(built.calendarYears["2025"].players[PLAYER_ID].rankings.goals, null);
   assert.equal(built.calendarYears["2026"].players[PLAYER_ID].primary.matches, 1);
   assert.equal(built.calendarYears["2026"].players[PLAYER_ID].performance.overall, null);
 

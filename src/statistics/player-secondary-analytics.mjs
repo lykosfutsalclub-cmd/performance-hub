@@ -39,6 +39,63 @@ function completeValues(values) {
   return values.length > 0 && values.every(Number.isFinite);
 }
 
+function normalizedText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("fr")
+    .trim();
+}
+
+function isInternalTrainingMatch(match) {
+  const categoryName = normalizedText(match?.category?.name ?? match?.category?.localized_name);
+  const name = normalizedText(match?.name);
+  return match?.category?.type === "challenge_match"
+    || categoryName === "match entre nous"
+    || name.includes("match entre nous");
+}
+
+function reconcileMatchSet(matches) {
+  const issues = [];
+  const unique = [];
+  const eventIds = new Set();
+  const tournamentContainers = new Map();
+  for (const match of matches) {
+    const eventId = String(match?.eventId ?? "").trim();
+    const year = Number(String(match?.startAt ?? "").slice(0, 4));
+    if (!eventId) {
+      issues.push({ severity: "error", code: "match-without-event-id", year });
+      continue;
+    }
+    if (eventIds.has(eventId)) {
+      issues.push({ severity: "error", code: "duplicate-match-event-id", eventId, year });
+      continue;
+    }
+    eventIds.add(eventId);
+    if (isInternalTrainingMatch(match)) {
+      issues.push({ severity: "error", code: "internal-training-in-statistical-repository", eventId, year });
+      continue;
+    }
+    const tournamentContainerId = String(match?.tournamentContainerId ?? "").trim();
+    if (tournamentContainerId) {
+      const previousEventId = tournamentContainers.get(tournamentContainerId);
+      if (previousEventId) {
+        issues.push({
+          severity: "error",
+          code: "tournament-container-linked-to-multiple-matches",
+          tournamentContainerId,
+          eventIds: [previousEventId, eventId],
+          year,
+        });
+      } else {
+        tournamentContainers.set(tournamentContainerId, eventId);
+      }
+    }
+    unique.push(match);
+  }
+  return { matches: unique, issues };
+}
+
 function percentage(numerator, denominator) {
   const ratio = safeDivide(numerator, denominator);
   return ratio === null ? null : ratio * 100;
@@ -891,8 +948,10 @@ export function buildPlayerSecondaryRepository({
   const recoveredMatchesByEvent = new Map(
     (verifiedPlayedCancelledMatches?.matches ?? []).map((correction) => [String(correction.eventId), correction]),
   );
-  const normalizedMatches = (matchRepository?.matches ?? [])
-    .filter((match) => match.status?.isPast && (!match.status?.isCancelled || recoveredMatchesByEvent.has(String(match.eventId))))
+  const eligibleRawMatches = (matchRepository?.matches ?? [])
+    .filter((match) => match.status?.isPast && (!match.status?.isCancelled || recoveredMatchesByEvent.has(String(match.eventId))));
+  const reconciledMatchSet = reconcileMatchSet(eligibleRawMatches);
+  const normalizedMatches = reconciledMatchSet.matches
     .map((match) => {
       const recovered = recoveredMatchesByEvent.get(String(match.eventId));
       return normalizeMatch(recovered ? { ...match, playerStatistics: recovered.playerStatistics } : match);
@@ -1047,6 +1106,8 @@ export function buildPlayerSecondaryRepository({
       minimumOverallMatches: config.MIN_MATCHES_CALENDAR_YEAR,
       minimumRatingMatches: config.MIN_MATCHES_CALENDAR_YEAR,
       minimumBenchmarkMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+      minimumCareerMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+      uniformSampleConfidence: true,
     });
     for (const playerPeriod of playerPeriods) {
       const score = performanceRatings.players[playerPeriod.playerId];
@@ -1056,12 +1117,34 @@ export function buildPlayerSecondaryRepository({
     const rawIssues = playerPeriods.flatMap(({ playerId, analytics }) =>
       analytics.trace.issues.map((issue) => ({ playerId, ...issue })),
     );
-    const issues = [...rawIssues, ...performanceRatings.validation.issues];
+    const annualMatchIssues = reconciledMatchSet.issues.filter((issue) => {
+      if (Number.isInteger(issue.year)) return issue.year === year;
+      if (!issue.eventId && !issue.eventIds) return true;
+      const ids = new Set([issue.eventId, ...(issue.eventIds ?? [])].filter(Boolean));
+      return periodMatches.some((match) => ids.has(match.eventId));
+    });
+    const issues = [...annualMatchIssues, ...rawIssues, ...performanceRatings.validation.issues];
+    const eligiblePlayerCount = playerPeriods.filter(
+      ({ analytics }) => Number.isFinite(analytics.performance.overall),
+    ).length;
     calendarYears[String(year)] = {
       year,
       minimumMatches: config.MIN_MATCHES_CALENDAR_YEAR,
       matchCount: periodMatches.length,
       playerAppearanceCount: playerPeriods.reduce((total, { analytics }) => total + analytics.primary.matches, 0),
+      eligiblePlayerCount,
+      reconciliation: {
+        status: issues.some((issue) => issue.severity === "error") ? "invalid" : "verified",
+        uniqueMatchCount: periodMatches.length,
+        matchesWithCompleteScore: periodMatches.filter(
+          (match) => Number.isFinite(match.goalsFor) && Number.isFinite(match.goalsAgainst),
+        ).length,
+        tournamentSummaryCount: periodMatches.filter((match) => match.tournamentContainerId).length,
+        excludedInternalTrainingCount: eligibleRawMatches.filter((match) => (
+          Number(String(match.startAt ?? "").slice(0, 4)) === year && isInternalTrainingMatch(match)
+        )).length,
+        rule: "Une ligne par ID SportEasy, entraînements exclus, un seul match récapitulatif par tournoi, seuil identique de 9 apparitions pour tous.",
+      },
       players: Object.fromEntries(playerPeriods.map(({ playerId, analytics }) => [playerId, analytics])),
       validation: {
         status: issues.some((issue) => issue.severity === "error") ? "invalid" : "valid",
@@ -1105,6 +1188,8 @@ export function buildPlayerSecondaryRepository({
         overallWithoutPosition: "missing position uses midfielder weights: creation 40%, finishing 22.5%, defensive 22.5%, plus 15% grade; available from 10 matches in the selected period",
         calendarYearAwards: "official club awards for 2023 through 2025; no award for 2022 or earlier",
         calendarYearStatistics: "match-by-match calendar-year reconstruction; raw totals from one appearance, rankings, percentiles and Metron ratings from 9 appearances",
+        calendarYearEligibility: "the same 9 real appearances, benchmark population and sample-confidence correction apply to current and former players",
+        calendarYearReconciliation: "unique SportEasy event IDs; internal training excluded; exactly one statistical summary linked to each tournament container",
         playerTeamContext: "coach team rating /6 and Metron team-performance average compared across matches with and without the player",
         awardBonus: "top scorer +2, top assist provider +2, player of the year +4; cumulative bonus uncapped and final rating capped at 99",
         collectiveEligibility: "all collective relationships use teammates whose matches together are at least the player's average matches together per teammate",

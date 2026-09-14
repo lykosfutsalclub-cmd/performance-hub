@@ -204,6 +204,47 @@ try {
     };
   }
 
+  const calendarYears = Object.values(secondary.calendarYears ?? {});
+  addCheck(
+    "calendar-years-present",
+    "Toutes les années civiles trouvées dans les matchs sont reconstruites",
+    calendarYears.length > 0,
+    { years: calendarYears.map((period) => period.year) },
+  );
+  for (const annual of calendarYears) {
+    const annualPlayers = Object.entries(annual.players ?? {});
+    const failures = [];
+    if (annual.minimumMatches !== 9) failures.push("minimum-not-nine");
+    if (annual.reconciliation?.status !== "verified") failures.push("match-set-not-verified");
+    if (annualPlayers.length !== players.players.length) failures.push("missing-players");
+    for (const [playerId, analytics] of annualPlayers) {
+      const appearances = analytics.primary.matches;
+      const rated = Number.isFinite(analytics.performance.overall);
+      if ((appearances >= 9) !== rated) failures.push(`eligibility:${playerId}`);
+      const rankedValues = Object.values(analytics.rankings ?? {}).filter(Boolean);
+      if (appearances < 9 && rankedValues.length > 0) failures.push(`ranking-under-nine:${playerId}`);
+      if (!sameNumber(
+        analytics.offensive.contributions,
+        analytics.primary.goals === null || analytics.primary.assists === null
+          ? null
+          : analytics.primary.goals + analytics.primary.assists,
+      )) failures.push(`contributions:${playerId}`);
+      if (analytics.trace?.appearanceEventIds?.length !== appearances) failures.push(`appearance-trace:${playerId}`);
+    }
+    addCheck(
+      `calendar-${annual.year}`,
+      `${annual.year} applique le même référentiel de 9 matchs à tous les joueurs`,
+      failures.length === 0,
+      {
+        matchCount: annual.matchCount,
+        eligiblePlayers: annual.eligiblePlayerCount,
+        checkedPlayers: annualPlayers.length,
+        failures,
+        reconciliation: annual.reconciliation,
+      },
+    );
+  }
+
   const samples = SAMPLE_PLAYER_IDS.map((playerId) => {
     const player = players.players.find((item) => String(item.sporteasyId) === playerId);
     const analytics = secondary.periods.allTime.players[playerId];

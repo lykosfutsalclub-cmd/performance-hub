@@ -211,6 +211,49 @@ test("les années civiles sont reconstruites match par match et Metron exige exa
   assert.ok(Number.isFinite(nineInOneYear.calendarYears["2025"].players[PLAYER_ID].performance.overall));
 });
 
+test("une année civile traite à égalité joueurs actuels et anciens dès 9 apparitions", () => {
+  const matches = Array.from({ length: 9 }, (_, index) => match({
+    id: index + 1,
+    year: 2025,
+    participants: ["1", "2"],
+    goals: { 1: index % 2, 2: index % 2 },
+    assists: { 1: index % 3 === 0 ? 1 : 0, 2: index % 3 === 0 ? 1 : 0 },
+    grades: { 1: 7, 2: 7 },
+  }));
+  const built = repository({
+    matches,
+    players: [
+      { sporteasyId: "1", displayName: "Actuel", isCurrent: true },
+      { sporteasyId: "2", displayName: "Ancien", isCurrent: false },
+    ],
+  });
+  const annual = built.calendarYears["2025"];
+  assert.equal(annual.minimumMatches, 9);
+  assert.equal(annual.eligiblePlayerCount, 2);
+  assert.deepEqual(annual.players["1"].performance, annual.players["2"].performance);
+  assert.equal(annual.players["1"].performance.confidence, 9 / 15);
+  assert.equal(annual.reconciliation.status, "verified");
+});
+
+test("la réconciliation annuelle refuse doublons, entraînements et double rattachement d'un tournoi", () => {
+  const first = match({ id: 1, year: 2025 });
+  first.tournamentContainerId = "tournoi-1";
+  const duplicate = match({ id: 1, year: 2025 });
+  const secondSummary = match({ id: 2, year: 2025 });
+  secondSummary.tournamentContainerId = "tournoi-1";
+  const training = match({ id: 3, year: 2025 });
+  training.name = "Match entre nous";
+  const built = repository({ matches: [first, duplicate, secondSummary, training] });
+  const annual = built.calendarYears["2025"];
+  assert.equal(annual.matchCount, 2);
+  assert.equal(annual.reconciliation.tournamentSummaryCount, 2);
+  assert.equal(annual.reconciliation.excludedInternalTrainingCount, 1);
+  assert.equal(annual.validation.status, "invalid");
+  assert.ok(annual.validation.issues.some((issue) => issue.code === "duplicate-match-event-id"));
+  assert.ok(annual.validation.issues.some((issue) => issue.code === "internal-training-in-statistical-repository"));
+  assert.ok(annual.validation.issues.some((issue) => issue.code === "tournament-container-linked-to-multiple-matches"));
+});
+
 test("le contexte équipe compare les vraies notes coach et Metron avec et sans le joueur", () => {
   const matches = [
     match({ id: 1, participants: ["1", "2"], grades: { 1: 8, 2: 7 }, eventRating: 5, team: 6, opponent: 2 }),

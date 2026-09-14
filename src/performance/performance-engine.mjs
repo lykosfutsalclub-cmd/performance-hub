@@ -191,7 +191,7 @@ function calculateBlock({ blockKey, playerRecord, eligibleRecords }) {
     return { rating: null, calculatedRating: null, availableWeight, components };
   }
   const calculatedRating = sum(available.map((component) => component.rating * component.weight)) / availableWeight;
-  const rating = playerRecord.player.isCurrent
+  const rating = playerRecord.applySampleConfidence
     ? adjustRatingForSample(calculatedRating, playerRecord.confidence)
     : clampRating(calculatedRating);
   return { rating, calculatedRating, availableWeight, components };
@@ -342,12 +342,15 @@ export function calculatePeriodPerformanceRatings({
     : SCORING_CONFIG.MIN_OVERALL_MATCHES,
   minimumRatingMatches = 0,
   minimumBenchmarkMatches = 0,
+  minimumCareerMatches = SCORING_CONFIG.FORMER_MIN_CAREER_MATCHES,
+  uniformSampleConfidence = false,
 }) {
   const records = players.map((player) => {
     const playerId = String(player.sporteasyId);
     const careerMatches = careerMatchesByPlayer.get(playerId) ?? 0;
-    const formerEligible = player.isCurrent || careerMatches >= SCORING_CONFIG.FORMER_MIN_CAREER_MATCHES;
+    const formerEligible = player.isCurrent || careerMatches >= minimumCareerMatches;
     const performanceMetrics = buildPerformanceMetrics({ playerId, periodMatches });
+    const applySampleConfidence = player.isCurrent || uniformSampleConfidence;
     return {
       playerId,
       player,
@@ -356,8 +359,9 @@ export function calculatePeriodPerformanceRatings({
       formerEligible,
       ratingEligible: formerEligible && performanceMetrics.matchCount >= minimumRatingMatches,
       confidence: formerEligible
-        ? (player.isCurrent ? sampleConfidence(performanceMetrics.matchCount) : 1)
+        ? (applySampleConfidence ? sampleConfidence(performanceMetrics.matchCount) : 1)
         : null,
+      applySampleConfidence,
       performanceMetrics,
       averageMatchRating: averageRatingsByPlayer.get(playerId) ?? null,
       manOfTheMatch: manOfTheMatchByPlayer.get(playerId) ?? { total: null, matches: null },

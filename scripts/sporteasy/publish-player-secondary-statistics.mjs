@@ -87,6 +87,8 @@ const payload = {
       minimumMatches: period.minimumMatches,
       matchCount: period.matchCount,
       playerAppearanceCount: period.playerAppearanceCount,
+      eligiblePlayerCount: period.eligiblePlayerCount,
+      reconciliation: period.reconciliation,
       players: Object.fromEntries(Object.entries(period.players).map(([playerId, analytics]) => [
         playerId,
         publicAnalytics(analytics),

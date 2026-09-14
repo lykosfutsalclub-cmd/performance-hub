@@ -61,13 +61,14 @@ jobs:
           script: |
             const isManual = context.eventName === "workflow_dispatch";
             const isPush = context.eventName === "push";
+            const requestedSyncPush = isPush && /\[esupport-sync\]/i.test(context.payload.head_commit?.message || "");
             const scheduledCron = context.payload.schedule || "";
             const daily = scheduledCron === "7 23 * * *";
             const digest = scheduledCron === "17 6 * * 1,4";
             const active = isManual || isPush || daily || digest;
             core.setOutput("active", String(active));
-            core.setOutput("sync", String(isManual || daily));
-            core.setOutput("mode", digest ? "digest" : isPush ? "release" : isManual ? "manual" : "daily");
+            core.setOutput("sync", String(isManual || daily || requestedSyncPush));
+            core.setOutput("mode", digest ? "digest" : requestedSyncPush || isManual ? "manual" : isPush ? "release" : "daily");
             if (!active) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
 
       - name: Récupérer le Performance Hub

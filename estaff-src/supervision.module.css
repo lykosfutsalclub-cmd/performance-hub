@@ -88,9 +88,11 @@
   .header button { width:100%; }
   .commandBar { display:grid; grid-template-columns:1fr 1fr; padding:14px; gap:10px; }
   .commandBar>p { grid-column:1 / -1; margin:4px 0 0; }
-  .chatHeader { align-items:flex-start; padding:16px; }
+  .chatHeader { display:grid; grid-template-columns:48px minmax(0,1fr); align-items:start; padding:16px; }
+  .avatar { grid-column:1; grid-row:1 / span 2; }
+  .chatHeader>div { grid-column:2; }
   .chatHeader p { display:none; }
-  .status { flex-basis:100%; margin-left:62px; white-space:normal; }
+  .status { grid-column:2; width:fit-content; max-width:100%; margin:4px 0 0; white-space:normal; }
   .messages { padding:18px 14px; }
   .welcome { margin:24px auto; }
   .chatMessage { max-width:94%; }

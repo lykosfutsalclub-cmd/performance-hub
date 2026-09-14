@@ -24,6 +24,11 @@ function serviceRequest(path: string, token: string, init: RequestInit = {}) {
 
 const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
 
+function readableServiceError(error: unknown) {
+  if (error === "read_only") return "Cette mission ne peut pas être lancée depuis cette interface.";
+  return typeof error === "string" && error.trim() ? error : "Le moteur privé ne répond pas.";
+}
+
 export default function Supervision({onLogout, sessionToken}: {onLogout: () => void; sessionToken: string}) {
   const [bridge, setBridge] = useState<BridgeState>("checking");
   const [busy, setBusy] = useState(false);
@@ -57,7 +62,7 @@ export default function Supervision({onLogout, sessionToken}: {onLogout: () => v
         body: JSON.stringify({agent: OSCAR_ID, conversationId: conversationId.current, message: text}),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Le moteur privé ne répond pas.");
+      if (!response.ok) throw new Error(readableServiceError(data.error));
       const deadline = Date.now() + 720000;
       let result = data;
       while (Date.now() < deadline) {

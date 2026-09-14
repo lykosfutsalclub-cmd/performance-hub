@@ -42,6 +42,13 @@ test("les missions longues disposent d’un délai compatible avec une consultat
 test("l’interface reste accessible sur ordinateur et mobile", () => {
   assert.match(css, /@media \(max-width:900px\)/);
   assert.match(css, /@media \(max-width:640px\)/);
+  assert.match(css, /grid-template-columns:48px minmax\(0,1fr\)/);
+  assert.match(css, /\.status \{ grid-column:2;/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
+});
+
+test("les erreurs techniques ne sont jamais présentées aux dirigeants", () => {
+  assert.ok(source.includes('error === "read_only"'));
+  assert.ok(source.includes("Cette mission ne peut pas être lancée depuis cette interface."));
 });

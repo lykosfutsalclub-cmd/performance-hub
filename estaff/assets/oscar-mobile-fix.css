@@ -1,0 +1,24 @@
+@media (max-width:640px) {
+  #estaff-root section[aria-label="Conversation avec Oscar"] > header {
+    display:grid !important;
+    grid-template-columns:48px minmax(0,1fr) !important;
+    align-items:start !important;
+  }
+
+  #estaff-root section[aria-label="Conversation avec Oscar"] > header > span:first-child {
+    grid-column:1 !important;
+    grid-row:1 / span 2 !important;
+  }
+
+  #estaff-root section[aria-label="Conversation avec Oscar"] > header > div {
+    grid-column:2 !important;
+  }
+
+  #estaff-root section[aria-label="Conversation avec Oscar"] > header > span:last-child {
+    grid-column:2 !important;
+    width:fit-content !important;
+    max-width:100% !important;
+    margin:4px 0 0 !important;
+    white-space:normal !important;
+  }
+}

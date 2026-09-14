@@ -317,6 +317,8 @@ try {
   console.log(`- Joueurs vérifiés exhaustivement : ${players.players.length} × ${PERIOD_KEYS.length} périodes`);
   console.log(`- Joueurs réels contrôlés en détail : ${samples.map((sample) => sample.playerName).join(", ")}`);
   console.log("- Rapport : data/private/sporteasy/player-secondary-audit-report.json");
+  const failedCheckIds = checks.filter((check) => check.status === "failed").map((check) => check.id);
+  if (failedCheckIds.length) console.error(`- Contrôles en échec : ${failedCheckIds.join(", ")}`);
   if (report.metadata.status !== "valid") process.exitCode = 1;
 } catch (error) {
   console.error("Audit des statistiques secondaires impossible.");

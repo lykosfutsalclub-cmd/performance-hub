@@ -24,12 +24,13 @@ function sameNumber(left, right) {
 }
 
 try {
-  const [secondary, statistics, matches, players, verifiedPlayedCancelledMatches] = await Promise.all([
+  const [secondary, statistics, matches, players, verifiedPlayedCancelledMatches, officialPlayerAwards] = await Promise.all([
     readPrivate("player-secondary-statistics.json"),
     readPrivate("statistics-repository.json"),
     readPrivate("match-repository.json"),
     readPrivate("players-repository.json"),
     readPrivate("verified-played-cancelled-matches.json"),
+    readPrivate("official-player-awards.json"),
   ]);
   const checks = [];
   const addCheck = (id, label, passed, details) => checks.push({
@@ -245,6 +246,56 @@ try {
       },
     );
   }
+
+  const playerNamesById = new Map(players.players.map((player) => [
+    String(player.sporteasyId),
+    player.displayName,
+  ]));
+  const objectiveAwardMetrics = {
+    top_scorer: { label: "meilleur buteur", key: "goals" },
+    top_assist_provider: { label: "meilleur passeur", key: "assists" },
+  };
+  const palmaresReconciliation = (officialPlayerAwards.awards ?? [])
+    .filter((award) => objectiveAwardMetrics[award.type])
+    .map((award) => {
+      const year = String(award.year);
+      const annual = secondary.calendarYears?.[year];
+      const metric = objectiveAwardMetrics[award.type];
+      const eligiblePlayers = Object.entries(annual?.players ?? {}).filter(([, analytics]) => (
+        Number.isFinite(analytics.primary?.matches)
+        && analytics.primary.matches >= (annual?.minimumMatches ?? 9)
+        && Number.isFinite(analytics.primary?.[metric.key])
+      ));
+      const maximum = eligiblePlayers.length
+        ? Math.max(...eligiblePlayers.map(([, analytics]) => analytics.primary[metric.key]))
+        : null;
+      const calculatedWinnerIds = maximum === null ? [] : eligiblePlayers
+        .filter(([, analytics]) => analytics.primary[metric.key] === maximum)
+        .map(([playerId]) => playerId);
+      const officialWinnerId = String(award.playerId);
+      return {
+        year: Number(award.year),
+        type: award.type,
+        label: metric.label,
+        officialWinner: {
+          playerId: officialWinnerId,
+          playerName: playerNamesById.get(officialWinnerId) ?? null,
+        },
+        calculatedWinners: calculatedWinnerIds.map((playerId) => ({
+          playerId,
+          playerName: playerNamesById.get(playerId) ?? null,
+        })),
+        value: maximum,
+        status: calculatedWinnerIds.includes(officialWinnerId) ? "matched" : "mismatch",
+      };
+    });
+  addCheck(
+    "calendar-palmares-reconciliation",
+    "Les meilleurs buteurs et passeurs annuels correspondent au palmarès officiel",
+    palmaresReconciliation.length > 0
+      && palmaresReconciliation.every((entry) => entry.status === "matched"),
+    { comparisons: palmaresReconciliation },
+  );
 
   const samples = SAMPLE_PLAYER_IDS.map((playerId) => {
     const player = players.players.find((item) => String(item.sporteasyId) === playerId);

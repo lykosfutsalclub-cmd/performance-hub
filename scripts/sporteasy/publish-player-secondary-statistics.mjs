@@ -10,10 +10,7 @@ const matchAuditFile = fileURLToPath(new URL("match-audit-report.json", privateR
 const secondaryAuditFile = fileURLToPath(new URL("player-secondary-audit-report.json", privateRoot));
 const primaryFiles = ["players-repository.json", "statistics-repository.json", "match-repository.json"]
   .map((name) => fileURLToPath(new URL(name, privateRoot)));
-const outputs = [
-  fileURLToPath(new URL("github-pages/player-secondary-data.js", root)),
-  fileURLToPath(new URL("sites-app/public/player-secondary-data.js", root)),
-];
+const outputs = [fileURLToPath(new URL("player-secondary-data.js", root))];
 
 function publicPartner(partner) {
   if (!partner) return null;
@@ -37,6 +34,7 @@ function publicAnalytics(analytics) {
     finishing: analytics.finishing,
     offensive: analytics.offensive,
     defensive: analytics.defensive,
+    teamContext: analytics.teamContext,
     collective: {
       bestWinningPartner: publicPartner(analytics.collective.bestWinningPartner),
       worstLosingPartner: publicPartner(analytics.collective.worstLosingPartner),
@@ -82,10 +80,23 @@ const payload = {
       ])),
     },
   ])),
+  calendarYears: Object.fromEntries(Object.entries(repository.calendarYears ?? {}).map(([year, period]) => [
+    year,
+    {
+      year: period.year,
+      minimumMatches: period.minimumMatches,
+      matchCount: period.matchCount,
+      playerAppearanceCount: period.playerAppearanceCount,
+      players: Object.fromEntries(Object.entries(period.players).map(([playerId, analytics]) => [
+        playerId,
+        publicAnalytics(analytics),
+      ])),
+    },
+  ])),
 };
 
 const javascript = `window.LYKOS_SECONDARY_STATS = ${JSON.stringify(payload)};\n`;
 await Promise.all(outputs.map((output) => writeFile(output, javascript, "utf8")));
 console.log("Statistiques secondaires publiques générées sans données de traçage privées.");
 console.log(`- Taille : ${Buffer.byteLength(javascript)} octets`);
-console.log("- Cibles : github-pages et application Sites");
+console.log("- Cible : dépôt public GitHub Pages de référence");

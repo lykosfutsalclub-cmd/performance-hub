@@ -340,6 +340,8 @@ export function calculatePeriodPerformanceRatings({
   minimumOverallMatches = periodKey === "current"
     ? SCORING_CONFIG.CURRENT_MIN_OVERALL_MATCHES
     : SCORING_CONFIG.MIN_OVERALL_MATCHES,
+  minimumRatingMatches = 0,
+  minimumBenchmarkMatches = 0,
 }) {
   const records = players.map((player) => {
     const playerId = String(player.sporteasyId);
@@ -352,6 +354,7 @@ export function calculatePeriodPerformanceRatings({
       position: normalizePosition(positionsById.get(playerId)),
       careerMatches,
       formerEligible,
+      ratingEligible: formerEligible && performanceMetrics.matchCount >= minimumRatingMatches,
       confidence: formerEligible
         ? (player.isCurrent ? sampleConfidence(performanceMetrics.matchCount) : 1)
         : null,
@@ -361,7 +364,9 @@ export function calculatePeriodPerformanceRatings({
       tenureSeasons: tenureSeasonsByPlayer.get(playerId) ?? 1,
     };
   });
-  const eligibleRecords = records.filter((record) => record.formerEligible);
+  const eligibleRecords = records.filter((record) =>
+    record.formerEligible && record.performanceMetrics.matchCount >= minimumBenchmarkMatches,
+  );
   const averageRatingPopulation = finiteValues(eligibleRecords, (record) => record.averageMatchRating);
   const manOfTheMatchTotalPopulation = finiteValues(eligibleRecords, (record) => record.manOfTheMatch.total);
   const manOfTheMatchRatePopulation = finiteValues(
@@ -382,9 +387,9 @@ export function calculatePeriodPerformanceRatings({
       confidence: record.confidence,
       rankings: { creation: null, finishing: null, offensive: null, defensive: null, overall: null },
     };
-    if (!record.formerEligible) {
+    if (!record.formerEligible || !record.ratingEligible) {
       record.performance = { ...emptyPerformance, confidence: null };
-      record.trace = { reason: "former-player-under-minimum-career-matches", performanceMetrics: record.performanceMetrics, blocks: {}, overall: { rating: null, baseRating: null, awardBonus: 0, rawAwardBonus: 0, tenureBonus: 0, tenureSeasons: record.tenureSeasons, manOfTheMatchBonus: 0, awards: [], availableWeight: 0, usedBlocks: [] } };
+      record.trace = { reason: !record.formerEligible ? "former-player-under-minimum-career-matches" : "period-under-minimum-matches", performanceMetrics: record.performanceMetrics, blocks: {}, overall: { rating: null, baseRating: null, awardBonus: 0, rawAwardBonus: 0, tenureBonus: 0, tenureSeasons: record.tenureSeasons, manOfTheMatchBonus: 0, awards: [], availableWeight: 0, usedBlocks: [] } };
       continue;
     }
     const blockResults = Object.fromEntries(

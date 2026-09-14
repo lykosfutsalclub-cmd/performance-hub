@@ -1,3 +1,4 @@
 data/private/
+.env
 github-pages/
 sites-app/

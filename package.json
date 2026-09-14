@@ -1,0 +1,32 @@
+{
+  "name": "dashboard-lykos-fc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Outils techniques locaux pour préparer le dashboard Lykos FC.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "sporteasy:test": "node --env-file-if-exists=.env scripts/sporteasy/test-connection.mjs",
+    "sporteasy:capture": "node --env-file-if-exists=.env scripts/sporteasy/capture-readonly.mjs",
+    "sporteasy:extract": "node scripts/extract-sporteasy-api.mjs webapp-sporteasy.js",
+    "sporteasy:sync-players": "node --env-file-if-exists=.env scripts/sporteasy/sync-players.mjs",
+    "sporteasy:capture-stats": "node --env-file-if-exists=.env scripts/sporteasy/capture-statistics-sources.mjs",
+    "sporteasy:capture-stats-details": "node --env-file-if-exists=.env scripts/sporteasy/capture-statistics-details.mjs",
+    "sporteasy:capture-stats-aggregate": "node --env-file-if-exists=.env scripts/sporteasy/capture-statistics-aggregate.mjs",
+    "sporteasy:capture-event-samples": "node --env-file-if-exists=.env scripts/sporteasy/capture-event-statistics-samples.mjs",
+    "sporteasy:capture-events-all": "node --env-file-if-exists=.env scripts/sporteasy/capture-event-statistics-all.mjs",
+    "sporteasy:capture-event-details": "node --env-file-if-exists=.env scripts/sporteasy/capture-event-details-all.mjs",
+    "sporteasy:capture-match-ui": "node --env-file-if-exists=.env scripts/sporteasy/capture-match-ui-api-equivalent.mjs",
+    "sporteasy:build-stats": "node scripts/sporteasy/build-statistics-repository.mjs",
+    "sporteasy:build-matches": "node scripts/sporteasy/build-match-repository.mjs",
+    "sporteasy:build-secondary-stats": "node scripts/sporteasy/build-player-secondary-statistics.mjs",
+    "sporteasy:audit-secondary-stats": "node scripts/sporteasy/audit-player-secondary-statistics.mjs",
+    "sporteasy:publish-secondary-stats": "node scripts/sporteasy/publish-player-secondary-statistics.mjs",
+    "sporteasy:build-team-dashboard": "node scripts/sporteasy/build-team-dashboard-data.mjs",
+    "sporteasy:refresh-derived": "node scripts/sporteasy/build-statistics-repository.mjs && node scripts/sporteasy/build-match-repository.mjs && node scripts/sporteasy/build-player-secondary-statistics.mjs && node scripts/sporteasy/audit-player-secondary-statistics.mjs",
+    "sporteasy:audit-matches": "node scripts/sporteasy/audit-match-repository.mjs",
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}

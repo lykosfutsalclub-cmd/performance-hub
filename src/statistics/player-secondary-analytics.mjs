@@ -1,5 +1,6 @@
 import { calculatePeriodPerformanceRatings } from "../performance/performance-engine.mjs";
 import { SCORING_CONFIG } from "../performance/scoring-config.mjs";
+import { calculateMatchTeamForm } from "../team/team-form.mjs";
 
 const PRESENT_STATUSES = new Set(["on_time", "late", "present"]);
 const PERFORMANCE_KEYS = new Set([
@@ -14,6 +15,7 @@ const PERFORMANCE_KEYS = new Set([
 export const DEFAULT_ANALYTICS_CONFIG = Object.freeze({
   MIN_MATCHS_ENSEMBLE: 5,
   MIN_MATCHES_FOR_RATE_RANKING: 5,
+  MIN_MATCHES_CALENDAR_YEAR: 9,
   RECENT_APPEARANCES: 5,
 });
 
@@ -139,6 +141,15 @@ function normalizeMatch(match) {
     participationEvidence,
     playerDetails,
     teamAssists,
+    startAt: match.startAt,
+    day: String(match.startAt ?? "").slice(0, 10),
+    opponent: match.opponent ?? {},
+    score: {
+      team: asFiniteNumber(match.score?.team),
+      opponent: asFiniteNumber(match.score?.opponent),
+    },
+    eventRating: match.eventRating ?? null,
+    playerStatistics: match.playerStatistics ?? [],
   };
 }
 
@@ -305,16 +316,19 @@ function primaryForPlayer(period, playerId, appearances, recoveredEventIds = new
   );
   const recoveredAppearances = appearances.filter((appearance) => recoveredEventIds.has(appearance.eventId));
   const supplement = (key) => sum(recoveredAppearances.map((appearance) => appearance[key] ?? 0));
-  const withSupplement = (key, addition) => {
+  const withSupplement = (key, addition, detailedFallback) => {
     const official = metricValue(period, playerId, key);
-    return official === null ? null : official + addition;
+    return official === null ? detailedFallback : official + addition;
   };
+  const goals = appearances.map((appearance) => appearance.goals);
+  const assists = appearances.map((appearance) => appearance.assists);
+  const grades = appearances.map((appearance) => appearance.grade).filter(Number.isFinite);
   return {
-    matches: withSupplement("matchesPlayed", recoveredAppearances.length),
-    goals: withSupplement("goals", supplement("goals")),
-    assists: withSupplement("assists", supplement("assists")),
-    manOfTheMatch: withSupplement("manOfMatch", supplement("manOfMatch")),
-    averageRating: metricValue(period, playerId, "gradeAverage"),
+    matches: withSupplement("matchesPlayed", recoveredAppearances.length, appearances.length),
+    goals: withSupplement("goals", supplement("goals"), completeValues(goals) ? sum(goals) : null),
+    assists: withSupplement("assists", supplement("assists"), completeValues(assists) ? sum(assists) : null),
+    manOfTheMatch: withSupplement("manOfMatch", supplement("manOfMatch"), sum(appearances.map((appearance) => appearance.manOfMatch === 1 ? 1 : 0))),
+    averageRating: metricValue(period, playerId, "gradeAverage") ?? (grades.length ? sum(grades) / grades.length : null),
     detailedAppearanceCount: appearances.length,
     detailedResults: {
       wins: completedOutcomes.filter((appearance) => appearance.outcome === "victory").length,
@@ -323,6 +337,68 @@ function primaryForPlayer(period, playerId, appearances, recoveredEventIds = new
       matchesWithKnownOutcome: completedOutcomes.length,
       coverage: completedOutcomes.length === appearances.length ? "complete" : "partial",
     },
+  };
+}
+
+function primaryFromAppearances(appearances) {
+  const completedOutcomes = appearances.filter((appearance) =>
+    new Set(["victory", "tie", "defeat"]).has(appearance.outcome),
+  );
+  const goals = appearances.map((appearance) => appearance.goals);
+  const assists = appearances.map((appearance) => appearance.assists);
+  const grades = appearances.map((appearance) => appearance.grade).filter(Number.isFinite);
+  return {
+    matches: appearances.length,
+    goals: completeValues(goals) ? sum(goals) : null,
+    assists: completeValues(assists) ? sum(assists) : null,
+    manOfTheMatch: sum(appearances.map((appearance) => appearance.manOfMatch === 1 ? 1 : 0)),
+    averageRating: grades.length ? sum(grades) / grades.length : null,
+    detailedAppearanceCount: appearances.length,
+    detailedResults: {
+      wins: completedOutcomes.filter((appearance) => appearance.outcome === "victory").length,
+      draws: completedOutcomes.filter((appearance) => appearance.outcome === "tie").length,
+      losses: completedOutcomes.filter((appearance) => appearance.outcome === "defeat").length,
+      matchesWithKnownOutcome: completedOutcomes.length,
+      coverage: completedOutcomes.length === appearances.length ? "complete" : "partial",
+    },
+  };
+}
+
+function buildTeamFormByEvent(periodMatches, historyMatches) {
+  return new Map(periodMatches.map((match) => {
+    const previousMatches = historyMatches.filter((candidate) => String(candidate.date) < String(match.date));
+    return [match.eventId, calculateMatchTeamForm(match, previousMatches)];
+  }));
+}
+
+function teamContextAxis(periodMatches, appearances, teamFormByEvent) {
+  const appearanceIds = new Set(appearances.map((appearance) => appearance.eventId));
+  const matchesWithKnownLineup = periodMatches.filter((match) => match.participants.size > 0);
+  const withPlayer = matchesWithKnownLineup.filter((match) => appearanceIds.has(match.eventId));
+  const withoutPlayer = matchesWithKnownLineup.filter((match) => !appearanceIds.has(match.eventId));
+  const average = (matches, valueOf) => {
+    const values = matches.map(valueOf).filter(Number.isFinite);
+    return { value: values.length ? sum(values) / values.length : null, sample: values.length };
+  };
+  const coachWith = average(withPlayer, (match) => asFiniteNumber(match.eventRating?.average));
+  const coachWithout = average(withoutPlayer, (match) => asFiniteNumber(match.eventRating?.average));
+  const formWith = average(withPlayer, (match) => teamFormByEvent.get(match.eventId)?.value);
+  const formWithout = average(withoutPlayer, (match) => teamFormByEvent.get(match.eventId)?.value);
+  const metron = (form) => form.value === null ? null : Math.min(99, Math.max(1, Math.round(1 + 98 * form.value / 100)));
+  return {
+    coachRatingWithPlayer: coachWith.value,
+    coachRatingWithoutPlayer: coachWithout.value,
+    teamMetronWithPlayer: metron(formWith),
+    teamMetronWithoutPlayer: metron(formWithout),
+    matchesWithPlayer: withPlayer.length,
+    matchesWithoutPlayer: withoutPlayer.length,
+    coachRatedMatchesWithPlayer: coachWith.sample,
+    coachRatedMatchesWithoutPlayer: coachWithout.sample,
+    teamMetronMatchesWithPlayer: formWith.sample,
+    teamMetronMatchesWithoutPlayer: formWithout.sample,
+    coachRatingScaleMax: 6,
+    teamMetronScaleMax: 99,
+    periodMatchesWithKnownLineup: matchesWithKnownLineup.length,
   };
 }
 
@@ -358,7 +434,7 @@ function axisFromValues({ total, matches, values, teamTotals, recentCount }) {
 
 function defensiveAxis(periodMatches, appearances) {
   const scoredPeriodMatches = periodMatches.filter(
-    (match) => Number.isFinite(match.goalsFor) && Number.isFinite(match.goalsAgainst),
+    (match) => match.participants.size > 0 && Number.isFinite(match.goalsFor) && Number.isFinite(match.goalsAgainst),
   );
   const scoredAppearances = appearances.filter((appearance) => Number.isFinite(appearance.goalsAgainst));
   const appearanceIds = new Set(appearances.map((appearance) => appearance.eventId));
@@ -639,7 +715,7 @@ function validationForPlayer({ primary, creation, finishing, offensive, collecti
   return issues;
 }
 
-function buildPlayerPeriod({ player, period, periodMatches, playersById, config, recoveredEventIds = new Set() }) {
+function buildPlayerPeriod({ player, period, periodMatches, playersById, config, recoveredEventIds = new Set(), derivePrimary = false, teamFormByEvent = new Map() }) {
   const playerId = String(player.sporteasyId);
   const appearances = periodMatches
     .filter((match) => match.participants.has(playerId))
@@ -658,7 +734,9 @@ function buildPlayerPeriod({ player, period, periodMatches, playersById, config,
       manOfMatch: match.playerDetails[playerId]?.manOfMatch ?? 0,
     }))
     .sort((left, right) => String(left.date).localeCompare(String(right.date)));
-  const primary = primaryForPlayer(period, playerId, appearances, recoveredEventIds);
+  const primary = derivePrimary
+    ? primaryFromAppearances(appearances)
+    : primaryForPlayer(period, playerId, appearances, recoveredEventIds);
   const goalsValues = appearances.map((appearance) => appearance.goals);
   const assistsValues = appearances.map((appearance) => appearance.assists);
   const teamGoalValues = appearances.map((appearance) => appearance.goalsFor);
@@ -725,6 +803,7 @@ function buildPlayerPeriod({ player, period, periodMatches, playersById, config,
     periodMatches,
     playersById,
   });
+  const teamContext = teamContextAxis(periodMatches, appearances, teamFormByEvent);
   const issues = validationForPlayer({ primary, creation, finishing, offensive, collective, appearances });
 
   return {
@@ -738,6 +817,7 @@ function buildPlayerPeriod({ player, period, periodMatches, playersById, config,
     offensive,
     defensive,
     collective,
+    teamContext,
     rankings: {},
     trace: {
       primarySource: "SportEasy stats/all/players + verified played cancelled matches",
@@ -778,7 +858,8 @@ function assignRanking(playerPeriods, key, valueOf, eligible) {
 }
 
 function addRankings(playerPeriods, config) {
-  const all = () => true;
+  const all = (analytics) => Number.isFinite(analytics.primary.matches)
+    && analytics.primary.matches >= (config.MIN_MATCHES_FOR_TOTAL_RANKING ?? 0);
   const rateEligible = (analytics) =>
     Number.isFinite(analytics.primary.matches) && analytics.primary.matches >= config.MIN_MATCHES_FOR_RATE_RANKING;
   assignRanking(playerPeriods, "goals", (analytics) => analytics.primary.goals, all);
@@ -843,6 +924,7 @@ export function buildPlayerSecondaryRepository({
       new Set((player.seasonIds ?? []).map(String).filter((seasonId) => seasonsKnownByPeriod.has(seasonId))).size,
     ]));
     const periodMatches = normalizedMatches.filter((match) => seasonSet.has(match.seasonId));
+    const teamFormByEvent = buildTeamFormByEvent(periodMatches, normalizedMatches);
     const playerPeriods = players.map((player) => ({
       playerId: String(player.sporteasyId),
       playerName: player.displayName,
@@ -855,6 +937,7 @@ export function buildPlayerSecondaryRepository({
         recoveredEventIds: new Set(
           periodMatches.filter((match) => recoveredMatchesByEvent.has(match.eventId)).map((match) => match.eventId),
         ),
+        teamFormByEvent,
       }),
     }));
     addRankings(playerPeriods, config);
@@ -864,15 +947,14 @@ export function buildPlayerSecondaryRepository({
       players,
       positionsById,
       careerMatchesByPlayer,
-      averageRatingsByPlayer: new Map(players.map((player) => [
-        String(player.sporteasyId),
-        metricValue(primaryPeriod, String(player.sporteasyId), "gradeAverage"),
+      averageRatingsByPlayer: new Map(playerPeriods.map(({ playerId, analytics }) => [
+        playerId,
+        analytics.primary.averageRating,
       ])),
-      manOfTheMatchByPlayer: new Map(players.map((player) => {
-        const playerId = String(player.sporteasyId);
+      manOfTheMatchByPlayer: new Map(playerPeriods.map(({ playerId, analytics }) => {
         return [playerId, {
-          total: metricValue(primaryPeriod, playerId, "manOfMatch"),
-          matches: metricValue(primaryPeriod, playerId, "matchesPlayed"),
+          total: analytics.primary.manOfTheMatch,
+          matches: analytics.primary.matches,
         }];
       })),
       tenureSeasonsByPlayer,
@@ -907,8 +989,93 @@ export function buildPlayerSecondaryRepository({
     };
   }
 
-  const errorCount = Object.values(periods).reduce((total, period) => total + period.validation.errorCount, 0);
-  const warningCount = Object.values(periods).reduce((total, period) => total + period.validation.warningCount, 0);
+  const calendarYears = {};
+  const years = [...new Set(normalizedMatches
+    .map((match) => Number(String(match.date ?? "").slice(0, 4)))
+    .filter(Number.isInteger))].sort((left, right) => left - right);
+  for (const year of years) {
+    const periodMatches = normalizedMatches.filter((match) => Number(String(match.date ?? "").slice(0, 4)) === year);
+    const teamFormByEvent = buildTeamFormByEvent(periodMatches, normalizedMatches);
+    const annualRankingConfig = {
+      ...config,
+      MIN_MATCHES_FOR_TOTAL_RANKING: config.MIN_MATCHS_CALENDAR_YEAR,
+      MIN_MATCHES_FOR_RATE_RANKING: config.MIN_MATCHS_CALENDAR_YEAR,
+    };
+    const playerPeriods = players.map((player) => ({
+      playerId: String(player.sporteasyId),
+      playerName: player.displayName,
+      analytics: buildPlayerPeriod({
+        player,
+        period: null,
+        periodMatches,
+        playersById,
+        config,
+        derivePrimary: true,
+        teamFormByEvent,
+      }),
+    }));
+    addRankings(playerPeriods, annualRankingConfig);
+    const averageRatingsByPlayer = new Map(playerPeriods.map(({ playerId, analytics }) => [
+      playerId,
+      analytics.primary.averageRating,
+    ]));
+    const manOfTheMatchByPlayer = new Map(playerPeriods.map(({ playerId, analytics }) => [
+      playerId,
+      { total: analytics.primary.manOfTheMatch, matches: analytics.primary.matches },
+    ]));
+    const tenureSeasonsByPlayer = new Map(players.map((player) => {
+      const playerId = String(player.sporteasyId);
+      const seasonIds = new Set(normalizedMatches
+        .filter((match) => Number(String(match.date ?? "").slice(0, 4)) <= year && match.participants.has(playerId))
+        .map((match) => match.seasonId));
+      return [playerId, Math.max(1, seasonIds.size)];
+    }));
+    const awardsByPlayer = new Map(Object.entries(calendarYearAwards.byPlayer).map(([playerId, awards]) => [
+      playerId,
+      awards.filter((award) => award.year === year),
+    ]));
+    const performanceRatings = calculatePeriodPerformanceRatings({
+      periodKey: `calendar-${year}`,
+      periodMatches,
+      players,
+      positionsById,
+      careerMatchesByPlayer,
+      averageRatingsByPlayer,
+      manOfTheMatchByPlayer,
+      tenureSeasonsByPlayer,
+      awardsByPlayer,
+      minimumOverallMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+      minimumRatingMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+      minimumBenchmarkMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+    });
+    for (const playerPeriod of playerPeriods) {
+      const score = performanceRatings.players[playerPeriod.playerId];
+      playerPeriod.analytics.performance = score.performance;
+      playerPeriod.analytics.performanceTrace = score.trace;
+    }
+    const rawIssues = playerPeriods.flatMap(({ playerId, analytics }) =>
+      analytics.trace.issues.map((issue) => ({ playerId, ...issue })),
+    );
+    const issues = [...rawIssues, ...performanceRatings.validation.issues];
+    calendarYears[String(year)] = {
+      year,
+      minimumMatches: config.MIN_MATCHES_CALENDAR_YEAR,
+      matchCount: periodMatches.length,
+      playerAppearanceCount: playerPeriods.reduce((total, { analytics }) => total + analytics.primary.matches, 0),
+      players: Object.fromEntries(playerPeriods.map(({ playerId, analytics }) => [playerId, analytics])),
+      validation: {
+        status: issues.some((issue) => issue.severity === "error") ? "invalid" : "valid",
+        errorCount: issues.filter((issue) => issue.severity === "error").length,
+        warningCount: issues.filter((issue) => issue.severity === "warning").length,
+        issues,
+      },
+      performanceValidation: performanceRatings.validation,
+    };
+  }
+
+  const allCalculatedPeriods = [...Object.values(periods), ...Object.values(calendarYears)];
+  const errorCount = allCalculatedPeriods.reduce((total, period) => total + period.validation.errorCount, 0);
+  const warningCount = allCalculatedPeriods.reduce((total, period) => total + period.validation.warningCount, 0);
   return {
     metadata: {
       ratingSystem: "Metron",
@@ -937,6 +1104,8 @@ export function buildPlayerSecondaryRepository({
         overallRating: "Metron role weights total 85% across creation + finishing + defensive ratings, plus 15% SportEasy average match rating when available; offensive excluded to prevent double counting",
         overallWithoutPosition: "missing position uses midfielder weights: creation 40%, finishing 22.5%, defensive 22.5%, plus 15% grade; available from 10 matches in the selected period",
         calendarYearAwards: "official club awards for 2023 through 2025; no award for 2022 or earlier",
+        calendarYearStatistics: "match-by-match calendar-year reconstruction; raw totals from one appearance, rankings, percentiles and Metron ratings from 9 appearances",
+        playerTeamContext: "coach team rating /6 and Metron team-performance average compared across matches with and without the player",
         awardBonus: "top scorer +2, top assist provider +2, player of the year +4; cumulative bonus uncapped and final rating capped at 99",
         collectiveEligibility: "all collective relationships use teammates whose matches together are at least the player's average matches together per teammate",
         favoriteLineupCompletion: "average-eligible partners first; if fewer than four qualify, fill remaining slots with the best win rates among the other recorded partners",
@@ -944,6 +1113,7 @@ export function buildPlayerSecondaryRepository({
       },
     },
     calendarYearAwards,
+    calendarYears,
     primeByPlayer,
     periods,
   };

@@ -77,14 +77,14 @@ try {
         goals: recoveredRows.reduce((total, row) => total + (Number(row.metrics?.player_goals) || 0), 0),
         assists: recoveredRows.reduce((total, row) => total + (Number(row.metrics?.player_assists) || 0), 0),
       };
-      const recoveredExpected = (key, addition) => {
+      const recoveredExpected = (key, addition, detailedFallback) => {
         const official = rawMetric(primaryPeriod, playerId, key);
-        return official === null ? null : official + addition;
+        return official === null ? detailedFallback : official + addition;
       };
       const expected = {
-        matches: recoveredExpected("matchesPlayed", supplement.matches),
-        goals: recoveredExpected("goals", supplement.goals),
-        assists: recoveredExpected("assists", supplement.assists),
+        matches: recoveredExpected("matchesPlayed", supplement.matches, analytics.primary.detailedAppearanceCount),
+        goals: recoveredExpected("goals", supplement.goals, analytics.primary.goals),
+        assists: recoveredExpected("assists", supplement.assists, analytics.primary.assists),
       };
       const actual = analytics.primary;
       const ratings = [

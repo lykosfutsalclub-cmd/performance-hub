@@ -10,7 +10,10 @@ const matchAuditFile = fileURLToPath(new URL("match-audit-report.json", privateR
 const secondaryAuditFile = fileURLToPath(new URL("player-secondary-audit-report.json", privateRoot));
 const primaryFiles = ["players-repository.json", "statistics-repository.json", "match-repository.json"]
   .map((name) => fileURLToPath(new URL(name, privateRoot)));
-const outputs = [fileURLToPath(new URL("player-secondary-data.js", root))];
+const outputs = [
+  fileURLToPath(new URL("player-secondary-data.js", root)),
+  fileURLToPath(new URL("github-pages/player-secondary-data.js", root)),
+];
 
 function publicPartner(partner) {
   if (!partner) return null;

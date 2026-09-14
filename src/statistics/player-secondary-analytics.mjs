@@ -1125,6 +1125,9 @@ export function buildPlayerSecondaryRepository({
     });
     const issues = [...annualMatchIssues, ...rawIssues, ...performanceRatings.validation.issues];
     const eligiblePlayerCount = playerPeriods.filter(
+      ({ analytics }) => analytics.rankings.goals !== null,
+    ).length;
+    const ratedPlayerCount = playerPeriods.filter(
       ({ analytics }) => Number.isFinite(analytics.performance.overall),
     ).length;
     calendarYears[String(year)] = {
@@ -1133,6 +1136,7 @@ export function buildPlayerSecondaryRepository({
       matchCount: periodMatches.length,
       playerAppearanceCount: playerPeriods.reduce((total, { analytics }) => total + analytics.primary.matches, 0),
       eligiblePlayerCount,
+      ratedPlayerCount,
       reconciliation: {
         status: issues.some((issue) => issue.severity === "error") ? "invalid" : "verified",
         uniqueMatchCount: periodMatches.length,

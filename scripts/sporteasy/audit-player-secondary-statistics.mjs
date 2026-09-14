@@ -220,9 +220,10 @@ try {
     for (const [playerId, analytics] of annualPlayers) {
       const appearances = analytics.primary.matches;
       const rated = Number.isFinite(analytics.performance.overall);
-      if ((appearances >= 9) !== rated) failures.push(`eligibility:${playerId}`);
+      if (appearances < 9 && rated) failures.push(`rating-under-nine:${playerId}`);
       const rankedValues = Object.values(analytics.rankings ?? {}).filter(Boolean);
       if (appearances < 9 && rankedValues.length > 0) failures.push(`ranking-under-nine:${playerId}`);
+      if (appearances >= 9 && analytics.rankings?.goals === null) failures.push(`eligible-player-not-ranked:${playerId}`);
       if (!sameNumber(
         analytics.offensive.contributions,
         analytics.primary.goals === null || analytics.primary.assists === null

@@ -88,6 +88,7 @@ const payload = {
       matchCount: period.matchCount,
       playerAppearanceCount: period.playerAppearanceCount,
       eligiblePlayerCount: period.eligiblePlayerCount,
+      ratedPlayerCount: period.ratedPlayerCount,
       reconciliation: period.reconciliation,
       players: Object.fromEntries(Object.entries(period.players).map(([playerId, analytics]) => [
         playerId,

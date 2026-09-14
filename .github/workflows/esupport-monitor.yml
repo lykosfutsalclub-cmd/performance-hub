@@ -7,12 +7,10 @@ on:
     # Léonard vérifie chaque heure si ses quatre sources sont enfin complètes.
     # La vérification reste silencieuse et ne crée aucune mission si une donnée manque.
     - cron: "37 * * * *"
-    # Deux créneaux UTC couvrent minuit à Paris toute l’année ; le contrôle
-    # Europe/Paris ci-dessous n’en exécute qu’un seul.
-    - cron: "7 22 * * *"
+    # Créneaux de départ souhaités. Un lancement retardé par GitHub s’exécute
+    # quand même : l’heure ne constitue jamais une condition d’annulation.
     - cron: "7 23 * * *"
-    # Rapport de synthèse chaque lundi et jeudi à 07 h 17 à Paris.
-    - cron: "17 5 * * 1,4"
+    # Rapport de synthèse chaque lundi et jeudi, autour de 07 h à Paris.
     - cron: "17 6 * * 1,4"
   workflow_dispatch:
 
@@ -54,7 +52,7 @@ jobs:
   chaine-esupport:
     name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 120
     steps:
       - name: Déterminer la mission eSupport
         id: mission
@@ -63,19 +61,14 @@ jobs:
           script: |
             const isManual = context.eventName === "workflow_dispatch";
             const isPush = context.eventName === "push";
-            const parisHour = new Intl.DateTimeFormat("fr-FR", {
-              timeZone:"Europe/Paris", hour:"2-digit", hourCycle:"h23",
-            }).format(new Date());
-            const parisWeekday = new Intl.DateTimeFormat("en-US", {
-              timeZone:"Europe/Paris", weekday:"short",
-            }).format(new Date());
-            const daily = parisHour === "00";
-            const digest = ["Mon", "Thu"].includes(parisWeekday) && parisHour === "07";
+            const scheduledCron = context.payload.schedule || "";
+            const daily = scheduledCron === "7 23 * * *";
+            const digest = scheduledCron === "17 6 * * 1,4";
             const active = isManual || isPush || daily || digest;
             core.setOutput("active", String(active));
             core.setOutput("sync", String(isManual || daily));
             core.setOutput("mode", digest ? "digest" : isPush ? "release" : isManual ? "manual" : "daily");
-            if (!active) core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
+            if (!active) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
 
       - name: Récupérer le Performance Hub
         if: steps.mission.outputs.active == 'true'
@@ -199,31 +192,19 @@ jobs:
             }
             throw new Error("La version publique n’a pas confirmé la synchronisation dans le délai prévu.");
 
-      - name: Vérifier l’heure de Paris puis lancer le contrôle privé
+      - name: Lancer le contrôle privé prévu
         if: steps.mission.outputs.active == 'true'
         uses: actions/github-script@v8
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
+          ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
         with:
           script: |
-            const isManual = context.eventName === "workflow_dispatch";
-            const isPush = context.eventName === "push";
-            const parisHour = new Intl.DateTimeFormat("fr-FR", {
-              timeZone: "Europe/Paris",
-              hour: "2-digit",
-              hourCycle: "h23",
-            }).format(new Date());
-            const parisWeekday = new Intl.DateTimeFormat("en-US", {
-              timeZone: "Europe/Paris",
-              weekday: "short",
-            }).format(new Date());
-            const isDigestWindow = ["Mon", "Thu"].includes(parisWeekday) && parisHour === "07";
-            const isDailyWindow = parisHour === "00";
-            if (!isManual && !isPush && !isDailyWindow && !isDigestWindow) {
-              core.notice(`Créneau ignoré : il est ${parisHour} h à Paris.`);
+            const mode = process.env.ESTAFF_MODE;
+            if (!["daily", "digest", "release", "manual"].includes(mode)) {
+              core.setFailed("Mode eSupport absent ou invalide.");
               return;
             }
-            const mode = isDigestWindow ? "digest" : isPush ? "release" : isManual ? "manual" : "daily";
 
             const identity = await core.getIDToken("lykos-estaff-esupport");
             const response = await fetch(process.env.ESTAFF_SERVICE_URL, {

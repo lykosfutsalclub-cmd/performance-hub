@@ -11,7 +11,7 @@
         { "profileId": "5767725", "playerName": "Dylan Perier", "metrics": { "presence": "on_time", "player_goals": 6, "player_assists": 3, "man_of_event": true } },
         { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 3, "man_of_event": false } },
         { "profileId": "3687303", "playerName": "Gabriel Perals", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": false } },
-        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 6, "player_assists": 2, "man_of_event": true } },
+        { "profileId": "3687304", "playerName": "Hugo Barranco", "metrics": { "presence": "on_time", "player_goals": 6, "player_assists": 2, "man_of_event": true } },
         { "profileId": "5767549", "playerName": "Quentin Souberan", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 2, "man_of_event": false } }
       ]
     },
@@ -21,7 +21,7 @@
         { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 1, "man_of_event": true } },
         { "profileId": "5767725", "playerName": "Dylan Perier", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 3, "man_of_event": false } },
         { "profileId": "3687373", "playerName": "Florian Mathieu", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 0, "man_of_event": false } },
-        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 3, "man_of_event": false } }
+        { "profileId": "3687304", "playerName": "Hugo Barranco", "metrics": { "presence": "on_time", "player_goals": 1, "player_assists": 3, "man_of_event": false } }
       ]
     },
     {
@@ -29,7 +29,7 @@
       "playerStatistics": [
         { "profileId": "3687294", "playerName": "Antoine Didron", "metrics": { "presence": "on_time", "player_goals": 7, "player_assists": 4, "man_of_event": false } },
         { "profileId": "3687303", "playerName": "Gabriel Perals", "metrics": { "presence": "on_time", "player_goals": 0, "player_assists": 0, "man_of_event": true } },
-        { "profileId": "3687304", "playerName": "Hugo BARRANCO", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 3, "man_of_event": false } },
+        { "profileId": "3687304", "playerName": "Hugo Barranco", "metrics": { "presence": "on_time", "player_goals": 5, "player_assists": 3, "man_of_event": false } },
         { "profileId": "5767549", "playerName": "Quentin Souberan", "metrics": { "presence": "on_time", "player_goals": 2, "player_assists": 3, "man_of_event": false } }
       ]
     },

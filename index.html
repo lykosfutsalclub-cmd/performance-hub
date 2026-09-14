@@ -522,13 +522,27 @@
     #lykos-dashboard-preview .lykos-pantheon-period { display:flex; padding:4px; border:1px solid rgba(151,185,221,.2); border-radius:999px; background:rgba(4,22,52,.72); }
     #lykos-dashboard-preview .lykos-pantheon-period button { min-height:38px; padding:0 18px; border:0; border-radius:999px; background:transparent; color:#9bb2ca; font-size:10px; font-weight:800; cursor:pointer; }
     #lykos-dashboard-preview .lykos-pantheon-period button[aria-pressed="true"] { background:var(--lykos-yellow); color:var(--lykos-navy); box-shadow:0 7px 22px rgba(208,182,49,.2); }
+    #lykos-dashboard-preview .lykos-pantheon-period-select { position:relative; min-width:230px; }
+    #lykos-dashboard-preview .lykos-pantheon-period-select::after { content:"⌄"; position:absolute; right:14px; top:50%; color:var(--lykos-yellow); transform:translateY(-58%); pointer-events:none; }
+    #lykos-dashboard-preview .lykos-pantheon-period-select select { width:100%; min-height:48px; padding:0 38px 0 15px; appearance:none; border:1px solid rgba(208,182,49,.45); border-radius:14px; outline:0; background:#0a2857; color:#fff; font:700 11px/1 inherit; cursor:pointer; }
+    #lykos-dashboard-preview .lykos-pantheon-period-select select:focus-visible { box-shadow:0 0 0 3px rgba(208,182,49,.22); }
     #lykos-dashboard-preview .lykos-pantheon-month { position:relative; min-width:180px; }
     #lykos-dashboard-preview .lykos-pantheon-month::after { content:"⌄"; position:absolute; right:14px; top:50%; color:var(--lykos-yellow); transform:translateY(-58%); pointer-events:none; }
     #lykos-dashboard-preview .lykos-pantheon-month select { width:100%; min-height:48px; padding:0 38px 0 15px; appearance:none; border:1px solid rgba(208,182,49,.45); border-radius:14px; outline:0; background:#0a2857; color:#fff; font:700 11px/1 inherit; cursor:pointer; }
     #lykos-dashboard-preview .lykos-pantheon-month select:focus-visible { box-shadow:0 0 0 3px rgba(208,182,49,.22); }
     #lykos-dashboard-preview .lykos-pantheon-context { display:flex; justify-content:space-between; align-items:center; gap:14px; margin:22px 0 13px; }
+    #lykos-dashboard-preview .lykos-pantheon-context-copy { display:grid; gap:5px; }
     #lykos-dashboard-preview .lykos-pantheon-context strong { color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:23px; letter-spacing:.03em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-pantheon-context span { color:#8fa8c1; font-size:10px; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average { display:grid; grid-template-columns:auto auto; grid-template-rows:auto auto; gap:2px 10px; align-items:center; min-width:190px; padding:11px 13px; border:1px solid rgba(151,185,221,.22); border-radius:14px; background:rgba(4,22,52,.78); }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > span { grid-column:1; color:#9bb2ca; font-size:8px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b { grid-column:2; grid-row:1/-1; min-width:48px; padding:9px 8px; border-radius:10px; background:#68829e; color:#fff; font-size:20px; line-height:1; text-align:center; font-variant-numeric:tabular-nums; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b[data-level="excellent"] { background:#22c55e; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b[data-level="good"] { background:#84cc16; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b[data-level="average"] { background:#facc15; color:#071b3d; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b[data-level="low"] { background:#f97316; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > b[data-level="very-low"] { background:#ef4444; }
+    #lykos-dashboard-preview .lykos-pantheon-metron-average > small { grid-column:1; color:#7894b2; font-size:8px; }
     #lykos-dashboard-preview .lykos-pantheon-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
     #lykos-dashboard-preview .lykos-record { position:relative; min-height:220px; padding:20px; overflow:hidden; background:linear-gradient(145deg,rgba(15,51,99,.92),rgba(4,22,52,.94)); }
     #lykos-dashboard-preview .lykos-record::after { content:""; position:absolute; right:-45px; bottom:-60px; width:150px; height:150px; border:1px solid rgba(208,182,49,.15); border-radius:50%; box-shadow:0 0 0 22px rgba(208,182,49,.035),0 0 0 48px rgba(208,182,49,.025); }
@@ -802,9 +816,11 @@
       #lykos-dashboard-preview .lykos-pantheon-controls { width:100%; align-items:stretch; flex-direction:column; }
       #lykos-dashboard-preview .lykos-pantheon-period { width:100%; }
       #lykos-dashboard-preview .lykos-pantheon-period button { flex:1; min-height:44px; padding:0 10px; }
+      #lykos-dashboard-preview .lykos-pantheon-period-select { width:100%; min-width:0; }
       #lykos-dashboard-preview .lykos-pantheon-month { width:100%; }
       #lykos-dashboard-preview .lykos-pantheon-context { align-items:flex-start; flex-direction:column; margin-top:18px; }
       #lykos-dashboard-preview .lykos-pantheon-context strong { font-size:20px; }
+      #lykos-dashboard-preview .lykos-pantheon-metron-average { width:100%; }
       #lykos-dashboard-preview .lykos-pantheon-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:0; padding:0; overflow:visible; }
       #lykos-dashboard-preview .lykos-pantheon-grid::-webkit-scrollbar { display:none; }
       #lykos-dashboard-preview .lykos-record { min-height:194px; padding:16px; }
@@ -916,14 +932,14 @@
         <button data-player-id="10724984" data-player="Bacem OINES" data-current="true"><span>Bacem OINES</span></button>
         <button data-player-id="5923952" data-player="Benjamin Blavier" data-current="false"><span>Benjamin Blavier</span></button>
         <button data-player-id="5767725" data-player="Dylan Perier" data-current="false"><span>Dylan Perier</span></button>
-        <button data-player-id="8623360" data-player="El Hathate Achraf" data-current="true"><span>El Hathate Achraf</span></button>
+        <button data-player-id="8623360" data-player="Achrafe El Hathate" data-current="true"><span>Achrafe El Hathate</span></button>
         <button data-player-id="6448277" data-player="Enzo Sales" data-current="true"><span>Enzo Sales</span></button>
         <button data-player-id="3687283" data-player="Fabien Perals" data-current="true" aria-current="page"><span>Fabien Perals</span></button>
         <button data-player-id="3687303" data-player="Gabriel Perals" data-current="true"><span>Gabriel Perals</span></button>
         <button data-player-id="2633439" data-player="Gaetan Fourmont" data-current="true"><span>Gaetan Fourmont</span></button>
         <button data-player-id="8464161" data-player="Guillaume Dato" data-current="true"><span>Guillaume Dato</span></button>
         <button data-player-id="11010517" data-player="Florian Florisse" data-current="true"><span>Florian Florisse</span></button>
-        <button data-player-id="3687304" data-player="Hugo BARRANCO" data-current="true"><span>Hugo BARRANCO</span></button>
+        <button data-player-id="3687304" data-player="Hugo Barranco" data-current="true"><span>Hugo Barranco</span></button>
         <button data-player-id="10268311" data-player="Luca Jay" data-current="true"><span>Luca Jay</span></button>
         <button data-player-id="6436983" data-player="Mathis Rousset" data-current="true"><span>Mathis Rousset</span></button>
         <button data-player-id="10737114" data-player="Nicolas Boulin" data-current="true"><span>Nicolas Boulin</span></button>
@@ -940,7 +956,7 @@
         <button data-player-id="3687294" data-player="Antoine Didron" data-current="false"><span>Antoine Didron</span></button>
         <button data-player-id="9168750" data-player="Axel CROS" data-current="false"><span>Axel CROS</span></button>
         <button data-player-id="8351348" data-player="Corentin Mortier" data-current="false"><span>Corentin Mortier</span></button>
-        <button data-player-id="3687220" data-player="DIM Couvrat" data-current="false"><span>DIM Couvrat</span></button>
+        <button data-player-id="3687220" data-player="Dimitri Couvrat" data-current="false"><span>Dimitri Couvrat</span></button>
         <button data-player-id="3687373" data-player="Florian Mathieu" data-current="false"><span>Florian Mathieu</span></button>
         <button data-player-id="3687372" data-player="Florent Arcayna" data-current="false"><span>Florent Arcayna</span></button>
         <button data-player-id="3687315" data-player="Gael Magnet" data-current="false"><span>Gael Magnet</span></button>
@@ -1139,20 +1155,24 @@
         <div class="lykos-heading lykos-pantheon-heading">
           <div><h1>Panthéon</h1><div class="lykos-subtitle" data-pantheon-subtitle>Les leaders de la saison, mois après mois.</div></div>
           <div class="lykos-pantheon-controls">
-            <div class="lykos-pantheon-period" data-pantheon-period aria-label="Période du Panthéon">
-              <button type="button" data-pantheon-period-value="current" aria-pressed="true">Saison actuelle</button>
-              <button type="button" data-pantheon-period-value="alltime" aria-pressed="false">All-time</button>
-            </div>
+            <label class="lykos-pantheon-period-select">
+              <span class="lykos-sr-only">Choisir la période du Panthéon</span>
+              <select data-pantheon-period-menu aria-label="Choisir une saison, une année civile ou la période All-time"></select>
+            </label>
             <label class="lykos-pantheon-month" data-pantheon-month-wrap>
               <span class="lykos-sr-only">Choisir une période de la saison</span>
               <select data-pantheon-month aria-label="Choisir un mois ou toute la saison actuelle"></select>
             </label>
           </div>
         </div>
-        <div class="lykos-pantheon-context"><strong data-pantheon-title></strong><span data-pantheon-context></span></div>
+        <div class="lykos-pantheon-context">
+          <div class="lykos-pantheon-context-copy"><strong data-pantheon-title></strong><span data-pantheon-context></span></div>
+          <div class="lykos-pantheon-metron-average" title="Moyenne des notes générales Metron certifiables sur la période sélectionnée">
+            <span>Niveau Metron moyen</span><b data-pantheon-metron-average>—</b><small data-pantheon-metron-average-label>Non calculable</small>
+          </div>
+        </div>
         <div class="lykos-pantheon-grid" data-pantheon></div>
         <div class="lykos-pantheon-rankings" data-pantheon-rankings></div>
-        <div class="lykos-footer-note">Aucun record lié aux cartons, aux présences ou aux minutes de jeu</div>
       </section>
       <section class="lykos-content lykos-performance-page" data-view-panel="performance" hidden>
         <article class="lykos-performance-hero">
@@ -1341,7 +1361,7 @@
       const teamPeriods = window.LYKOS_TEAM_STATS?.periods ?? {};
       const teamSeasons = window.LYKOS_TEAM_STATS?.seasons ?? [];
       // Source affichée : endpoint SportEasy stats/all/players, jamais la somme des catégories.
-      const officialPlayerRows = [["3687378","Adrien Vanden Abeele",false,[null,null,null,null,null,null,null],[3,0,0,1,0,0,0]],["3421204","Adrien Zammut",true,[null,null,null,null,null,null,null],[14,51,31,5,7.6,3.64,2.21]],["3986244","Alexandre Dato",true,[27,36,20,4,6.4,1.33,0.74],[33,44,22,4,6.3,1.33,0.67]],["8818435","Antoine Alonzo",false,[30,60,28,4,6,2,0.93],[37,74,34,4,6,2,0.92]],["3687294","Antoine Didron",false,[null,null,null,null,null,null,null],[32,36,29,2,5.1,1.13,0.91]],["7251654","Antonin Ussel",false,[null,null,null,null,null,null,null],[4,8,4,0,5.7,2,1]],["9168750","Axel CROS",false,[null,null,null,null,null,null,null],[5,1,1,1,0,0.2,0.2]],["10724984","Bacem OINES",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["5923952","Benjamin Blavier",false,[null,null,null,null,null,null,null],[17,34,15,2,4.8,2,0.88]],["8351348","Corentin Mortier",false,[null,null,null,null,null,null,null],[7,8,7,0,6.3,1.14,1]],["3687220","DIM Couvrat",false,[null,null,null,null,null,null,null],[9,0,0,0,0,0,0]],["5767725","Dylan Perier",false,[37,40,13,1,5,1.08,0.35],[101,195,76,8,5.9,1.93,0.75]],["8623360","El Hathate Achraf",true,[3,12,4,0,7.7,4,1.33],[3,12,4,0,7.7,4,1.33]],["6448277","Enzo Sales",true,[1,0,1,0,5,0,1],[21,12,13,0,5.2,0.57,0.62]],["3687283","Fabien Perals",true,[8,1,2,0,5.2,0.13,0.25],[18,9,12,0,5.2,0.5,0.67]],["3687372","Florent Arcayna",false,[null,null,null,null,null,null,null],[1,1,4,0,0,1,4]],["3687373","Florian Mathieu",false,[null,null,null,null,null,null,null],[36,44,29,1,6.2,1.22,0.81]],["3687303","Gabriel Perals",true,[53,2,24,7,6.9,0.04,0.45],[132,7,68,22,7.1,0.05,0.52]],["3687315","Gael Magnet",false,[null,null,null,null,null,null,null],[5,22,12,1,0,4.4,2.4]],["2633439","Gaetan Fourmont",true,[18,27,18,3,6.2,1.5,1],[18,27,18,3,6.2,1.5,1]],["8464161","Guillaume Dato",true,[14,27,6,2,6.1,1.93,0.43],[29,83,20,6,6.5,2.86,0.69]],["3687304","Hugo BARRANCO",true,[null,null,null,null,null,null,null],[30,68,28,5,6.6,2.27,0.93]],["7431379","Jean-Jacques Dreydemy",false,[null,null,null,null,null,null,null],[17,26,21,0,5.2,1.53,1.24]],["5767653","Jeremy Bizot",false,[null,null,null,null,null,null,null],[15,1,6,3,5.9,0.07,0.4]],["8736763","Karim Maroufi",false,[null,null,null,null,null,null,null],[5,7,7,0,6.3,1.4,1.4]],["5209256","Loïc Heurlie",false,[6,7,10,0,4.6,1.17,1.67],[6,7,10,0,4.6,1.17,1.67]],["10268311","Luca Jay",true,[1,0,0,0,0,0,0],[1,0,0,0,0,0,0]],["6865008","Lucas Migale",false,[null,null,null,null,null,null,null],[2,0,0,0,6,0,0]],["6436983","Mathis Rousset",true,[null,null,null,null,null,null,null],[27,49,24,5,6.4,1.81,0.89]],["3687447","Mehdi Elb",false,[null,null,null,null,null,null,null],[1,4,1,0,0,4,1]],["10737114","Nicolas Boulin",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["7352538","Paul Andrei",false,[null,null,null,null,null,null,null],[7,18,7,1,6.1,2.57,1]],["3687292","Paul-Lucas Estrada",false,[null,null,null,null,null,null,null],[9,19,10,3,0,2.11,1.11]],["7171822","Pedro Martinez",false,[null,null,null,null,null,null,null],[15,25,10,2,6.6,1.67,0.67]],["6475207","Quentin Bouchet",false,[13,12,8,1,5.2,0.92,0.62],[56,68,50,5,5.6,1.21,0.89]],["1737291","Quentin Guion",true,[32,54,29,1,5.2,1.69,0.91],[34,59,30,1,5.2,1.74,0.88]],["5767549","Quentin Souberan",false,[null,null,null,null,null,null,null],[39,75,46,9,6.6,1.92,1.18]],["7390140","Quentin Toscani",false,[12,21,11,0,5.7,1.75,0.92],[36,111,56,6,7.1,3.08,1.56]],["7649102","Rachid Azzaoui",true,[35,25,49,4,6.5,0.71,1.4],[48,30,81,6,7,0.63,1.69]],["2458065","Ricky Carrot",false,[null,null,null,null,null,null,null],[3,13,4,0,6.2,4.33,1.33]],["3687457","Rida Ros",false,[null,null,null,null,null,null,null],[1,4,0,0,0,4,0]],["6106021","Robin Paya",true,[27,26,26,5,6.6,0.96,0.96],[81,106,118,8,6.8,1.31,1.46]],["3687448","Shason Sebillet",false,[null,null,null,null,null,null,null],[4,31,2,3,0,7.75,0.5]],["7552192","Simon Jacquier",true,[25,47,24,4,6.8,1.88,0.96],[42,87,50,6,6.8,2.07,1.19]],["3687291","Teo Mercier",false,[null,null,null,null,null,null,null],[6,2,2,2,0,0.33,0.33]],["3687366","Thomas Estrada",false,[null,null,null,null,null,null,null],[1,4,4,0,0,4,4]],["3687367","Thomas Nicolle",false,[null,null,null,null,null,null,null],[1,0,0,0,0,0,0]],["9557397","Tommy Lejoyeux",true,[38,52,42,6,7,1.37,1.11],[38,52,42,6,7,1.37,1.11]],["6438705","Tony Machado",false,[null,null,null,null,null,null,null],[1,1,2,0,7,1,2]]];
+      const officialPlayerRows = [["3687378","Adrien Vanden Abeele",false,[null,null,null,null,null,null,null],[3,0,0,1,0,0,0]],["3421204","Adrien Zammut",true,[null,null,null,null,null,null,null],[14,51,31,5,7.6,3.64,2.21]],["3986244","Alexandre Dato",true,[27,36,20,4,6.4,1.33,0.74],[33,44,22,4,6.3,1.33,0.67]],["8818435","Antoine Alonzo",false,[30,60,28,4,6,2,0.93],[37,74,34,4,6,2,0.92]],["3687294","Antoine Didron",false,[null,null,null,null,null,null,null],[32,36,29,2,5.1,1.13,0.91]],["7251654","Antonin Ussel",false,[null,null,null,null,null,null,null],[4,8,4,0,5.7,2,1]],["9168750","Axel CROS",false,[null,null,null,null,null,null,null],[5,1,1,1,0,0.2,0.2]],["10724984","Bacem OINES",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["5923952","Benjamin Blavier",false,[null,null,null,null,null,null,null],[17,34,15,2,4.8,2,0.88]],["8351348","Corentin Mortier",false,[null,null,null,null,null,null,null],[7,8,7,0,6.3,1.14,1]],["3687220","Dimitri Couvrat",false,[null,null,null,null,null,null,null],[9,0,0,0,0,0,0]],["5767725","Dylan Perier",false,[37,40,13,1,5,1.08,0.35],[101,195,76,8,5.9,1.93,0.75]],["8623360","Achrafe El Hathate",true,[3,12,4,0,7.7,4,1.33],[3,12,4,0,7.7,4,1.33]],["6448277","Enzo Sales",true,[1,0,1,0,5,0,1],[21,12,13,0,5.2,0.57,0.62]],["3687283","Fabien Perals",true,[8,1,2,0,5.2,0.13,0.25],[18,9,12,0,5.2,0.5,0.67]],["3687372","Florent Arcayna",false,[null,null,null,null,null,null,null],[1,1,4,0,0,1,4]],["3687373","Florian Mathieu",false,[null,null,null,null,null,null,null],[36,44,29,1,6.2,1.22,0.81]],["3687303","Gabriel Perals",true,[53,2,24,7,6.9,0.04,0.45],[132,7,68,22,7.1,0.05,0.52]],["3687315","Gael Magnet",false,[null,null,null,null,null,null,null],[5,22,12,1,0,4.4,2.4]],["2633439","Gaetan Fourmont",true,[18,27,18,3,6.2,1.5,1],[18,27,18,3,6.2,1.5,1]],["8464161","Guillaume Dato",true,[14,27,6,2,6.1,1.93,0.43],[29,83,20,6,6.5,2.86,0.69]],["3687304","Hugo Barranco",true,[null,null,null,null,null,null,null],[30,68,28,5,6.6,2.27,0.93]],["7431379","Jean-Jacques Dreydemy",false,[null,null,null,null,null,null,null],[17,26,21,0,5.2,1.53,1.24]],["5767653","Jeremy Bizot",false,[null,null,null,null,null,null,null],[15,1,6,3,5.9,0.07,0.4]],["8736763","Karim Maroufi",false,[null,null,null,null,null,null,null],[5,7,7,0,6.3,1.4,1.4]],["5209256","Loïc Heurlie",false,[6,7,10,0,4.6,1.17,1.67],[6,7,10,0,4.6,1.17,1.67]],["10268311","Luca Jay",true,[1,0,0,0,0,0,0],[1,0,0,0,0,0,0]],["6865008","Lucas Migale",false,[null,null,null,null,null,null,null],[2,0,0,0,6,0,0]],["6436983","Mathis Rousset",true,[null,null,null,null,null,null,null],[27,49,24,5,6.4,1.81,0.89]],["3687447","Mehdi Elb",false,[null,null,null,null,null,null,null],[1,4,1,0,0,4,1]],["10737114","Nicolas Boulin",true,[null,null,null,null,null,null,null],[null,null,null,null,null,null,null]],["7352538","Paul Andrei",false,[null,null,null,null,null,null,null],[7,18,7,1,6.1,2.57,1]],["3687292","Paul-Lucas Estrada",false,[null,null,null,null,null,null,null],[9,19,10,3,0,2.11,1.11]],["7171822","Pedro Martinez",false,[null,null,null,null,null,null,null],[15,25,10,2,6.6,1.67,0.67]],["6475207","Quentin Bouchet",false,[13,12,8,1,5.2,0.92,0.62],[56,68,50,5,5.6,1.21,0.89]],["1737291","Quentin Guion",true,[32,54,29,1,5.2,1.69,0.91],[34,59,30,1,5.2,1.74,0.88]],["5767549","Quentin Souberan",false,[null,null,null,null,null,null,null],[39,75,46,9,6.6,1.92,1.18]],["7390140","Quentin Toscani",false,[12,21,11,0,5.7,1.75,0.92],[36,111,56,6,7.1,3.08,1.56]],["7649102","Rachid Azzaoui",true,[35,25,49,4,6.5,0.71,1.4],[48,30,81,6,7,0.63,1.69]],["2458065","Ricky Carrot",false,[null,null,null,null,null,null,null],[3,13,4,0,6.2,4.33,1.33]],["3687457","Rida Ros",false,[null,null,null,null,null,null,null],[1,4,0,0,0,4,0]],["6106021","Robin Paya",true,[27,26,26,5,6.6,0.96,0.96],[81,106,118,8,6.8,1.31,1.46]],["3687448","Shason Sebillet",false,[null,null,null,null,null,null,null],[4,31,2,3,0,7.75,0.5]],["7552192","Simon Jacquier",true,[25,47,24,4,6.8,1.88,0.96],[42,87,50,6,6.8,2.07,1.19]],["3687291","Teo Mercier",false,[null,null,null,null,null,null,null],[6,2,2,2,0,0.33,0.33]],["3687366","Thomas Estrada",false,[null,null,null,null,null,null,null],[1,4,4,0,0,4,4]],["3687367","Thomas Nicolle",false,[null,null,null,null,null,null,null],[1,0,0,0,0,0,0]],["9557397","Tommy Lejoyeux",true,[38,52,42,6,7,1.37,1.11],[38,52,42,6,7,1.37,1.11]],["6438705","Tony Machado",false,[null,null,null,null,null,null,null],[1,1,2,0,7,1,2]]];
       officialPlayerRows.splice(
         officialPlayerRows.findIndex((row) => row[0] === "3687373"),
         0,
@@ -2352,13 +2372,32 @@
       const pantheonSource = window.LYKOS_PANTHEON_STATS?.currentSeason ?? null;
       const pantheonRecordData = window.LYKOS_PANTHEON_STATS?.recordScopes ?? {season:[],month:[],match:[]};
       const pantheonRecordPrecision = new Map(pantheonMetrics.map(({key}) => [key,'period']));
+      const pantheonPeriodMenu = root.querySelector('[data-pantheon-period-menu]');
       const pantheonMonth = root.querySelector('[data-pantheon-month]');
       const pantheonMonthWrap = root.querySelector('[data-pantheon-month-wrap]');
       const pantheonTitle = root.querySelector('[data-pantheon-title]');
       const pantheonContext = root.querySelector('[data-pantheon-context]');
       const pantheonSubtitle = root.querySelector('[data-pantheon-subtitle]');
       const pantheonRankings = root.querySelector('[data-pantheon-rankings]');
-      let pantheonPeriod = 'current';
+      const pantheonMetronAverage = root.querySelector('[data-pantheon-metron-average]');
+      const pantheonMetronAverageLabel = root.querySelector('[data-pantheon-metron-average-label]');
+      const pantheonSeasons = [...(pantheonRecordData.season ?? [])].sort((a,b) => String(b.startDate ?? '').localeCompare(String(a.startDate ?? '')));
+      const currentPantheonSeasonId = String(pantheonSource?.seasonId ?? pantheonSeasons[0]?.seasonId ?? '');
+      const previousPantheonSeasonId = String(pantheonSeasons.find(scope => String(scope.seasonId) !== currentPantheonSeasonId)?.seasonId ?? '');
+      const seasonGroup = document.createElement('optgroup'); seasonGroup.label = 'Saisons';
+      pantheonSeasons.forEach(scope => {
+        const option = document.createElement('option'); option.value = `season:${scope.seasonId}`;
+        option.textContent = `${String(scope.seasonId) === currentPantheonSeasonId ? 'Saison actuelle · ' : 'Saison '}${scope.label}`;
+        seasonGroup.appendChild(option);
+      });
+      pantheonPeriodMenu.appendChild(seasonGroup);
+      const calendarYears = [...new Set((pantheonRecordData.month ?? []).map(scope => Number(String(scope.monthKey ?? '').slice(0,4))).filter(Number.isInteger))].sort((a,b) => b - a);
+      const yearGroup = document.createElement('optgroup'); yearGroup.label = 'Années civiles';
+      calendarYears.forEach(year => { const option = document.createElement('option'); option.value = `year:${year}`; option.textContent = `Année civile ${year}`; yearGroup.appendChild(option); });
+      pantheonPeriodMenu.appendChild(yearGroup);
+      const allTimeOption = document.createElement('option'); allTimeOption.value = 'alltime'; allTimeOption.textContent = 'All-time · depuis 2019'; pantheonPeriodMenu.appendChild(allTimeOption);
+      let pantheonPeriod = currentPantheonSeasonId ? `season:${currentPantheonSeasonId}` : 'alltime';
+      pantheonPeriodMenu.value = pantheonPeriod;
       const today = new Date();
       const localMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2,'0')}`;
       const pantheonMonths = Object.values(pantheonSource?.months ?? {});
@@ -2375,6 +2414,51 @@
         .filter(month => new Date(month.year,month.month - 1,1) <= new Date(today.getFullYear(),today.getMonth(),1))
         .map(month => month.key);
       pantheonMonth.value = availableMonthKeys.includes(localMonthKey) ? localMonthKey : availableMonthKeys.at(-1) ?? '';
+      const emptyPantheonStats = () => ({matchesPlayed:null,goals:null,assists:null,manOfMatch:null});
+      const aggregatePantheonMonths = scopes => {
+        const aggregates = new Map();
+        scopes.forEach(scope => Object.values(scope.players ?? {}).forEach(row => {
+          const entry = aggregates.get(row.playerId) ?? {playerId:row.playerId,playerName:row.playerName,matchesPlayed:0,goals:0,assists:0,manOfMatch:0,_unknown:new Set()};
+          ['matchesPlayed','goals','assists','manOfMatch'].forEach(metric => {
+            if (Number.isFinite(row[metric])) entry[metric] += row[metric];
+            else entry._unknown.add(metric);
+          });
+          aggregates.set(row.playerId,entry);
+        }));
+        return [...aggregates.values()].map(entry => {
+          entry._unknown.forEach(metric => { entry[metric] = null; });
+          delete entry._unknown;
+          return entry;
+        });
+      };
+      const pantheonSelection = () => {
+        if (pantheonPeriod === 'alltime') {
+          return {type:'alltime',label:'All-time',context:'Historique complet',analyticsKey:'allTime',statsKey:'alltime',isCurrent:false,isAllTime:true,rows:players.map(player => ({playerId:player.id,playerName:player.name,...player.stats.alltime}))};
+        }
+        const [type,value] = pantheonPeriod.split(':');
+        if (type === 'year') {
+          const yearScopes = (pantheonRecordData.month ?? []).filter(scope => String(scope.monthKey ?? '').startsWith(`${value}-`));
+          return {type,label:`Année civile ${value}`,context:`Janvier à décembre ${value}`,analyticsKey:null,statsKey:'selected',isCurrent:false,isAllTime:false,year:Number(value),rows:aggregatePantheonMonths(yearScopes)};
+        }
+        const scope = pantheonSeasons.find(item => String(item.seasonId) === String(value));
+        const isCurrentSeason = String(value) === currentPantheonSeasonId;
+        const isPreviousSeason = String(value) === previousPantheonSeasonId;
+        const isMonth = isCurrentSeason && pantheonMonth.value !== 'season';
+        const month = isMonth ? pantheonSource?.months?.[pantheonMonth.value] ?? null : null;
+        const rows = isMonth
+          ? Object.values(month?.players ?? {})
+          : isCurrentSeason
+            ? players.map(player => ({playerId:player.id,playerName:player.name,...player.stats.current})).filter(row => Number.isFinite(row.matchesPlayed) && row.matchesPlayed > 0)
+            : Object.values(scope?.players ?? {});
+        return {
+          type:isMonth ? 'month' : 'season', seasonId:String(value),
+          label:isMonth ? month?.label ?? `Saison ${scope?.label ?? ''}` : `Saison ${scope?.label ?? value}`,
+          context:isMonth ? `${month?.matchCount ?? 0} ${month?.matchCount === 1 ? 'match du club recensé' : 'matchs du club recensés'}` : `${rows.filter(row => Number.isFinite(row.matchesPlayed) && row.matchesPlayed > 0).length} joueurs recensés`,
+          analyticsKey:isMonth ? null : isCurrentSeason ? 'current' : isPreviousSeason ? 'previous' : null,
+          statsKey:isCurrentSeason ? 'current' : isPreviousSeason ? 'previous' : 'selected',
+          isCurrent:isCurrentSeason && !isMonth,isAllTime:false,rows,
+        };
+      };
       const pantheonSummary = (player,periodKey,analytics=null,{includeHonours=false}={}) => {
         const stats = player?.stats?.[periodKey] ?? {};
         const parts = [
@@ -2389,7 +2473,7 @@
         const honours = playerHonours.get(player.id) ?? [];
         return `${statistics}\nPalmarès : ${honours.length ? honours.join(' · ') : 'aucune distinction recensée'}`;
       };
-      const createPantheonRankingPanel = ({title,subtitle,rows,kind,empty}) => {
+      const createPantheonRankingPanel = ({title,subtitle,rows,kind,empty,statsKey = 'alltime'}) => {
         const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-ranking';
         const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
         const heading = document.createElement('div');
@@ -2408,7 +2492,7 @@
           const item = document.createElement('li'); item.className = 'lykos-pantheon-ranking-row';
           const position = document.createElement('span'); position.className = 'lykos-pantheon-ranking-position'; position.textContent = `${rank}.`;
           const playerButton = document.createElement('button'); playerButton.type = 'button'; playerButton.className = 'lykos-pantheon-player'; playerButton.textContent = entry.player.name; playerButton.setAttribute('aria-expanded','false');
-          const summary = document.createElement('span'); summary.className = 'lykos-pantheon-player-summary'; summary.textContent = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime',entry.analytics,{includeHonours:kind === 'honours'});
+          const summary = document.createElement('span'); summary.className = 'lykos-pantheon-player-summary'; summary.textContent = pantheonSummary(entry.player,statsKey,entry.analytics,{includeHonours:kind === 'honours'});
           const score = document.createElement('span'); score.className = `lykos-pantheon-ranking-value${kind === 'honours' ? ' honours' : ''}`; score.textContent = formatValue(entry.value);
           score.setAttribute('aria-label',kind === 'metron' ? `Note Metron ${formatValue(entry.value)} sur 99` : `${formatValue(entry.value)} distinctions`);
           if (kind === 'metron') score.dataset.level = metronLevel(entry.value);
@@ -2460,8 +2544,8 @@
         if (mode.key.startsWith('contributionsTotal')) return 'action décisive';
         return mode.unit;
       };
-      const pantheonFiveMetricValue = (entry,modeKey,isCurrent) => {
-        const stats = entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
+      const pantheonFiveMetricValue = (entry,modeKey,statsKey='alltime') => {
+        const stats = entry.player.stats[statsKey] ?? {};
         const analytics = entry.analytics ?? {};
         switch (modeKey) {
           case 'concededTotalMin': case 'concededTotalMax': return analytics.defensive?.goalsAgainst;
@@ -2481,24 +2565,24 @@
           default: return null;
         }
       };
-      const pantheonParticipationThreshold = isCurrent => {
+      const pantheonParticipationThreshold = (isCurrent,statsKey='alltime',candidatePlayers=players) => {
         if (isCurrent) return 1;
-        const matchCounts = players
-          .map(player => player.stats.alltime?.matchesPlayed)
+        const matchCounts = candidatePlayers
+          .map(player => player.stats[statsKey]?.matchesPlayed)
           .filter(value => Number.isFinite(value) && value > 0);
         if (!matchCounts.length) return null;
         return Math.ceil(matchCounts.reduce((sum,value) => sum + value,0) / matchCounts.length);
       };
-      const pantheonFiveMinimumMatches = (isCurrent,modeKey) => {
+      const pantheonFiveMinimumMatches = (isCurrent,modeKey,statsKey='alltime',candidatePlayers=players) => {
         if (isCurrent) return 1;
-        return modeKey === 'balanced' ? pantheonParticipationThreshold(false) : 10;
+        return modeKey === 'balanced' ? pantheonParticipationThreshold(false,statsKey,candidatePlayers) : Math.min(10,pantheonParticipationThreshold(false,statsKey,candidatePlayers) ?? 10);
       };
-      const buildPantheonFive = (metronRows,{isCurrent=false,modeKey='balanced'}={}) => {
+      const buildPantheonFive = (metronRows,{isCurrent=false,modeKey='balanced',statsKey='alltime'}={}) => {
         const positionOf = entry => (entry.player.essentials?.position || 'M').toUpperCase();
         const mode = pantheonFiveModeByKey.get(modeKey) ?? pantheonFiveModeByKey.get('balanced');
-        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,mode.key);
+        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,mode.key,statsKey,metronRows.map(entry => entry.player));
         if (!Number.isFinite(minimumMatches)) return null;
-        const periodStats = entry => entry.player.stats[isCurrent ? 'current' : 'alltime'] ?? {};
+        const periodStats = entry => entry.player.stats[statsKey] ?? {};
         const matchesOf = entry => periodStats(entry).matchesPlayed;
         const goalsOf = entry => Number.isFinite(periodStats(entry).goals) ? periodStats(entry).goals : -1;
         const assistsOf = entry => Number.isFinite(periodStats(entry).assists) ? periodStats(entry).assists : -1;
@@ -2544,9 +2628,9 @@
         const goalkeeperPool = eligibleRows.filter(entry => positionOf(entry).includes('G'));
         if (mode.key !== 'balanced') {
           const sortByMode = pool => pool
-            .filter(entry => Number.isFinite(pantheonFiveMetricValue(entry,mode.key,isCurrent)))
+            .filter(entry => Number.isFinite(pantheonFiveMetricValue(entry,mode.key,statsKey)))
             .sort((a,b) => {
-              const difference = pantheonFiveMetricValue(a,mode.key,isCurrent) - pantheonFiveMetricValue(b,mode.key,isCurrent);
+              const difference = pantheonFiveMetricValue(a,mode.key,statsKey) - pantheonFiveMetricValue(b,mode.key,statsKey);
               return (mode.direction === 'asc' ? difference : -difference)
                 || (Number.isFinite(b.value) ? b.value : -1) - (Number.isFinite(a.value) ? a.value : -1)
                 || (averageRatingOf(b) ?? -1) - (averageRatingOf(a) ?? -1)
@@ -2588,21 +2672,21 @@
         if (!goalkeeper || !pivot || !advanced || backs.length < 2) return null;
         return {backs,fronts:[pivot,advanced],goalkeeper,mode};
       };
-      const createPantheonFivePanel = ({metronRows,isCurrent}) => {
+      const createPantheonFivePanel = ({metronRows,isCurrent,statsKey='alltime',periodLabel='All-time'}) => {
         const panel = document.createElement('article'); panel.className = 'lykos-panel lykos-pantheon-five';
         const head = document.createElement('div'); head.className = 'lykos-pantheon-ranking-head';
         const heading = document.createElement('div');
         const title = document.createElement('h2'); title.textContent = 'Le cinq type';
         const activeMode = pantheonFiveModeByKey.get(pantheonFiveMode) ?? pantheonFiveModeByKey.get('balanced');
-        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,activeMode.key);
+        const minimumMatches = pantheonFiveMinimumMatches(isCurrent,activeMode.key,statsKey,metronRows.map(entry => entry.player));
         const subtitle = document.createElement('span');
         subtitle.textContent = activeMode.key !== 'balanced'
-          ? `${isCurrent ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : `All-time · minimum ${minimumMatches} matchs`} · sélection poste par poste selon « ${activeMode.label} »`
+          ? `${periodLabel}${isCurrent ? '' : ` · minimum ${minimumMatches} matchs`} · sélection poste par poste selon « ${activeMode.label} »`
           : isCurrent
-            ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'} · performance au poste + Metron + note moyenne`
+            ? `${periodLabel} · performance au poste + Metron + note moyenne`
             : Number.isFinite(minimumMatches)
-              ? `All-time · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
-              : 'All-time · seuil moyen indisponible · poste + Metron + note moyenne';
+              ? `${periodLabel} · seuil moyen ${minimumMatches} matchs · poste + Metron + note moyenne + période dominante`
+              : `${periodLabel} · seuil moyen indisponible · poste + Metron + note moyenne`;
         heading.append(title,subtitle);
         const filter = document.createElement('label'); filter.className = 'lykos-five-filter'; filter.append(document.createTextNode('Orienter la composition'));
         const select = document.createElement('select'); select.setAttribute('aria-label','Orienter le cinq type selon une statistique');
@@ -2613,16 +2697,16 @@
           const option = document.createElement('option'); option.value = mode.key; option.textContent = mode.label; group.appendChild(option);
         });
         select.value = activeMode.key;
-        select.addEventListener('change',() => { pantheonFiveMode = select.value; renderPantheonRankings(isCurrent); });
+        select.addEventListener('change',() => { pantheonFiveMode = select.value; renderPantheonRankings(pantheonSelection()); });
         filter.appendChild(select); head.append(heading,filter); panel.appendChild(head);
         const court = document.createElement('div'); court.className = 'lykos-five-court';
-        const formation = buildPantheonFive(metronRows,{isCurrent,modeKey:activeMode.key});
+        const formation = buildPantheonFive(metronRows,{isCurrent,modeKey:activeMode.key,statsKey});
         if (!formation) {
           const empty = document.createElement('div'); empty.className = 'lykos-five-empty'; empty.textContent = isCurrent
             ? 'Composition indisponible : cinq joueurs notés avec un gardien identifié sont nécessaires.'
             : Number.isFinite(minimumMatches)
               ? `Composition indisponible : cinq joueurs notés, dont un gardien, doivent avoir disputé au moins ${minimumMatches} matchs.`
-              : 'Composition indisponible : la moyenne des participations All-time ne peut pas être calculée.';
+              : `Composition indisponible : la moyenne des participations pour ${periodLabel} ne peut pas être calculée.`;
           court.appendChild(empty); panel.appendChild(court); return panel;
         }
         const appendPlayer = (entry,line,tacticalRole) => {
@@ -2632,12 +2716,12 @@
           const name = document.createElement('strong'); name.textContent = entry.player.name;
           const score = document.createElement('span'); score.className = 'lykos-five-player-score'; score.dataset.level = metronLevel(entry.value); score.textContent = formatValue(entry.value); score.setAttribute('aria-label',`Note Metron ${formatValue(entry.value)} sur 99`);
           const metric = document.createElement('span'); metric.className = 'lykos-five-player-metric';
-          const metricValue = pantheonFiveMetricValue(entry,activeMode.key,isCurrent);
+          const metricValue = pantheonFiveMetricValue(entry,activeMode.key,statsKey);
           metric.textContent = activeMode.key === 'balanced' || !Number.isFinite(metricValue) ? '' : `${formatValue(metricValue)} ${pantheonFiveMetricLabel(activeMode,metricValue)}`;
           metric.hidden = !metric.textContent;
           const detail = document.createElement('small');
           detail.textContent = position.includes('G') ? 'Gardien' : position.includes('DEF') ? 'Défenseur' : position.includes('ATT') ? 'Attaquant' : 'Milieu polyvalent';
-          card.title = pantheonSummary(entry.player,pantheonPeriod === 'current' ? 'current' : 'alltime',entry.analytics);
+          card.title = pantheonSummary(entry.player,statsKey,entry.analytics);
           card.append(role,name,score,metric,detail); court.appendChild(card);
         };
         const defensiveScore = entry => Number.isFinite(entry.analytics?.performance?.defensive) ? entry.analytics.performance.defensive : -1;
@@ -2662,24 +2746,44 @@
         appendPlayer(formation.goalkeeper,'goalkeeper','Gardien');
         panel.appendChild(court); return panel;
       };
-      const renderPantheonRankings = isCurrent => {
+      const renderPantheonRankings = selection => {
         pantheonRankings.replaceChildren();
-        const secondaryKey = isCurrent ? 'current' : 'allTime';
-        const compositionRows = players.map(player => { const analytics = secondaryData[secondaryKey]?.players?.[player.id] ?? null; return {player,analytics,value:analytics?.performance?.overall ?? null}; });
+        const selectedRows = new Map((selection.rows ?? []).map(row => [String(row.playerId),row]));
+        const candidatePlayers = players.map(player => {
+          if (selection.statsKey !== 'selected') return player;
+          const row = selectedRows.get(String(player.id));
+          const matches = row?.matchesPlayed;
+          const stats = row ? {
+            matchesPlayed:matches, goals:row.goals, assists:row.assists, manOfMatch:row.manOfMatch,
+            gradeAverage:null,
+            goalsPerMatch:Number.isFinite(row.goals) && Number.isFinite(matches) && matches > 0 ? row.goals / matches : null,
+            assistsPerMatch:Number.isFinite(row.assists) && Number.isFinite(matches) && matches > 0 ? row.assists / matches : null,
+          } : emptyPantheonStats();
+          return {...player,stats:{...player.stats,selected:stats}};
+        });
+        const compositionRows = candidatePlayers.map(player => {
+          const analytics = selection.analyticsKey ? secondaryData[selection.analyticsKey]?.players?.[player.id] ?? null : null;
+          return {player,analytics,value:analytics?.performance?.overall ?? null};
+        });
         const metronRows = compositionRows.filter(entry => Number.isFinite(entry.value))
           .sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
-        const seasonLabel = pantheonSource?.seasonLabel ? `Saison ${pantheonSource.seasonLabel} · classement cumulatif` : 'Saison actuelle · classement cumulatif';
+        const averageMetron = metronRows.length ? metronRows.reduce((sum,entry) => sum + entry.value,0) / metronRows.length : null;
+        pantheonMetronAverage.removeAttribute('data-level');
+        pantheonMetronAverage.textContent = Number.isFinite(averageMetron) ? formatValue(averageMetron) : '—';
+        pantheonMetronAverageLabel.textContent = Number.isFinite(averageMetron) ? `${metronRows.length} joueurs notés` : 'Données indisponibles';
+        if (Number.isFinite(averageMetron)) pantheonMetronAverage.dataset.level = metronLevel(averageMetron);
+        const periodRankingLabel = `${selection.label} · classement cumulatif`;
         const metronPanel = createPantheonRankingPanel({
-          title:'Les mieux notés par Metron', subtitle:isCurrent ? seasonLabel : 'Historique complet', rows:metronRows, kind:'metron',
-          empty:'Aucune note Metron certifiable pour cette période.',
+          title:'Les mieux notés par Metron', subtitle:periodRankingLabel, rows:metronRows, kind:'metron',
+          empty:'Aucune note Metron certifiable pour cette période.', statsKey:selection.statsKey,
         });
         pantheonRankings.appendChild(metronPanel);
         const lowerMetronRows = [...metronRows].sort((a,b) => a.value - b.value || a.player.name.localeCompare(b.player.name,'fr'));
         pantheonRankings.appendChild(createPantheonRankingPanel({
-          title:'Les moins bien notés par Metron', subtitle:isCurrent ? seasonLabel : 'Historique complet', rows:lowerMetronRows, kind:'metron',
-          empty:'Aucune note Metron certifiable pour cette période.',
+          title:'Les moins bien notés par Metron', subtitle:periodRankingLabel, rows:lowerMetronRows, kind:'metron',
+          empty:'Aucune note Metron certifiable pour cette période.', statsKey:selection.statsKey,
         }));
-        if (!isCurrent) {
+        if (selection.isAllTime) {
           const honoursRows = players.map(player => ({player,analytics:secondaryData.allTime?.players?.[player.id] ?? null,value:(playerHonours.get(player.id) ?? []).length}))
             .filter(entry => entry.value > 0).sort((a,b) => b.value - a.value || a.player.name.localeCompare(b.player.name,'fr'));
           const honoursPanel = createPantheonRankingPanel({
@@ -2689,7 +2793,7 @@
           honoursPanel.classList.add('wide');
           pantheonRankings.appendChild(honoursPanel);
         }
-        pantheonRankings.appendChild(createPantheonFivePanel({metronRows:compositionRows,isCurrent}));
+        pantheonRankings.appendChild(createPantheonFivePanel({metronRows:compositionRows,isCurrent:selection.isCurrent,statsKey:selection.statsKey,periodLabel:selection.label}));
       };
       const pantheonRecordPrecisionLabels = {
         period:'Cumul de la période',
@@ -2707,9 +2811,17 @@
           ? new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(new Date(year,month - 1,1))
           : 'Mois inconnu';
       };
-      const pantheonScopedRecordRows = ({metric,precision,isCurrent,periodRows,periodContext}) => {
+      const pantheonScopedRecordRows = ({metric,precision,selection,periodRows,periodContext}) => {
         if (precision === 'period') return periodRows.map(row => ({...row,recordContext:periodContext}));
-        const scopes = (pantheonRecordData[precision] ?? []).filter(scope => !isCurrent || String(scope.seasonId) === String(pantheonSource?.seasonId));
+        const scopes = (pantheonRecordData[precision] ?? []).filter(scope => {
+          if (selection.isAllTime) return true;
+          if (selection.type === 'year') return precision === 'month'
+            ? String(scope.monthKey ?? '').startsWith(`${selection.year}-`)
+            : String(scope.date ?? '').startsWith(`${selection.year}-`);
+          if (selection.type === 'month') return String(scope.seasonId) === String(selection.seasonId)
+            && (precision !== 'month' || String(scope.monthKey) === String(pantheonMonth.value));
+          return String(scope.seasonId) === String(selection.seasonId);
+        });
         const bestByPlayer = new Map();
         scopes.forEach(scope => Object.values(scope.players ?? {}).forEach(player => {
           const value = player[metric];
@@ -2737,50 +2849,45 @@
       const renderPantheon = () => {
         closeRecordTies();
         pantheon.replaceChildren();
-        const isCurrent = pantheonPeriod === 'current';
-        const isSeasonOverview = isCurrent && pantheonMonth.value === 'season';
-        const month = pantheonSource?.months?.[pantheonMonth.value] ?? null;
-        const rows = isCurrent
-          ? isSeasonOverview
-            ? players.map(player => ({playerId:player.id,playerName:player.name,...player.stats.current}))
-              .filter(row => Number.isFinite(row.matchesPlayed) && row.matchesPlayed > 0)
-            : Object.values(month?.players ?? {})
-          : players.map(player => ({ playerId:player.id,playerName:player.name,...player.stats.alltime }));
-        pantheonMonthWrap.hidden = !isCurrent;
-        pantheonSubtitle.textContent = isCurrent ? 'Les leaders de la saison, sur l’ensemble de la période ou mois après mois.' : 'Les grands records du club depuis la première saison recensée.';
-        pantheonTitle.textContent = isCurrent ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month?.label ?? 'Saison actuelle' : 'Les records du club';
-        pantheonContext.textContent = isCurrent
-          ? isSeasonOverview
-            ? `${secondaryData.current?.matchCount ?? 0} ${(secondaryData.current?.matchCount ?? 0) === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
-            : `${month?.matchCount ?? 0} ${month?.matchCount === 1 ? 'match du club recensé' : 'matchs du club recensés'}`
-          : 'Historique complet';
-        renderPantheonRankings(isCurrent);
-        if (isCurrent && ((!isSeasonOverview && (!month || month.matchCount === 0)) || rows.length === 0)) {
+        const selection = pantheonSelection();
+        const rows = selection.rows ?? [];
+        pantheonMonthWrap.hidden = !((selection.type === 'season' || selection.type === 'month') && selection.seasonId === currentPantheonSeasonId);
+        pantheonSubtitle.textContent = selection.isAllTime
+          ? 'Les grands records du club depuis la première saison recensée.'
+          : 'Les leaders de la période sélectionnée, à partir des données disponibles.';
+        pantheonTitle.textContent = selection.label;
+        pantheonContext.textContent = selection.context;
+        renderPantheonRankings(selection);
+        if (!rows.length || (selection.type === 'month' && !(pantheonSource?.months?.[pantheonMonth.value]?.matchCount > 0))) {
           const empty = document.createElement('div'); empty.className = 'lykos-pantheon-empty';
-          empty.innerHTML = `<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès qu’un match ${isSeasonOverview ? 'de cette saison' : 'de ce mois'} disposera de statistiques individuelles complètes.</span></div>`;
+          empty.innerHTML = `<div><b>Aucun match recensé</b><span>Les classements apparaîtront ici dès que cette période disposera de statistiques individuelles complètes.</span></div>`;
           pantheon.appendChild(empty); return;
         }
-        const periodContext = isCurrent
-          ? isSeasonOverview ? `Saison ${pantheonSource?.seasonLabel ?? 'actuelle'}` : month.label
-          : 'All-time';
+        const periodContext = selection.label;
         pantheonMetrics.forEach(({key,label,icon}) => {
-          const precision = pantheonRecordPrecision.get(key) ?? 'period';
-          const ranked = pantheonScopedRecordRows({metric:key,precision,isCurrent,periodRows:rows,periodContext})
+          const allowedPrecisionKeys = Object.keys(pantheonRecordPrecisionLabels).filter(scopeKey => {
+            if (scopeKey === 'match' && (key === 'matchesPlayed' || key === 'manOfMatch')) return false;
+            if (scopeKey === 'season' && !selection.isAllTime) return false;
+            return true;
+          });
+          let precision = pantheonRecordPrecision.get(key) ?? 'period';
+          if (!allowedPrecisionKeys.includes(precision)) { precision = 'period'; pantheonRecordPrecision.set(key,precision); }
+          const ranked = pantheonScopedRecordRows({metric:key,precision,selection,periodRows:rows,periodContext})
             .filter(row => row[key] !== null && row[key] !== undefined)
             .sort((a,b) => b[key] - a[key] || a.playerName.localeCompare(b.playerName,'fr'));
           if (!ranked.length) return;
           const value = ranked[0][key];
           const leaders = ranked.filter(row => row[key] === value);
-          const analyticsKey = isCurrent ? 'current' : 'allTime';
+          const analyticsKey = selection.analyticsKey;
           const leader = [...leaders].sort((a,b) => {
-            const scoreA = secondaryData[analyticsKey]?.players?.[a.playerId]?.performance?.overall;
-            const scoreB = secondaryData[analyticsKey]?.players?.[b.playerId]?.performance?.overall;
+            const scoreA = analyticsKey ? secondaryData[analyticsKey]?.players?.[a.playerId]?.performance?.overall : null;
+            const scoreB = analyticsKey ? secondaryData[analyticsKey]?.players?.[b.playerId]?.performance?.overall : null;
             return (Number.isFinite(scoreB) ? scoreB : -1) - (Number.isFinite(scoreA) ? scoreA : -1) || a.playerName.localeCompare(b.playerName,'fr');
           })[0];
           const card = document.createElement('article'); card.className = 'lykos-panel lykos-record';
           card.innerHTML = `<div class="lykos-record-rank"><span>${label}</span><i class="lykos-record-icon" aria-hidden="true">${icon}</i></div><div class="lykos-record-leaders"></div><b>${formatValue(value)}</b><small>${leader.recordContext}</small>`;
           const scopeSelect = document.createElement('select'); scopeSelect.className = 'lykos-record-scope'; scopeSelect.setAttribute('aria-label',`${label} : précision du record`);
-          Object.entries(pantheonRecordPrecisionLabels).forEach(([scopeKey,scopeLabel]) => {
+          Object.entries(pantheonRecordPrecisionLabels).filter(([scopeKey]) => allowedPrecisionKeys.includes(scopeKey)).forEach(([scopeKey,scopeLabel]) => {
             const option = document.createElement('option'); option.value = scopeKey; option.textContent = scopeLabel; scopeSelect.appendChild(option);
           });
           scopeSelect.value = precision;
@@ -2839,11 +2946,7 @@
           pantheon.appendChild(card);
         });
       };
-      root.querySelectorAll('[data-pantheon-period-value]').forEach(button => button.addEventListener('click',() => {
-        pantheonPeriod = button.dataset.pantheonPeriodValue;
-        root.querySelectorAll('[data-pantheon-period-value]').forEach(item => item.setAttribute('aria-pressed',String(item === button)));
-        renderPantheon();
-      }));
+      pantheonPeriodMenu.addEventListener('change',() => { pantheonPeriod = pantheonPeriodMenu.value; renderPantheon(); });
       pantheonMonth.addEventListener('change',renderPantheon);
       root.addEventListener('click',event => {
         if (!event.target.closest('.lykos-record-tie')) closeRecordTies();

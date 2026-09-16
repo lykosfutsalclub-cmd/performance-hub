@@ -82,7 +82,31 @@ export class ReadonlySportEasyClient {
     this.timeoutMs = timeoutMs;
   }
 
-  async getJson(endpoint, { version = "2.1" } = {}) {
+  async getJson(endpoint, { version = "2.1", retries = 0 } = {}) {
+    if (!Number.isInteger(retries) || retries < 0 || retries > 3) {
+      throw new SportEasyRequestError("Nombre de nouvelles tentatives invalide.", {
+        kind: "configuration",
+        endpoint,
+      });
+    }
+
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        return await this.getJsonOnce(endpoint, { version });
+      } catch (error) {
+        const retryableStatus =
+          error?.status === 408 ||
+          error?.status === 425 ||
+          error?.status === 429 ||
+          (Number.isInteger(error?.status) && error.status >= 500);
+        const retryable = error?.kind === "network" || retryableStatus;
+        if (!retryable || attempt >= retries) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+      }
+    }
+  }
+
+  async getJsonOnce(endpoint, { version = "2.1" } = {}) {
     assertSafeRelativeEndpoint(endpoint);
     assertAllowedVersion(version);
     const url = new URL(`v${version}/${endpoint}`, this.apiBaseUrl);

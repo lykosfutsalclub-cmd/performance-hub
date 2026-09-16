@@ -101,6 +101,10 @@ export class ReadonlySportEasyClient {
           (Number.isInteger(error?.status) && error.status >= 500);
         const retryable = error?.kind === "network" || retryableStatus;
         if (!retryable || attempt >= retries) throw error;
+        console.warn(
+          `Nouvelle tentative SportEasy ${attempt + 1}/${retries} : GET ${endpoint} ` +
+            `(${error.kind}, HTTP ${error.status ?? "n/a"}).`,
+        );
         await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
       }
     }

@@ -93,7 +93,7 @@ try {
       const event = pending.shift();
       const endpoint = `teams/${configuration.teamId}/events/${event.eventId}/`;
       try {
-        const payload = await client.getJson(endpoint, { version: "2.1" });
+        const payload = await client.getJson(endpoint, { version: "2.1", retries: 1 });
         const eventRating = validateEventRating(payload, event.eventId);
         const capturedAt = new Date().toISOString();
         const fileName = `event-${event.eventId}.json`;
@@ -146,6 +146,12 @@ try {
   console.log(`- Matchs avec une note sur 6 : ${manifest.ratedEventCount}`);
   console.log(`- Erreurs : ${manifest.errors.length}`);
   console.log(`- Statut : ${manifest.validationStatus}`);
+  for (const error of manifest.errors) {
+    console.error(
+      `- Match en échec : ${error.eventId} (saison ${error.seasonId}, ` +
+        `${error.errorKind}, HTTP ${error.status ?? "n/a"}) — ${error.endpoint} — ${error.message}`,
+    );
+  }
 } catch (error) {
   if (error?.kind) printRequestError(error);
   else console.error(`Capture refusée : ${error.message}`);

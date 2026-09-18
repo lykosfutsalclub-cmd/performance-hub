@@ -1,4 +1,5 @@
 window.LYKOS_TEAM_STATS = {
+  "generatedAt": "2026-09-18T01:14:58.409Z",
   "periods": {
     "current": {
       "matchesPlayed": 3,
@@ -19,7 +20,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "51050729",
+              "eventId": "match-2026-09-09-mannschaft",
               "date": "2026-09-09",
               "opponent": "Mannschaft",
               "scoreFor": 9,
@@ -63,7 +64,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "51050727",
+              "eventId": "match-2026-09-02-fc-lancon",
               "date": "2026-09-02",
               "opponent": "FC Lançon",
               "scoreFor": 12,
@@ -227,7 +228,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "51050731",
+              "eventId": "match-2026-09-16-equipe-anonyme-le-complexe",
               "date": "2026-09-16",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 40,
@@ -291,7 +292,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "47309266",
+              "eventId": "match-2026-05-11-ase",
               "date": "2026-05-11",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -299,7 +300,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -10
             },
             {
-              "eventId": "44313450",
+              "eventId": "match-2025-11-08-pro-tour",
               "date": "2025-11-08",
               "opponent": "Pro Tour",
               "scoreFor": 13,
@@ -313,7 +314,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "45784115",
+              "eventId": "match-2026-01-10-pro-tour",
               "date": "2026-01-10",
               "opponent": "Pro Tour",
               "scoreFor": 11,
@@ -327,7 +328,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "43686813",
+              "eventId": "match-2025-10-27-saba-foot-5",
               "date": "2025-10-27",
               "opponent": "SABA FOOT 5",
               "scoreFor": 6,
@@ -335,7 +336,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -8
             },
             {
-              "eventId": "41685406",
+              "eventId": "match-2025-09-17-ase",
               "date": "2025-09-17",
               "opponent": "ASE",
               "scoreFor": 10,
@@ -354,7 +355,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "46737053",
+              "eventId": "match-2026-03-02-ase",
               "date": "2026-03-02",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -362,7 +363,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "44503878",
+              "eventId": "match-2026-01-05-ase",
               "date": "2026-01-05",
               "opponent": "ASE",
               "scoreFor": 7,
@@ -376,7 +377,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "48029114",
+              "eventId": "match-2026-06-29-saba-foot-5",
               "date": "2026-06-29",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -384,7 +385,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "47309167",
+              "eventId": "match-2026-04-07-la-selecao",
               "date": "2026-04-07",
               "opponent": "La Seleção",
               "scoreFor": 0,
@@ -392,7 +393,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "46865918",
+              "eventId": "match-2026-03-23-lancon-futsal",
               "date": "2026-03-23",
               "opponent": "Lançon Futsal",
               "scoreFor": 6,
@@ -400,7 +401,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "44503607",
+              "eventId": "match-2025-12-02-interpiscine",
               "date": "2025-12-02",
               "opponent": "Interpiscine",
               "scoreFor": 7,
@@ -414,7 +415,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "46589194",
+              "eventId": "match-2026-02-16-lancon-futsal",
               "date": "2026-02-16",
               "opponent": "Lançon Futsal",
               "scoreFor": 8,
@@ -428,7 +429,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 6,
           "fixtures": [
             {
-              "eventId": "47810694",
+              "eventId": "match-2026-05-25-ase",
               "date": "2026-05-25",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -436,7 +437,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "47309235",
+              "eventId": "match-2026-04-21-los-galacticos",
               "date": "2026-04-21",
               "opponent": "Los Galacticos",
               "scoreFor": 5,
@@ -444,7 +445,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "46414461",
+              "eventId": "match-2026-02-07-pro-tour",
               "date": "2026-02-07",
               "opponent": "Pro Tour",
               "scoreFor": 5,
@@ -452,7 +453,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "45241400",
+              "eventId": "match-2026-01-06-sahara-strikers",
               "date": "2026-01-06",
               "opponent": "Sahara Strikers",
               "scoreFor": 6,
@@ -460,7 +461,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "43748624",
+              "eventId": "match-2025-11-10-magpies",
               "date": "2025-11-10",
               "opponent": "Magpies",
               "scoreFor": 5,
@@ -468,7 +469,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "43655508",
+              "eventId": "match-2025-11-03-cap-vert",
               "date": "2025-11-03",
               "opponent": "Cap-Vert",
               "scoreFor": 2,
@@ -482,7 +483,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 5,
           "fixtures": [
             {
-              "eventId": "45241462",
+              "eventId": "match-2026-01-27-sahara-strikers",
               "date": "2026-01-27",
               "opponent": "Sahara Strikers",
               "scoreFor": 6,
@@ -490,7 +491,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43748790",
+              "eventId": "match-2025-11-18-lancon-futsal",
               "date": "2025-11-18",
               "opponent": "Lançon Futsal",
               "scoreFor": 9,
@@ -498,7 +499,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43686782",
+              "eventId": "match-2025-10-28-la-selecao",
               "date": "2025-10-28",
               "opponent": "La Seleção",
               "scoreFor": 4,
@@ -506,7 +507,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43161199",
+              "eventId": "match-2025-10-06-les-tenebres",
               "date": "2025-10-06",
               "opponent": "Les Ténèbres",
               "scoreFor": 5,
@@ -514,7 +515,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "38722481",
+              "eventId": "match-2025-08-25-ase",
               "date": "2025-08-25",
               "opponent": "ASE",
               "scoreFor": 6,
@@ -528,7 +529,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "46414439",
+              "eventId": "match-2026-02-10-ase",
               "date": "2026-02-10",
               "opponent": "ASE",
               "scoreFor": 6,
@@ -536,7 +537,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "46162536",
+              "eventId": "match-2026-02-02-saba-futsal",
               "date": "2026-02-02",
               "opponent": "SABA Futsal",
               "scoreFor": 8,
@@ -544,7 +545,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "45241452",
+              "eventId": "match-2026-01-20-tiki-taka",
               "date": "2026-01-20",
               "opponent": "Tiki Taka",
               "scoreFor": 7,
@@ -558,7 +559,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "46866046",
+              "eventId": "match-2026-03-24-cap-vert",
               "date": "2026-03-24",
               "opponent": "Cap-Vert",
               "scoreFor": 6,
@@ -566,7 +567,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "43161255",
+              "eventId": "match-2025-10-13-lsp",
               "date": "2025-10-13",
               "opponent": "LSP",
               "scoreFor": 3,
@@ -574,7 +575,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "42476778",
+              "eventId": "match-2025-09-22-ase",
               "date": "2025-09-22",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -588,7 +589,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "43686523",
+              "eventId": "match-2025-10-21-la-selecao",
               "date": "2025-10-21",
               "opponent": "La Seleção",
               "scoreFor": 4,
@@ -596,7 +597,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "42834663",
+              "eventId": "match-2025-09-30-first-stop",
               "date": "2025-09-30",
               "opponent": "First Stop",
               "scoreFor": 7,
@@ -604,7 +605,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "42486172",
+              "eventId": "match-2025-09-24-equipe-anonyme-le-complexe",
               "date": "2025-09-24",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 17,
@@ -618,7 +619,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "47442799",
+              "eventId": "match-2026-04-27-ginga",
               "date": "2026-04-27",
               "opponent": "Ginga",
               "scoreFor": 15,
@@ -626,7 +627,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "47338537",
+              "eventId": "match-2026-04-08-equipe-anonyme-le-complexe",
               "date": "2026-04-08",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 7,
@@ -634,7 +635,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "44503647",
+              "eventId": "match-2025-12-09-los-galacticos",
               "date": "2025-12-09",
               "opponent": "Los Galacticos",
               "scoreFor": 5,
@@ -648,7 +649,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "46162627",
+              "eventId": "match-2026-02-03-interpiscine",
               "date": "2026-02-03",
               "opponent": "Interpiscine",
               "scoreFor": 8,
@@ -656,7 +657,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 3
             },
             {
-              "eventId": "44503667",
+              "eventId": "match-2025-12-16-les-fedayins",
               "date": "2025-12-16",
               "opponent": "Les Fedayins",
               "scoreFor": 9,
@@ -664,7 +665,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 3
             },
             {
-              "eventId": "44720897",
+              "eventId": "match-2025-11-25-la-selecao",
               "date": "2025-11-25",
               "opponent": "La Seleção",
               "scoreFor": 3,
@@ -678,7 +679,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "46866080",
+              "eventId": "match-2026-03-31-les-tenebres",
               "date": "2026-03-31",
               "opponent": "Les Ténèbres",
               "scoreFor": 6,
@@ -686,7 +687,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "46865950",
+              "eventId": "match-2026-03-10-tiki-taka",
               "date": "2026-03-10",
               "opponent": "Tiki Taka",
               "scoreFor": 10,
@@ -694,7 +695,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "43749381",
+              "eventId": "match-2025-11-24-ginga",
               "date": "2025-11-24",
               "opponent": "Ginga",
               "scoreFor": 11,
@@ -713,7 +714,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "47309224",
+              "eventId": "match-2026-04-14-first-stop",
               "date": "2026-04-14",
               "opponent": "First Stop",
               "scoreFor": 11,
@@ -721,7 +722,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 6
             },
             {
-              "eventId": "46865960",
+              "eventId": "match-2026-03-17-les-chocolatiers",
               "date": "2026-03-17",
               "opponent": "Les Chocolatiers",
               "scoreFor": 10,
@@ -729,7 +730,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 6
             },
             {
-              "eventId": "45241489",
+              "eventId": "match-2026-01-26-ginga",
               "date": "2026-01-26",
               "opponent": "Ginga",
               "scoreFor": 11,
@@ -743,7 +744,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "46736712",
+              "eventId": "match-2026-03-03-fc-firtina",
               "date": "2026-03-03",
               "opponent": "FC Firtina",
               "scoreFor": 10,
@@ -751,7 +752,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "45241412",
+              "eventId": "match-2026-01-13-fc-firtina",
               "date": "2026-01-13",
               "opponent": "FC Firtina",
               "scoreFor": 8,
@@ -759,7 +760,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "43686871",
+              "eventId": "match-2025-11-19-ginga",
               "date": "2025-11-19",
               "opponent": "Ginga",
               "scoreFor": 18,
@@ -767,7 +768,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "43748646",
+              "eventId": "match-2025-11-17-les-chocolatiers",
               "date": "2025-11-17",
               "opponent": "Les Chocolatiers",
               "scoreFor": 9,
@@ -781,7 +782,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "46865889",
+              "eventId": "match-2026-03-16-saba-foot-5",
               "date": "2026-03-16",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -795,7 +796,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "42476924",
+              "eventId": "match-2025-09-16-b2k",
               "date": "2025-09-16",
               "opponent": "B2K",
               "scoreFor": 11,
@@ -849,7 +850,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "46865932",
+              "eventId": "match-2026-04-13-ginga",
               "date": "2026-04-13",
               "opponent": "Ginga",
               "scoreFor": 25,
@@ -857,7 +858,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 18
             },
             {
-              "eventId": "44896620",
+              "eventId": "match-2025-12-08-equipe-anonyme-le-complexe",
               "date": "2025-12-08",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 26,
@@ -886,7 +887,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "38722988",
+              "eventId": "match-2025-08-28-equipe-anonyme-le-complexe",
               "date": "2025-08-28",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 28,
@@ -957,7 +958,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "23901536",
+              "eventId": "match-2023-10-11-fb-futsal",
               "date": "2023-10-11",
               "opponent": "FB Futsal",
               "scoreFor": 4,
@@ -971,7 +972,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "24302252",
+              "eventId": "match-2023-09-20-ase",
               "date": "2023-09-20",
               "opponent": "ASE",
               "scoreFor": 4,
@@ -985,7 +986,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "23902881",
+              "eventId": "match-2024-05-13-m-foot",
               "date": "2024-05-13",
               "opponent": "M Foot",
               "scoreFor": 3,
@@ -993,7 +994,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -12
             },
             {
-              "eventId": "21682569",
+              "eventId": "match-2023-05-26-equipe-mix-us-eguilles",
               "date": "2023-05-26",
               "opponent": "Équipe Mix US Éguilles",
               "scoreFor": 9,
@@ -1007,7 +1008,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "32792449",
+              "eventId": "match-2024-10-16-ase",
               "date": "2024-10-16",
               "opponent": "ASE",
               "scoreFor": 11,
@@ -1021,7 +1022,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "47309266",
+              "eventId": "match-2026-05-11-ase",
               "date": "2026-05-11",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -1029,7 +1030,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -10
             },
             {
-              "eventId": "44313450",
+              "eventId": "match-2025-11-08-pro-tour",
               "date": "2025-11-08",
               "opponent": "Pro Tour",
               "scoreFor": 13,
@@ -1037,7 +1038,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -10
             },
             {
-              "eventId": "23903211",
+              "eventId": "match-2024-05-15-ase",
               "date": "2024-05-15",
               "opponent": "ASE",
               "scoreFor": 4,
@@ -1045,7 +1046,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -10
             },
             {
-              "eventId": "11928858",
+              "eventId": "match-2019-05-21-les-bricolos",
               "date": "2019-05-21",
               "opponent": "Les Bricolos",
               "scoreFor": 16,
@@ -1059,7 +1060,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 7,
           "fixtures": [
             {
-              "eventId": "45784115",
+              "eventId": "match-2026-01-10-pro-tour",
               "date": "2026-01-10",
               "opponent": "Pro Tour",
               "scoreFor": 11,
@@ -1067,7 +1068,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "23903171",
+              "eventId": "match-2024-04-15-saba-futsal",
               "date": "2024-04-15",
               "opponent": "SABA Futsal",
               "scoreFor": 4,
@@ -1075,7 +1076,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "26135378",
+              "eventId": "match-2023-12-22-equipe-anonyme-le-complexe",
               "date": "2023-12-22",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 13,
@@ -1083,7 +1084,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "23896323",
+              "eventId": "match-2023-09-18-ase",
               "date": "2023-09-18",
               "opponent": "ASE",
               "scoreFor": 7,
@@ -1091,7 +1092,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "23896256",
+              "eventId": "match-2023-09-11-ase",
               "date": "2023-09-11",
               "opponent": "ASE",
               "scoreFor": 4,
@@ -1099,7 +1100,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "20781615",
+              "eventId": "match-2023-02-15-lamanon-futsal",
               "date": "2023-02-15",
               "opponent": "Lamanon Futsal",
               "scoreFor": 8,
@@ -1107,7 +1108,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -9
             },
             {
-              "eventId": "11928891",
+              "eventId": "match-2019-12-27-machado-fc",
               "date": "2019-12-27",
               "opponent": "Machado FC",
               "scoreFor": 18,
@@ -1121,7 +1122,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "43686813",
+              "eventId": "match-2025-10-27-saba-foot-5",
               "date": "2025-10-27",
               "opponent": "SABA FOOT 5",
               "scoreFor": 6,
@@ -1129,7 +1130,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -8
             },
             {
-              "eventId": "41685406",
+              "eventId": "match-2025-09-17-ase",
               "date": "2025-09-17",
               "opponent": "ASE",
               "scoreFor": 10,
@@ -1137,7 +1138,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -8
             },
             {
-              "eventId": "24470468",
+              "eventId": "match-2024-03-04-lancon-foot",
               "date": "2024-03-04",
               "opponent": "Lançon Foot",
               "scoreFor": 5,
@@ -1145,7 +1146,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -8
             },
             {
-              "eventId": "23902237",
+              "eventId": "match-2023-12-18-lamanon-futsal",
               "date": "2023-12-18",
               "opponent": "Lamanon Futsal",
               "scoreFor": 4,
@@ -1159,7 +1160,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 3,
           "fixtures": [
             {
-              "eventId": "26746123",
+              "eventId": "match-2024-01-26-equipe-mix-le-complexe",
               "date": "2024-01-26",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 11,
@@ -1167,7 +1168,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -7
             },
             {
-              "eventId": "26556165",
+              "eventId": "match-2024-01-19-equipe-mix-le-complexe",
               "date": "2024-01-19",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 15,
@@ -1175,7 +1176,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -7
             },
             {
-              "eventId": "23902288",
+              "eventId": "match-2024-01-08-fb-futsal",
               "date": "2024-01-08",
               "opponent": "FB Futsal",
               "scoreFor": 3,
@@ -1189,7 +1190,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 8,
           "fixtures": [
             {
-              "eventId": "46737053",
+              "eventId": "match-2026-03-02-ase",
               "date": "2026-03-02",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -1197,7 +1198,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "44503878",
+              "eventId": "match-2026-01-05-ase",
               "date": "2026-01-05",
               "opponent": "ASE",
               "scoreFor": 7,
@@ -1205,7 +1206,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "32267211",
+              "eventId": "match-2025-03-05-saba-foot-5",
               "date": "2025-03-05",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -1213,7 +1214,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "32267201",
+              "eventId": "match-2024-12-11-forasud",
               "date": "2024-12-11",
               "opponent": "ForaSud",
               "scoreFor": 9,
@@ -1221,7 +1222,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "33574228",
+              "eventId": "match-2024-11-20-equipe-mix-ase",
               "date": "2024-11-20",
               "opponent": "Équipe Mix ASE",
               "scoreFor": 16,
@@ -1229,7 +1230,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "25838709",
+              "eventId": "match-2023-11-24-machado-fc",
               "date": "2023-11-24",
               "opponent": "Machado FC",
               "scoreFor": 17,
@@ -1237,7 +1238,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "21584168",
+              "eventId": "match-2023-05-19-les-fragiles",
               "date": "2023-05-19",
               "opponent": "Les Fragiles",
               "scoreFor": 10,
@@ -1245,7 +1246,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -6
             },
             {
-              "eventId": "20000020",
+              "eventId": "match-2022-12-13-equipe-anonyme-le-complexe",
               "date": "2022-12-13",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 10,
@@ -1259,7 +1260,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 6,
           "fixtures": [
             {
-              "eventId": "51050729",
+              "eventId": "match-2026-09-09-mannschaft",
               "date": "2026-09-09",
               "opponent": "Mannschaft",
               "scoreFor": 9,
@@ -1267,7 +1268,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "48029114",
+              "eventId": "match-2026-06-29-saba-foot-5",
               "date": "2026-06-29",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -1275,7 +1276,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "47309167",
+              "eventId": "match-2026-04-07-la-selecao",
               "date": "2026-04-07",
               "opponent": "La Seleção",
               "scoreFor": 0,
@@ -1283,7 +1284,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "46865918",
+              "eventId": "match-2026-03-23-lancon-futsal",
               "date": "2026-03-23",
               "opponent": "Lançon Futsal",
               "scoreFor": 6,
@@ -1291,7 +1292,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "44503607",
+              "eventId": "match-2025-12-02-interpiscine",
               "date": "2025-12-02",
               "opponent": "Interpiscine",
               "scoreFor": 7,
@@ -1299,7 +1300,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -5
             },
             {
-              "eventId": "36958737",
+              "eventId": "match-2025-06-02-ase-1",
               "date": "2025-06-02",
               "opponent": "ASE 1",
               "scoreFor": 5,
@@ -1313,7 +1314,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "46589194",
+              "eventId": "match-2026-02-16-lancon-futsal",
               "date": "2026-02-16",
               "opponent": "Lançon Futsal",
               "scoreFor": 8,
@@ -1321,7 +1322,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -4
             },
             {
-              "eventId": "32267213",
+              "eventId": "match-2025-04-28-ase-1",
               "date": "2025-04-28",
               "opponent": "ASE 1",
               "scoreFor": 15,
@@ -1329,7 +1330,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -4
             },
             {
-              "eventId": "24470066",
+              "eventId": "match-2023-12-13-lancon-foot",
               "date": "2023-12-13",
               "opponent": "Lançon Foot",
               "scoreFor": 10,
@@ -1337,7 +1338,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -4
             },
             {
-              "eventId": "23901864",
+              "eventId": "match-2023-10-25-saba-futsal",
               "date": "2023-10-25",
               "opponent": "SABA Futsal",
               "scoreFor": 9,
@@ -1351,7 +1352,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 11,
           "fixtures": [
             {
-              "eventId": "47810694",
+              "eventId": "match-2026-05-25-ase",
               "date": "2026-05-25",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -1359,7 +1360,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "47309235",
+              "eventId": "match-2026-04-21-los-galacticos",
               "date": "2026-04-21",
               "opponent": "Los Galacticos",
               "scoreFor": 5,
@@ -1367,7 +1368,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "46414461",
+              "eventId": "match-2026-02-07-pro-tour",
               "date": "2026-02-07",
               "opponent": "Pro Tour",
               "scoreFor": 5,
@@ -1375,7 +1376,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "45241400",
+              "eventId": "match-2026-01-06-sahara-strikers",
               "date": "2026-01-06",
               "opponent": "Sahara Strikers",
               "scoreFor": 6,
@@ -1383,7 +1384,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "43748624",
+              "eventId": "match-2025-11-10-magpies",
               "date": "2025-11-10",
               "opponent": "Magpies",
               "scoreFor": 5,
@@ -1391,7 +1392,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "43655508",
+              "eventId": "match-2025-11-03-cap-vert",
               "date": "2025-11-03",
               "opponent": "Cap-Vert",
               "scoreFor": 2,
@@ -1399,7 +1400,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "24302590",
+              "eventId": "match-2023-10-04-lamanon-futsal",
               "date": "2023-10-04",
               "opponent": "Lamanon Futsal",
               "scoreFor": 6,
@@ -1407,7 +1408,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "23601901",
+              "eventId": "match-2023-09-09-equipe-anonyme-le-complexe",
               "date": "2023-09-09",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 12,
@@ -1415,7 +1416,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "21682640",
+              "eventId": "match-2023-06-05-equipe-anonyme-le-complexe",
               "date": "2023-06-05",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 13,
@@ -1423,7 +1424,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "20518247",
+              "eventId": "match-2023-01-24-equipe-anonyme-le-complexe",
               "date": "2023-01-24",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 17,
@@ -1431,7 +1432,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -3
             },
             {
-              "eventId": "19877243",
+              "eventId": "match-2022-11-30-bel-air",
               "date": "2022-11-30",
               "opponent": "Bel-Air",
               "scoreFor": 14,
@@ -1445,7 +1446,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 12,
           "fixtures": [
             {
-              "eventId": "45241462",
+              "eventId": "match-2026-01-27-sahara-strikers",
               "date": "2026-01-27",
               "opponent": "Sahara Strikers",
               "scoreFor": 6,
@@ -1453,7 +1454,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43748790",
+              "eventId": "match-2025-11-18-lancon-futsal",
               "date": "2025-11-18",
               "opponent": "Lançon Futsal",
               "scoreFor": 9,
@@ -1461,7 +1462,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43686782",
+              "eventId": "match-2025-10-28-la-selecao",
               "date": "2025-10-28",
               "opponent": "La Seleção",
               "scoreFor": 4,
@@ -1469,7 +1470,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "43161199",
+              "eventId": "match-2025-10-06-les-tenebres",
               "date": "2025-10-06",
               "opponent": "Les Ténèbres",
               "scoreFor": 5,
@@ -1477,7 +1478,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "38722481",
+              "eventId": "match-2025-08-25-ase",
               "date": "2025-08-25",
               "opponent": "ASE",
               "scoreFor": 6,
@@ -1485,7 +1486,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "36971089",
+              "eventId": "match-2025-05-26-ase",
               "date": "2025-05-26",
               "opponent": "ASE",
               "scoreFor": 15,
@@ -1493,7 +1494,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "32267193",
+              "eventId": "match-2024-10-07-fc-lancon",
               "date": "2024-10-07",
               "opponent": "FC Lançon",
               "scoreFor": 6,
@@ -1501,7 +1502,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "27933013",
+              "eventId": "match-2024-05-29-fb-futsal",
               "date": "2024-05-29",
               "opponent": "FB Futsal",
               "scoreFor": 12,
@@ -1509,7 +1510,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "23903116",
+              "eventId": "match-2024-04-01-fb-futsal",
               "date": "2024-04-01",
               "opponent": "FB Futsal",
               "scoreFor": 9,
@@ -1517,7 +1518,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "27099435",
+              "eventId": "match-2024-02-23-les-fragiles",
               "date": "2024-02-23",
               "opponent": "Les Fragiles",
               "scoreFor": 15,
@@ -1525,7 +1526,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "25477332",
+              "eventId": "match-2023-11-03-machado-fc",
               "date": "2023-11-03",
               "opponent": "Machado FC",
               "scoreFor": 11,
@@ -1533,7 +1534,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -2
             },
             {
-              "eventId": "20670044",
+              "eventId": "match-2023-01-31-ase",
               "date": "2023-01-31",
               "opponent": "ASE",
               "scoreFor": 12,
@@ -1547,7 +1548,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 12,
           "fixtures": [
             {
-              "eventId": "46414439",
+              "eventId": "match-2026-02-10-ase",
               "date": "2026-02-10",
               "opponent": "ASE",
               "scoreFor": 6,
@@ -1555,7 +1556,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "46162536",
+              "eventId": "match-2026-02-02-saba-futsal",
               "date": "2026-02-02",
               "opponent": "SABA Futsal",
               "scoreFor": 8,
@@ -1563,7 +1564,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "45241452",
+              "eventId": "match-2026-01-20-tiki-taka",
               "date": "2026-01-20",
               "opponent": "Tiki Taka",
               "scoreFor": 7,
@@ -1571,7 +1572,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "32267219",
+              "eventId": "match-2025-05-12-ase-2",
               "date": "2025-05-12",
               "opponent": "ASE 2",
               "scoreFor": 8,
@@ -1579,7 +1580,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "31635090",
+              "eventId": "match-2024-09-18-equipe-mix-ase",
               "date": "2024-09-18",
               "opponent": "Équipe Mix ASE",
               "scoreFor": 9,
@@ -1587,7 +1588,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "31723824",
+              "eventId": "match-2024-09-18-equipe-anonyme-le-complexe",
               "date": "2024-09-18",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 19,
@@ -1595,7 +1596,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "24302927",
+              "eventId": "match-2024-02-28-ase",
               "date": "2024-02-28",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -1603,7 +1604,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "23902108",
+              "eventId": "match-2023-12-04-lamanon-futsal",
               "date": "2023-12-04",
               "opponent": "Lamanon Futsal",
               "scoreFor": 7,
@@ -1611,7 +1612,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "24302421",
+              "eventId": "match-2023-09-25-mtp",
               "date": "2023-09-25",
               "opponent": "MTP",
               "scoreFor": 6,
@@ -1619,7 +1620,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "20855318",
+              "eventId": "match-2023-02-22-equipe-mix-le-complexe",
               "date": "2023-02-22",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 14,
@@ -1627,7 +1628,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "20336169",
+              "eventId": "match-2023-01-10-equipe-mix-le-complexe",
               "date": "2023-01-10",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 17,
@@ -1635,7 +1636,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": -1
             },
             {
-              "eventId": "11933038",
+              "eventId": "match-2021-01-24-viala-st-come",
               "date": "2021-01-24",
               "opponent": "Viala St Come",
               "scoreFor": 0,
@@ -1649,7 +1650,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 7,
           "fixtures": [
             {
-              "eventId": "46866046",
+              "eventId": "match-2026-03-24-cap-vert",
               "date": "2026-03-24",
               "opponent": "Cap-Vert",
               "scoreFor": 6,
@@ -1657,7 +1658,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "43161255",
+              "eventId": "match-2025-10-13-lsp",
               "date": "2025-10-13",
               "opponent": "LSP",
               "scoreFor": 3,
@@ -1665,7 +1666,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "42476778",
+              "eventId": "match-2025-09-22-ase",
               "date": "2025-09-22",
               "opponent": "ASE",
               "scoreFor": 5,
@@ -1673,7 +1674,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "32267197",
+              "eventId": "match-2025-03-12-saba-foot-5",
               "date": "2025-03-12",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -1681,7 +1682,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "33875684",
+              "eventId": "match-2024-12-04-equipe-mix-le-complexe",
               "date": "2024-12-04",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 17,
@@ -1689,7 +1690,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "32267199",
+              "eventId": "match-2024-11-27-ase-1",
               "date": "2024-11-27",
               "opponent": "ASE 1",
               "scoreFor": 7,
@@ -1697,7 +1698,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 0
             },
             {
-              "eventId": "11933024",
+              "eventId": "match-2021-01-24-viala-st-come",
               "date": "2021-01-24",
               "opponent": "Viala St Come",
               "scoreFor": 0,
@@ -1711,7 +1712,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 10,
           "fixtures": [
             {
-              "eventId": "43686523",
+              "eventId": "match-2025-10-21-la-selecao",
               "date": "2025-10-21",
               "opponent": "La Seleção",
               "scoreFor": 4,
@@ -1719,7 +1720,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "42834663",
+              "eventId": "match-2025-09-30-first-stop",
               "date": "2025-09-30",
               "opponent": "First Stop",
               "scoreFor": 7,
@@ -1727,7 +1728,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "42486172",
+              "eventId": "match-2025-09-24-equipe-anonyme-le-complexe",
               "date": "2025-09-24",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 17,
@@ -1735,7 +1736,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "32118695",
+              "eventId": "match-2024-09-25-equipe-anonyme-le-complexe",
               "date": "2024-09-25",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 14,
@@ -1743,7 +1744,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "24303034",
+              "eventId": "match-2024-02-07-lamanon-futsal",
               "date": "2024-02-07",
               "opponent": "Lamanon Futsal",
               "scoreFor": 5,
@@ -1751,7 +1752,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "24302809",
+              "eventId": "match-2023-11-22-fce",
               "date": "2023-11-22",
               "opponent": "FCE",
               "scoreFor": 10,
@@ -1759,7 +1760,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "24302778",
+              "eventId": "match-2023-11-06-ase",
               "date": "2023-11-06",
               "opponent": "ASE",
               "scoreFor": 8,
@@ -1767,7 +1768,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "24469872",
+              "eventId": "match-2023-10-23-lancon-foot",
               "date": "2023-10-23",
               "opponent": "Lançon Foot",
               "scoreFor": 6,
@@ -1775,7 +1776,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "11933026",
+              "eventId": "match-2021-01-24-fc-grinta",
               "date": "2021-01-24",
               "opponent": "FC Grinta",
               "scoreFor": 1,
@@ -1783,7 +1784,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 1
             },
             {
-              "eventId": "11928799",
+              "eventId": "match-2020-12-27-istres-taureaux",
               "date": "2020-12-27",
               "opponent": "Istres Taureaux",
               "scoreFor": 6,
@@ -1797,7 +1798,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 7,
           "fixtures": [
             {
-              "eventId": "51050727",
+              "eventId": "match-2026-09-02-fc-lancon",
               "date": "2026-09-02",
               "opponent": "FC Lançon",
               "scoreFor": 12,
@@ -1805,7 +1806,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "47442799",
+              "eventId": "match-2026-04-27-ginga",
               "date": "2026-04-27",
               "opponent": "Ginga",
               "scoreFor": 15,
@@ -1813,7 +1814,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "47338537",
+              "eventId": "match-2026-04-08-equipe-anonyme-le-complexe",
               "date": "2026-04-08",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 7,
@@ -1821,7 +1822,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "44503647",
+              "eventId": "match-2025-12-09-los-galacticos",
               "date": "2025-12-09",
               "opponent": "Los Galacticos",
               "scoreFor": 5,
@@ -1829,7 +1830,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "24302607",
+              "eventId": "match-2023-10-16-eyguieres-five-club",
               "date": "2023-10-16",
               "opponent": "Eyguières Five Club",
               "scoreFor": 15,
@@ -1837,7 +1838,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "24302476",
+              "eventId": "match-2023-10-02-fce",
               "date": "2023-10-02",
               "opponent": "FCE",
               "scoreFor": 11,
@@ -1845,7 +1846,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             },
             {
-              "eventId": "19877168",
+              "eventId": "match-2022-10-19-bago-fc",
               "date": "2022-10-19",
               "opponent": "Bago FC",
               "scoreFor": 17,
@@ -1859,7 +1860,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "46162627",
+              "eventId": "match-2026-02-03-interpiscine",
               "date": "2026-02-03",
               "opponent": "Interpiscine",
               "scoreFor": 8,
@@ -1867,7 +1868,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 3
             },
             {
-              "eventId": "44503667",
+              "eventId": "match-2025-12-16-les-fedayins",
               "date": "2025-12-16",
               "opponent": "Les Fedayins",
               "scoreFor": 9,
@@ -1875,7 +1876,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 3
             },
             {
-              "eventId": "44720897",
+              "eventId": "match-2025-11-25-la-selecao",
               "date": "2025-11-25",
               "opponent": "La Seleção",
               "scoreFor": 3,
@@ -1883,7 +1884,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 3
             },
             {
-              "eventId": "20392737",
+              "eventId": "match-2023-01-17-equipe-anonyme-le-complexe",
               "date": "2023-01-17",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 12,
@@ -1897,7 +1898,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 9,
           "fixtures": [
             {
-              "eventId": "46866080",
+              "eventId": "match-2026-03-31-les-tenebres",
               "date": "2026-03-31",
               "opponent": "Les Ténèbres",
               "scoreFor": 6,
@@ -1905,7 +1906,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "46865950",
+              "eventId": "match-2026-03-10-tiki-taka",
               "date": "2026-03-10",
               "opponent": "Tiki Taka",
               "scoreFor": 10,
@@ -1913,7 +1914,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "43749381",
+              "eventId": "match-2025-11-24-ginga",
               "date": "2025-11-24",
               "opponent": "Ginga",
               "scoreFor": 11,
@@ -1921,7 +1922,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "37143919",
+              "eventId": "match-2025-06-18-pelissanne-loisir",
               "date": "2025-06-18",
               "opponent": "Pélissanne Loisir",
               "scoreFor": 12,
@@ -1929,7 +1930,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "35544029",
+              "eventId": "match-2025-02-19-equipe-anonyme-le-complexe",
               "date": "2025-02-19",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 21,
@@ -1937,7 +1938,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "32267205",
+              "eventId": "match-2025-01-13-ase-2",
               "date": "2025-01-13",
               "opponent": "ASE 2",
               "scoreFor": 11,
@@ -1945,7 +1946,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "31173357",
+              "eventId": "match-2024-09-11-equipe-mix-le-complexe",
               "date": "2024-09-11",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 16,
@@ -1953,7 +1954,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "29801120",
+              "eventId": "match-2024-09-09-equipe-mix-le-complexe",
               "date": "2024-09-09",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 9,
@@ -1961,7 +1962,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 4
             },
             {
-              "eventId": "11928887",
+              "eventId": "match-2019-12-22-handax-fc",
               "date": "2019-12-22",
               "opponent": "Handax FC",
               "scoreFor": 20,
@@ -1975,7 +1976,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 6,
           "fixtures": [
             {
-              "eventId": "32267207",
+              "eventId": "match-2025-02-03-fc-lancon",
               "date": "2025-02-03",
               "opponent": "FC Lançon",
               "scoreFor": 13,
@@ -1983,7 +1984,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 5
             },
             {
-              "eventId": "29801632",
+              "eventId": "match-2024-08-29-equipe-mix-le-complexe",
               "date": "2024-08-29",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 14,
@@ -1991,7 +1992,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 5
             },
             {
-              "eventId": "24303040",
+              "eventId": "match-2024-02-19-eyguieres-five-club",
               "date": "2024-02-19",
               "opponent": "Eyguières Five Club",
               "scoreFor": 13,
@@ -1999,7 +2000,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 5
             },
             {
-              "eventId": "24302838",
+              "eventId": "match-2023-12-11-eyguieres-five-club",
               "date": "2023-12-11",
               "opponent": "Eyguières Five Club",
               "scoreFor": 12,
@@ -2007,7 +2008,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 5
             },
             {
-              "eventId": "19877206",
+              "eventId": "match-2022-11-16-bago-fc",
               "date": "2022-11-16",
               "opponent": "Bago FC",
               "scoreFor": 20,
@@ -2015,7 +2016,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 5
             },
             {
-              "eventId": "11928873",
+              "eventId": "match-2019-10-27-istres-taureaux",
               "date": "2019-10-27",
               "opponent": "Istres Taureaux",
               "scoreFor": 10,
@@ -2029,7 +2030,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "47309224",
+              "eventId": "match-2026-04-14-first-stop",
               "date": "2026-04-14",
               "opponent": "First Stop",
               "scoreFor": 11,
@@ -2037,7 +2038,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 6
             },
             {
-              "eventId": "46865960",
+              "eventId": "match-2026-03-17-les-chocolatiers",
               "date": "2026-03-17",
               "opponent": "Les Chocolatiers",
               "scoreFor": 10,
@@ -2045,7 +2046,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 6
             },
             {
-              "eventId": "45241489",
+              "eventId": "match-2026-01-26-ginga",
               "date": "2026-01-26",
               "opponent": "Ginga",
               "scoreFor": 11,
@@ -2053,7 +2054,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 6
             },
             {
-              "eventId": "21033430",
+              "eventId": "match-2023-03-08-equipe-mix-le-complexe",
               "date": "2023-03-08",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 23,
@@ -2067,7 +2068,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 6,
           "fixtures": [
             {
-              "eventId": "46736712",
+              "eventId": "match-2026-03-03-fc-firtina",
               "date": "2026-03-03",
               "opponent": "FC Firtina",
               "scoreFor": 10,
@@ -2075,7 +2076,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "45241412",
+              "eventId": "match-2026-01-13-fc-firtina",
               "date": "2026-01-13",
               "opponent": "FC Firtina",
               "scoreFor": 8,
@@ -2083,7 +2084,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "43686871",
+              "eventId": "match-2025-11-19-ginga",
               "date": "2025-11-19",
               "opponent": "Ginga",
               "scoreFor": 18,
@@ -2091,7 +2092,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "43748646",
+              "eventId": "match-2025-11-17-les-chocolatiers",
               "date": "2025-11-17",
               "opponent": "Les Chocolatiers",
               "scoreFor": 9,
@@ -2099,7 +2100,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "37230997",
+              "eventId": "match-2025-06-23-nuti-fc",
               "date": "2025-06-23",
               "opponent": "Nuti FC",
               "scoreFor": 15,
@@ -2107,7 +2108,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 7
             },
             {
-              "eventId": "24302953",
+              "eventId": "match-2024-01-22-mtp",
               "date": "2024-01-22",
               "opponent": "MTP",
               "scoreFor": 10,
@@ -2121,7 +2122,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 5,
           "fixtures": [
             {
-              "eventId": "46865889",
+              "eventId": "match-2026-03-16-saba-foot-5",
               "date": "2026-03-16",
               "opponent": "SABA FOOT 5",
               "scoreFor": 8,
@@ -2129,7 +2130,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 8
             },
             {
-              "eventId": "32267203",
+              "eventId": "match-2025-01-29-new-team",
               "date": "2025-01-29",
               "opponent": "New Team",
               "scoreFor": 8,
@@ -2137,7 +2138,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 8
             },
             {
-              "eventId": "24303067",
+              "eventId": "match-2024-03-11-los-angelaix-galaxy",
               "date": "2024-03-11",
               "opponent": "Los Angelaix Galaxy",
               "scoreFor": 8,
@@ -2145,7 +2146,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 8
             },
             {
-              "eventId": "26746911",
+              "eventId": "match-2024-01-08-los-angelaix-galaxy",
               "date": "2024-01-08",
               "opponent": "Los Angelaix Galaxy",
               "scoreFor": 8,
@@ -2153,7 +2154,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 8
             },
             {
-              "eventId": "11928885",
+              "eventId": "match-2019-12-13-les-bricolos",
               "date": "2019-12-13",
               "opponent": "Les Bricolos",
               "scoreFor": 26,
@@ -2167,7 +2168,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "42476924",
+              "eventId": "match-2025-09-16-b2k",
               "date": "2025-09-16",
               "opponent": "B2K",
               "scoreFor": 11,
@@ -2175,7 +2176,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 9
             },
             {
-              "eventId": "36219417",
+              "eventId": "match-2025-04-02-equipe-anonyme-le-complexe",
               "date": "2025-04-02",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 21,
@@ -2189,7 +2190,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 4,
           "fixtures": [
             {
-              "eventId": "33826856",
+              "eventId": "match-2024-12-04-equipe-anonyme-le-complexe",
               "date": "2024-12-04",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 18,
@@ -2197,7 +2198,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 10
             },
             {
-              "eventId": "24302707",
+              "eventId": "match-2023-10-30-los-angelaix-galaxy",
               "date": "2023-10-30",
               "opponent": "Los Angelaix Galaxy",
               "scoreFor": 13,
@@ -2205,7 +2206,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 10
             },
             {
-              "eventId": "20262701",
+              "eventId": "match-2023-01-03-equipe-mix-le-complexe",
               "date": "2023-01-03",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 20,
@@ -2213,7 +2214,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 10
             },
             {
-              "eventId": "11928881",
+              "eventId": "match-2019-12-02-iut-salon",
               "date": "2019-12-02",
               "opponent": "IUT Salon",
               "scoreFor": 19,
@@ -2227,7 +2228,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "32773337",
+              "eventId": "match-2024-10-16-equipe-anonyme-le-complexe",
               "date": "2024-10-16",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 21,
@@ -2241,7 +2242,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "30607998",
+              "eventId": "match-2024-09-04-equipe-anonyme-le-complexe",
               "date": "2024-09-04",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 18,
@@ -2249,7 +2250,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 12
             },
             {
-              "eventId": "21768964",
+              "eventId": "match-2023-06-19-equipe-mix-le-complexe",
               "date": "2023-06-19",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 20,
@@ -2263,7 +2264,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "24302970",
+              "eventId": "match-2024-01-29-fce",
               "date": "2024-01-29",
               "opponent": "FCE",
               "scoreFor": 17,
@@ -2271,7 +2272,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 13
             },
             {
-              "eventId": "24302797",
+              "eventId": "match-2023-11-13-mtp",
               "date": "2023-11-13",
               "opponent": "MTP",
               "scoreFor": 15,
@@ -2285,7 +2286,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "32267215",
+              "eventId": "match-2025-03-31-forasud",
               "date": "2025-03-31",
               "opponent": "ForaSud",
               "scoreFor": 20,
@@ -2299,7 +2300,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "24472387",
+              "eventId": "match-2023-09-22-equipe-mix-le-complexe",
               "date": "2023-09-22",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 24,
@@ -2313,7 +2314,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "19876361",
+              "eventId": "match-2022-12-06-equipe-mix-le-complexe",
               "date": "2022-12-06",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 20,
@@ -2327,7 +2328,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "36166612",
+              "eventId": "match-2025-03-26-equipe-anonyme-le-complexe",
               "date": "2025-03-26",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 26,
@@ -2335,7 +2336,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 17
             },
             {
-              "eventId": "21445758",
+              "eventId": "match-2023-04-26-equipe-anonyme-le-complexe",
               "date": "2023-04-26",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 26,
@@ -2349,7 +2350,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 2,
           "fixtures": [
             {
-              "eventId": "46865932",
+              "eventId": "match-2026-04-13-ginga",
               "date": "2026-04-13",
               "opponent": "Ginga",
               "scoreFor": 25,
@@ -2357,7 +2358,7 @@ window.LYKOS_TEAM_STATS = {
               "difference": 18
             },
             {
-              "eventId": "44896620",
+              "eventId": "match-2025-12-08-equipe-anonyme-le-complexe",
               "date": "2025-12-08",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 26,
@@ -2376,7 +2377,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "34954642",
+              "eventId": "match-2025-01-22-equipe-anonyme-le-complexe",
               "date": "2025-01-22",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 27,
@@ -2390,7 +2391,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "26334881",
+              "eventId": "match-2024-01-05-equipe-mix-le-complexe",
               "date": "2024-01-05",
               "opponent": "Équipe Mix Le Complexe",
               "scoreFor": 31,
@@ -2404,7 +2405,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "38722988",
+              "eventId": "match-2025-08-28-equipe-anonyme-le-complexe",
               "date": "2025-08-28",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 28,
@@ -2418,7 +2419,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "35419307",
+              "eventId": "match-2025-02-19-equipe-anonyme-le-complexe",
               "date": "2025-02-19",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 32,
@@ -2477,7 +2478,7 @@ window.LYKOS_TEAM_STATS = {
           "matches": 1,
           "fixtures": [
             {
-              "eventId": "51050731",
+              "eventId": "match-2026-09-16-equipe-anonyme-le-complexe",
               "date": "2026-09-16",
               "opponent": "Équipe Anonyme Le Complexe",
               "scoreFor": 40,
@@ -2532,13 +2533,13 @@ window.LYKOS_TEAM_STATS = {
   },
   "seasons": [
     {
-      "id": "2766614",
+      "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
       "matchCount": 3,
       "series": [
         {
-          "eventId": "51050727",
+          "eventId": "match-2026-09-02-fc-lancon",
           "index": 1,
           "date": "2026-09-02",
           "opponent": "FC Lançon",
@@ -2565,7 +2566,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "51050729",
+          "eventId": "match-2026-09-09-mannschaft",
           "index": 2,
           "date": "2026-09-09",
           "opponent": "Mannschaft",
@@ -2592,7 +2593,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "51050731",
+          "eventId": "match-2026-09-16-equipe-anonyme-le-complexe",
           "index": 3,
           "date": "2026-09-16",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -2628,13 +2629,13 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "2252662",
+      "id": "saison-2025-2026",
       "label": "2025-2026",
       "current": false,
       "matchCount": 53,
       "series": [
         {
-          "eventId": "38722481",
+          "eventId": "match-2025-08-25-ase",
           "index": 1,
           "date": "2025-08-25",
           "opponent": "ASE",
@@ -2661,7 +2662,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "38722988",
+          "eventId": "match-2025-08-28-equipe-anonyme-le-complexe",
           "index": 2,
           "date": "2025-08-28",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -2688,7 +2689,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "42476924",
+          "eventId": "match-2025-09-16-b2k",
           "index": 3,
           "date": "2025-09-16",
           "opponent": "B2K",
@@ -2715,7 +2716,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "41685406",
+          "eventId": "match-2025-09-17-ase",
           "index": 4,
           "date": "2025-09-17",
           "opponent": "ASE",
@@ -2742,7 +2743,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "42476778",
+          "eventId": "match-2025-09-22-ase",
           "index": 5,
           "date": "2025-09-22",
           "opponent": "ASE",
@@ -2769,7 +2770,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "42486172",
+          "eventId": "match-2025-09-24-equipe-anonyme-le-complexe",
           "index": 6,
           "date": "2025-09-24",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -2796,7 +2797,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "42834663",
+          "eventId": "match-2025-09-30-first-stop",
           "index": 7,
           "date": "2025-09-30",
           "opponent": "First Stop",
@@ -2823,7 +2824,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43161199",
+          "eventId": "match-2025-10-06-les-tenebres",
           "index": 8,
           "date": "2025-10-06",
           "opponent": "Les Ténèbres",
@@ -2850,7 +2851,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43161255",
+          "eventId": "match-2025-10-13-lsp",
           "index": 9,
           "date": "2025-10-13",
           "opponent": "LSP",
@@ -2877,7 +2878,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43686523",
+          "eventId": "match-2025-10-21-la-selecao",
           "index": 10,
           "date": "2025-10-21",
           "opponent": "La Seleção",
@@ -2904,7 +2905,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43686813",
+          "eventId": "match-2025-10-27-saba-foot-5",
           "index": 11,
           "date": "2025-10-27",
           "opponent": "SABA FOOT 5",
@@ -2931,7 +2932,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43686782",
+          "eventId": "match-2025-10-28-la-selecao",
           "index": 12,
           "date": "2025-10-28",
           "opponent": "La Seleção",
@@ -2958,7 +2959,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43655508",
+          "eventId": "match-2025-11-03-cap-vert",
           "index": 13,
           "date": "2025-11-03",
           "opponent": "Cap-Vert",
@@ -2985,7 +2986,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44313450",
+          "eventId": "match-2025-11-08-pro-tour",
           "index": 14,
           "date": "2025-11-08",
           "opponent": "Pro Tour",
@@ -3012,7 +3013,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43748624",
+          "eventId": "match-2025-11-10-magpies",
           "index": 15,
           "date": "2025-11-10",
           "opponent": "Magpies",
@@ -3039,7 +3040,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43748646",
+          "eventId": "match-2025-11-17-les-chocolatiers",
           "index": 16,
           "date": "2025-11-17",
           "opponent": "Les Chocolatiers",
@@ -3066,7 +3067,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43748790",
+          "eventId": "match-2025-11-18-lancon-futsal",
           "index": 17,
           "date": "2025-11-18",
           "opponent": "Lançon Futsal",
@@ -3093,7 +3094,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43686871",
+          "eventId": "match-2025-11-19-ginga",
           "index": 18,
           "date": "2025-11-19",
           "opponent": "Ginga",
@@ -3120,7 +3121,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "43749381",
+          "eventId": "match-2025-11-24-ginga",
           "index": 19,
           "date": "2025-11-24",
           "opponent": "Ginga",
@@ -3147,7 +3148,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44720897",
+          "eventId": "match-2025-11-25-la-selecao",
           "index": 20,
           "date": "2025-11-25",
           "opponent": "La Seleção",
@@ -3174,7 +3175,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44503607",
+          "eventId": "match-2025-12-02-interpiscine",
           "index": 21,
           "date": "2025-12-02",
           "opponent": "Interpiscine",
@@ -3201,7 +3202,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44896620",
+          "eventId": "match-2025-12-08-equipe-anonyme-le-complexe",
           "index": 22,
           "date": "2025-12-08",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -3228,7 +3229,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44503647",
+          "eventId": "match-2025-12-09-los-galacticos",
           "index": 23,
           "date": "2025-12-09",
           "opponent": "Los Galacticos",
@@ -3255,7 +3256,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44503667",
+          "eventId": "match-2025-12-16-les-fedayins",
           "index": 24,
           "date": "2025-12-16",
           "opponent": "Les Fedayins",
@@ -3282,7 +3283,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "44503878",
+          "eventId": "match-2026-01-05-ase",
           "index": 25,
           "date": "2026-01-05",
           "opponent": "ASE",
@@ -3309,7 +3310,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45241400",
+          "eventId": "match-2026-01-06-sahara-strikers",
           "index": 26,
           "date": "2026-01-06",
           "opponent": "Sahara Strikers",
@@ -3336,7 +3337,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45784115",
+          "eventId": "match-2026-01-10-pro-tour",
           "index": 27,
           "date": "2026-01-10",
           "opponent": "Pro Tour",
@@ -3363,7 +3364,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45241412",
+          "eventId": "match-2026-01-13-fc-firtina",
           "index": 28,
           "date": "2026-01-13",
           "opponent": "FC Firtina",
@@ -3390,7 +3391,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45241452",
+          "eventId": "match-2026-01-20-tiki-taka",
           "index": 29,
           "date": "2026-01-20",
           "opponent": "Tiki Taka",
@@ -3417,7 +3418,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45241489",
+          "eventId": "match-2026-01-26-ginga",
           "index": 30,
           "date": "2026-01-26",
           "opponent": "Ginga",
@@ -3444,7 +3445,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "45241462",
+          "eventId": "match-2026-01-27-sahara-strikers",
           "index": 31,
           "date": "2026-01-27",
           "opponent": "Sahara Strikers",
@@ -3471,7 +3472,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46162536",
+          "eventId": "match-2026-02-02-saba-futsal",
           "index": 32,
           "date": "2026-02-02",
           "opponent": "SABA Futsal",
@@ -3498,7 +3499,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46162627",
+          "eventId": "match-2026-02-03-interpiscine",
           "index": 33,
           "date": "2026-02-03",
           "opponent": "Interpiscine",
@@ -3525,7 +3526,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46414461",
+          "eventId": "match-2026-02-07-pro-tour",
           "index": 34,
           "date": "2026-02-07",
           "opponent": "Pro Tour",
@@ -3552,7 +3553,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46414439",
+          "eventId": "match-2026-02-10-ase",
           "index": 35,
           "date": "2026-02-10",
           "opponent": "ASE",
@@ -3579,7 +3580,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46589194",
+          "eventId": "match-2026-02-16-lancon-futsal",
           "index": 36,
           "date": "2026-02-16",
           "opponent": "Lançon Futsal",
@@ -3606,7 +3607,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46737053",
+          "eventId": "match-2026-03-02-ase",
           "index": 37,
           "date": "2026-03-02",
           "opponent": "ASE",
@@ -3633,7 +3634,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46736712",
+          "eventId": "match-2026-03-03-fc-firtina",
           "index": 38,
           "date": "2026-03-03",
           "opponent": "FC Firtina",
@@ -3660,7 +3661,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46865950",
+          "eventId": "match-2026-03-10-tiki-taka",
           "index": 39,
           "date": "2026-03-10",
           "opponent": "Tiki Taka",
@@ -3687,7 +3688,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46865889",
+          "eventId": "match-2026-03-16-saba-foot-5",
           "index": 40,
           "date": "2026-03-16",
           "opponent": "SABA FOOT 5",
@@ -3714,7 +3715,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46865960",
+          "eventId": "match-2026-03-17-les-chocolatiers",
           "index": 41,
           "date": "2026-03-17",
           "opponent": "Les Chocolatiers",
@@ -3741,7 +3742,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46865918",
+          "eventId": "match-2026-03-23-lancon-futsal",
           "index": 42,
           "date": "2026-03-23",
           "opponent": "Lançon Futsal",
@@ -3768,7 +3769,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46866046",
+          "eventId": "match-2026-03-24-cap-vert",
           "index": 43,
           "date": "2026-03-24",
           "opponent": "Cap-Vert",
@@ -3795,7 +3796,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46866080",
+          "eventId": "match-2026-03-31-les-tenebres",
           "index": 44,
           "date": "2026-03-31",
           "opponent": "Les Ténèbres",
@@ -3822,7 +3823,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47309167",
+          "eventId": "match-2026-04-07-la-selecao",
           "index": 45,
           "date": "2026-04-07",
           "opponent": "La Seleção",
@@ -3849,7 +3850,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47338537",
+          "eventId": "match-2026-04-08-equipe-anonyme-le-complexe",
           "index": 46,
           "date": "2026-04-08",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -3876,7 +3877,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "46865932",
+          "eventId": "match-2026-04-13-ginga",
           "index": 47,
           "date": "2026-04-13",
           "opponent": "Ginga",
@@ -3903,7 +3904,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47309224",
+          "eventId": "match-2026-04-14-first-stop",
           "index": 48,
           "date": "2026-04-14",
           "opponent": "First Stop",
@@ -3930,7 +3931,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47309235",
+          "eventId": "match-2026-04-21-los-galacticos",
           "index": 49,
           "date": "2026-04-21",
           "opponent": "Los Galacticos",
@@ -3957,7 +3958,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47442799",
+          "eventId": "match-2026-04-27-ginga",
           "index": 50,
           "date": "2026-04-27",
           "opponent": "Ginga",
@@ -3984,7 +3985,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47309266",
+          "eventId": "match-2026-05-11-ase",
           "index": 51,
           "date": "2026-05-11",
           "opponent": "ASE",
@@ -4011,7 +4012,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "47810694",
+          "eventId": "match-2026-05-25-ase",
           "index": 52,
           "date": "2026-05-25",
           "opponent": "ASE",
@@ -4038,7 +4039,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "48029114",
+          "eventId": "match-2026-06-29-saba-foot-5",
           "index": 53,
           "date": "2026-06-29",
           "opponent": "SABA FOOT 5",
@@ -4074,13 +4075,13 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "1830312",
+      "id": "saison-2024-2025",
       "label": "2024-2025",
       "current": false,
       "matchCount": 32,
       "series": [
         {
-          "eventId": "29801632",
+          "eventId": "match-2024-08-29-equipe-mix-le-complexe",
           "index": 1,
           "date": "2024-08-29",
           "opponent": "Équipe Mix Le Complexe",
@@ -4107,7 +4108,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "30607998",
+          "eventId": "match-2024-09-04-equipe-anonyme-le-complexe",
           "index": 2,
           "date": "2024-09-04",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4134,7 +4135,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "29801120",
+          "eventId": "match-2024-09-09-equipe-mix-le-complexe",
           "index": 3,
           "date": "2024-09-09",
           "opponent": "Équipe Mix Le Complexe",
@@ -4161,7 +4162,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "31173357",
+          "eventId": "match-2024-09-11-equipe-mix-le-complexe",
           "index": 4,
           "date": "2024-09-11",
           "opponent": "Équipe Mix Le Complexe",
@@ -4188,7 +4189,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "31635090",
+          "eventId": "match-2024-09-18-equipe-mix-ase",
           "index": 5,
           "date": "2024-09-18",
           "opponent": "Équipe Mix ASE",
@@ -4215,7 +4216,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "31723824",
+          "eventId": "match-2024-09-18-equipe-anonyme-le-complexe",
           "index": 6,
           "date": "2024-09-18",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4242,7 +4243,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32118695",
+          "eventId": "match-2024-09-25-equipe-anonyme-le-complexe",
           "index": 7,
           "date": "2024-09-25",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4269,7 +4270,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267193",
+          "eventId": "match-2024-10-07-fc-lancon",
           "index": 8,
           "date": "2024-10-07",
           "opponent": "FC Lançon",
@@ -4296,7 +4297,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32773337",
+          "eventId": "match-2024-10-16-equipe-anonyme-le-complexe",
           "index": 9,
           "date": "2024-10-16",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4323,7 +4324,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32792449",
+          "eventId": "match-2024-10-16-ase",
           "index": 10,
           "date": "2024-10-16",
           "opponent": "ASE",
@@ -4350,7 +4351,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "33574228",
+          "eventId": "match-2024-11-20-equipe-mix-ase",
           "index": 11,
           "date": "2024-11-20",
           "opponent": "Équipe Mix ASE",
@@ -4377,7 +4378,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267199",
+          "eventId": "match-2024-11-27-ase-1",
           "index": 12,
           "date": "2024-11-27",
           "opponent": "ASE 1",
@@ -4404,7 +4405,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "33826856",
+          "eventId": "match-2024-12-04-equipe-anonyme-le-complexe",
           "index": 13,
           "date": "2024-12-04",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4431,7 +4432,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "33875684",
+          "eventId": "match-2024-12-04-equipe-mix-le-complexe",
           "index": 14,
           "date": "2024-12-04",
           "opponent": "Équipe Mix Le Complexe",
@@ -4458,7 +4459,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267201",
+          "eventId": "match-2024-12-11-forasud",
           "index": 15,
           "date": "2024-12-11",
           "opponent": "ForaSud",
@@ -4485,7 +4486,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267205",
+          "eventId": "match-2025-01-13-ase-2",
           "index": 16,
           "date": "2025-01-13",
           "opponent": "ASE 2",
@@ -4512,7 +4513,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "34954642",
+          "eventId": "match-2025-01-22-equipe-anonyme-le-complexe",
           "index": 17,
           "date": "2025-01-22",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4539,7 +4540,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267203",
+          "eventId": "match-2025-01-29-new-team",
           "index": 18,
           "date": "2025-01-29",
           "opponent": "New Team",
@@ -4566,7 +4567,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267207",
+          "eventId": "match-2025-02-03-fc-lancon",
           "index": 19,
           "date": "2025-02-03",
           "opponent": "FC Lançon",
@@ -4593,7 +4594,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "35419307",
+          "eventId": "match-2025-02-19-equipe-anonyme-le-complexe",
           "index": 20,
           "date": "2025-02-19",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4620,7 +4621,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "35544029",
+          "eventId": "match-2025-02-19-equipe-anonyme-le-complexe",
           "index": 21,
           "date": "2025-02-19",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4647,7 +4648,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267211",
+          "eventId": "match-2025-03-05-saba-foot-5",
           "index": 22,
           "date": "2025-03-05",
           "opponent": "SABA FOOT 5",
@@ -4674,7 +4675,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267197",
+          "eventId": "match-2025-03-12-saba-foot-5",
           "index": 23,
           "date": "2025-03-12",
           "opponent": "SABA FOOT 5",
@@ -4701,7 +4702,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "36166612",
+          "eventId": "match-2025-03-26-equipe-anonyme-le-complexe",
           "index": 24,
           "date": "2025-03-26",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4728,7 +4729,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267215",
+          "eventId": "match-2025-03-31-forasud",
           "index": 25,
           "date": "2025-03-31",
           "opponent": "ForaSud",
@@ -4755,7 +4756,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "36219417",
+          "eventId": "match-2025-04-02-equipe-anonyme-le-complexe",
           "index": 26,
           "date": "2025-04-02",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4782,7 +4783,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267213",
+          "eventId": "match-2025-04-28-ase-1",
           "index": 27,
           "date": "2025-04-28",
           "opponent": "ASE 1",
@@ -4809,7 +4810,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "32267219",
+          "eventId": "match-2025-05-12-ase-2",
           "index": 28,
           "date": "2025-05-12",
           "opponent": "ASE 2",
@@ -4836,7 +4837,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "36971089",
+          "eventId": "match-2025-05-26-ase",
           "index": 29,
           "date": "2025-05-26",
           "opponent": "ASE",
@@ -4863,7 +4864,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "36958737",
+          "eventId": "match-2025-06-02-ase-1",
           "index": 30,
           "date": "2025-06-02",
           "opponent": "ASE 1",
@@ -4890,7 +4891,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "37143919",
+          "eventId": "match-2025-06-18-pelissanne-loisir",
           "index": 31,
           "date": "2025-06-18",
           "opponent": "Pélissanne Loisir",
@@ -4917,7 +4918,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "37230997",
+          "eventId": "match-2025-06-23-nuti-fc",
           "index": 32,
           "date": "2025-06-23",
           "opponent": "Nuti FC",
@@ -4953,13 +4954,13 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "1470248",
+      "id": "saison-2023-2024",
       "label": "2023-2024",
       "current": false,
       "matchCount": 41,
       "series": [
         {
-          "eventId": "23601901",
+          "eventId": "match-2023-09-09-equipe-anonyme-le-complexe",
           "index": 1,
           "date": "2023-09-09",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -4986,7 +4987,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23896256",
+          "eventId": "match-2023-09-11-ase",
           "index": 2,
           "date": "2023-09-11",
           "opponent": "ASE",
@@ -5013,7 +5014,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23896323",
+          "eventId": "match-2023-09-18-ase",
           "index": 3,
           "date": "2023-09-18",
           "opponent": "ASE",
@@ -5040,7 +5041,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302252",
+          "eventId": "match-2023-09-20-ase",
           "index": 4,
           "date": "2023-09-20",
           "opponent": "ASE",
@@ -5067,7 +5068,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24472387",
+          "eventId": "match-2023-09-22-equipe-mix-le-complexe",
           "index": 5,
           "date": "2023-09-22",
           "opponent": "Équipe Mix Le Complexe",
@@ -5094,7 +5095,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302421",
+          "eventId": "match-2023-09-25-mtp",
           "index": 6,
           "date": "2023-09-25",
           "opponent": "MTP",
@@ -5121,7 +5122,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302476",
+          "eventId": "match-2023-10-02-fce",
           "index": 7,
           "date": "2023-10-02",
           "opponent": "FCE",
@@ -5148,7 +5149,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302590",
+          "eventId": "match-2023-10-04-lamanon-futsal",
           "index": 8,
           "date": "2023-10-04",
           "opponent": "Lamanon Futsal",
@@ -5175,7 +5176,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23901536",
+          "eventId": "match-2023-10-11-fb-futsal",
           "index": 9,
           "date": "2023-10-11",
           "opponent": "FB Futsal",
@@ -5202,7 +5203,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302607",
+          "eventId": "match-2023-10-16-eyguieres-five-club",
           "index": 10,
           "date": "2023-10-16",
           "opponent": "Eyguières Five Club",
@@ -5229,7 +5230,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24469872",
+          "eventId": "match-2023-10-23-lancon-foot",
           "index": 11,
           "date": "2023-10-23",
           "opponent": "Lançon Foot",
@@ -5256,7 +5257,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23901864",
+          "eventId": "match-2023-10-25-saba-futsal",
           "index": 12,
           "date": "2023-10-25",
           "opponent": "SABA Futsal",
@@ -5283,7 +5284,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302707",
+          "eventId": "match-2023-10-30-los-angelaix-galaxy",
           "index": 13,
           "date": "2023-10-30",
           "opponent": "Los Angelaix Galaxy",
@@ -5310,7 +5311,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "25477332",
+          "eventId": "match-2023-11-03-machado-fc",
           "index": 14,
           "date": "2023-11-03",
           "opponent": "Machado FC",
@@ -5337,7 +5338,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302778",
+          "eventId": "match-2023-11-06-ase",
           "index": 15,
           "date": "2023-11-06",
           "opponent": "ASE",
@@ -5364,7 +5365,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302797",
+          "eventId": "match-2023-11-13-mtp",
           "index": 16,
           "date": "2023-11-13",
           "opponent": "MTP",
@@ -5391,7 +5392,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302809",
+          "eventId": "match-2023-11-22-fce",
           "index": 17,
           "date": "2023-11-22",
           "opponent": "FCE",
@@ -5418,7 +5419,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "25838709",
+          "eventId": "match-2023-11-24-machado-fc",
           "index": 18,
           "date": "2023-11-24",
           "opponent": "Machado FC",
@@ -5445,7 +5446,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23902108",
+          "eventId": "match-2023-12-04-lamanon-futsal",
           "index": 19,
           "date": "2023-12-04",
           "opponent": "Lamanon Futsal",
@@ -5472,7 +5473,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302838",
+          "eventId": "match-2023-12-11-eyguieres-five-club",
           "index": 20,
           "date": "2023-12-11",
           "opponent": "Eyguières Five Club",
@@ -5499,7 +5500,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24470066",
+          "eventId": "match-2023-12-13-lancon-foot",
           "index": 21,
           "date": "2023-12-13",
           "opponent": "Lançon Foot",
@@ -5526,7 +5527,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23902237",
+          "eventId": "match-2023-12-18-lamanon-futsal",
           "index": 22,
           "date": "2023-12-18",
           "opponent": "Lamanon Futsal",
@@ -5553,7 +5554,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "26135378",
+          "eventId": "match-2023-12-22-equipe-anonyme-le-complexe",
           "index": 23,
           "date": "2023-12-22",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -5580,7 +5581,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "26334881",
+          "eventId": "match-2024-01-05-equipe-mix-le-complexe",
           "index": 24,
           "date": "2024-01-05",
           "opponent": "Équipe Mix Le Complexe",
@@ -5607,7 +5608,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23902288",
+          "eventId": "match-2024-01-08-fb-futsal",
           "index": 25,
           "date": "2024-01-08",
           "opponent": "FB Futsal",
@@ -5634,7 +5635,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "26746911",
+          "eventId": "match-2024-01-08-los-angelaix-galaxy",
           "index": 26,
           "date": "2024-01-08",
           "opponent": "Los Angelaix Galaxy",
@@ -5661,7 +5662,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "26556165",
+          "eventId": "match-2024-01-19-equipe-mix-le-complexe",
           "index": 27,
           "date": "2024-01-19",
           "opponent": "Équipe Mix Le Complexe",
@@ -5688,7 +5689,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302953",
+          "eventId": "match-2024-01-22-mtp",
           "index": 28,
           "date": "2024-01-22",
           "opponent": "MTP",
@@ -5715,7 +5716,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "26746123",
+          "eventId": "match-2024-01-26-equipe-mix-le-complexe",
           "index": 29,
           "date": "2024-01-26",
           "opponent": "Équipe Mix Le Complexe",
@@ -5742,7 +5743,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302970",
+          "eventId": "match-2024-01-29-fce",
           "index": 30,
           "date": "2024-01-29",
           "opponent": "FCE",
@@ -5769,7 +5770,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24303034",
+          "eventId": "match-2024-02-07-lamanon-futsal",
           "index": 31,
           "date": "2024-02-07",
           "opponent": "Lamanon Futsal",
@@ -5796,7 +5797,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24303040",
+          "eventId": "match-2024-02-19-eyguieres-five-club",
           "index": 32,
           "date": "2024-02-19",
           "opponent": "Eyguières Five Club",
@@ -5823,7 +5824,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "27099435",
+          "eventId": "match-2024-02-23-les-fragiles",
           "index": 33,
           "date": "2024-02-23",
           "opponent": "Les Fragiles",
@@ -5850,7 +5851,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24302927",
+          "eventId": "match-2024-02-28-ase",
           "index": 34,
           "date": "2024-02-28",
           "opponent": "ASE",
@@ -5877,7 +5878,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24470468",
+          "eventId": "match-2024-03-04-lancon-foot",
           "index": 35,
           "date": "2024-03-04",
           "opponent": "Lançon Foot",
@@ -5904,7 +5905,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "24303067",
+          "eventId": "match-2024-03-11-los-angelaix-galaxy",
           "index": 36,
           "date": "2024-03-11",
           "opponent": "Los Angelaix Galaxy",
@@ -5931,7 +5932,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23903116",
+          "eventId": "match-2024-04-01-fb-futsal",
           "index": 37,
           "date": "2024-04-01",
           "opponent": "FB Futsal",
@@ -5958,7 +5959,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23903171",
+          "eventId": "match-2024-04-15-saba-futsal",
           "index": 38,
           "date": "2024-04-15",
           "opponent": "SABA Futsal",
@@ -5985,7 +5986,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23902881",
+          "eventId": "match-2024-05-13-m-foot",
           "index": 39,
           "date": "2024-05-13",
           "opponent": "M Foot",
@@ -6012,7 +6013,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "23903211",
+          "eventId": "match-2024-05-15-ase",
           "index": 40,
           "date": "2024-05-15",
           "opponent": "ASE",
@@ -6039,7 +6040,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "27933013",
+          "eventId": "match-2024-05-29-fb-futsal",
           "index": 41,
           "date": "2024-05-29",
           "opponent": "FB Futsal",
@@ -6075,13 +6076,13 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "1139776",
+      "id": "saison-2022-2023",
       "label": "2022-2023",
       "current": false,
       "matchCount": 18,
       "series": [
         {
-          "eventId": "19877168",
+          "eventId": "match-2022-10-19-bago-fc",
           "index": 1,
           "date": "2022-10-19",
           "opponent": "Bago FC",
@@ -6108,7 +6109,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "19877206",
+          "eventId": "match-2022-11-16-bago-fc",
           "index": 2,
           "date": "2022-11-16",
           "opponent": "Bago FC",
@@ -6135,7 +6136,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "19877243",
+          "eventId": "match-2022-11-30-bel-air",
           "index": 3,
           "date": "2022-11-30",
           "opponent": "Bel-Air",
@@ -6162,7 +6163,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "19876361",
+          "eventId": "match-2022-12-06-equipe-mix-le-complexe",
           "index": 4,
           "date": "2022-12-06",
           "opponent": "Équipe Mix Le Complexe",
@@ -6189,7 +6190,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20000020",
+          "eventId": "match-2022-12-13-equipe-anonyme-le-complexe",
           "index": 5,
           "date": "2022-12-13",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -6216,7 +6217,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20262701",
+          "eventId": "match-2023-01-03-equipe-mix-le-complexe",
           "index": 6,
           "date": "2023-01-03",
           "opponent": "Équipe Mix Le Complexe",
@@ -6243,7 +6244,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20336169",
+          "eventId": "match-2023-01-10-equipe-mix-le-complexe",
           "index": 7,
           "date": "2023-01-10",
           "opponent": "Équipe Mix Le Complexe",
@@ -6270,7 +6271,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20392737",
+          "eventId": "match-2023-01-17-equipe-anonyme-le-complexe",
           "index": 8,
           "date": "2023-01-17",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -6297,7 +6298,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20518247",
+          "eventId": "match-2023-01-24-equipe-anonyme-le-complexe",
           "index": 9,
           "date": "2023-01-24",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -6324,7 +6325,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20670044",
+          "eventId": "match-2023-01-31-ase",
           "index": 10,
           "date": "2023-01-31",
           "opponent": "ASE",
@@ -6351,7 +6352,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20781615",
+          "eventId": "match-2023-02-15-lamanon-futsal",
           "index": 11,
           "date": "2023-02-15",
           "opponent": "Lamanon Futsal",
@@ -6378,7 +6379,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "20855318",
+          "eventId": "match-2023-02-22-equipe-mix-le-complexe",
           "index": 12,
           "date": "2023-02-22",
           "opponent": "Équipe Mix Le Complexe",
@@ -6405,7 +6406,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21033430",
+          "eventId": "match-2023-03-08-equipe-mix-le-complexe",
           "index": 13,
           "date": "2023-03-08",
           "opponent": "Équipe Mix Le Complexe",
@@ -6432,7 +6433,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21445758",
+          "eventId": "match-2023-04-26-equipe-anonyme-le-complexe",
           "index": 14,
           "date": "2023-04-26",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -6459,7 +6460,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21584168",
+          "eventId": "match-2023-05-19-les-fragiles",
           "index": 15,
           "date": "2023-05-19",
           "opponent": "Les Fragiles",
@@ -6486,7 +6487,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21682569",
+          "eventId": "match-2023-05-26-equipe-mix-us-eguilles",
           "index": 16,
           "date": "2023-05-26",
           "opponent": "Équipe Mix US Éguilles",
@@ -6513,7 +6514,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21682640",
+          "eventId": "match-2023-06-05-equipe-anonyme-le-complexe",
           "index": 17,
           "date": "2023-06-05",
           "opponent": "Équipe Anonyme Le Complexe",
@@ -6540,7 +6541,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "21768964",
+          "eventId": "match-2023-06-19-equipe-mix-le-complexe",
           "index": 18,
           "date": "2023-06-19",
           "opponent": "Équipe Mix Le Complexe",
@@ -6576,7 +6577,7 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "861908",
+      "id": "saison-2021-2022",
       "label": "2021-2022",
       "current": false,
       "matchCount": 0,
@@ -6590,13 +6591,13 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     {
-      "id": "797806",
+      "id": "saison-2020-2021",
       "label": "2020-2021",
       "current": false,
       "matchCount": 10,
       "series": [
         {
-          "eventId": "11928858",
+          "eventId": "match-2019-05-21-les-bricolos",
           "index": 1,
           "date": "2019-05-21",
           "opponent": "Les Bricolos",
@@ -6623,7 +6624,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928873",
+          "eventId": "match-2019-10-27-istres-taureaux",
           "index": 2,
           "date": "2019-10-27",
           "opponent": "Istres Taureaux",
@@ -6650,7 +6651,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928881",
+          "eventId": "match-2019-12-02-iut-salon",
           "index": 3,
           "date": "2019-12-02",
           "opponent": "IUT Salon",
@@ -6677,7 +6678,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928885",
+          "eventId": "match-2019-12-13-les-bricolos",
           "index": 4,
           "date": "2019-12-13",
           "opponent": "Les Bricolos",
@@ -6704,7 +6705,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928887",
+          "eventId": "match-2019-12-22-handax-fc",
           "index": 5,
           "date": "2019-12-22",
           "opponent": "Handax FC",
@@ -6731,7 +6732,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928891",
+          "eventId": "match-2019-12-27-machado-fc",
           "index": 6,
           "date": "2019-12-27",
           "opponent": "Machado FC",
@@ -6758,7 +6759,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11928799",
+          "eventId": "match-2020-12-27-istres-taureaux",
           "index": 7,
           "date": "2020-12-27",
           "opponent": "Istres Taureaux",
@@ -6785,7 +6786,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11933026",
+          "eventId": "match-2021-01-24-fc-grinta",
           "index": 8,
           "date": "2021-01-24",
           "opponent": "FC Grinta",
@@ -6812,7 +6813,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11933024",
+          "eventId": "match-2021-01-24-viala-st-come",
           "index": 9,
           "date": "2021-01-24",
           "opponent": "Viala St Come",
@@ -6839,7 +6840,7 @@ window.LYKOS_TEAM_STATS = {
           }
         },
         {
-          "eventId": "11933038",
+          "eventId": "match-2021-01-24-viala-st-come",
           "index": 10,
           "date": "2021-01-24",
           "opponent": "Viala St Come",

@@ -25,6 +25,8 @@
     "sporteasy:audit-secondary-stats": "node scripts/sporteasy/audit-player-secondary-statistics.mjs",
     "sporteasy:publish-secondary-stats": "node scripts/sporteasy/publish-player-secondary-statistics.mjs",
     "sporteasy:build-team-dashboard": "node scripts/sporteasy/build-team-dashboard-data.mjs",
+    "sporteasy:build-pantheon": "node scripts/sporteasy/build-pantheon-data.mjs",
+    "sporteasy:audit-public": "node scripts/sporteasy/audit-public-data.mjs",
     "sporteasy:refresh-derived": "node scripts/sporteasy/build-statistics-repository.mjs && node scripts/sporteasy/build-match-repository.mjs && node scripts/sporteasy/build-player-secondary-statistics.mjs && node scripts/sporteasy/audit-player-secondary-statistics.mjs",
     "sporteasy:audit-matches": "node scripts/sporteasy/audit-match-repository.mjs",
     "test": "node --test \"test/*.test.mjs\""

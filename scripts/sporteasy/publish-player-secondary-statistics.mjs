@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeFile } from "node:fs/promises";
 import { assertPublicationQuality } from "./lib/publication-quality-gate.mjs";
+import { buildPublicPlayerIdMap } from "../../src/privacy/public-identifiers.mjs";
 
 const root = new URL("../../", import.meta.url);
 const privateRoot = new URL("data/private/sporteasy/", root);
@@ -65,6 +66,19 @@ const [repository, matchAudit, secondaryAudit, ...primaryRepositories] = await P
   ...primaryFiles,
 ].map(async (file) => JSON.parse(await readFile(file, "utf8"))));
 assertPublicationQuality({ matchAudit, secondaryAudit, secondaryRepository: repository, primaryRepositories });
+const playersRepository = primaryRepositories[0];
+const publicPlayerIds = buildPublicPlayerIdMap(playersRepository.players);
+
+function replacePlayerIdentifiers(value) {
+  if (Array.isArray(value)) return value.map(replacePlayerIdentifiers);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [
+      publicPlayerIds.get(key) ?? key,
+      replacePlayerIdentifiers(item),
+    ]));
+  }
+  return typeof value === "string" ? publicPlayerIds.get(value) ?? value : value;
+}
 
 const payload = {
   generatedAt: repository.metadata.generatedAt,
@@ -101,7 +115,7 @@ const payload = {
   ])),
 };
 
-const javascript = `window.LYKOS_SECONDARY_STATS = ${JSON.stringify(payload)};\n`;
+const javascript = `window.LYKOS_SECONDARY_STATS = ${JSON.stringify(replacePlayerIdentifiers(payload))};\n`;
 await Promise.all(outputs.map((output) => writeFile(output, javascript, "utf8")));
 console.log("Statistiques secondaires publiques générées sans données de traçage privées.");
 console.log(`- Taille : ${Buffer.byteLength(javascript)} octets`);

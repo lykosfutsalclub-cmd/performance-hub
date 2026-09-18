@@ -4,6 +4,8 @@
   let sessionToken = "";
   let latestReport = null;
   let latestReturns = [];
+  let latestStateUpdatedAt = "";
+  let latestCapabilities = {};
   let scheduled = false;
   let selectedService = "";
   let selectedAgent = "";
@@ -277,8 +279,13 @@
     if (agentEntries.length && !manuallyCollapsedAgentFeeds.has(agent)) agentFeedOpen = true;
     const textarea = conversation.querySelector('textarea[aria-label^="Message à "]');
     const composer = textarea?.closest("form") || textarea?.parentElement;
-    if (composer) composer.hidden = true;
-    if (composer?.nextElementSibling) composer.nextElementSibling.hidden = true;
+    const oscarMissionEnabled = agent === "Oscar" && latestCapabilities.oscarMissions === true;
+    if (composer) composer.hidden = !oscarMissionEnabled;
+    if (composer?.nextElementSibling) composer.nextElementSibling.hidden = !oscarMissionEnabled;
+    if (textarea && oscarMissionEnabled) {
+      textarea.setAttribute("aria-label", "Mission à transmettre à Oscar");
+      textarea.placeholder = "Décris la mission à Oscar. Il la répartira entre les agents utiles.";
+    }
 
     const chatHeader = conversation.querySelector("header");
     const tabs = conversation.querySelector('nav[aria-label="Contenu de l’agent"]');
@@ -339,6 +346,28 @@
       if (roleFooter) roleFooter.textContent = `${isFemale ? "Agente installée" : "Agent installé"} dans le moteur privé OpenClaw du club. Ses outils restent cloisonnés selon sa mission.`;
     }
 
+    let policy = conversation.querySelector(".lykos-estaff-policy");
+    if (!policy) {
+      policy = document.createElement("div");
+      policy.className = "lykos-estaff-policy";
+      chatHeader?.after(policy);
+    }
+    const updatedAt = new Date(latestStateUpdatedAt);
+    const freshness = Number.isNaN(updatedAt.getTime())
+      ? "Dernière actualisation indisponible"
+      : `Dernière actualisation : ${updatedAt.toLocaleString("fr-FR", {dateStyle:"long", timeStyle:"short", timeZone:"Europe/Paris"})}`;
+    const missionPolicy = agent === "Oscar"
+      ? (oscarMissionEnabled
+        ? "Oscar peut recevoir ta mission et la répartir. Les 18 autres agents directs et les 8 sous-agents restent consultatifs."
+        : "Oscar est le seul destinataire prévu pour les missions. L’activation technique du service de mission n’est pas encore confirmée.")
+      : "Consultation uniquement. Toute nouvelle mission passe exclusivement par Oscar.";
+    policy.replaceChildren();
+    const policyText = document.createElement("strong");
+    policyText.textContent = missionPolicy;
+    const freshnessText = document.createElement("small");
+    freshnessText.textContent = freshness;
+    policy.append(policyText, freshnessText);
+
     let serviceFeed = conversation.querySelector(".lykos-service-feed");
     const serviceMode = Boolean(selectedService);
     if (serviceMode && tabs) {
@@ -393,13 +422,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.7.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.8.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "27";
     if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "27";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "27 installés";
+    if (rosterCount) rosterCount.textContent = "27 installés · 19 directs + 8 sous-agents";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -435,14 +464,22 @@
       if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
+      latestCapabilities = state.capabilities ?? {};
       const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
+      latestStateUpdatedAt = [
+        latestReport?.checkedAt,
+        state.esupport?.checkedAt,
+        ...latestReturns.map(entry => entry.occurredAt),
+      ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
     } catch {
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
       latestReturns = [];
+      latestStateUpdatedAt = "";
+      latestCapabilities = {};
     }
     scheduleReadOnlyMode();
   }
@@ -472,6 +509,8 @@
       sessionToken = "";
       latestReport = null;
       latestReturns = [];
+      latestStateUpdatedAt = "";
+      latestCapabilities = {};
     }
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});

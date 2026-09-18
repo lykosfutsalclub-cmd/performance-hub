@@ -8,6 +8,12 @@
 .titleBlock h1 span { color:#d0b631; }
 .titleBlock p { margin:7px 0 0; color:#c1cee1; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; }
 .header button { min-height:44px; padding:11px 16px; border:1px solid #657ca0; border-radius:10px; background:rgb(9 29 79 / 75%); color:#eef4fc; cursor:pointer; }
+.syncBar { display:flex; align-items:center; justify-content:flex-end; gap:8px; min-height:28px; margin:-14px 2px 10px; color:#b8c9dd; }
+.syncBar small { font-size:.72rem; line-height:1.35; }
+.syncBar button { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid #657ca0; border-radius:999px; background:#091d4fbf; color:#eef4fc; cursor:pointer; font-size:.9rem; line-height:1; }
+.syncBar button:hover:not(:disabled) { border-color:#d0b631; background:#172848; }
+.syncBar button:disabled { opacity:.5; cursor:not-allowed; }
+.syncBar span { max-width:260px; color:#e2cf60; font-size:.7rem; line-height:1.35; }
 .commandBar { display:flex; flex-wrap:wrap; align-items:center; gap:16px 28px; margin-bottom:18px; padding:16px 20px; border:1px solid rgb(255 255 255 / 18%); border-radius:14px; background:rgb(9 29 79 / 78%); }
 .commandBar>div { display:flex; align-items:center; gap:9px; color:#c1cee1; font-size:.875rem; }
 .commandBar strong { color:#d0b631; font:700 1.75rem/1 "OMMarseille",Georgia,serif; }

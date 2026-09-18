@@ -34,6 +34,14 @@ test("le rapport total exige tous les retours et rend les absences visibles", ()
   assert.ok(html.includes("Oscar attend chaque retour et signale toute absence ou tout blocage"));
 });
 
+test("la fraîcheur SportEasy et sa relance sont accessibles en haut de page", () => {
+  assert.ok(html.includes("Dernière synchronisation inconnue"));
+  assert.ok(html.includes("Relancer maintenant la synchronisation SportEasy"));
+  assert.ok(source.includes("Dernière synchronisation il y a ${hours} h"));
+  assert.ok(source.includes("ACTION_SYSTÈME PUB2"));
+  assert.ok(source.includes("team-data.js?sync_status="));
+});
+
 test("les missions longues disposent d’un délai compatible avec une consultation complète", () => {
   assert.match(source, /Date\.now\(\) \+ 720000/);
   assert.ok(source.includes("Oscar coordonne la mission"));

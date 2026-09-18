@@ -74,6 +74,16 @@ test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
   assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
 });
 
+test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiate", async () => {
+  const source = await readFile(new URL("estaff-src/Supervision.tsx", root), "utf8");
+  const page = await readFile(new URL("estaff/index.html", root), "utf8");
+  assert.match(source, /Dernière synchronisation il y a \$\{hours\} h/);
+  assert.match(source, /Relancer maintenant la synchronisation SportEasy/);
+  assert.match(source, /ACTION_SYSTÈME PUB2/);
+  assert.match(source, /team-data\.js\?sync_status=/);
+  assert.match(page, /connect-src 'self'/);
+});
+
 test("la communication eStaff présente uniquement 27 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",

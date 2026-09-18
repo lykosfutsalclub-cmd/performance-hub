@@ -45,6 +45,10 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
   assert.match(workflow, /core\.setFailed\(`ALERTE fraîcheur/);
 });
 
+test("la fraîcheur est contrôlée après la reconstruction éventuelle", () => {
+  assert.match(workflow, /surveillance-fraicheur:[\s\S]*?needs:\s*chaine-esupport[\s\S]*?if:\s*\$\{\{ always\(\) \}\}/);
+});
+
 test("la communication eStaff présente uniquement 27 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",

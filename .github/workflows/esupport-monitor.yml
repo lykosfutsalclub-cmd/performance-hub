@@ -276,6 +276,8 @@ jobs:
 
   surveillance-fraicheur:
     name: Alerte de fraîcheur des données publiques
+    needs: chaine-esupport
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}

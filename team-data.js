@@ -1,18 +1,18 @@
 window.LYKOS_TEAM_STATS = {
   "periods": {
     "current": {
-      "matchesPlayed": 2,
-      "wins": 1,
+      "matchesPlayed": 3,
+      "wins": 2,
       "draws": 0,
       "losses": 1,
-      "goalsFor": 21,
-      "goalsAgainst": 24,
-      "goalsForPerMatch": 10.5,
-      "goalsAgainstPerMatch": 12,
-      "winRate": 50,
-      "goalDifference": -3,
-      "averageGoalDifference": -1.5,
-      "recentFormScore": 50,
+      "goalsFor": 61,
+      "goalsAgainst": 31,
+      "goalsForPerMatch": 20.33,
+      "goalsAgainstPerMatch": 10.33,
+      "winRate": 66.7,
+      "goalDifference": 30,
+      "averageGoalDifference": 10,
+      "recentFormScore": 66.7,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -71,9 +71,174 @@ window.LYKOS_TEAM_STATS = {
               "difference": 2
             }
           ]
+        },
+        {
+          "difference": 3,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 4,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 5,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 6,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 7,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 8,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 9,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 10,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 11,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 12,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 13,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 14,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 15,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 16,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 17,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 18,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 19,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 20,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 21,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 22,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 23,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 24,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 25,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 26,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 27,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 28,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 29,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 30,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 31,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 32,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 33,
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "51050731",
+              "date": "2026-09-16",
+              "opponent": "Équipe Anonyme Le Complexe",
+              "scoreFor": 40,
+              "scoreAgainst": 7,
+              "difference": 33
+            }
+          ]
         }
       ],
       "recentResults": [
+        "victory",
         "defeat",
         "victory"
       ],
@@ -100,9 +265,9 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 52,
-        "label": "MOYENNE",
-        "matchCount": 2,
+        "value": 67.2,
+        "label": "POSITIVE",
+        "matchCount": 3,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }
@@ -774,17 +939,17 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 156,
-      "wins": 73,
+      "matchesPlayed": 157,
+      "wins": 74,
       "draws": 7,
       "losses": 76,
-      "goalsFor": 1750,
-      "goalsAgainst": 1603,
-      "goalsForPerMatch": 11.22,
-      "goalsAgainstPerMatch": 10.28,
-      "winRate": 46.8,
-      "goalDifference": 147,
-      "averageGoalDifference": 0.94,
+      "goalsFor": 1790,
+      "goalsAgainst": 1610,
+      "goalsForPerMatch": 11.4,
+      "goalsAgainstPerMatch": 10.25,
+      "winRate": 47.1,
+      "goalDifference": 180,
+      "averageGoalDifference": 1.15,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -2261,17 +2426,76 @@ window.LYKOS_TEAM_STATS = {
               "difference": 23
             }
           ]
+        },
+        {
+          "difference": 24,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 25,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 26,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 27,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 28,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 29,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 30,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 31,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 32,
+          "matches": 0,
+          "fixtures": []
+        },
+        {
+          "difference": 33,
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "51050731",
+              "date": "2026-09-16",
+              "opponent": "Équipe Anonyme Le Complexe",
+              "scoreFor": 40,
+              "scoreAgainst": 7,
+              "difference": 33
+            }
+          ]
         }
       ],
       "recentResults": [
-        "defeat",
-        "victory",
-        "defeat",
-        "defeat",
-        "defeat",
         "victory",
         "defeat",
         "victory",
+        "defeat",
+        "defeat",
+        "defeat",
+        "victory",
+        "defeat",
         "victory",
         "victory"
       ],
@@ -2298,11 +2522,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 53.1,
+        "value": 53.6,
         "label": "MOYENNE",
         "matchCount": 10,
-        "eventRatingCoverage": 70,
-        "gradeCoverage": 80
+        "eventRatingCoverage": 80,
+        "gradeCoverage": 90
       }
     }
   },
@@ -2311,7 +2535,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "2766614",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 2,
+      "matchCount": 3,
       "series": [
         {
           "eventId": "51050727",
@@ -2366,12 +2590,39 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "51050731",
+          "index": 3,
+          "date": "2026-09-16",
+          "opponent": "Équipe Anonyme Le Complexe",
+          "score": "40–7",
+          "winRate": 66.7,
+          "goalsForPerMatch": 20.33,
+          "goalsAgainstPerMatch": 10.33,
+          "goalDifferencePerMatch": 10,
+          "teamForm": 97.5,
+          "formTrace": {
+            "value": 97.5,
+            "playerGradeAverage": 9.67,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 6,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 97.5,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "anonymous-median"
+            },
+            "importance": 1,
+            "availableWeight": 1
+          }
         }
       ],
       "form": {
-        "value": 52,
-        "label": "MOYENNE",
-        "matchCount": 2,
+        "value": 67.2,
+        "label": "POSITIVE",
+        "matchCount": 3,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }

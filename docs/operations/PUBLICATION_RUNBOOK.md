@@ -54,6 +54,8 @@ Le Panthéon est reconstruit par `scripts/sporteasy/build-pantheon-data.mjs` dan
 
 Le contrôle `scripts/sporteasy/audit-public-data.mjs` compare le résultat aux matchs privés validés et bloque toute différence de nombre ou de date.
 
+Oscar peut également déclencher cette synchronisation immédiatement, sans attendre le cycle quotidien de 10 h. Une alerte de sécurité non critique est consignée et traitée sans bloquer ; seules une divulgation critique plausible, une compromission active ou une atteinte matérielle à l'intégrité suspendent la publication pour motif de sécurité. Les audits sportifs et la preuve d'autorisation nominative restent obligatoires.
+
 ## Alertes
 
 - Une synchronisation en échec produit une étape rouge intitulée « Signaler clairement une synchronisation en échec » et un résumé lisible dans GitHub Actions.

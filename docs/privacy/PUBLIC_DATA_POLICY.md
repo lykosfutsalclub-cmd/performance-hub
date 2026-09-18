@@ -1,6 +1,6 @@
 # Politique des données publiques du Performance Hub
 
-Version : 1.0 — 18 septembre 2026
+Version : 1.1 — 18 septembre 2026
 
 ## Objet
 
@@ -40,6 +40,14 @@ Chaque publication automatisée doit vérifier :
 4. qu’aucune nouvelle catégorie de donnée personnelle n’est ajoutée sans décision et autorisation adaptées.
 
 La synchronisation nominative automatique reste désactivée tant que la variable privée de gouvernance `PUBLIC_INDIVIDUAL_DATA_AUTHORIZED` ne vaut pas `verified`. Cette activation ne doit intervenir qu’après contrôle du registre privé par le responsable du club.
+
+## Règle de sécurité proportionnée
+
+Une alerte de sécurité non critique est journalisée, attribuée et corrigée, mais ne bloque pas la publication de données sportives déjà autorisées et validées. Oscar peut déclencher immédiatement une synchronisation SportEasy en lecture seule vers le Performance Hub officiel.
+
+Le blocage de sécurité est réservé à une divulgation détectée ou raisonnablement plausible de données critiques : coordonnées personnelles privées, adresse postale, données bancaires ou de paiement, données médicales, administratives ou financières confidentielles, secrets d'authentification, données non autorisées concernant un mineur, ou compromission active susceptible d'altérer la publication. L'adresse institutionnelle publiée par le club comme contact officiel n'est pas une coordonnée privée.
+
+Cette règle ne contourne pas les audits de justesse sportive, la preuve d'autorisation nominative, le contrôle après publication ou le retour arrière en cas d'échec.
 
 ## État actuel de l’autorisation
 

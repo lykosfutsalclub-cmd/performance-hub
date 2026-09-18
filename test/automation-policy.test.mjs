@@ -4,10 +4,11 @@ import { access, readFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const workflow = await readFile(new URL(".github/workflows/esupport-monitor.yml", root), "utf8");
+const recoveryWorkflow = await readFile(new URL(".github/workflows/esupport-autorecovery.yml", root), "utf8");
 const packageJson = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
 
 test("les actions GitHub utilisent toutes une révision exacte", () => {
-  const revisions = [...workflow.matchAll(/uses:\s+actions\/[^@\s]+@([^\s#]+)/g)].map((match) => match[1]);
+  const revisions = [...`${workflow}\n${recoveryWorkflow}`.matchAll(/uses:\s+actions\/[^@\s]+@([^\s#]+)/g)].map((match) => match[1]);
   assert.ok(revisions.length > 0);
   assert.ok(revisions.every((revision) => /^[a-f0-9]{40}$/.test(revision)));
 });
@@ -47,6 +48,16 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
 
 test("la fraîcheur est contrôlée après la reconstruction éventuelle", () => {
   assert.match(workflow, /surveillance-fraicheur:[\s\S]*?needs:\s*chaine-esupport[\s\S]*?if:\s*\$\{\{ always\(\) \}\}/);
+});
+
+test("un premier échec déclenche une seule reprise autonome et ciblée", () => {
+  assert.match(recoveryWorkflow, /workflows:\s*\["Contrôle quotidien eSupport"\]/);
+  assert.match(recoveryWorkflow, /conclusion == 'failure'/);
+  assert.match(recoveryWorkflow, /run_attempt == 1/);
+  assert.match(recoveryWorkflow, /reRunWorkflowFailedJobs/);
+  assert.match(recoveryWorkflow, /permissions:\s*\{\}/);
+  assert.match(recoveryWorkflow, /relance-limitee:[\s\S]*?permissions:[\s\S]*?actions:\s*write/);
+  assert.doesNotMatch(recoveryWorkflow, /contents:\s*write|pages:\s*write|id-token:\s*write/);
 });
 
 test("la communication eStaff présente uniquement 27 agents", async () => {

@@ -1,0 +1,36 @@
+name: Reprise autonome eSupport
+
+on:
+  workflow_run:
+    workflows: ["Contrôle quotidien eSupport"]
+    types: [completed]
+
+permissions: {}
+
+concurrency:
+  group: esupport-autorecovery-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  relance-limitee:
+    name: Relancer une fois les contrôles en échec
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Relancer uniquement les tâches en échec
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            core.notice(`Reprise autonome du contrôle ${run.id} après son premier échec.`);
+            await github.rest.actions.reRunWorkflowFailedJobs({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: run.id,
+            });
+

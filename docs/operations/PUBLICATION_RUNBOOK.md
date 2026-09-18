@@ -57,6 +57,8 @@ Le contrôle `scripts/sporteasy/audit-public-data.mjs` compare le résultat aux 
 ## Alertes
 
 - Une synchronisation en échec produit une étape rouge intitulée « Signaler clairement une synchronisation en échec » et un résumé lisible dans GitHub Actions.
+- Après un premier échec du « Contrôle quotidien eSupport », `.github/workflows/esupport-autorecovery.yml` relance automatiquement et une seule fois les seules tâches en échec. Cette reprise couvre les incidents temporaires sans rejouer inutilement les tâches déjà réussies.
+- Si la seconde tentative échoue, aucune troisième tentative n’est lancée : l’échec persistant reste visible et nécessite une analyse. Cette limite empêche une boucle infinie et ne contourne jamais les tests, le GO de Véronique, la confidentialité ou la sécurité.
 - Le contrôle de fraîcheur relit chaque heure les trois jeux de données publics. Il échoue si l’un d’eux est inaccessible, non daté ou vieux de plus de 36 heures.
 - L’interface affiche également la date et l’heure et utilise un voyant orange lorsque les données dépassent 36 heures.
 - Les anciennes notifications mobiles ont été retirées : leurs routes serveur n’existaient pas. Le script eStaff désinscrit l’ancien service de notification sur les appareils qui l’avaient enregistré.
@@ -68,6 +70,7 @@ Une « alerte GitHub Actions » est un contrôle rouge visible dans l’onglet A
 - Porte de Léonard : lecture du dépôt et création d’une identité temporaire uniquement.
 - Chaîne eSupport : écriture du contenu pour le commit automatique, identité temporaire pour le relais privé et écriture Pages pour demander la reconstruction.
 - Surveillance de fraîcheur : lecture du dépôt uniquement.
+- Reprise autonome : droit limité à la relance d’une exécution GitHub Actions ; aucun droit d’écriture sur le contenu, Pages ou les identités temporaires.
 
 Le fichier fixe les permissions par tâche. Aucune permission d’écriture globale n’est accordée à tout le workflow.
 

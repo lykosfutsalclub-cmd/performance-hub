@@ -30,7 +30,7 @@ test("le rapport total exige tous les retours et rend les absences visibles", ()
   assert.ok(html.includes("Rapport total"));
   assert.ok(source.includes("sollicite tous les agents actifs et autorisés"));
   assert.ok(source.includes("qui est bloqué ou sans réponse"));
-  assert.ok(html.includes("18 agents directs et 8 sous-agents spécialisés"));
+  assert.ok(html.includes("Les 26 autres agents peuvent être sollicités par Oscar"));
   assert.ok(html.includes("Oscar attend chaque retour et signale toute absence ou tout blocage"));
 });
 

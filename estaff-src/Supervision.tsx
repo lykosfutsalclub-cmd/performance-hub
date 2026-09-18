@@ -154,7 +154,7 @@ export default function Supervision({onLogout, sessionToken}: {onLogout: () => v
           <li><strong>Contrôler</strong><span>Il vérifie les sources, leur date et les contradictions.</span></li>
           <li><strong>Décider ou remonter</strong><span>Il arbitre dans son mandat et vous soumet le reste.</span></li>
         </ol>
-        <div className={styles.totalReport}><span>RAPPORT TOTAL</span><p>Les {ACTIVE_CONTRIBUTORS} contributeurs sont sollicités : 18 agents directs et 8 sous-agents spécialisés. Oscar attend chaque retour et signale toute absence ou tout blocage avant sa synthèse.</p></div>
+        <div className={styles.totalReport}><span>RAPPORT TOTAL</span><p>Les {ACTIVE_CONTRIBUTORS} autres agents peuvent être sollicités par Oscar. Il attend chaque retour et signale toute absence ou tout blocage avant sa synthèse.</p></div>
       </aside>
     </div>
 

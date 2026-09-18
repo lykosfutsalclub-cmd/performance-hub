@@ -41,6 +41,8 @@ Chaque publication automatisée doit vérifier :
 
 La synchronisation nominative automatique reste désactivée tant que la variable privée de gouvernance `PUBLIC_INDIVIDUAL_DATA_AUTHORIZED` ne vaut pas `verified`. Cette activation ne doit intervenir qu’après contrôle du registre privé par le responsable du club.
 
-## État actuel de la vérification
+## État actuel de l’autorisation
 
-Au 18 septembre 2026, aucune preuve individuelle exploitable n’a été retrouvée dans les sources examinées. Le statut honnête est donc : **autorisation individuelle non vérifiée**. Cette politique formalise la procédure et la minimisation ; elle ne remplace pas les justificatifs individuels.
+Le 18 septembre 2026, Fabien, agissant en qualité de président, directeur sportif et coach du Lykos FC, a confirmé que le club est autorisé à publier les noms et statistiques individuelles actuellement présents dans le Performance Hub.
+
+Cette confirmation couvre uniquement les données sportives déjà présentes et admises par cette politique. Elle n’autorise pas l’ajout futur de coordonnées privées, dates de naissance complètes, données médicales, administratives ou financières. Les justificatifs détaillés et les éventuelles demandes de retrait restent conservés dans le registre privé du club.

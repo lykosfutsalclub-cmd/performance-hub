@@ -44,3 +44,13 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
   assert.match(workflow, /36 \* 60 \* 60 \* 1000/);
   assert.match(workflow, /core\.setFailed\(`ALERTE fraîcheur/);
 });
+
+test("la communication eStaff présente uniquement 27 agents", async () => {
+  const files = [
+    "estaff-src/Supervision.tsx",
+    "estaff/assets/esupport-report.js",
+  ];
+  const text = (await Promise.all(files.map((path) => readFile(new URL(path, root), "utf8")))).join("\n");
+  assert.match(text, /27 agents/);
+  assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
+});

@@ -371,7 +371,7 @@
       : `Dernière actualisation : ${updatedAt.toLocaleString("fr-FR", {dateStyle:"long", timeStyle:"short", timeZone:"Europe/Paris"})}`;
     const missionPolicy = agent === "Oscar"
       ? (oscarMissionEnabled
-        ? "Oscar peut recevoir ta mission et la répartir. Les 18 autres agents directs et les 8 sous-agents restent consultatifs."
+        ? "Oscar peut recevoir ta mission et la répartir. Les 26 autres agents restent consultatifs."
         : "Oscar est le seul destinataire prévu pour les missions. L’activation technique du service de mission n’est pas encore confirmée.")
       : "Consultation uniquement. Toute nouvelle mission passe exclusivement par Oscar.";
     policy.replaceChildren();
@@ -441,7 +441,7 @@
     if (activityCounters[0]) activityCounters[0].textContent = "27";
     if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "27";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "27 installés · 19 directs + 8 sous-agents";
+    if (rosterCount) rosterCount.textContent = "27 agents installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;

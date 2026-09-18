@@ -27,7 +27,7 @@ L’automatisation `.github/workflows/esupport-monitor.yml` suit cet ordre :
 4. synchroniser l’effectif, les sources statistiques, les détails, agrégats, matchs, présences et comptes rendus ;
 5. reconstruire le référentiel statistique, le référentiel des matchs et les statistiques secondaires ;
 6. exécuter toute la suite de tests avec `node scripts/verify-publication-tests.mjs` ;
-7. refuser la publication si moins de 54 tests ont réellement été exécutés ; la suite actuelle en comporte 63 ;
+7. refuser la publication si moins de 54 tests ont réellement été exécutés ; la suite actuelle en comporte 64 ;
 8. auditer les matchs et les statistiques secondaires ;
 9. reconstruire ensemble `player-secondary-data.js`, `team-data.js` et `pantheon-data.js` ;
 10. vérifier les dates, le nombre de matchs du Panthéon et l’absence d’identifiants techniques externes ;
@@ -75,7 +75,7 @@ Le fichier fixe les permissions par tâche. Aucune permission d’écriture glob
 
 Les fichiers compilés de `estaff/assets/` ne constituent jamais la source officielle. Les sources lisibles de l’interface sont conservées dans `estaff-src/` et les ajouts lisibles dans `estaff/assets/esupport-report.js` et ses feuilles de style. Le service privé, ses tests, ses scripts de construction et le Rulebook sont conservés dans le projet source `estaff-cloud-runtime`.
 
-La version de service correspondant à cette procédure est le commit `104bd80155a5c6f46fda944d0b99e57ea1305cc9`, publié comme version technique Sites 74. Une nouvelle version doit conserver le code source, les tests et le script de construction avant de remplacer cette référence.
+La version de service correspondant à cette procédure est le commit `46f629d15b5a821fa115f60503fbabcb9889a544`, publié comme version technique Sites 75. Une nouvelle version doit conserver le code source, les tests et le script de construction avant de remplacer cette référence.
 
 ## Retour arrière
 

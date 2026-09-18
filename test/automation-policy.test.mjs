@@ -60,6 +60,14 @@ test("un premier échec déclenche une seule reprise autonome et ciblée", () =>
   assert.doesNotMatch(recoveryWorkflow, /contents:\s*write|pages:\s*write|id-token:\s*write/);
 });
 
+test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
+  assert.match(workflow, /cron:\s*"7 8 \* \* \*"/);
+  assert.match(workflow, /cron:\s*"7 9 \* \* \*"/);
+  assert.match(workflow, /timeZone:\s*"Europe\/Paris"/);
+  assert.match(workflow, /dailyWindow && parisHour === 10/);
+  assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
+});
+
 test("la communication eStaff présente uniquement 27 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",

@@ -7,9 +7,11 @@ on:
     # Léonard vérifie chaque heure si ses quatre sources sont enfin complètes.
     # La vérification reste silencieuse et ne crée aucune mission si une donnée manque.
     - cron: "37 * * * *"
-    # Créneaux de départ souhaités. Un lancement retardé par GitHub s’exécute
-    # quand même : l’heure ne constitue jamais une condition d’annulation.
-    - cron: "7 23 * * *"
+    # Synchronisation quotidienne à 10 h Europe/Paris. Les deux créneaux UTC
+    # couvrent automatiquement l'heure d'été et l'heure d'hiver ; le workflow
+    # ignore celui qui ne correspond pas à 10 h à Paris.
+    - cron: "7 8 * * *"
+    - cron: "7 9 * * *"
     # Rapport de synthèse chaque lundi et jeudi, autour de 07 h à Paris.
     - cron: "17 6 * * 1,4"
   workflow_dispatch:
@@ -68,7 +70,13 @@ jobs:
             const isPush = context.eventName === "push";
             const requestedSyncPush = isPush && /\[esupport-sync\]/i.test(context.payload.head_commit?.message || "");
             const scheduledCron = context.payload.schedule || "";
-            const daily = scheduledCron === "7 23 * * *";
+            const parisHour = Number(new Intl.DateTimeFormat("fr-FR", {
+              timeZone: "Europe/Paris",
+              hour: "2-digit",
+              hour12: false,
+            }).format(new Date()));
+            const dailyWindow = ["7 8 * * *", "7 9 * * *"].includes(scheduledCron);
+            const daily = dailyWindow && parisHour === 10;
             const digest = scheduledCron === "17 6 * * 1,4";
             const syncRequested = isManual || daily || requestedSyncPush;
             const individualPublicationAuthorized = process.env.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED === "verified";

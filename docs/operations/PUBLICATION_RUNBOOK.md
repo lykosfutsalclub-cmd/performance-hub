@@ -60,6 +60,8 @@ Le contrôle `scripts/sporteasy/audit-public-data.mjs` compare le résultat aux 
 - Après un premier échec du « Contrôle quotidien eSupport », `.github/workflows/esupport-autorecovery.yml` relance automatiquement et une seule fois les seules tâches en échec. Cette reprise couvre les incidents temporaires sans rejouer inutilement les tâches déjà réussies.
 - Si la seconde tentative échoue, aucune troisième tentative n’est lancée : l’échec persistant reste visible et nécessite une analyse. Cette limite empêche une boucle infinie et ne contourne jamais les tests, le GO de Véronique, la confidentialité ou la sécurité.
 - Le contrôle de fraîcheur relit chaque heure les trois jeux de données publics. Il échoue si l’un d’eux est inaccessible, non daté ou vieux de plus de 36 heures.
+- La synchronisation SportEasy complète s'exécute chaque jour à **10 h, heure de Paris**. Deux créneaux UTC couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou n'autorise que l'exécution correspondant réellement à 10 h à Paris.
+- Une identité temporaire locale expirée ne vaut jamais preuve d'une déconnexion SportEasy. L'état de référence est celui du dernier contrôle cloud eSupport authentifié par GitHub ; Oscar doit déclencher ou attendre ce contrôle plutôt que demander à Fabien une reconnexion ordinaire.
 - L’interface affiche également la date et l’heure et utilise un voyant orange lorsque les données dépassent 36 heures.
 - Les anciennes notifications mobiles ont été retirées : leurs routes serveur n’existaient pas. Le script eStaff désinscrit l’ancien service de notification sur les appareils qui l’avaient enregistré.
 

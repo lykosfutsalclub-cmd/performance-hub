@@ -14,10 +14,7 @@ on:
     - cron: "17 6 * * 1,4"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  id-token: write
-  pages: write
+permissions: {}
 
 concurrency:
   group: esupport-monitor
@@ -28,9 +25,11 @@ jobs:
     name: Porte de complétude de Léonard
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      id-token: write
     steps:
       - name: Vérifier les quatre sources sans produire de rapport incomplet
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           LEONARD_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/leonard-analysis
         with:
@@ -53,10 +52,14 @@ jobs:
     name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    permissions:
+      contents: write
+      id-token: write
+      pages: write
     steps:
       - name: Déterminer la mission eSupport
         id: mission
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           PUBLIC_INDIVIDUAL_DATA_AUTHORIZED: ${{ vars.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED }}
         with:
@@ -80,15 +83,15 @@ jobs:
 
       - name: Récupérer le Performance Hub
         if: steps.mission.outputs.active == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
       - name: Préparer Node.js
         if: steps.mission.outputs.sync == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: "24"
+          node-version: "24.19.0"
 
       - name: Patricia prépare la collecte privée
         if: steps.mission.outputs.sync == 'true'
@@ -98,7 +101,7 @@ jobs:
 
       - name: Obtenir l’identité temporaire de Patricia
         if: steps.mission.outputs.sync == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const token = await core.getIDToken("lykos-estaff-esupport");
@@ -119,7 +122,7 @@ jobs:
 
       - name: Renouveler l’identité temporaire de Patricia
         if: steps.mission.outputs.sync == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const token = await core.getIDToken("lykos-estaff-esupport");
@@ -149,7 +152,7 @@ jobs:
       - name: Véronique contrôle et autorise la publication
         if: steps.mission.outputs.sync == 'true'
         run: |
-          node --test test/*.test.mjs
+          node scripts/verify-publication-tests.mjs
           node scripts/sporteasy/audit-match-repository.mjs
           node scripts/sporteasy/audit-player-secondary-statistics.mjs
           node scripts/sporteasy/publish-player-secondary-statistics.mjs
@@ -190,7 +193,7 @@ jobs:
 
       - name: Attendre les données validées sur le site public
         if: steps.publication.outputs.changed == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const fs = require("fs");
@@ -215,7 +218,7 @@ jobs:
 
       - name: Lancer le contrôle privé prévu
         if: steps.mission.outputs.active == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
@@ -258,4 +261,48 @@ jobs:
                 headers: {Authorization: `Bearer ${identity}`},
               });
               if (!giannisResponse.ok) core.setFailed(`L’analyse de Giannis a échoué (${giannisResponse.status}).`);
+            }
+
+      - name: Signaler clairement une synchronisation en échec
+        if: ${{ failure() }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            core.error("ALERTE eSupport : la synchronisation ou l’un de ses contrôles a échoué. Aucune donnée non validée ne doit être publiée.");
+            await core.summary
+              .addHeading("Alerte de synchronisation")
+              .addRaw("La chaîne eSupport a échoué. Consultez la première étape en rouge : elle indique la cause et aucune donnée non validée ne doit être publiée.")
+              .write();
+
+  surveillance-fraicheur:
+    name: Alerte de fraîcheur des données publiques
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Vérifier les trois jeux de données publics
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const maximumAgeMs = 36 * 60 * 60 * 1000;
+            const base = "https://lykosfutsalclub-cmd.github.io/performance-hub/";
+            const files = ["player-secondary-data.js", "team-data.js", "pantheon-data.js"];
+            const stale = [];
+            for (const file of files) {
+              const response = await fetch(`${base}${file}?freshness=${Date.now()}`, {cache:"no-store"});
+              if (!response.ok) {
+                stale.push(`${file} est inaccessible (${response.status})`);
+                continue;
+              }
+              const text = await response.text();
+              const generatedAt = text.match(/"generatedAt"\s*:\s*"([^"]+)"/)?.[1];
+              const age = Date.now() - Date.parse(generatedAt || "");
+              if (!generatedAt || !Number.isFinite(age) || age > maximumAgeMs) {
+                stale.push(`${file} est périmé ou non daté (${generatedAt || "date absente"})`);
+              }
+            }
+            if (stale.length) {
+              core.setFailed(`ALERTE fraîcheur : ${stale.join(" ; ")}`);
+            } else {
+              core.notice("Les trois jeux de données publics ont moins de 36 heures.");
             }

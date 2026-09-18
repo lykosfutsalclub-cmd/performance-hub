@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Outils techniques locaux pour préparer le dashboard Lykos FC.",
   "engines": {
-    "node": ">=22.0.0"
+    "node": "24.19.0"
   },
   "scripts": {
     "sporteasy:test": "node --env-file-if-exists=.env scripts/sporteasy/test-connection.mjs",
@@ -29,6 +29,7 @@
     "sporteasy:audit-public": "node scripts/sporteasy/audit-public-data.mjs",
     "sporteasy:refresh-derived": "node scripts/sporteasy/build-statistics-repository.mjs && node scripts/sporteasy/build-match-repository.mjs && node scripts/sporteasy/build-player-secondary-statistics.mjs && node scripts/sporteasy/audit-player-secondary-statistics.mjs",
     "sporteasy:audit-matches": "node scripts/sporteasy/audit-match-repository.mjs",
-    "test": "node --test \"test/*.test.mjs\""
+    "test": "node --test \"test/*.test.mjs\"",
+    "test:publication": "node scripts/verify-publication-tests.mjs"
   }
 }

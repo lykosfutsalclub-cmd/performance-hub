@@ -274,9 +274,22 @@ jobs:
       - name: Signaler clairement une synchronisation en échec
         if: ${{ failure() }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          MOBILE_ALERT_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/mobile-alert
         with:
           script: |
             core.error("ALERTE eSupport : la synchronisation ou l’un de ses contrôles a échoué. Aucune donnée non validée ne doit être publiée.");
+            try {
+              const identity = await core.getIDToken("lykos-estaff-esupport");
+              const response = await fetch(process.env.MOBILE_ALERT_URL, {
+                method: "POST",
+                headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
+                body: JSON.stringify({kind:"synchronization_failure"}),
+              });
+              if (!response.ok) core.warning(`L’alerte mobile a été refusée (${response.status}).`);
+            } catch (error) {
+              core.warning(`L’alerte mobile n’a pas pu être envoyée : ${error.message}`);
+            }
             await core.summary
               .addHeading("Alerte de synchronisation")
               .addRaw("La chaîne eSupport a échoué. Consultez la première étape en rouge : elle indique la cause et aucune donnée non validée ne doit être publiée.")
@@ -288,7 +301,8 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions: {}
+    permissions:
+      id-token: write
     steps:
       - name: Vérifier les trois jeux de données publics
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -316,3 +330,16 @@ jobs:
             } else {
               core.notice("Les trois jeux de données publics ont moins de 36 heures.");
             }
+
+      - name: Prévenir sur mobile si les données sont trop anciennes
+        if: ${{ failure() }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch("https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/mobile-alert", {
+              method: "POST",
+              headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
+              body: JSON.stringify({kind:"public_data_stale"}),
+            });
+            if (!response.ok) core.warning(`L’alerte mobile de fraîcheur a été refusée (${response.status}).`);

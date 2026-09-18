@@ -15,18 +15,6 @@
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité"};
 
-  async function retireLegacyMobileNotifications() {
-    try {localStorage.removeItem("lykos-estaff-notifications");} catch {}
-    if (!("serviceWorker" in navigator)) return;
-    try {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(registrations
-        .filter((registration) => registration.scope.includes("/performance-hub/estaff/"))
-        .map((registration) => registration.unregister()));
-    } catch {}
-  }
-
-  void retireLegacyMobileNotifications();
   const esupportRoles = {
     Nadir: {
       title:"Analyse tactique vidéo",

@@ -63,9 +63,10 @@ Le contrôle `scripts/sporteasy/audit-public-data.mjs` compare le résultat aux 
 - La synchronisation SportEasy complète s'exécute chaque jour à **10 h, heure de Paris**. Deux créneaux UTC couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou n'autorise que l'exécution correspondant réellement à 10 h à Paris.
 - Une identité temporaire locale expirée ne vaut jamais preuve d'une déconnexion SportEasy. L'état de référence est celui du dernier contrôle cloud eSupport authentifié par GitHub ; Oscar doit déclencher ou attendre ce contrôle plutôt que demander à Fabien une reconnexion ordinaire.
 - L’interface affiche également la date et l’heure et utilise un voyant orange lorsque les données dépassent 36 heures.
-- Les anciennes notifications mobiles ont été retirées : leurs routes serveur n’existaient pas. Le script eStaff désinscrit l’ancien service de notification sur les appareils qui l’avaient enregistré.
-
-Une « alerte GitHub Actions » est un contrôle rouge visible dans l’onglet Actions du dépôt et dans les notifications GitHub configurées par le responsable. Elle ne prétend pas être une notification mobile propre au Performance Hub.
+- Les notifications mobiles eStaff sont proposées uniquement après ouverture de l’espace privé et accord explicite du téléphone. Une notification de test est envoyée lors de l’activation.
+- Elles signalent la fin d’une mission d’Oscar, un échec de synchronisation ou des données publiques vieilles de plus de 36 heures. Les répétitions d’une même alerte technique sont regroupées pendant six heures.
+- Sur iPhone, l’espace eStaff doit d’abord être ajouté à l’écran d’accueil depuis Safari. Le bouton eStaff permet ensuite d’activer ou de désactiver les notifications.
+- L’abonnement technique du téléphone est conservé dans le stockage privé du service eStaff ; il n’est jamais publié dans le dépôt ni dans les fichiers du Performance Hub.
 
 ## Permissions de l’automatisation
 

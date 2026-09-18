@@ -87,6 +87,7 @@
     Tamara: {title:"Tests de régression",summary:"Exécuter les contrôles techniques pour Véronique.",purpose:"Tamara vérifie qu’une correction ne réintroduit pas une ancienne panne et consigne les tests non exécutés.",when:"Après chaque correction et avant une validation technique.",output:"Des résultats reproductibles avec versions, scénarios et preuves."},
     Inès: {title:"Compréhension Data/UX",summary:"Vérifier la clarté des données pour Sandrine.",purpose:"Inès contrôle que les statistiques et interfaces sont compréhensibles, fidèles et utilisables sur ordinateur comme sur mobile.",when:"Lorsqu’une donnée ou une interface doit être rendue plus claire.",output:"Un audit de compréhension avec difficultés et corrections proposées."},
     Giorgios: {title:"Observation des canaux publics",summary:"Observer les canaux officiels pour Kostantinos.",purpose:"Giorgios relève les changements et mesures publiques agrégées sans connexion, publication ni collecte d’identités.",when:"Pendant la veille des contenus, partenaires et produits publics.",output:"Un relevé sourcé avec URL, date, valeur observée et niveau de preuve."},
+    Vincenzo: {title:"Veille et récupération vidéo",summary:"Détecter les vidéos correspondant aux matchs SportEasy validés.",purpose:"Vincenzo recherche dans la vidéothèque du Complexe par date et terrain, compare le score, puis attend la validation de Samir et le rattachement d’Oscar avant tout téléchargement.",when:"Le jeudi à 7 h 30, le vendredi à 7 h 30 et le dimanche à 7 h 30, jusqu’à la découverte d’un candidat.",output:"Un candidat traçable ou la confirmation qu’aucun match n’est candidat à une analyse de nos agents."},
     Amara: {
       title:"Responsable eSécurité",
       summary:"Diriger les contrôles et consolider les décisions de sécurité.",
@@ -423,13 +424,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.8.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.11.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
-    if (activityCounters[0]) activityCounters[0].textContent = "27";
-    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "27";
+    if (activityCounters[0]) activityCounters[0].textContent = "28";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "28";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "27 agents installés";
+    if (rosterCount) rosterCount.textContent = "28 agents installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -466,7 +467,7 @@
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
       latestCapabilities = state.capabilities ?? {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
+      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
       latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
         ...entry,
         agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,

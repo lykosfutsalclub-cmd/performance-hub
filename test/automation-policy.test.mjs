@@ -84,12 +84,12 @@ test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiat
   assert.match(page, /connect-src 'self'/);
 });
 
-test("la communication eStaff présente uniquement 27 agents", async () => {
+test("la communication eStaff présente uniquement 28 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",
     "estaff/assets/esupport-report.js",
   ];
   const text = (await Promise.all(files.map((path) => readFile(new URL(path, root), "utf8")))).join("\n");
-  assert.match(text, /27 agents/);
+  assert.match(text, /28 agents/);
   assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
 });

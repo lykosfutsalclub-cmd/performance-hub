@@ -42,6 +42,10 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   assert.match(page, /manifest\.webmanifest/);
   assert.match(page, /notifications\.js/);
   assert.match(client, /push\/subscription/);
+  assert.match(client, /lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff/);
+  assert.match(client, /lykos:estaff-cloud-session/);
+  assert.match(client, /sameApplicationServerKey/);
+  assert.doesNotMatch(client, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
   assert.match(serviceWorker, /showNotification/);
 });
 
@@ -159,7 +163,8 @@ test("les récapitulatifs du planificateur cloud rejoignent les fils publics san
   assert.match(supervision, /latestReturns = mergeEntries\(latestReturns, cadenceState\.returns\)/);
   assert.match(supervision, /fetchWithTimeout\(`\$\{CADENCE_API\}\/esupport`/);
   assert.doesNotMatch(supervision, /latestCapabilities\s*=\s*\{\.\.\.\(cadenceState\.capabilities/);
-  assert.match(page, /esupport-report\.js\?v=20260920-erh-bootstrap/);
+  assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-push/);
+  assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session"/);
   assert.match(page, /connect-src 'self' https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev/);
   assert.match(supervision, /const API = "https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff"/);
 });

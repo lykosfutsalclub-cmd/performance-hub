@@ -870,6 +870,7 @@
       const payload = response.ok ? await response.json() : {};
       if (generation !== sessionGeneration) return false;
       cadenceToken = typeof payload.token === "string" ? payload.token : "";
+      if (cadenceToken) window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:cadenceToken}}));
       return Boolean(cadenceToken);
     } catch {
       if (generation === sessionGeneration) cadenceToken = "";
@@ -1010,6 +1011,7 @@
       sessionGeneration += 1;
       sessionToken = "";
       cadenceToken = "";
+      window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
       latestReport = null;
       latestReturns = [];
       latestStateUpdatedAt = "";

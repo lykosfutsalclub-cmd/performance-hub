@@ -1,9 +1,15 @@
 (() => {
   "use strict";
-  const SERVICE = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff";
+  const SERVICE = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   const originalFetch = window.fetch.bind(window);
   let accessToken = "";
   let syncing = false;
+
+  window.addEventListener("lykos:estaff-cloud-session", event => {
+    const token = event.detail?.token;
+    accessToken = typeof token === "string" ? token : "";
+    if (accessToken) void refreshButton();
+  });
 
   function captureToken(request) {
     if (!request.url.startsWith(SERVICE)) return;
@@ -27,6 +33,11 @@
     const binary = atob((value + padding).replace(/-/g, "+").replace(/_/g, "/"));
     return Uint8Array.from(binary, character => character.charCodeAt(0));
   }
+  function sameApplicationServerKey(subscription, publicKey) {
+    const current = new Uint8Array(subscription?.options?.applicationServerKey || []);
+    const expected = decodeKey(publicKey);
+    return current.length === expected.length && current.every((byte, index) => byte === expected[index]);
+  }
   function api(path, init = {}) {
     return originalFetch(`${SERVICE}${path}`, {...init, cache:"no-store", headers:{...init.headers, Authorization:`Bearer ${accessToken}`}});
   }
@@ -41,12 +52,13 @@
   }
 
   function renderButton(button, state) {
-    button.disabled = ["busy", "blocked", "unsupported"].includes(state);
+    button.disabled = ["busy", "blocked", "unsupported", "unavailable"].includes(state);
     button.dataset.state = state;
     button.textContent = state === "active" ? "🔔 Notifications activées · désactiver"
       : state === "busy" ? "Activation…"
       : state === "blocked" ? "Notifications refusées par le téléphone"
       : state === "install" ? "🔔 Installer pour être notifié"
+      : state === "unavailable" ? "🔔 Notifications en préparation"
       : state === "unsupported" ? "Notifications indisponibles"
       : state === "error" ? "Réessayer les notifications"
       : "🔔 Activer les notifications";
@@ -64,7 +76,14 @@
     renderButton(button, "busy");
     try {
       const registration = await navigator.serviceWorker.ready;
-      const existing = await registration.pushManager.getSubscription();
+      const keyResponse = await api("/push/key");
+      if (!keyResponse.ok) throw new Error("configuration");
+      const {publicKey} = await keyResponse.json();
+      let existing = await registration.pushManager.getSubscription();
+      if (existing && !sameApplicationServerKey(existing, publicKey)) {
+        await existing.unsubscribe();
+        existing = null;
+      }
       if (existing && button.dataset.previousState === "active") {
         await sendSubscription(existing, false);
         await existing.unsubscribe();
@@ -74,9 +93,6 @@
       }
       const permission = await Notification.requestPermission();
       if (permission !== "granted") throw new Error("permission");
-      const keyResponse = await api("/push/key");
-      if (!keyResponse.ok) throw new Error("configuration");
-      const {publicKey} = await keyResponse.json();
       const subscription = existing || await registration.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:decodeKey(publicKey)});
       await sendSubscription(subscription, true);
       button.dataset.previousState = "active";
@@ -96,7 +112,15 @@
       if (!supported()) return renderButton(button, "unsupported");
       if (isIos() && !isStandalone()) return renderButton(button, "install");
       if (Notification.permission === "denied") return renderButton(button, "blocked");
-      const subscription = await (await navigator.serviceWorker.ready).pushManager.getSubscription();
+      if (!accessToken) return renderButton(button, "unavailable");
+      const keyResponse = await api("/push/key");
+      if (!keyResponse.ok) return renderButton(button, "unavailable");
+      const {publicKey} = await keyResponse.json();
+      let subscription = await (await navigator.serviceWorker.ready).pushManager.getSubscription();
+      if (subscription && !sameApplicationServerKey(subscription, publicKey)) {
+        await subscription.unsubscribe();
+        subscription = null;
+      }
       const state = subscription ? "active" : "ready";
       button.dataset.previousState = state;
       renderButton(button, state);

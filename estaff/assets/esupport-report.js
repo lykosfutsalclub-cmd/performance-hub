@@ -20,9 +20,9 @@
   const SPORTEASY_SYNC_PROMPT = "ACTION_SYSTÈME PUB2 : déclenche immédiatement le workflow officiel de synchronisation SportEasy complète vers le Performance Hub, puis confirme uniquement son lancement.";
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
-  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès"]);
-  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité"};
-  const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
+  const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès", "Angela", "Alba", "Lola", "Nora", "Salomé", "Ella"]);
+  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
+  const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo",angela:"Angela",juan:"Juan",marco:"Marco",rafael:"Rafael",alba:"Alba",lola:"Lola",nora:"Nora",yanis:"Yanis",salome:"Salomé",malik:"Malik",ella:"Ella","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
 
   const esupportRoles = {
     Sophie: {
@@ -167,6 +167,17 @@
       when:"En continu et à chaque signal significatif.",
       output:"Un dossier d’incident avec heures, preuves, mesures conservatoires et condition de clôture.",
     },
+    Angela: {title:"Analyste trésorerie & fournisseurs",summary:"Rapprocher les pièces et signaler les écarts financiers.",purpose:"Angela rapproche factures, paiements, avoirs, budgets et échéances, puis repère les erreurs de quantité ou de prix sans exécuter aucune opération financière.",when:"À chaque nouvelle pièce, échéance, renouvellement ou écart anormal.",output:"Un rapprochement sourcé avec impact, alerte et décision humaine attendue."},
+    Juan: {title:"Coordinateur logistique & équipements",summary:"Suivre les stocks, tailles, commandes et livraisons.",purpose:"Juan tient la vision opérationnelle des maillots et shorts, relie les tailles et quantités aux dossiers autorisés et suit chaque commande jusqu’à sa livraison.",when:"Lors d’un changement de stock, de taille, de licence, de commande ou de livraison.",output:"Un état de stock et de besoins, avec écarts et prochaines validations."},
+    Marco: {title:"Chargé d’équipementier",summary:"Maîtriser l’offre et le contrat Macron du club.",purpose:"Marco documente la boutique Macron du Lykos, le contrat équipementier et le Catalogue Macron 2026 autorisé sur Drive afin d’éclairer les besoins validés par Juan.",when:"Quand un produit, un besoin, un prix, le contrat ou le catalogue évolue.",output:"Une fiche produit ou contractuelle sourcée, sans commande ni négociation."},
+    Rafael: {title:"Responsable partenariats",summary:"Suivre les obligations et renouvellements sponsors.",purpose:"Rafael tient le registre des engagements, contreparties, échéances et renouvellements à partir des seules informations transmises et validées.",when:"Lorsqu’une information sponsor ou une échéance est ajoutée ou modifiée.",output:"Un tableau des engagements tenus, à faire, en retard ou à renégocier."},
+    Alba: {title:"Archiviste & historienne du club",summary:"Consolider l’histoire vérifiée du Lykos depuis 2019.",purpose:"Alba relie les palmarès, équipes de l’année, anciens effectifs, compositions, records, photographies, documents et identités à leurs sources vérifiables.",when:"À chaque nouveau document ou fait historique contrôlé.",output:"Une notice datée avec source, niveau de preuve et contradictions éventuelles."},
+    Lola: {title:"Productrice éditoriale",summary:"Transformer les données validées en récits prêts à relire.",purpose:"Lola transforme les analyses et archives déjà validées en résumés, cartes et bilans cohérents avec la voix du club.",when:"Après validation d’un bilan, record, anniversaire ou brief éditorial.",output:"Un brouillon sourcé qui ne peut pas être publié sans validation humaine."},
+    Nora: {title:"Responsable efficacité eStaff",summary:"Vérifier que chaque agent travaille utilement et laisse une preuve.",purpose:"Nora contrôle déclencheurs, entrées, résultats, qualité, preuves et état de chacun des trente-neuf agents.",when:"Chaque jour et dès qu’un agent est en retard, bloqué ou sans preuve utile.",output:"Un tableau d’efficacité avec blocage, preuve et action corrective."},
+    Yanis: {title:"Contrôleur des coûts agents",summary:"Suivre le coût réel de chaque agent.",purpose:"Yanis attribue les consommations et coûts aux agents et missions, puis signale les usages inutiles ou anormaux.",when:"Chaque semaine et lors de l’ajout d’un agent ou service payant.",output:"Un relevé de coût par agent avec variations et pistes d’optimisation."},
+    Salomé: {title:"Architecte des processus",summary:"Veiller à la logique des chaînes de travail.",purpose:"Salomé analyse les dépendances, contrôles et transmissions pour repérer doublons, boucles et validations manquantes.",when:"Chaque semaine ou lorsqu’un blocage ou une reprise manuelle se répète.",output:"Une carte avant-après du processus et une correction testable."},
+    Malik: {title:"Planification des effectifs agentiques",summary:"Évaluer la nécessité de recruter un nouvel agent.",purpose:"Malik distingue un vrai manque de compétence d’un problème de source, de processus ou de répartition du travail.",when:"Chaque mois ou lorsqu’un manque persiste malgré les corrections.",output:"Une recommandation argumentée : ne pas recruter, réorganiser, outiller ou créer un profil précis."},
+    Ella: {title:"Veille capacités & plugins",summary:"Comparer les outils et renforts susceptibles d’améliorer les agents.",purpose:"Ella surveille plugins, connecteurs et types de renforts agentiques utiles à un besoin validé, avec leurs permissions, coûts et risques.",when:"Chaque semaine ou après confirmation d’un manque de capacité.",output:"Une fiche comparative ; aucune installation ou permission n’est accordée automatiquement."},
   };
 
   const operationalProfiles = {
@@ -198,6 +209,17 @@
     Inès:{inputs:"Définition de la donnée, interface et supports ordinateur/mobile à examiner.",quality:"Contrôler compréhension, cohérence, accessibilité et fidélité à la donnée source.",evidence:"Audit Data/UX avec difficultés observées et corrections proposées."},
     Giorgios:{inputs:"Liste fermée des canaux publics officiels et objectif de veille.",quality:"Conserver URL, date et niveau de preuve ; aucune connexion ni identité d’abonné.",evidence:"Relevé public sourcé transmis à Konstantinos."},
     Vincenzo:{inputs:"Match SportEasy validé, date, terrain, score et vidéothèque publique autorisée.",quality:"Comparer date, terrain et score ; attendre Samir et Oscar avant tout acheminement.",evidence:"Candidat vidéo traçable ou constat daté qu’aucun candidat fiable n’a été trouvé."},
+    Angela:{inputs:"Factures, paiements, avoirs, budgets, contrats et échéances autorisés.",quality:"Rapprocher référence, fournisseur, date, quantité, prix et règlement ; toute absence reste visible.",evidence:"Tableau de rapprochement daté, pièces sources, écarts et décision humaine attendue."},
+    Juan:{inputs:"Stock, tailles, quantités, licences, commandes et livraisons strictement nécessaires.",quality:"Contrôler les totaux, doublons, données manquantes et limiter l’exposition des tailles nominatives.",evidence:"État de stock et suivi commande-livraison avec écarts documentés."},
+    Marco:{inputs:"Boutique Macron Lykos, contrat approuvé, Catalogue Macron 2026 et besoin validé par Juan.",quality:"Vérifier référence, produit, prix connu, clause, date et source ; aucune supposition commerciale.",evidence:"Fiche Macron sourcée transmise à Juan, sans commande ni contact."},
+    Rafael:{inputs:"Contrats, briefs et engagements sponsors explicitement transmis.",quality:"Relier chaque obligation, contrepartie et échéance à un document ou une validation humaine.",evidence:"Registre des engagements et renouvellements avec preuves et points à arbitrer."},
+    Alba:{inputs:"Documents, photographies et données datables dont la source est identifiable.",quality:"Distinguer fait, source, contradiction et hypothèse ; aucune mémoire orale non confirmée ne devient un fait.",evidence:"Notice historique versionnée et journal des identités ou doublons corrigés."},
+    Lola:{inputs:"Données et analyses validées, brief, public cible et format attendu.",quality:"Alba ou le spécialiste source confirme les faits ; Konstantinos contrôle la cohérence éditoriale.",evidence:"Brouillon sourcé portant explicitement la mention à valider avant publication."},
+    Nora:{inputs:"Cadences, états, preuves, blocages et livrables des trente-neuf agents.",quality:"Contrôler l’utilité réelle et l’existence d’une preuve, sans confondre passage automatique et travail accompli.",evidence:"Tableau quotidien agent par agent avec état, preuve, utilité et action corrective."},
+    Yanis:{inputs:"Exécutions, usages de modèles, licences et coûts autorisés, rattachés à un agent ou une mission.",quality:"Séparer coût mesuré, estimation et donnée absente ; comparer à volume de travail équivalent.",evidence:"Relevé hebdomadaire des coûts et anomalies avec méthode de calcul."},
+    Salomé:{inputs:"Rulebook, déclencheurs, dépendances, contrôles qualité et incidents de processus.",quality:"Vérifier chaque entrée, sortie, responsabilité et validation avant de proposer un changement.",evidence:"Schéma avant-après et scénario de test du processus proposé."},
+    Malik:{inputs:"Rapports de Nora, Yanis et Salomé, charge et compétences existantes.",quality:"Prouver que le manque est durable et qu’une réorganisation ou un outil existant ne suffit pas.",evidence:"Avis de recrutement documenté avec alternatives, coût, risque et validation attendue."},
+    Ella:{inputs:"Besoin validé, catalogue de capacités, plugins, connecteurs et types de renforts agentiques.",quality:"Comparer utilité, permissions, données accessibles, coût, maintenance et risque avec eSécurité.",evidence:"Fiche comparative sans installation, création ni permission automatique."},
   };
 
   const operationalStateLabels = {
@@ -748,13 +770,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.13.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.14.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
-    if (activityCounters[0]) activityCounters[0].textContent = "28";
-    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "28";
+    if (activityCounters[0]) activityCounters[0].textContent = "39";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "39";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "28 agents installés";
+    if (rosterCount) rosterCount.textContent = "39 agents installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -846,7 +868,7 @@
       }));
       latestAgentStates = (Array.isArray(state.agentStates) ? state.agentStates : []).map(entry => ({
         ...entry,
-        agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
+        agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
       latestOperations = state.operations && typeof state.operations === "object" ? state.operations : {};
       latestStateUpdatedAt = [

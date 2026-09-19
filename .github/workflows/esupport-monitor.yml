@@ -286,7 +286,8 @@ jobs:
               });
               const importResult = await importResponse.json().catch(() => ({}));
               if (!importResponse.ok) {
-                core.setFailed(`Cloudflare a refusé le rapport eSupport (${importResponse.status}).`);
+                const reason = typeof importResult.error === "string" ? ` : ${importResult.error}` : "";
+                core.setFailed(`Cloudflare a refusé le rapport eSupport (${importResponse.status}${reason}).`);
                 return;
               }
               core.notice(`Rapport eSupport enregistré dans Cloudflare (${importResult.status || "accepté"}).`);

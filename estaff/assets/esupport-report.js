@@ -1,7 +1,10 @@
 (() => {
   const API = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff";
+  const CADENCE_API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   const originalFetch = window.fetch.bind(window);
   let sessionToken = "";
+  let cadenceToken = "";
+  let sessionGeneration = 0;
   let latestReport = null;
   let latestReturns = [];
   let latestStateUpdatedAt = "";
@@ -17,6 +20,7 @@
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité"};
+  const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
 
   const esupportRoles = {
     Nadir: {
@@ -549,7 +553,45 @@
     requestAnimationFrame(enforceReadOnlyMode);
   }
 
-  async function loadReport(token) {
+  function mergeEntries(...groups) {
+    const entries = groups.flatMap(group => Array.isArray(group) ? group : []);
+    const unique = new Map();
+    for (const entry of entries) {
+      const key = entry.returnId || `${entry.missionId || "mission"}-${entry.sequence || 0}-${entry.agent || "agent"}-${entry.occurredAt || "date"}`;
+      if (!unique.has(key) || Date.parse(entry.occurredAt || "") > Date.parse(unique.get(key)?.occurredAt || "")) unique.set(key,entry);
+    }
+    return [...unique.values()].sort((left,right) => Date.parse(right.occurredAt || "") - Date.parse(left.occurredAt || ""));
+  }
+
+  async function fetchWithTimeout(url, options = {}, timeout = 3_000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(),timeout);
+    try {
+      return await originalFetch(url,{...options,signal:controller.signal});
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function connectCadence(code, generation) {
+    if (generation !== sessionGeneration || !/^\d{4}$/.test(String(code || ""))) return false;
+    try {
+      const response = await fetchWithTimeout(`${CADENCE_API}/session`, {
+        method:"POST", cache:"no-store", credentials:"omit",
+        headers:{"Content-Type":"application/json"}, body:JSON.stringify({code}),
+      });
+      const payload = response.ok ? await response.json() : {};
+      if (generation !== sessionGeneration) return false;
+      cadenceToken = typeof payload.token === "string" ? payload.token : "";
+      return Boolean(cadenceToken);
+    } catch {
+      if (generation === sessionGeneration) cadenceToken = "";
+      return false;
+    }
+  }
+
+  async function loadReport(token, generation) {
+    if (generation !== sessionGeneration) return;
     sessionToken = token;
     try {
       const options = {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}};
@@ -557,14 +599,22 @@
         originalFetch(`${API}/esupport`, options),
         originalFetch(`${API}/state`, options),
       ]);
-      if (response.status === 401 || stateResponse.status === 401) { sessionToken = ""; latestReport = null; latestReturns = []; scheduleReadOnlyMode(); return; }
+      if (generation !== sessionGeneration || sessionToken !== token) return;
+      if (response.status === 401 || stateResponse.status === 401) {
+        sessionGeneration += 1;
+        sessionToken = "";
+        cadenceToken = "";
+        latestReport = null;
+        latestReturns = [];
+        scheduleReadOnlyMode();
+        return;
+      }
       latestReport = response.ok ? await response.json() : null;
       const state = stateResponse.ok ? await stateResponse.json() : {};
       latestCapabilities = state.capabilities ?? {};
-      const displayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
-      latestReturns = (Array.isArray(state.returns) ? state.returns : []).map(entry => ({
+      latestReturns = mergeEntries(state.returns).map(entry => ({
         ...entry,
-        agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
+        agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
       latestStateUpdatedAt = [
         latestReport?.checkedAt,
@@ -572,6 +622,7 @@
         ...latestReturns.map(entry => entry.occurredAt),
       ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
     } catch {
+      if (generation !== sessionGeneration || sessionToken !== token) return;
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
       latestReturns = [];
       latestStateUpdatedAt = "";
@@ -580,12 +631,63 @@
     scheduleReadOnlyMode();
   }
 
+  async function loadCadenceReport(generation) {
+    const token = cadenceToken;
+    if (generation !== sessionGeneration || !sessionToken || !token) return;
+    try {
+      const options = {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}};
+      const [reportResponse,stateResponse] = await Promise.all([
+        fetchWithTimeout(`${CADENCE_API}/esupport`,options),
+        fetchWithTimeout(`${CADENCE_API}/state`,options),
+      ]);
+      if (generation !== sessionGeneration || cadenceToken !== token || !sessionToken) return;
+      if (reportResponse.status === 401 || stateResponse.status === 401) {cadenceToken = ""; return;}
+      const cadenceReport = reportResponse.ok ? await reportResponse.json() : null;
+      const cadenceState = stateResponse.ok ? await stateResponse.json() : {};
+      if (cadenceReport) latestReport = latestReport ? {
+        ...latestReport,
+        history:mergeEntries(latestReport.history, cadenceReport.history),
+        feed:mergeEntries(latestReport.feed, cadenceReport.feed),
+      } : cadenceReport;
+      // Le service de cadences est consultatif : seul le service principal autorise les actions Oscar.
+      latestReturns = mergeEntries(latestReturns, cadenceState.returns).map(entry => ({
+        ...entry,
+        agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
+      }));
+      latestStateUpdatedAt = [
+        latestStateUpdatedAt,
+        cadenceReport?.checkedAt,
+        cadenceState.esupport?.checkedAt,
+        cadenceState.automation?.updatedAt,
+        ...latestReturns.map(entry => entry.occurredAt),
+      ].filter(Boolean).sort((left,right) => Date.parse(right) - Date.parse(left))[0] || "";
+      scheduleReadOnlyMode();
+    } catch {
+      // Le planificateur cloud complète eSupport mais ne doit jamais le bloquer.
+    }
+  }
+
   window.fetch = async (...args) => {
-    const response = await originalFetch(...args);
     const url = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
+    let accessCode = Promise.resolve("");
+    let loginGeneration = sessionGeneration;
+    if (url === `${API}/session`) {
+      loginGeneration = ++sessionGeneration;
+      try {
+        const request = args[0] instanceof Request ? args[0].clone() : new Request(args[0],args[1]);
+        accessCode = request.json().then(payload => String(payload?.code || "")).catch(() => "");
+      } catch {
+        accessCode = Promise.resolve("");
+      }
+    }
+    const response = await originalFetch(...args);
     if (url === `${API}/session` && response.ok) {
-      response.clone().json().then(payload => {
-        if (typeof payload.token === "string") loadReport(payload.token);
+      Promise.all([response.clone().json(),accessCode]).then(async ([payload,code]) => {
+        if (loginGeneration !== sessionGeneration || typeof payload.token !== "string") return;
+        const primaryLoad = loadReport(payload.token,loginGeneration);
+        const cadenceConnection = connectCadence(code,loginGeneration);
+        await primaryLoad;
+        if (await cadenceConnection) await loadCadenceReport(loginGeneration);
       }).catch(() => {});
     }
     return response;
@@ -601,8 +703,10 @@
   });
 
   new MutationObserver(() => {
-    if (sessionToken && document.body.textContent.includes("Code d’accès")) {
+    if ((sessionToken || cadenceToken) && document.body.textContent.includes("Code d’accès")) {
+      sessionGeneration += 1;
       sessionToken = "";
+      cadenceToken = "";
       latestReport = null;
       latestReturns = [];
       latestStateUpdatedAt = "";

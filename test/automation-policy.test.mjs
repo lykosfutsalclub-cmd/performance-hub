@@ -141,6 +141,23 @@ test("l’interface publique annonce la version 3.13.0 du Rulebook", async () =>
   assert.match(supervision, /version\.textContent = "Rulebook 3\.13\.0"/);
 });
 
+test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {
+  const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  const page = await readFile(new URL("estaff/index.html", root), "utf8");
+  assert.match(supervision, /const CADENCE_API = "https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff"/);
+  assert.match(supervision, /connectCadence\(code,loginGeneration\)/);
+  assert.match(supervision, /const primaryLoad = loadReport\(payload\.token,loginGeneration\)/);
+  assert.match(supervision, /if \(await cadenceConnection\) await loadCadenceReport\(loginGeneration\)/);
+  assert.match(supervision, /generation !== sessionGeneration/);
+  assert.match(supervision, /history:mergeEntries\(latestReport\.history, cadenceReport\.history\)/);
+  assert.match(supervision, /latestReturns = mergeEntries\(latestReturns, cadenceState\.returns\)/);
+  assert.match(supervision, /fetchWithTimeout\(`\$\{CADENCE_API\}\/esupport`/);
+  assert.doesNotMatch(supervision, /latestCapabilities\s*=\s*\{\.\.\.\(cadenceState\.capabilities/);
+  assert.match(page, /esupport-report\.js\?v=20260919-cadence-bridge/);
+  assert.match(page, /connect-src 'self' https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev/);
+  assert.match(supervision, /const API = "https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff"/);
+});
+
 test("la feuille de style correspond à la supervision complète sur ordinateur et mobile", async () => {
   const styles = await readFile(new URL("estaff/assets/estaff.css", root), "utf8");
   assert.match(styles, /grid-template-columns:260px minmax\(300px,1fr\) 250px/);

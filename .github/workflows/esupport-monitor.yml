@@ -12,6 +12,11 @@ on:
     # ignore celui qui ne correspond pas à 10 h à Paris.
     - cron: "7 8 * * *"
     - cron: "7 9 * * *"
+    # Rapport quotidien d'Oscar à 11 h 30 Europe/Paris. Les deux créneaux UTC
+    # couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou
+    # ignore celui qui ne correspond pas réellement à 11 h à Paris.
+    - cron: "30 9 * * *"
+    - cron: "30 10 * * *"
     # Rapport de synthèse chaque lundi et jeudi, autour de 07 h à Paris.
     - cron: "17 6 * * 1,4"
   workflow_dispatch:
@@ -77,14 +82,16 @@ jobs:
             }).format(new Date()));
             const dailyWindow = ["7 8 * * *", "7 9 * * *"].includes(scheduledCron);
             const daily = dailyWindow && parisHour === 10;
+            const oscarWindow = ["30 9 * * *", "30 10 * * *"].includes(scheduledCron) && parisHour === 11;
             const digest = scheduledCron === "17 6 * * 1,4";
             const syncRequested = isManual || daily || requestedSyncPush;
             const individualPublicationAuthorized = process.env.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED === "verified";
             const active = isManual || isPush || daily || digest;
             core.setOutput("active", String(active));
+            core.setOutput("oscar", String(isManual || oscarWindow));
             core.setOutput("sync", String(syncRequested && individualPublicationAuthorized));
             core.setOutput("mode", digest ? "digest" : requestedSyncPush || isManual ? "manual" : isPush ? "release" : "daily");
-            if (!active) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
+            if (!active && !oscarWindow) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
             if (syncRequested && !individualPublicationAuthorized) {
               core.warning("Synchronisation nominative bloquée : le registre privé des autorisations n’est pas confirmé.");
             }
@@ -224,47 +231,54 @@ jobs:
             }
             throw new Error("La version publique n’a pas confirmé les trois espaces de données dans le délai prévu.");
 
-      - name: Lancer le contrôle privé prévu
-        if: steps.mission.outputs.active == 'true'
+      - name: Lancer le contrôle privé ou le rapport prévu
+        if: steps.mission.outputs.active == 'true' || steps.mission.outputs.oscar == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
+          ESTAFF_CONTROL: ${{ steps.mission.outputs.active }}
+          ESTAFF_OSCAR: ${{ steps.mission.outputs.oscar }}
           DATA_CHANGED: ${{ steps.publication.outputs.changed }}
         with:
           script: |
             const mode = process.env.ESTAFF_MODE;
+            const controlDue = process.env.ESTAFF_CONTROL === "true";
+            const oscarDue = process.env.ESTAFF_OSCAR === "true";
             if (!["daily", "digest", "release", "manual"].includes(mode)) {
               core.setFailed("Mode eSupport absent ou invalide.");
               return;
             }
 
             const identity = await core.getIDToken("lykos-estaff-esupport");
-            const response = await fetch(process.env.ESTAFF_SERVICE_URL, {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${identity}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({mode}),
-            });
-            const report = await response.json().catch(() => ({}));
-            if (!response.ok) {
-              core.setFailed(`Le service eSupport a refusé le contrôle (${response.status}).`);
-              return;
+            let report = null;
+            if (controlDue) {
+              const response = await fetch(process.env.ESTAFF_SERVICE_URL, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${identity}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({mode}),
+              });
+              report = await response.json().catch(() => ({}));
+              if (!response.ok) {
+                core.setFailed(`Le service eSupport a refusé le contrôle (${response.status}).`);
+                return;
+              }
+              core.notice(report.summary || "Contrôle eSupport terminé.");
+              if (report.status !== "operational") {
+                core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
+              }
             }
-            core.notice(report.summary || "Contrôle eSupport terminé.");
-            if (report.status !== "operational") {
-              core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
-            }
-            if (mode === "daily" || mode === "manual") {
+            if (oscarDue) {
               const briefResponse = await fetch(process.env.ESTAFF_SERVICE_URL.replace("esupport-check", "oscar-brief"), {
                 method: "POST",
                 headers: {Authorization: `Bearer ${identity}`},
               });
               if (!briefResponse.ok) core.setFailed(`Le brief quotidien d’Oscar a échoué (${briefResponse.status}).`);
             }
-            if (report.status === "operational" && process.env.DATA_CHANGED === "true") {
+            if (report?.status === "operational" && process.env.DATA_CHANGED === "true") {
               const giannisResponse = await fetch(process.env.ESTAFF_SERVICE_URL.replace("esupport-check", "giannis-analysis"), {
                 method: "POST",
                 headers: {Authorization: `Bearer ${identity}`},

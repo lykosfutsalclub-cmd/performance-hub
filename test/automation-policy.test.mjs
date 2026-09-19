@@ -74,9 +74,19 @@ test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
   assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
 });
 
+test("Oscar publie à 11 h 30 à Paris sans brief pendant le contrôle de 10 h", () => {
+  assert.match(workflow, /cron:\s*"30 9 \* \* \*"/);
+  assert.match(workflow, /cron:\s*"30 10 \* \* \*"/);
+  assert.match(workflow, /const oscarWindow = \["30 9 \* \* \*", "30 10 \* \* \*"\]\.includes\(scheduledCron\) && parisHour === 11/);
+  assert.match(workflow, /core\.setOutput\("oscar", String\(isManual \|\| oscarWindow\)\)/);
+  assert.match(workflow, /const oscarDue = process\.env\.ESTAFF_OSCAR === "true"/);
+  assert.match(workflow, /if \(oscarDue\) \{[\s\S]*?"oscar-brief"/);
+  assert.doesNotMatch(workflow, /if \(mode === "daily" \|\| mode === "manual"\)/);
+});
+
 test("Giannis n’est déclenché que lorsque la synchronisation publie de nouvelles données", () => {
   assert.match(workflow, /DATA_CHANGED:\s*\$\{\{ steps\.publication\.outputs\.changed \}\}/);
-  assert.match(workflow, /report\.status === "operational" && process\.env\.DATA_CHANGED === "true"/);
+  assert.match(workflow, /report\?\.status === "operational" && process\.env\.DATA_CHANGED === "true"/);
   assert.doesNotMatch(workflow, /report\.status === "operational" && \(mode === "release" \|\| mode === "manual"\)/);
 });
 

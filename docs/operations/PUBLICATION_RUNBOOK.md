@@ -27,7 +27,7 @@ L’automatisation `.github/workflows/esupport-monitor.yml` suit cet ordre :
 4. synchroniser l’effectif, les sources statistiques, les détails, agrégats, matchs, présences et comptes rendus ;
 5. reconstruire le référentiel statistique, le référentiel des matchs et les statistiques secondaires ;
 6. exécuter toute la suite de tests avec `node scripts/verify-publication-tests.mjs` ;
-7. refuser la publication si moins de 54 tests ont réellement été exécutés ; la suite validée le 19 septembre en comporte 76 ;
+7. refuser la publication si moins de 54 tests ont réellement été exécutés ; la suite validée le 19 septembre en comporte 77 ;
 8. auditer les matchs et les statistiques secondaires ;
 9. reconstruire ensemble `player-secondary-data.js`, `team-data.js` et `pantheon-data.js` ;
 10. vérifier les dates, le nombre de matchs du Panthéon et l’absence d’identifiants techniques externes ;
@@ -63,6 +63,7 @@ Oscar peut également déclencher cette synchronisation immédiatement, sans att
 - Si la seconde tentative échoue, aucune troisième tentative n’est lancée : l’échec persistant reste visible et nécessite une analyse. Cette limite empêche une boucle infinie et ne contourne jamais les tests, le GO de Véronique, la confidentialité ou la sécurité.
 - Le contrôle de fraîcheur relit chaque heure les trois jeux de données publics. Il échoue si l’un d’eux est inaccessible, non daté ou vieux de plus de 36 heures.
 - La synchronisation SportEasy complète s'exécute chaque jour à **10 h, heure de Paris**. Deux créneaux UTC couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou n'autorise que l'exécution correspondant réellement à 10 h à Paris.
+- Le contrôle eSupport de 10 h ne publie plus le rapport quotidien d'Oscar. Ce rapport dispose de son propre créneau à **11 h 30, heure de Paris** ; deux créneaux UTC couvrent l'heure d'été et l'heure d'hiver, avec le même garde-fou contre le doublon. Un lancement manuel peut toujours demander immédiatement le contrôle puis le rapport.
 - Le planificateur privé eStaff est distinct de GitHub Actions : un Cron Trigger Cloudflare le réveille toutes les cinq minutes, puis le registre `3.13.0` détermine quels agents sont réellement dus en heure de Paris. Ces réveils sont des contrôles de code sans intelligence artificielle.
 - Les passages sans évolution restent absents des fils visibles mais sont inscrits dans le journal privé. Une analyse de Giannis n’est demandée après synchronisation que lorsque les trois fichiers validés ont réellement changé ; le service vérifie aussi leur empreinte afin d’éviter un doublon.
 - Une identité temporaire locale expirée ne vaut jamais preuve d'une déconnexion SportEasy. L'état de référence est celui du dernier contrôle cloud eSupport authentifié par GitHub ; Oscar doit déclencher ou attendre ce contrôle plutôt que demander à Fabien une reconnexion ordinaire.

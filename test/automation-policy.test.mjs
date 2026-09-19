@@ -93,3 +93,24 @@ test("la communication eStaff présente uniquement 28 agents", async () => {
   assert.match(text, /28 agents/);
   assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
 });
+
+test("les 28 agents sont consultables et seul Oscar reçoit les missions", async () => {
+  const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
+  const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  assert.match(bundle, /Rechercher un agent/);
+  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios"]) {
+    assert.match(bundle, new RegExp(name));
+  }
+  for (const escapedName of ["V\\xE9ronique", "L\\xE9onard", "\\xC9lise", "Cam\\xE9lia", "In\\xE8s"]) assert.ok(bundle.includes(escapedName));
+  assert.match(supervision, /agent === "Oscar" && latestCapabilities\.oscarMissions === true/);
+  assert.match(supervision, /composer\.hidden = !oscarMissionEnabled/);
+  assert.doesNotMatch(supervision, /Consultation uniquement|lecture seule/);
+  assert.match(supervision, /reportEntries\(\)\.filter\(entry => entry\.agent === agent\)/);
+});
+
+test("la supervision complète conserve la synchronisation SportEasy", async () => {
+  const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  assert.match(supervision, /ACTION_SYSTÈME PUB2/);
+  assert.match(supervision, /Relancer maintenant la synchronisation SportEasy/);
+  assert.match(supervision, /team-data\.js\?sync_status=/);
+});

@@ -10,6 +10,9 @@
   let selectedService = "";
   let selectedAgent = "";
   let agentFeedOpen = false;
+  let syncBusy = false;
+  let syncTime = null;
+  const SPORTEASY_SYNC_PROMPT = "ACTION_SYSTÈME PUB2 : déclenche immédiatement le workflow officiel de synchronisation SportEasy complète vers le Performance Hub, puis confirme uniquement son lancement.";
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès"]);
@@ -135,6 +138,103 @@
   function formatDate(value) {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? "heure indisponible" : date.toLocaleString("fr-FR", {dateStyle:"medium", timeStyle:"short"});
+  }
+
+  async function publishedSyncTime() {
+    const response = await originalFetch(`https://lykosfutsalclub-cmd.github.io/performance-hub/team-data.js?sync_status=${Date.now()}`, {cache:"no-store"});
+    if (!response.ok) throw new Error("sync_status_unavailable");
+    const source = await response.text();
+    const generatedAt = source.match(/"generatedAt"\s*:\s*"([^"]+)"/)?.[1];
+    const timestamp = Date.parse(generatedAt || "");
+    if (!Number.isFinite(timestamp)) throw new Error("sync_status_invalid");
+    return timestamp;
+  }
+
+  function syncAgeLabel(timestamp) {
+    if (!timestamp) return "Dernière synchronisation inconnue";
+    const hours = Math.max(0, Math.floor((Date.now() - timestamp) / 3_600_000));
+    return `Dernière synchronisation il y a ${hours} h`;
+  }
+
+  function updateSyncBar(message = "") {
+    const bar = document.querySelector(".lykos-sporteasy-sync");
+    if (!bar) return;
+    const label = bar.querySelector("small");
+    const button = bar.querySelector("button");
+    const status = bar.querySelector("span");
+    if (label) label.textContent = syncAgeLabel(syncTime);
+    if (button) {
+      button.disabled = syncBusy || !sessionToken || latestCapabilities.oscarMissions !== true;
+      button.textContent = syncBusy ? "…" : "🔄";
+    }
+    if (status) {
+      status.textContent = message;
+      status.hidden = !message;
+    }
+  }
+
+  async function requestSportEasySync() {
+    if (syncBusy || !sessionToken || latestCapabilities.oscarMissions !== true) return;
+    const previousSync = syncTime;
+    syncBusy = true;
+    updateSyncBar("Lancement du workflow…");
+    try {
+      const response = await originalFetch(`${API}/jobs`, {
+        method:"POST", cache:"no-store", credentials:"omit",
+        headers:{Authorization:`Bearer ${sessionToken}`, "Content-Type":"application/json"},
+        body:JSON.stringify({agent:"oscar", conversationId:`sporteasy-sync-${Date.now()}`, message:SPORTEASY_SYNC_PROMPT}),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Le workflow n’a pas pu être lancé.");
+      const jobDeadline = Date.now() + 120_000;
+      while (Date.now() < jobDeadline) {
+        await new Promise(resolve => setTimeout(resolve, 1_200));
+        const pending = await originalFetch(`${API}/jobs/${data.id}`, {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${sessionToken}`}});
+        const result = await pending.json();
+        if (pending.status === 202) continue;
+        if (!pending.ok || result.error) throw new Error(result.message || result.error || "Le workflow n’a pas pu être lancé.");
+        break;
+      }
+      updateSyncBar("Workflow lancé · publication en cours");
+      const publicationDeadline = Date.now() + 12 * 60_000;
+      while (Date.now() < publicationDeadline) {
+        await new Promise(resolve => setTimeout(resolve, 10_000));
+        const latest = await publishedSyncTime();
+        syncTime = latest;
+        if (!previousSync || latest > previousSync) {
+          updateSyncBar("Synchronisation publiée");
+          return;
+        }
+      }
+      updateSyncBar("Workflow lancé · vérification encore en cours");
+    } catch (error) {
+      updateSyncBar(error instanceof Error ? error.message : "Synchronisation impossible pour le moment.");
+    } finally {
+      syncBusy = false;
+      updateSyncBar(document.querySelector(".lykos-sporteasy-sync span")?.textContent || "");
+    }
+  }
+
+  function installSyncBar() {
+    const header = document.querySelector("#estaff-root main > header");
+    if (!header || document.querySelector(".lykos-sporteasy-sync")) return;
+    const bar = document.createElement("section");
+    bar.className = "lykos-sporteasy-sync";
+    bar.setAttribute("aria-label", "Synchronisation SportEasy");
+    const label = document.createElement("small");
+    label.textContent = syncAgeLabel(syncTime);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.title = "Relancer maintenant la synchronisation SportEasy";
+    button.setAttribute("aria-label", button.title);
+    button.addEventListener("click", requestSportEasySync);
+    const status = document.createElement("span");
+    status.setAttribute("role", "status");
+    status.hidden = true;
+    bar.append(label, button, status);
+    header.after(bar);
+    updateSyncBar();
+    publishedSyncTime().then(value => {syncTime = value; updateSyncBar();}).catch(() => updateSyncBar());
   }
 
   function makeCollapsibleParagraph(text, className = "") {
@@ -269,6 +369,7 @@
 
   function enforceReadOnlyMode() {
     scheduled = false;
+    installSyncBar();
     const conversation = selectedConversation();
     if (!conversation) return;
     installServiceButtons();
@@ -358,17 +459,10 @@
     const freshness = Number.isNaN(updatedAt.getTime())
       ? "Dernière actualisation indisponible"
       : `Dernière actualisation : ${updatedAt.toLocaleString("fr-FR", {dateStyle:"long", timeStyle:"short", timeZone:"Europe/Paris"})}`;
-    const missionPolicy = agent === "Oscar"
-      ? (oscarMissionEnabled
-        ? "Oscar peut recevoir ta mission et la répartir. Les 26 autres agents restent consultatifs."
-        : "Oscar est le seul destinataire prévu pour les missions. L’activation technique du service de mission n’est pas encore confirmée.")
-      : "Consultation uniquement. Toute nouvelle mission passe exclusivement par Oscar.";
     policy.replaceChildren();
-    const policyText = document.createElement("strong");
-    policyText.textContent = missionPolicy;
     const freshnessText = document.createElement("small");
     freshnessText.textContent = freshness;
-    policy.append(policyText, freshnessText);
+    policy.append(freshnessText);
 
     let serviceFeed = conversation.querySelector(".lykos-service-feed");
     const serviceMode = Boolean(selectedService);
@@ -420,9 +514,9 @@
     }
 
     const activity = document.querySelector('section[aria-label="Activité"] p');
-    if (activity && activity.textContent !== "Rapports automatiques · lecture seule") activity.textContent = "Rapports automatiques · lecture seule";
+    if (activity && activity.textContent !== "Rapports automatiques") activity.textContent = "Rapports automatiques";
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
-    if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques · lecture seule";
+    if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
       if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.11.0";
     }

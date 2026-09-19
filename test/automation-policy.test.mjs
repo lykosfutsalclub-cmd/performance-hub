@@ -184,6 +184,9 @@ test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
   assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-single-api/);
   assert.match(page, /estaff\.js\?v=20260920-cloudflare-single-api/);
+  assert.match(page, /esupport-report\.css\?v=20260920-hidden-state/);
+  const reportStyles = await readFile(new URL("estaff/assets/esupport-report.css", root), "utf8");
+  assert.match(reportStyles, /#estaff-root#estaff-root \[hidden\]\{display:none!important\}/);
 });
 
 test("la feuille de style correspond à la supervision complète sur ordinateur et mobile", async () => {

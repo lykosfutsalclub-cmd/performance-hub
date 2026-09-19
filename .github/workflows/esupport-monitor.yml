@@ -298,7 +298,7 @@ jobs:
         if: ${{ always() && steps.mission.outputs.active == 'true' }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          OPERATION_STATE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/operation-state
+          OPERATION_STATE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/operation-state
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
           SYNC_REQUESTED: ${{ steps.mission.outputs.sync }}
           SYNC_PLAYERS_OUTCOME: ${{ steps.sync_players.outcome }}
@@ -447,7 +447,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          OPERATION_STATE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/operation-state
+          OPERATION_STATE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/operation-state
           FRESHNESS_OUTCOME: ${{ steps.freshness_check.outcome }}
         with:
           script: |

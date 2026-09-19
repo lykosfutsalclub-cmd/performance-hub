@@ -54,6 +54,8 @@ test("les cinq jalons techniques restent distincts", () => {
     assert.ok(workflow.includes(stage), stage);
   }
   assert.ok(workflow.includes("worker/operation-state"));
+  assert.equal((workflow.match(/https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/operation-state/g) || []).length, 2);
+  assert.doesNotMatch(workflow, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff\/worker\/operation-state/);
 });
 
 test("la présentation s’adapte aux écrans étroits", () => {

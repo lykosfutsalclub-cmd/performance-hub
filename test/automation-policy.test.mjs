@@ -108,6 +108,13 @@ test("les 28 agents sont consultables et seul Oscar reçoit les missions", async
   assert.match(supervision, /reportEntries\(\)\.filter\(entry => entry\.agent === agent\)/);
 });
 
+test("la feuille de style correspond à la supervision complète sur ordinateur et mobile", async () => {
+  const styles = await readFile(new URL("estaff/assets/estaff.css", root), "utf8");
+  assert.match(styles, /grid-template-columns:260px minmax\(300px,1fr\) 250px/);
+  assert.match(styles, /scroll-snap-type:x proximity/);
+  assert.match(styles, /@media\(max-width:700px\)/);
+});
+
 test("la supervision complète conserve la synchronisation SportEasy", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
   assert.match(supervision, /ACTION_SYSTÈME PUB2/);

@@ -9,10 +9,12 @@ const workflow = readFileSync(new URL("../.github/workflows/esupport-monitor.yml
 const agents = [
   "Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Patricia", "Gaston", "Véronique", "Sandrine", "Léonard", "Konstantinos",
   "Sonia", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Élise", "Samir", "Roman", "Camélia", "Francisco", "Tamara", "Inès", "Giorgios", "Vincenzo",
-  "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Salomé", "Malik", "Ella",
+  "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Salomé", "Malik", "Ella", "Diane",
 ];
 
-test("les 39 agents possèdent un contrat opérationnel visible", () => {
+test("les 40 agents possèdent un contrat opérationnel visible", () => {
+  assert.equal(agents.length, 40);
+  assert.equal(new Set(agents).size, 40);
   for (const agent of agents) {
     assert.match(source, new RegExp(`${agent.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*:\\s*\\{inputs:`), agent);
   }

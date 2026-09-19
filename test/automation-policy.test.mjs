@@ -100,21 +100,21 @@ test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiat
   assert.match(page, /connect-src 'self'/);
 });
 
-test("la communication eStaff présente uniquement 39 agents", async () => {
+test("la communication eStaff présente uniquement 40 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",
     "estaff/assets/esupport-report.js",
   ];
   const text = (await Promise.all(files.map((path) => readFile(new URL(path, root), "utf8")))).join("\n");
-  assert.match(text, /39 agents/);
+  assert.match(text, /40 agents/);
   assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
 });
 
-test("les 39 agents sont consultables et seul Oscar reçoit les missions", async () => {
+test("les 40 agents sont consultables et seul Oscar reçoit les missions", async () => {
   const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
   assert.match(bundle, /Rechercher un agent/);
-  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella"]) {
+  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Diane"]) {
     assert.match(bundle, new RegExp(name));
   }
   for (const escapedName of ["V\\xE9ronique", "L\\xE9onard", "\\xC9lise", "Cam\\xE9lia", "In\\xE8s", "Salom\\xE9"]) assert.ok(bundle.includes(escapedName));
@@ -136,9 +136,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.15.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.16.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.15\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.16\.0"/);
 });
 
 test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {

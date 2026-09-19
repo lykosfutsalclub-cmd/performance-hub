@@ -21,6 +21,14 @@ test("les 39 agents possèdent un contrat opérationnel visible", () => {
   }
 });
 
+test("les cartes agent distinguent la connexion métier de la simple exécution", () => {
+  assert.match(source,/\["Connexion métier", sourceStatus\]/);
+  assert.match(source,/Autorisation Google Workspace requise/);
+  assert.match(source,/aucune donnée n’est remplacée par une estimation/);
+  assert.match(source,/state\.businessSources/);
+  assert.match(source,/cadenceState\.businessSources/);
+});
+
 test("les cinq états agentiques sont explicites et jamais remplacés par Disponible", () => {
   for (const state of ["En attente", "Incomplet", "Exécuté", "Contrôlé", "Bloqué"]) assert.ok(source.includes(state), state);
   assert.doesNotMatch(source, /\bDisponible\b/);

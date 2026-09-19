@@ -136,9 +136,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.14.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.15.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.14\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.15\.0"/);
 });
 
 test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {

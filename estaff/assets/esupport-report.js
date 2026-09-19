@@ -11,6 +11,7 @@
   let latestCapabilities = {};
   let latestAgentStates = [];
   let latestOperations = {};
+  let latestBusinessSources = {};
   let scheduled = false;
   let selectedService = "";
   let selectedAgent = "";
@@ -23,6 +24,7 @@
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès", "Angela", "Alba", "Lola", "Nora", "Salomé", "Ella"]);
   const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
   const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo",angela:"Angela",juan:"Juan",marco:"Marco",rafael:"Rafael",alba:"Alba",lola:"Lola",nora:"Nora",yanis:"Yanis",salome:"Salomé",malik:"Malik",ella:"Ella","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
+  const agentIdsByName = Object.fromEntries(Object.entries(agentDisplayNames).map(([id,name]) => [name,id]));
 
   const esupportRoles = {
     Sophie: {
@@ -593,9 +595,20 @@
     header.append(title, badge);
 
     const details = document.createElement("dl");
+    const sourceState = latestBusinessSources?.agents?.[agentIdsByName[agent]];
+    const sourceStatus = sourceState
+      ? sourceState.status === "connected"
+        ? `${sourceState.sourceCount} source${sourceState.sourceCount > 1 ? "s" : ""} métier lue${sourceState.sourceCount > 1 ? "s" : ""}${sourceState.freshAt ? ` · état le ${formatDate(sourceState.freshAt)}` : ""}.`
+        : sourceState.status === "partial"
+          ? `${sourceState.sourceCount} source${sourceState.sourceCount > 1 ? "s" : ""} lue${sourceState.sourceCount > 1 ? "s" : ""}, ${sourceState.failureCount} lecture${sourceState.failureCount > 1 ? "s" : ""} en échec.`
+          : "Connexion métier bloquée : aucune donnée n’est remplacée par une estimation."
+      : latestBusinessSources?.status === "credentials_required"
+        ? "Autorisation Google Workspace requise avant la première lecture métier."
+        : "Aucun contrôle de connexion métier enregistré pour cet agent.";
     const fields = [
       ["Déclencheur", role.when],
       ["Informations nécessaires", profile.inputs],
+      ["Connexion métier", sourceStatus],
       ["Résultat attendu", role.output],
       ["Contrôle qualité", profile.quality],
       ["Preuve visible", profile.evidence],
@@ -770,7 +783,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.14.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.15.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "39";
@@ -856,6 +869,7 @@
         latestReturns = [];
         latestAgentStates = [];
         latestOperations = {};
+        latestBusinessSources = {};
         scheduleReadOnlyMode();
         return;
       }
@@ -871,10 +885,12 @@
         agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
       latestOperations = state.operations && typeof state.operations === "object" ? state.operations : {};
+      latestBusinessSources = state.businessSources && typeof state.businessSources === "object" ? state.businessSources : latestBusinessSources;
       latestStateUpdatedAt = [
         latestReport?.checkedAt,
         state.esupport?.checkedAt,
-        latestOperations?.updatedAt,
+      latestOperations?.updatedAt,
+        latestBusinessSources?.updatedAt,
         ...latestReturns.map(entry => entry.occurredAt),
       ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
     } catch {
@@ -883,6 +899,7 @@
       latestReturns = [];
       latestAgentStates = [];
       latestOperations = {};
+      latestBusinessSources = {};
       latestStateUpdatedAt = "";
       latestCapabilities = {};
     }
@@ -902,6 +919,7 @@
       if (reportResponse.status === 401 || stateResponse.status === 401) {cadenceToken = ""; return;}
       const cadenceReport = reportResponse.ok ? await reportResponse.json() : null;
       const cadenceState = stateResponse.ok ? await stateResponse.json() : {};
+      latestBusinessSources = cadenceState.businessSources && typeof cadenceState.businessSources === "object" ? cadenceState.businessSources : latestBusinessSources;
       if (cadenceReport) latestReport = latestReport ? {
         ...latestReport,
         history:mergeEntries(latestReport.history, cadenceReport.history),
@@ -917,6 +935,7 @@
         cadenceReport?.checkedAt,
         cadenceState.esupport?.checkedAt,
         cadenceState.automation?.updatedAt,
+        latestBusinessSources?.updatedAt,
         ...latestReturns.map(entry => entry.occurredAt),
       ].filter(Boolean).sort((left,right) => Date.parse(right) - Date.parse(left))[0] || "";
       scheduleReadOnlyMode();

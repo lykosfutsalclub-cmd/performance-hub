@@ -244,6 +244,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
+          ESTAFF_IMPORT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/esupport-import
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
           ESTAFF_CONTROL: ${{ steps.mission.outputs.active }}
           ESTAFF_OSCAR: ${{ steps.mission.outputs.oscar }}
@@ -275,6 +276,20 @@ jobs:
                 return;
               }
               core.notice(report.summary || "Contrôle eSupport terminé.");
+              const importResponse = await fetch(process.env.ESTAFF_IMPORT_URL, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${identity}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({report}),
+              });
+              const importResult = await importResponse.json().catch(() => ({}));
+              if (!importResponse.ok) {
+                core.setFailed(`Cloudflare a refusé le rapport eSupport (${importResponse.status}).`);
+                return;
+              }
+              core.notice(`Rapport eSupport enregistré dans Cloudflare (${importResult.status || "accepté"}).`);
               if (report.status !== "operational") {
                 core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
               }
@@ -373,7 +388,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          MOBILE_ALERT_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/mobile-alert
+          MOBILE_ALERT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/mobile-alert
         with:
           script: |
             core.error("ALERTE eSupport : la synchronisation ou l’un de ses contrôles a échoué. Aucune donnée non validée ne doit être publiée.");
@@ -436,7 +451,7 @@ jobs:
         with:
           script: |
             const identity = await core.getIDToken("lykos-estaff-esupport");
-            const response = await fetch("https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/mobile-alert", {
+            const response = await fetch("https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/mobile-alert", {
               method: "POST",
               headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
               body: JSON.stringify({kind:"public_data_stale"}),

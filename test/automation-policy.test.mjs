@@ -54,7 +54,18 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
   assert.match(workflow, /Signaler clairement une synchronisation en échec/);
   assert.match(workflow, /36 \* 60 \* 60 \* 1000/);
   assert.match(workflow, /core\.setFailed\(`ALERTE fraîcheur/);
-  assert.match(workflow, /worker\/mobile-alert/);
+  const cloudflareAlerts = workflow.match(/https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/mobile-alert/g) || [];
+  assert.equal(cloudflareAlerts.length,2);
+  assert.doesNotMatch(workflow, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff\/worker\/mobile-alert/);
+});
+
+test("le rapport eSupport vérifié est transféré vers Cloudflare avant son verdict", () => {
+  assert.match(workflow, /ESTAFF_IMPORT_URL:\s*https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/esupport-import/);
+  assert.match(workflow, /fetch\(process\.env\.ESTAFF_IMPORT_URL,[\s\S]*?Authorization: `Bearer \$\{identity\}`,[\s\S]*?"Content-Type": "application\/json"[\s\S]*?body: JSON\.stringify\(\{report\}\)/);
+  const reportRead = workflow.indexOf("report = await response.json()");
+  const reportImport = workflow.indexOf("const importResponse = await fetch(process.env.ESTAFF_IMPORT_URL");
+  const reportVerdict = workflow.indexOf('if (report.status !== "operational")');
+  assert.ok(reportRead >= 0 && reportImport > reportRead && reportVerdict > reportImport);
 });
 
 test("la fraîcheur est contrôlée après la reconstruction éventuelle", () => {

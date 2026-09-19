@@ -142,9 +142,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.19.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.19.1 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.19\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.19\.1"/);
 });
 
 test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {
@@ -159,7 +159,7 @@ test("les récapitulatifs du planificateur cloud rejoignent les fils publics san
   assert.match(supervision, /latestReturns = mergeEntries\(latestReturns, cadenceState\.returns\)/);
   assert.match(supervision, /fetchWithTimeout\(`\$\{CADENCE_API\}\/esupport`/);
   assert.doesNotMatch(supervision, /latestCapabilities\s*=\s*\{\.\.\.\(cadenceState\.capabilities/);
-  assert.match(page, /esupport-report\.js\?v=20260919-erh-governance/);
+  assert.match(page, /esupport-report\.js\?v=20260920-erh-bootstrap/);
   assert.match(page, /connect-src 'self' https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev/);
   assert.match(supervision, /const API = "https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff"/);
 });

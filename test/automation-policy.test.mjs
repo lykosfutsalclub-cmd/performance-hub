@@ -163,22 +163,27 @@ test("l’interface publique annonce la version 3.19.1 du Rulebook", async () =>
   assert.match(supervision, /version\.textContent = "Rulebook 3\.19\.1"/);
 });
 
-test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {
+test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
+  const readableSource = await readFile(new URL("estaff-src/Supervision.tsx", root), "utf8");
   const page = await readFile(new URL("estaff/index.html", root), "utf8");
-  assert.match(supervision, /const CADENCE_API = "https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff"/);
-  assert.match(supervision, /connectCadence\(code,loginGeneration\)/);
-  assert.match(supervision, /const primaryLoad = loadReport\(payload\.token,loginGeneration\)/);
-  assert.match(supervision, /if \(await cadenceConnection\) await loadCadenceReport\(loginGeneration\)/);
+  const cloudflareApi = /https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff/g;
+  assert.match(supervision, /const API = "https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff"/);
+  assert.equal(bundle.match(cloudflareApi)?.length, 2);
+  assert.match(readableSource, /const SERVICE = "https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff"/);
+  assert.match(supervision, /originalFetch\(`\$\{API\}\/esupport`, options\)/);
+  assert.match(supervision, /originalFetch\(`\$\{API\}\/state`, options\)/);
   assert.match(supervision, /generation !== sessionGeneration/);
-  assert.match(supervision, /history:mergeEntries\(latestReport\.history, cadenceReport\.history\)/);
-  assert.match(supervision, /latestReturns = mergeEntries\(latestReturns, cadenceState\.returns\)/);
-  assert.match(supervision, /fetchWithTimeout\(`\$\{CADENCE_API\}\/esupport`/);
-  assert.doesNotMatch(supervision, /latestCapabilities\s*=\s*\{\.\.\.\(cadenceState\.capabilities/);
-  assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-push/);
-  assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session"/);
-  assert.match(page, /connect-src 'self' https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev/);
-  assert.match(supervision, /const API = "https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff"/);
+  assert.match(supervision, /latestCapabilities = state\.capabilities \?\? \{\}/);
+  assert.match(supervision, /agent === "Oscar" && latestCapabilities\.oscarMissions === true/);
+  assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session", \{detail:\{token:payload\.token\}\}\)/);
+  assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session", \{detail:\{token:""\}\}\)/);
+  assert.doesNotMatch(supervision, /CADENCE_API|cadenceToken|connectCadence|loadCadenceReport|cadenceState/);
+  assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
+  assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
+  assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-single-api/);
+  assert.match(page, /estaff\.js\?v=20260920-cloudflare-single-api/);
 });
 
 test("la feuille de style correspond à la supervision complète sur ordinateur et mobile", async () => {

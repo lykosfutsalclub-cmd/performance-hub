@@ -4,7 +4,7 @@ import LykosBrand from "./LykosBrand";
 import styles from "./supervision.module.css";
 import theme from "./theme.module.css";
 
-const SERVICE = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff";
+const SERVICE = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
 const OSCAR_ID = "oscar";
 const ESTAFF_AGENT_COUNT = 40;
 const ACTIVE_CONTRIBUTORS = 39;

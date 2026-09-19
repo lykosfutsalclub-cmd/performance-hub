@@ -36,7 +36,7 @@ test("les cartes agent distinguent la connexion métier de la simple exécution"
   assert.match(source,/Autorisation Google Workspace requise/);
   assert.match(source,/aucune donnée n’est remplacée par une estimation/);
   assert.match(source,/state\.businessSources/);
-  assert.match(source,/cadenceState\.businessSources/);
+  assert.doesNotMatch(source,/cadenceState|CADENCE_API/);
 });
 
 test("les cinq états agentiques sont explicites et jamais remplacés par Disponible", () => {

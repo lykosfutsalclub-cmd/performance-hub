@@ -1,9 +1,7 @@
 (() => {
-  const API = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff";
-  const CADENCE_API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
+  const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   const originalFetch = window.fetch.bind(window);
   let sessionToken = "";
-  let cadenceToken = "";
   let sessionGeneration = 0;
   let latestReport = null;
   let latestReturns = [];
@@ -850,34 +848,6 @@
     return [...unique.values()].sort((left,right) => Date.parse(right.occurredAt || "") - Date.parse(left.occurredAt || ""));
   }
 
-  async function fetchWithTimeout(url, options = {}, timeout = 3_000) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(),timeout);
-    try {
-      return await originalFetch(url,{...options,signal:controller.signal});
-    } finally {
-      clearTimeout(timer);
-    }
-  }
-
-  async function connectCadence(code, generation) {
-    if (generation !== sessionGeneration || !/^\d{4}$/.test(String(code || ""))) return false;
-    try {
-      const response = await fetchWithTimeout(`${CADENCE_API}/session`, {
-        method:"POST", cache:"no-store", credentials:"omit",
-        headers:{"Content-Type":"application/json"}, body:JSON.stringify({code}),
-      });
-      const payload = response.ok ? await response.json() : {};
-      if (generation !== sessionGeneration) return false;
-      cadenceToken = typeof payload.token === "string" ? payload.token : "";
-      if (cadenceToken) window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:cadenceToken}}));
-      return Boolean(cadenceToken);
-    } catch {
-      if (generation === sessionGeneration) cadenceToken = "";
-      return false;
-    }
-  }
-
   async function loadReport(token, generation) {
     if (generation !== sessionGeneration) return;
     sessionToken = token;
@@ -891,7 +861,7 @@
       if (response.status === 401 || stateResponse.status === 401) {
         sessionGeneration += 1;
         sessionToken = "";
-        cadenceToken = "";
+        window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
         latestReport = null;
         latestReturns = [];
         latestAgentStates = [];
@@ -933,65 +903,16 @@
     scheduleReadOnlyMode();
   }
 
-  async function loadCadenceReport(generation) {
-    const token = cadenceToken;
-    if (generation !== sessionGeneration || !sessionToken || !token) return;
-    try {
-      const options = {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}};
-      const [reportResponse,stateResponse] = await Promise.all([
-        fetchWithTimeout(`${CADENCE_API}/esupport`,options),
-        fetchWithTimeout(`${CADENCE_API}/state`,options),
-      ]);
-      if (generation !== sessionGeneration || cadenceToken !== token || !sessionToken) return;
-      if (reportResponse.status === 401 || stateResponse.status === 401) {cadenceToken = ""; return;}
-      const cadenceReport = reportResponse.ok ? await reportResponse.json() : null;
-      const cadenceState = stateResponse.ok ? await stateResponse.json() : {};
-      latestBusinessSources = cadenceState.businessSources && typeof cadenceState.businessSources === "object" ? cadenceState.businessSources : latestBusinessSources;
-      if (cadenceReport) latestReport = latestReport ? {
-        ...latestReport,
-        history:mergeEntries(latestReport.history, cadenceReport.history),
-        feed:mergeEntries(latestReport.feed, cadenceReport.feed),
-      } : cadenceReport;
-      // Le service de cadences est consultatif : seul le service principal autorise les actions Oscar.
-      latestReturns = mergeEntries(latestReturns, cadenceState.returns).map(entry => ({
-        ...entry,
-        agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
-      }));
-      latestStateUpdatedAt = [
-        latestStateUpdatedAt,
-        cadenceReport?.checkedAt,
-        cadenceState.esupport?.checkedAt,
-        cadenceState.automation?.updatedAt,
-        latestBusinessSources?.updatedAt,
-        ...latestReturns.map(entry => entry.occurredAt),
-      ].filter(Boolean).sort((left,right) => Date.parse(right) - Date.parse(left))[0] || "";
-      scheduleReadOnlyMode();
-    } catch {
-      // Le planificateur cloud complète eSupport mais ne doit jamais le bloquer.
-    }
-  }
-
   window.fetch = async (...args) => {
     const url = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
-    let accessCode = Promise.resolve("");
     let loginGeneration = sessionGeneration;
-    if (url === `${API}/session`) {
-      loginGeneration = ++sessionGeneration;
-      try {
-        const request = args[0] instanceof Request ? args[0].clone() : new Request(args[0],args[1]);
-        accessCode = request.json().then(payload => String(payload?.code || "")).catch(() => "");
-      } catch {
-        accessCode = Promise.resolve("");
-      }
-    }
+    if (url === `${API}/session`) loginGeneration = ++sessionGeneration;
     const response = await originalFetch(...args);
     if (url === `${API}/session` && response.ok) {
-      Promise.all([response.clone().json(),accessCode]).then(async ([payload,code]) => {
+      response.clone().json().then(async payload => {
         if (loginGeneration !== sessionGeneration || typeof payload.token !== "string") return;
-        const primaryLoad = loadReport(payload.token,loginGeneration);
-        const cadenceConnection = connectCadence(code,loginGeneration);
-        await primaryLoad;
-        if (await cadenceConnection) await loadCadenceReport(loginGeneration);
+        window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:payload.token}}));
+        await loadReport(payload.token,loginGeneration);
       }).catch(() => {});
     }
     return response;
@@ -1007,10 +928,9 @@
   });
 
   new MutationObserver(() => {
-    if ((sessionToken || cadenceToken) && document.body.textContent.includes("Code d’accès")) {
+    if (sessionToken && document.body.textContent.includes("Code d’accès")) {
       sessionGeneration += 1;
       sessionToken = "";
-      cadenceToken = "";
       window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
       latestReport = null;
       latestReturns = [];

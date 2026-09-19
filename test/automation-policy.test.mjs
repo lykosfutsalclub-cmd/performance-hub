@@ -74,6 +74,12 @@ test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
   assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
 });
 
+test("Giannis n’est déclenché que lorsque la synchronisation publie de nouvelles données", () => {
+  assert.match(workflow, /DATA_CHANGED:\s*\$\{\{ steps\.publication\.outputs\.changed \}\}/);
+  assert.match(workflow, /report\.status === "operational" && process\.env\.DATA_CHANGED === "true"/);
+  assert.doesNotMatch(workflow, /report\.status === "operational" && \(mode === "release" \|\| mode === "manual"\)/);
+});
+
 test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiate", async () => {
   const source = await readFile(new URL("estaff-src/Supervision.tsx", root), "utf8");
   const page = await readFile(new URL("estaff/index.html", root), "utf8");
@@ -106,6 +112,23 @@ test("les 28 agents sont consultables et seul Oscar reçoit les missions", async
   assert.match(supervision, /composer\.hidden = !oscarMissionEnabled/);
   assert.doesNotMatch(supervision, /Consultation uniquement|lecture seule/);
   assert.match(supervision, /reportEntries\(\)\.filter\(entry => entry\.agent === agent\)/);
+});
+
+test("Vincenzo appartient à eSportif dans les deux présentations publiques", async () => {
+  const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
+  const performanceHub = await readFile(new URL("index.html", root), "utf8");
+  assert.match(bundle, /\["Vincenzo",[^\n]+,"sport"\],/);
+  assert.doesNotMatch(bundle, /\["Vincenzo",[^\n]+,"support"\],/);
+
+  const sportSection = performanceHub.match(/<section class="lykos-estaff-service"><h4>eSportif<\/h4>([\s\S]*?)<\/section>/)?.[1] || "";
+  const supportSection = performanceHub.match(/<section class="lykos-estaff-service"><h4>eSupport<\/h4>([\s\S]*?)<\/section>/)?.[1] || "";
+  assert.match(sportSection, /<strong>Vincenzo<\/strong>/);
+  assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
+});
+
+test("l’interface publique annonce la version 3.13.0 du Rulebook", async () => {
+  const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.13\.0"/);
 });
 
 test("la feuille de style correspond à la supervision complète sur ordinateur et mobile", async () => {

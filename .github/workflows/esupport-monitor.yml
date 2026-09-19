@@ -230,6 +230,7 @@ jobs:
         env:
           ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
+          DATA_CHANGED: ${{ steps.publication.outputs.changed }}
         with:
           script: |
             const mode = process.env.ESTAFF_MODE;
@@ -263,7 +264,7 @@ jobs:
               });
               if (!briefResponse.ok) core.setFailed(`Le brief quotidien d’Oscar a échoué (${briefResponse.status}).`);
             }
-            if (report.status === "operational" && (mode === "release" || mode === "manual")) {
+            if (report.status === "operational" && process.env.DATA_CHANGED === "true") {
               const giannisResponse = await fetch(process.env.ESTAFF_SERVICE_URL.replace("esupport-check", "giannis-analysis"), {
                 method: "POST",
                 headers: {Authorization: `Bearer ${identity}`},

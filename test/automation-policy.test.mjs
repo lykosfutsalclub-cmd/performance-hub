@@ -45,6 +45,7 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   assert.match(client, /lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff/);
   assert.match(client, /lykos:estaff-cloud-session/);
   assert.match(client, /sameApplicationServerKey/);
+  assert.match(client, /section\[aria-label="Synchronisation SportEasy"\]/);
   assert.doesNotMatch(client, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
   assert.match(serviceWorker, /showNotification/);
 });

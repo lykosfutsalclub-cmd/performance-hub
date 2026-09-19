@@ -128,7 +128,8 @@
   }
 
   function installButton() {
-    const bar = document.querySelector('section[aria-label="Fonctionnement d’Oscar"]');
+    const bar = document.querySelector('section[aria-label="Synchronisation SportEasy"]')
+      || document.querySelector('section[aria-label="Activité"]');
     if (!bar || bar.querySelector(".estaff-notify-button")) return;
     const button = document.createElement("button");
     button.type = "button";

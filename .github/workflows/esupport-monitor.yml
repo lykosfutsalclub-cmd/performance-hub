@@ -124,6 +124,7 @@ jobs:
             core.exportVariable("SPORTEASY_PROXY_TOKEN", token);
 
       - name: Patricia synchronise l’effectif et les sources statistiques
+        id: sync_players
         if: steps.mission.outputs.sync == 'true'
         env:
           SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
@@ -145,6 +146,7 @@ jobs:
             core.exportVariable("SPORTEASY_PROXY_TOKEN", token);
 
       - name: Patricia synchronise chaque match, présence et compte rendu
+        id: sync_matches
         if: steps.mission.outputs.sync == 'true'
         env:
           SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
@@ -156,6 +158,7 @@ jobs:
           node scripts/sporteasy/capture-match-ui-api-all.mjs
 
       - name: Gaston reconstruit les données sans modifier Metron
+        id: build_data
         if: steps.mission.outputs.sync == 'true'
         env:
           ESTAFF_SKIP_METRON_DOCS: "1"
@@ -165,6 +168,7 @@ jobs:
           node scripts/sporteasy/build-player-secondary-statistics.mjs
 
       - name: Véronique contrôle et autorise la publication
+        id: quality
         if: steps.mission.outputs.sync == 'true'
         run: |
           node scripts/verify-publication-tests.mjs
@@ -192,6 +196,7 @@ jobs:
           fi
 
       - name: Véronique publie la synchronisation validée
+        id: publish_data
         if: steps.publication.outputs.changed == 'true'
         run: |
           git config user.name "eSupport Lykos"
@@ -201,12 +206,14 @@ jobs:
           git push origin HEAD:main
 
       - name: Demander la reconstruction de la version publique
+        id: pages_build
         if: steps.publication.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
 
       - name: Attendre les données validées sur le site public
+        id: verify_public
         if: steps.publication.outputs.changed == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
@@ -232,6 +239,7 @@ jobs:
             throw new Error("La version publique n’a pas confirmé les trois espaces de données dans le délai prévu.");
 
       - name: Lancer le contrôle privé ou le rapport prévu
+        id: private_control
         if: steps.mission.outputs.active == 'true' || steps.mission.outputs.oscar == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
@@ -286,6 +294,81 @@ jobs:
               if (!giannisResponse.ok) core.setFailed(`L’analyse de Giannis a échoué (${giannisResponse.status}).`);
             }
 
+      - name: Enregistrer séparément les cinq preuves d’exécution
+        if: ${{ always() && steps.mission.outputs.active == 'true' }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          OPERATION_STATE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/operation-state
+          ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
+          SYNC_REQUESTED: ${{ steps.mission.outputs.sync }}
+          SYNC_PLAYERS_OUTCOME: ${{ steps.sync_players.outcome }}
+          SYNC_MATCHES_OUTCOME: ${{ steps.sync_matches.outcome }}
+          BUILD_DATA_OUTCOME: ${{ steps.build_data.outcome }}
+          QUALITY_OUTCOME: ${{ steps.quality.outcome }}
+          DATA_CHANGED: ${{ steps.publication.outputs.changed }}
+          PUBLISH_OUTCOME: ${{ steps.publish_data.outcome }}
+          PUBLIC_VERIFY_OUTCOME: ${{ steps.verify_public.outcome }}
+          PRIVATE_CONTROL_OUTCOME: ${{ steps.private_control.outcome }}
+        with:
+          script: |
+            const syncRequested = process.env.SYNC_REQUESTED === "true";
+            const syncOutcomes = [
+              process.env.SYNC_PLAYERS_OUTCOME,
+              process.env.SYNC_MATCHES_OUTCOME,
+              process.env.BUILD_DATA_OUTCOME,
+              process.env.QUALITY_OUTCOME,
+            ];
+            const syncSucceeded = syncRequested && syncOutcomes.every(value => value === "success");
+            const changed = process.env.DATA_CHANGED === "true";
+            const published = changed && process.env.PUBLISH_OUTCOME === "success" && process.env.PUBLIC_VERIFY_OUTCOME === "success";
+            const automationSucceeded = process.env.PRIVATE_CONTROL_OUTCOME === "success"
+              && (!syncRequested || syncSucceeded)
+              && (!changed || published);
+            const operation = {
+              operation:"sync",
+              runId:`${context.runId}-${context.runAttempt}`,
+              runUrl:`https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              mode:process.env.ESTAFF_MODE,
+              occurredAt:new Date().toISOString(),
+              stages:{
+                automation:{
+                  state:automationSucceeded ? "executed" : "failed",
+                  detail:automationSucceeded
+                    ? "Le circuit automatique et son contrôle privé sont terminés."
+                    : "Le circuit automatique a démarré ; au moins un contrôle reste en échec ou incomplet.",
+                },
+                sporteasySync:{
+                  state:!syncRequested ? "skipped" : syncSucceeded ? "attempted" : "failed",
+                  detail:!syncRequested
+                    ? "Ce déclenchement ne demandait pas de lecture SportEasy."
+                    : syncSucceeded ? "La collecte SportEasy a été réellement tentée et ses données ont franchi le contrôle qualité."
+                    : "La collecte SportEasy a été tentée mais n’a pas terminé toute la chaîne de contrôle.",
+                },
+                newData:{
+                  state:!syncRequested ? "not_checked" : !syncSucceeded ? "unknown" : changed ? "present" : "none",
+                  detail:!syncRequested ? "Aucune comparaison SportEasy demandée."
+                    : !syncSucceeded ? "La comparaison n’a pas pu être certifiée."
+                    : changed ? "Des différences validées ont été détectées."
+                    : "La comparaison n’a détecté aucun changement à publier.",
+                },
+                publication:{
+                  state:!syncRequested || !syncSucceeded ? "not_started" : !changed ? "not_required" : published ? "published" : "failed",
+                  detail:!syncRequested ? "Aucune publication sportive demandée."
+                    : !syncSucceeded ? "La publication n’a pas démarré car les contrôles précédents ne sont pas terminés."
+                    : !changed ? "Aucun fichier différent : aucune publication nécessaire."
+                    : published ? "La version publique a confirmé les trois jeux de données validés."
+                    : "La publication ou sa vérification publique a échoué.",
+                },
+              },
+            };
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.OPERATION_STATE_URL, {
+              method:"POST",
+              headers:{Authorization:`Bearer ${identity}`,"Content-Type":"application/json"},
+              body:JSON.stringify(operation),
+            });
+            if (!response.ok) core.setFailed(`La preuve d’exécution n’a pas été enregistrée (${response.status}).`);
+
       - name: Signaler clairement une synchronisation en échec
         if: ${{ failure() }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -320,6 +403,7 @@ jobs:
       id-token: write
     steps:
       - name: Vérifier les trois jeux de données publics
+        id: freshness_check
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
@@ -358,3 +442,30 @@ jobs:
               body: JSON.stringify({kind:"public_data_stale"}),
             });
             if (!response.ok) core.warning(`L’alerte mobile de fraîcheur a été refusée (${response.status}).`);
+
+      - name: Enregistrer le contrôle de fraîcheur indépendamment
+        if: ${{ always() }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          OPERATION_STATE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/operation-state
+          FRESHNESS_OUTCOME: ${{ steps.freshness_check.outcome }}
+        with:
+          script: |
+            const fresh = process.env.FRESHNESS_OUTCOME === "success";
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.OPERATION_STATE_URL, {
+              method:"POST",
+              headers:{Authorization:`Bearer ${identity}`,"Content-Type":"application/json"},
+              body:JSON.stringify({
+                operation:"freshness",
+                runId:`${context.runId}-${context.runAttempt}`,
+                runUrl:`https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                mode:"monitor",
+                occurredAt:new Date().toISOString(),
+                stages:{freshness:{
+                  state:fresh ? "fresh" : "stale",
+                  detail:fresh ? "Les trois jeux de données publics ont moins de 36 heures." : "Au moins un jeu de données public est inaccessible, non daté ou trop ancien.",
+                }},
+              }),
+            });
+            if (!response.ok) core.setFailed(`La preuve de fraîcheur n’a pas été enregistrée (${response.status}).`);

@@ -9,6 +9,8 @@
   let latestReturns = [];
   let latestStateUpdatedAt = "";
   let latestCapabilities = {};
+  let latestAgentStates = [];
+  let latestOperations = {};
   let scheduled = false;
   let selectedService = "";
   let selectedAgent = "";
@@ -23,6 +25,13 @@
   const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
 
   const esupportRoles = {
+    Sophie: {
+      title:"Gestion administrative",
+      summary:"Suivre les opérations et les dossiers du club.",
+      purpose:"Sophie prépare les dossiers administratifs du club à partir des seules sources autorisées et signale les informations manquantes ou contradictoires.",
+      when:"À chaque échéance administrative, dossier incomplet ou demande confiée à Oscar.",
+      output:"Un état administratif daté, les écarts constatés et les prochaines actions à faire valider.",
+    },
     Nadir: {
       title:"Analyse tactique vidéo",
       summary:"Relier les images au style de jeu demandé par les coachs.",
@@ -72,6 +81,20 @@
       when:"Après une synchronisation, dès qu’une période comporte au moins deux matchs.",
       output:"Un rapport séparant faits, calculs, interprétation et limites, puis transmis automatiquement à Sandrine.",
     },
+    Alice: {
+      title:"Suivi Académie",
+      summary:"Préparer le suivi opérationnel de l’Académie.",
+      purpose:"Alice organise les informations nécessaires au suivi de l’Académie sans exposer inutilement les données des joueurs ou des familles.",
+      when:"À chaque échéance, événement ou dossier Académie confié à Oscar.",
+      output:"Un suivi opérationnel daté, limité aux informations nécessaires et aux décisions attendues.",
+    },
+    Victor: {
+      title:"Gestion de l’effectif",
+      summary:"Établir une photographie factuelle de l’effectif et des postes.",
+      purpose:"Victor analyse l’effectif, les postes et les informations de disponibilité autorisées. Il prépare des constats mais ne choisit jamais la composition.",
+      when:"Quand Oscar demande un état de l’effectif ou avant un dossier sportif nécessitant ces informations.",
+      output:"Un état de l’effectif, des postes couverts, des inconnues et des limites de la période.",
+    },
     Sandrine: {
       title:"Amélioration du Performance Hub",
       summary:"Remettre en question le Hub à partir des rapports de Giannis.",
@@ -85,6 +108,13 @@
       purpose:"Konstantinos analyse l’image du club, la cohérence des contenus, les opportunités de partenariat et les idées de produits. Il transforme ses observations en recommandations concrètes pour Oscar et les dirigeants.",
       when:"Pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit aux couleurs du club.",
       output:"Un Brand Opportunity Brief : constat, public visé, proposition, bénéfices, risques, effort estimé et prochaine décision attendue.",
+    },
+    Léonard: {
+      title:"Conseiller sportif",
+      summary:"Synthétiser uniquement les dossiers sportifs complets.",
+      purpose:"Léonard transforme les retours concordants d’Oscar, Nadir, Victor et Giannis en conseils consultatifs. Fabien et Alex conservent toutes les décisions sportives.",
+      when:"Uniquement lorsque les quatre sources obligatoires sont complètes, fraîches, validées et rattachées au même événement.",
+      output:"Un Match Coaching Brief ou un Training Focus séparant faits, interprétations, contradictions et limites.",
     },
     Élise: {title:"Rapprochement des sources",summary:"Comparer les sources administratives utiles pour Sophie.",purpose:"Élise rapproche les informations autorisées de SportEasy, Gmail et Drive pour repérer contradictions, doublons et dossiers incomplets.",when:"Quand Sophie doit vérifier plusieurs sources sur un même dossier.",output:"Un tableau factuel des concordances, écarts et informations manquantes."},
     Samir: {title:"Indexation vidéo",summary:"Préparer les repères techniques et temporels pour Nadir.",purpose:"Samir prépare un index des vidéos autorisées sans interpréter la tactique ni produire de statistiques de jeu.",when:"Après le dépôt d’une vidéo autorisée.",output:"Un index des séquences examinables et des limites de l’image."},
@@ -139,6 +169,45 @@
     },
   };
 
+  const operationalProfiles = {
+    Oscar:{inputs:"Objectif, urgence, décision attendue et retours datés des agents mobilisés.",quality:"Vérifier les sources, les contradictions, les absences de réponse et les limites avant toute synthèse.",evidence:"Synthèse signée par Oscar avec responsables, échéances, blocages et décision attendue."},
+    Sophie:{inputs:"Demande administrative et sources autorisées utiles au dossier.",quality:"Élise rapproche les sources ; toute donnée absente reste signalée comme telle.",evidence:"État administratif daté et tableau des pièces concordantes, contradictoires ou manquantes."},
+    Nadir:{inputs:"Vidéo autorisée et indexée, contexte du match et principes demandés par les coachs.",quality:"Samir contrôle l’index vidéo ; Nadir cite les séquences et les limites de l’image.",evidence:"Analyse tactique horodatée avec repères vidéo et limites explicites."},
+    Alice:{inputs:"Calendrier, groupes et documents Académie strictement nécessaires et autorisés.",quality:"Roman contrôle la confidentialité, les destinataires et la minimisation des données.",evidence:"Suivi Académie daté avec contrôle de confidentialité associé."},
+    Victor:{inputs:"Référentiel actuel, postes connus et informations de disponibilité autorisées pour la période.",quality:"Camélia documente les calculs factuels ; les inconnues et dénominateurs restent visibles.",evidence:"Photographie datée de l’effectif, de la couverture des postes et des données manquantes."},
+    Giannis:{inputs:"Jeux de données publics lisibles, période, taille d’échantillon et version Metron.",quality:"Francisco contrôle sources, doublons, unités, valeurs absentes et reproductibilité.",evidence:"Rapport séparant faits, calculs, interprétations et limites, transmis à Sandrine."},
+    Patricia:{inputs:"État de session fourni par Sonia, liste fermée des routes et données publiques à contrôler.",quality:"Véronique relit le relevé ; aucune route imprévue ni écriture SportEasy n’est permise.",evidence:"Relevé route par route, fraîcheur des fichiers et continuité du dernier match finalisé."},
+    Gaston:{inputs:"Anomalie reproductible de Patricia, journaux expurgés et version concernée.",quality:"Tamara exécute les tests de régression ; Véronique prononce le verdict final.",evidence:"Diagnostic, correction proposée et résultats des tests associés."},
+    Véronique:{inputs:"Preuves de connexion, contrôles de données, diagnostic et tests exécutés.",quality:"Contrôle indépendant, liste des tests non exécutés et justification explicite du GO ou NO-GO.",evidence:"Verdict qualité horodaté et version publique contrôlée."},
+    Sandrine:{inputs:"Rapport de Giannis, limites documentées et audit de compréhension d’Inès.",quality:"Chaque proposition doit remonter à un problème observé sans modifier silencieusement Metron.",evidence:"Liste priorisée d’améliorations avec bénéfice, effort, risque et décision attendue."},
+    Léonard:{inputs:"Contexte Oscar, analyse Nadir, état Victor et interprétation Giannis pour le même événement.",quality:"Porte automatique de complétude : les quatre blocs doivent être frais, validés et concordants.",evidence:"Brief consultatif transmis à Oscar, ou silence si une seule information obligatoire manque."},
+    Konstantinos:{inputs:"Brief, identité du club et observations publiques sourcées de Giorgios.",quality:"Vérifier URL, date, public visé, risques et besoin de validation humaine.",evidence:"Brand Opportunity Brief sourcé, sans publication ni prise de contact automatique."},
+    Sonia:{inputs:"Identifiants chiffrés et état technique de la session, jamais affichés dans l’interface.",quality:"Aucun secret dans les sorties ; Patricia confirme ensuite que la connexion est utilisable.",evidence:"État expurgé de la session transmis à Patricia et Véronique."},
+    Amara:{inputs:"Alertes et constats d’Elena, Akira, Joyce, Thiago et Jefferson.",quality:"Indépendance des contrôles, gravité justifiée et mesure conservatoire proportionnée.",evidence:"Bulletin de sécurité consolidé avec condition de reprise et décision attendue."},
+    Elena:{inputs:"Liste autorisée des comptes, rôles, besoins et changements d’accès.",quality:"Contrôle du moindre privilège et signalement des droits non justifiés.",evidence:"Matrice expurgée des accès et liste des écarts à arbitrer."},
+    Akira:{inputs:"Code, configuration et journaux autorisés à analyser.",quality:"Ne jamais recopier un secret ; confirmer uniquement le type, l’emplacement et la portée du risque.",evidence:"Rapport de détection expurgé avec action attendue."},
+    Joyce:{inputs:"Inventaire du flux, finalité, destinataires et données personnelles concernées.",quality:"Nécessité, minimisation, exposition et durée de conservation doivent être explicites.",evidence:"Fiche de confidentialité sans reproduction inutile des données sensibles."},
+    Thiago:{inputs:"Liste des intégrations, destinations, méthodes et protections attendues.",quality:"Contrôler l’origine, l’authentification, la destination et les méthodes autorisées.",evidence:"Carte des liens et anomalie reproductible sans secret."},
+    Jefferson:{inputs:"Signal de sécurité, journaux expurgés et événements horodatés.",quality:"Séparer faits, hypothèses et décisions ; conserver une chronologie reproductible.",evidence:"Dossier d’incident avec gravité, mesures conservatoires et condition de clôture."},
+    Élise:{inputs:"Sources administratives autorisées et période du dossier.",quality:"Comparer identité, date, valeur et source sans combler les absences.",evidence:"Tableau des concordances, contradictions, doublons et informations manquantes."},
+    Samir:{inputs:"Vidéo autorisée, métadonnées du fichier et contexte du match validé.",quality:"Contrôler lisibilité, continuité, repères temporels et limites techniques.",evidence:"Index des séquences examinables transmis à Nadir."},
+    Roman:{inputs:"Contenu à partager, destinataires et justification du besoin Académie.",quality:"Vérifier nécessité, protection, accès et retrait des informations superflues.",evidence:"Contrôle de confidentialité associé au partage ou au dossier."},
+    Camélia:{inputs:"Statuts réellement saisis, période et population de référence.",quality:"Afficher dénominateur, inconnues, doublons et limites ; ne jamais interpréter la motivation.",evidence:"Calcul reproductible transmis à Victor."},
+    Francisco:{inputs:"Sources, périodes, unités, valeurs et version Metron utilisées par Giannis.",quality:"Contrôler doublons, valeurs absentes, comparabilité et formules.",evidence:"Fiche de qualité et de reproductibilité jointe au rapport de Giannis."},
+    Tamara:{inputs:"Version à vérifier, correction proposée et scénarios préparés par Véronique.",quality:"Consigner les versions, résultats, erreurs et tests non exécutés.",evidence:"Rapport de régression reproductible transmis à Véronique."},
+    Inès:{inputs:"Définition de la donnée, interface et supports ordinateur/mobile à examiner.",quality:"Contrôler compréhension, cohérence, accessibilité et fidélité à la donnée source.",evidence:"Audit Data/UX avec difficultés observées et corrections proposées."},
+    Giorgios:{inputs:"Liste fermée des canaux publics officiels et objectif de veille.",quality:"Conserver URL, date et niveau de preuve ; aucune connexion ni identité d’abonné.",evidence:"Relevé public sourcé transmis à Konstantinos."},
+    Vincenzo:{inputs:"Match SportEasy validé, date, terrain, score et vidéothèque publique autorisée.",quality:"Comparer date, terrain et score ; attendre Samir et Oscar avant tout acheminement.",evidence:"Candidat vidéo traçable ou constat daté qu’aucun candidat fiable n’a été trouvé."},
+  };
+
+  const operationalStateLabels = {
+    waiting:"En attente",
+    incomplete:"Incomplet",
+    executed:"Exécuté",
+    controlled:"Contrôlé",
+    blocked:"Bloqué",
+  };
+
   function formatDate(value) {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? "heure indisponible" : date.toLocaleString("fr-FR", {dateStyle:"medium", timeStyle:"short"});
@@ -160,6 +229,112 @@
     return `Dernière synchronisation il y a ${hours} h`;
   }
 
+  function normalizeAgentKey(value) {
+    return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("fr");
+  }
+
+  function fallbackAgentState(entries) {
+    if (!entries.length) return {state:"waiting", evidenceCount:0, latestEvidenceAt:""};
+    const latest = entries[0];
+    const status = normalizeAgentKey(`${latest.status || ""} ${latest.statusLabel || ""} ${latest.classification || ""} ${latest.title || ""} ${latest.summary || ""}`);
+    const state = /bloque|echec|failed|no-go|alerte|refuse|non operationnel/.test(status) ? "blocked"
+      : /incomplet|attention|a etudier|brouillon|limite|pending|attend|indisponible|manqu/.test(status) ? "incomplete"
+      : /controle|valide|confirme|operational|\bgo\b/.test(status) ? "controlled"
+      : "executed";
+    return {state, evidenceCount:entries.length, latestEvidenceAt:latest.occurredAt || "", latestEvidenceId:latest.returnId || latest.missionId || ""};
+  }
+
+  function agentOperationalState(agent, entries) {
+    const key = normalizeAgentKey(agent);
+    const remote = latestAgentStates.find(entry => normalizeAgentKey(entry.agent) === key);
+    if (!remote) return fallbackAgentState(entries);
+    return {
+      state:operationalStateLabels[remote.state] ? remote.state : "incomplete",
+      evidenceCount:Number.isFinite(remote.evidenceCount) ? remote.evidenceCount : entries.length,
+      latestEvidenceAt:remote.latestEvidenceAt || entries[0]?.occurredAt || "",
+      latestEvidenceId:remote.latestEvidenceId || entries[0]?.returnId || entries[0]?.missionId || "",
+    };
+  }
+
+  const operationStages = [
+    {key:"automation", title:"Tâche automatique", description:"Le circuit planifié ou manuel a réellement démarré."},
+    {key:"sporteasySync", title:"Synchronisation SportEasy", description:"Une lecture SportEasy a réellement été tentée."},
+    {key:"newData", title:"Nouvelles données", description:"Le contrôle a comparé les données avec le dernier état publié."},
+    {key:"publication", title:"Publication", description:"Les fichiers validés ont été publiés, ou aucun changement n’était nécessaire."},
+    {key:"freshness", title:"Fraîcheur", description:"L’âge du dernier état fiable a été contrôlé séparément."},
+  ];
+
+  function operationStageValue(key) {
+    const source = key === "freshness" ? latestOperations?.freshness : latestOperations?.sync;
+    const stage = source?.stages?.[key];
+    if (stage) return {...stage, runUrl:source.runUrl || ""};
+    if (key === "freshness" && syncTime) {
+      const fresh = Date.now() - syncTime <= 36 * 60 * 60 * 1000;
+      return {state:fresh ? "fresh" : "stale", occurredAt:new Date(syncTime).toISOString(), detail:syncAgeLabel(syncTime), derived:true};
+    }
+    return {state:"waiting", occurredAt:"", detail:"Aucune preuve enregistrée."};
+  }
+
+  function operationStagePresentation(key, value) {
+    const presentations = {
+      automation:{executed:["Exécutée","executed"],failed:["Échec","blocked"],waiting:["En attente","waiting"]},
+      sporteasySync:{attempted:["Tentée","executed"],skipped:["Non demandée","waiting"],failed:["Échec","blocked"],waiting:["En attente","waiting"]},
+      newData:{present:["Changements détectés","controlled"],none:["Aucun changement","controlled"],unknown:["Résultat incomplet","incomplete"],not_checked:["Non contrôlé","waiting"],waiting:["En attente","waiting"]},
+      publication:{published:["Publiée","controlled"],not_required:["Aucune publication nécessaire","controlled"],not_started:["Non démarrée","waiting"],failed:["Échec","blocked"],waiting:["En attente","waiting"]},
+      freshness:{fresh:["À jour","controlled"],stale:["À actualiser","blocked"],unknown:["Inconnue","incomplete"],waiting:["En attente","waiting"]},
+    };
+    const [label, state] = presentations[key]?.[value.state] || ["Incomplet","incomplete"];
+    return {label, state};
+  }
+
+  function renderOperationPanel() {
+    const syncBar = document.querySelector(".lykos-sporteasy-sync");
+    if (!syncBar) return;
+    let panel = document.querySelector(".lykos-operation-trace");
+    if (!panel) {
+      panel = document.createElement("section");
+      panel.className = "lykos-operation-trace";
+      panel.setAttribute("aria-labelledby", "lykos-operation-trace-title");
+      syncBar.after(panel);
+    }
+    const header = document.createElement("header");
+    const heading = document.createElement("h2");
+    heading.id = "lykos-operation-trace-title";
+    heading.textContent = "État réel de la chaîne";
+    const intro = document.createElement("p");
+    intro.textContent = "Chaque jalon possède sa propre preuve : un lancement ne vaut jamais publication.";
+    header.append(heading, intro);
+    const list = document.createElement("div");
+    list.className = "lykos-operation-stage-list";
+    for (const definition of operationStages) {
+      const value = operationStageValue(definition.key);
+      const presentation = operationStagePresentation(definition.key, value);
+      const card = document.createElement("article");
+      card.className = `lykos-operation-stage is-${presentation.state}`;
+      const title = document.createElement("h3");
+      title.textContent = definition.title;
+      const badge = document.createElement("strong");
+      badge.textContent = presentation.label;
+      const description = document.createElement("p");
+      description.textContent = value.detail || definition.description;
+      const footer = document.createElement("footer");
+      const time = document.createElement("time");
+      time.textContent = value.occurredAt ? formatDate(value.occurredAt) : "Aucune exécution enregistrée";
+      footer.append(time);
+      if (value.runUrl) {
+        const proof = document.createElement("a");
+        proof.href = value.runUrl;
+        proof.target = "_blank";
+        proof.rel = "noopener noreferrer";
+        proof.textContent = "Voir la preuve ↗";
+        footer.append(proof);
+      }
+      card.append(title, badge, description, footer);
+      list.append(card);
+    }
+    panel.replaceChildren(header, list);
+  }
+
   function updateSyncBar(message = "") {
     const bar = document.querySelector(".lykos-sporteasy-sync");
     if (!bar) return;
@@ -175,6 +350,7 @@
       status.textContent = message;
       status.hidden = !message;
     }
+    renderOperationPanel();
   }
 
   async function requestSportEasySync() {
@@ -371,6 +547,53 @@
     }
   }
 
+  function renderAgentContract(conversation, agent, entries, anchor) {
+    const profile = operationalProfiles[agent];
+    const role = esupportRoles[agent];
+    if (!profile || !role || !anchor) return null;
+    const state = agentOperationalState(agent, entries);
+    let contract = conversation.querySelector(".lykos-agent-contract");
+    if (!contract) {
+      contract = document.createElement("section");
+      contract.className = "lykos-agent-contract";
+      anchor.after(contract);
+    }
+    const header = document.createElement("header");
+    const title = document.createElement("div");
+    const eyebrow = document.createElement("small");
+    eyebrow.textContent = "CONTRAT OPÉRATIONNEL";
+    const heading = document.createElement("h2");
+    heading.textContent = agent;
+    title.append(eyebrow, heading);
+    const badge = document.createElement("strong");
+    badge.className = `lykos-agent-state is-${state.state}`;
+    badge.textContent = operationalStateLabels[state.state] || operationalStateLabels.incomplete;
+    header.append(title, badge);
+
+    const details = document.createElement("dl");
+    const fields = [
+      ["Déclencheur", role.when],
+      ["Informations nécessaires", profile.inputs],
+      ["Résultat attendu", role.output],
+      ["Contrôle qualité", profile.quality],
+      ["Preuve visible", profile.evidence],
+      ["État actuel", state.evidenceCount
+        ? `${state.evidenceCount} preuve${state.evidenceCount > 1 ? "s" : ""} enregistrée${state.evidenceCount > 1 ? "s" : ""}${state.latestEvidenceAt ? ` · dernière le ${formatDate(state.latestEvidenceAt)}` : ""}.`
+        : "Aucune preuve enregistrée : l’agent reste en attente, sans être présenté comme disponible ou exécuté."],
+    ];
+    for (const [label, value] of fields) {
+      const item = document.createElement("div");
+      const term = document.createElement("dt");
+      term.textContent = label;
+      const description = document.createElement("dd");
+      description.textContent = value;
+      item.append(term, description);
+      details.append(item);
+    }
+    contract.replaceChildren(header, details);
+    return contract;
+  }
+
   function enforceReadOnlyMode() {
     scheduled = false;
     installSyncBar();
@@ -453,6 +676,8 @@
       if (roleFooter) roleFooter.textContent = `${isFemale ? "Agente installée" : "Agent installé"} dans le moteur privé OpenClaw du club. Ses outils restent cloisonnés selon sa mission.`;
     }
 
+    const agentContract = renderAgentContract(conversation, agent, agentEntries, roleDisclosure || chatHeader);
+
     let policy = conversation.querySelector(".lykos-estaff-policy");
     if (!policy) {
       policy = document.createElement("div");
@@ -498,15 +723,16 @@
     if (serviceFeed) serviceFeed.hidden = !serviceMode;
     if (chatHeader) chatHeader.hidden = serviceMode;
     if (roleDisclosure) roleDisclosure.hidden = serviceMode;
+    if (agentContract) agentContract.hidden = serviceMode;
     if (tabs) tabs.hidden = serviceMode;
     if (messages) messages.hidden = serviceMode || !agentFeedOpen;
 
     const agentStatus = conversation.querySelector("header > span:last-child");
-    if (agentStatus && /^(Prêt|Prête|Installé|Installée)$/.test(agentStatus.textContent)) {
-      const isReady = agentStatus.textContent.startsWith("Prêt");
-      agentStatus.textContent = femaleAgents.has(agent)
-        ? (isReady ? "Prête" : "Installée")
-        : (isReady ? "Prêt" : "Installé");
+    if (agentStatus) {
+      const current = agentOperationalState(agent, agentEntries);
+      agentStatus.classList.remove("is-waiting", "is-incomplete", "is-executed", "is-controlled", "is-blocked");
+      agentStatus.classList.add(`is-${current.state}`);
+      agentStatus.textContent = operationalStateLabels[current.state] || operationalStateLabels.incomplete;
     }
 
     const emptyTitle = [...(messages?.querySelectorAll("h3") || [])].find(node => node.textContent.includes("est prêt"));
@@ -606,6 +832,8 @@
         cadenceToken = "";
         latestReport = null;
         latestReturns = [];
+        latestAgentStates = [];
+        latestOperations = {};
         scheduleReadOnlyMode();
         return;
       }
@@ -616,15 +844,23 @@
         ...entry,
         agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
+      latestAgentStates = (Array.isArray(state.agentStates) ? state.agentStates : []).map(entry => ({
+        ...entry,
+        agent:displayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
+      }));
+      latestOperations = state.operations && typeof state.operations === "object" ? state.operations : {};
       latestStateUpdatedAt = [
         latestReport?.checkedAt,
         state.esupport?.checkedAt,
+        latestOperations?.updatedAt,
         ...latestReturns.map(entry => entry.occurredAt),
       ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
     } catch {
       if (generation !== sessionGeneration || sessionToken !== token) return;
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
       latestReturns = [];
+      latestAgentStates = [];
+      latestOperations = {};
       latestStateUpdatedAt = "";
       latestCapabilities = {};
     }
@@ -711,6 +947,8 @@
       latestReturns = [];
       latestStateUpdatedAt = "";
       latestCapabilities = {};
+      latestAgentStates = [];
+      latestOperations = {};
     }
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});

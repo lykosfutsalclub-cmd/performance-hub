@@ -170,7 +170,7 @@ export default function Supervision({onLogout, sessionToken}: {onLogout: () => v
   return <main className={`${styles.shell} ${theme.surface}`}>
     <header className={styles.header}>
       <LykosBrand />
-      <div className={styles.titleBlock}><h1>Oscar<span>.</span></h1><p>eChief of Staff du Lykos FC</p></div>
+      <div className={styles.titleBlock}><h1>Oscar<span>.</span></h1><p>eGeneral Director du Lykos FC</p></div>
       <form onSubmit={event => {event.preventDefault(); onLogout();}}><button>Fermer l’accès ↗</button></form>
     </header>
 

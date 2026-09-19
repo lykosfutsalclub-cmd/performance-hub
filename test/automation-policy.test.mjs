@@ -113,6 +113,7 @@ test("la communication eStaff présente uniquement 40 agents", async () => {
 test("les 40 agents sont consultables et seul Oscar reçoit les missions", async () => {
   const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
+  const performanceHub = await readFile(new URL("index.html", root), "utf8");
   assert.match(bundle, /Rechercher un agent/);
   for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Bastien"]) {
     assert.match(bundle, new RegExp(name));
@@ -122,6 +123,11 @@ test("les 40 agents sont consultables et seul Oscar reçoit les missions", async
   assert.match(supervision, /composer\.hidden = !oscarMissionEnabled/);
   assert.doesNotMatch(supervision, /Consultation uniquement|lecture seule/);
   assert.match(supervision, /reportEntries\(\)\.filter\(entry => entry\.agent === agent\)/);
+  assert.match(bundle, /coordination:"eGeneral Director"/);
+  assert.match(supervision, /coordination:"eGeneral Director"/);
+  assert.match(performanceHub, /eGeneral Director · Direction générale/);
+  assert.doesNotMatch(`${bundle}\n${supervision}\n${performanceHub}`, /eChief/);
+  assert.match(performanceHub, /eRH · sous l’autorité d’Oscar/);
 });
 
 test("Vincenzo appartient à eSportif dans les deux présentations publiques", async () => {
@@ -136,9 +142,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.17.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.19.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.17\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.19\.0"/);
 });
 
 test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {
@@ -153,7 +159,7 @@ test("les récapitulatifs du planificateur cloud rejoignent les fils publics san
   assert.match(supervision, /latestReturns = mergeEntries\(latestReturns, cadenceState\.returns\)/);
   assert.match(supervision, /fetchWithTimeout\(`\$\{CADENCE_API\}\/esupport`/);
   assert.doesNotMatch(supervision, /latestCapabilities\s*=\s*\{\.\.\.\(cadenceState\.capabilities/);
-  assert.match(page, /esupport-report\.js\?v=20260919-agent-names/);
+  assert.match(page, /esupport-report\.js\?v=20260919-erh-governance/);
   assert.match(page, /connect-src 'self' https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev/);
   assert.match(supervision, /const API = "https:\/\/performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff"/);
 });

@@ -21,6 +21,14 @@ test("les 40 agents possèdent un contrat opérationnel visible", () => {
   for (const label of ["Déclencheur", "Informations nécessaires", "Résultat attendu", "Contrôle qualité", "Preuve visible", "État actuel"]) {
     assert.ok(source.includes(label), label);
   }
+  for (const label of ["Responsable eRH", "Temps de travail & coûts", "Planification & processus", "Besoins & missions complémentaires", "Environnement & optimisation"]) {
+    assert.ok(source.includes(label), label);
+  }
+  for (const responsibility of ["Cadre de travail", "Temps de travail", "Timing", "Besoins", "Optimisation"]) {
+    assert.ok(source.includes(responsibility), responsibility);
+  }
+  assert.match(source, /eRH agit sous l’autorité d’Oscar, eGeneral Director/);
+  assert.match(source, /mission complémentaire/);
 });
 
 test("les cartes agent distinguent la connexion métier de la simple exécution", () => {
@@ -53,4 +61,6 @@ test("la présentation s’adapte aux écrans étroits", () => {
   assert.match(css, /@media\(max-width:700px\)/);
   assert.match(css, /overflow-x:auto/);
   assert.match(css, /scroll-snap-type:x mandatory/);
+  assert.match(css, /\.lykos-service-framework\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:700px\)\{\.lykos-service-framework\{grid-template-columns:1fr\}/);
 });

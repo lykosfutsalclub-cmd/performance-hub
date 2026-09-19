@@ -22,7 +22,19 @@
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès", "Angela", "Alba", "Lola", "Nora", "Salomé", "Ella"]);
-  const serviceLabels = {coordination:"eChief", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
+  const serviceLabels = {coordination:"eGeneral Director", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
+  const serviceDescriptions = {
+    hr:"eRH agit sous l’autorité d’Oscar, eGeneral Director. Le service cadre le travail des agents IA, mesure leur temps d’exécution, organise leur timing, évalue les besoins et propose les adaptations qui maintiennent le eStaff efficace.",
+  };
+  const serviceFrameworks = {
+    hr:[
+      ["Cadre de travail", "Mission, sources, permissions, charge, contrôle qualité et preuve attendue pour chaque agent."],
+      ["Temps de travail", "Durée cible, attente légitime, délai maximal, relances et coût mesurés sans assimiler une attente de source à de l’inactivité."],
+      ["Timing", "Ordre des dépendances, créneau utile, cadence et priorité ajustés pour éviter doublons et exécutions trop tôt."],
+      ["Besoins", "Surcharge, sous-utilisation, compétence manquante et mission non couverte sont distinguées avant toute proposition."],
+      ["Optimisation", "Mission complémentaire, redistribution ou adaptation d’outil sont proposées à Oscar ; aucune modification durable n’est appliquée sans sa validation."],
+    ],
+  };
   const agentDisplayNames = {oscar:"Oscar",sophie:"Sophie",nadir:"Nadir",alice:"Alice",victor:"Victor",giannis:"Giannis",sonia:"Sonia",patricia:"Patricia",gaston:"Gaston",veronique:"Véronique",sandrine:"Sandrine",leonard:"Léonard",konstantinos:"Konstantinos",kostantinos:"Konstantinos",amara:"Amara",elena:"Elena",akira:"Akira",joyce:"Joyce",thiago:"Thiago",jefferson:"Jefferson",vincenzo:"Vincenzo",angela:"Angela",juan:"Juan",marco:"Marco",rafael:"Rafael",alba:"Alba",lola:"Lola",nora:"Nora",yanis:"Yanis",salome:"Salomé",malik:"Malik",ella:"Ella",bastien:"Bastien","sophie-rapprochement-sources":"Élise","nadir-indexation-video":"Samir","alice-controle-confidentialite":"Roman","victor-assiduite":"Camélia","giannis-qualite-donnees":"Francisco","veronique-tests-regression":"Tamara","sandrine-explicabilite-ux":"Inès","kostantinos-observation-publique":"Giorgios"};
   const agentIdsByName = Object.fromEntries(Object.entries(agentDisplayNames).map(([id,name]) => [name,id]));
 
@@ -42,11 +54,11 @@
       output:"Une analyse critique horodatée : 3 ou 4 points forts, 3 ou 4 axes d’amélioration et les prochains focus terrain.",
     },
     Oscar: {
-      title:"Supervision et validation finale",
-      summary:"Superviser la chaîne eSupport et confirmer son verdict final.",
-      purpose:"Oscar rassemble l’état des identifiants fourni par Sonia, les constats API et données de Patricia, le diagnostic de Gaston et la validation de Véronique. Il confirme le fonctionnement uniquement lorsque toute la chaîne est au vert.",
-      when:"À la fin de chaque contrôle eSupport et lors des rapports du lundi et du jeudi.",
-      output:"Une conclusion claire : service confirmé, à surveiller ou bloqué, avec la raison.",
+      title:"eGeneral Director",
+      summary:"Diriger les services, arbitrer leurs priorités et valider les adaptations proposées par eRH.",
+      purpose:"Oscar dirige les trente-neuf autres agents. Il répartit les missions entre les services, arbitre les priorités et valide le cadre de travail proposé par eRH avant de remettre une synthèse fiable aux dirigeants.",
+      when:"Pour missionner le eStaff, arbitrer une charge, valider une adaptation eRH ou conclure un contrôle transversal.",
+      output:"Une décision ou une synthèse consolidée avec priorités, responsables, échéances, blocages et limites.",
     },
     Sonia: {
       title:"Gestion des identifiants",
@@ -175,16 +187,16 @@
     Rafael: {title:"Responsable partenariats",summary:"Suivre les obligations et renouvellements sponsors.",purpose:"Rafael tient le registre des engagements, contreparties, échéances et renouvellements à partir des seules informations transmises et validées.",when:"Lorsqu’une information sponsor ou une échéance est ajoutée ou modifiée.",output:"Un tableau des engagements tenus, à faire, en retard ou à renégocier."},
     Alba: {title:"Archiviste & historienne du club",summary:"Consolider l’histoire vérifiée du Lykos depuis 2019.",purpose:"Alba relie les palmarès, équipes de l’année, anciens effectifs, compositions, records, photographies, documents et identités à leurs sources vérifiables.",when:"À chaque nouveau document ou fait historique contrôlé.",output:"Une notice datée avec source, niveau de preuve et contradictions éventuelles."},
     Lola: {title:"Productrice éditoriale",summary:"Transformer les données validées en récits prêts à relire.",purpose:"Lola transforme les analyses et archives déjà validées en résumés, cartes et bilans cohérents avec la voix du club.",when:"Après validation d’un bilan, record, anniversaire ou brief éditorial.",output:"Un brouillon sourcé qui ne peut pas être publié sans validation humaine."},
-    Bastien: {title:"Analyste adversaires",summary:"Préparer un profil factuel du prochain adversaire.",purpose:"Bastien croise le prochain événement SportEasy avec l’historique réel des rencontres pour documenter les confrontations, scores, tendances et incertitudes sans inventer de niveau adverse.",when:"Lorsqu’un prochain adversaire est renseigné, qu’un match est finalisé ou que l’historique, la compétition ou l’horaire change.",output:"Un brief adverse sourcé avec confrontations, résultats, niveau de confiance et inconnues ; les équipes anonymes ou conteneurs restent au niveau médian."},
-    Nora: {title:"Responsable efficacité eStaff",summary:"Vérifier que chaque agent travaille utilement et laisse une preuve.",purpose:"Nora contrôle déclencheurs, entrées, résultats, qualité, preuves et état de chacun des quarante agents.",when:"Chaque jour et dès qu’un agent est en retard, bloqué ou sans preuve utile.",output:"Un tableau d’efficacité avec blocage, preuve et action corrective."},
-    Yanis: {title:"Contrôleur des coûts agents",summary:"Suivre le coût réel de chaque agent.",purpose:"Yanis attribue les consommations et coûts aux agents et missions, puis signale les usages inutiles ou anormaux.",when:"Chaque semaine et lors de l’ajout d’un agent ou service payant.",output:"Un relevé de coût par agent avec variations et pistes d’optimisation."},
-    Salomé: {title:"Architecte des processus",summary:"Veiller à la logique des chaînes de travail.",purpose:"Salomé analyse les dépendances, contrôles et transmissions pour repérer doublons, boucles et validations manquantes.",when:"Chaque semaine ou lorsqu’un blocage ou une reprise manuelle se répète.",output:"Une carte avant-après du processus et une correction testable."},
-    Malik: {title:"Planification des effectifs agentiques",summary:"Évaluer la nécessité de recruter un nouvel agent.",purpose:"Malik distingue un vrai manque de compétence d’un problème de source, de processus ou de répartition du travail.",when:"Chaque mois ou lorsqu’un manque persiste malgré les corrections.",output:"Une recommandation argumentée : ne pas recruter, réorganiser, outiller ou créer un profil précis."},
-    Ella: {title:"Veille capacités & plugins",summary:"Comparer les outils et renforts susceptibles d’améliorer les agents.",purpose:"Ella surveille plugins, connecteurs et types de renforts agentiques utiles à un besoin validé, avec leurs permissions, coûts et risques.",when:"Chaque semaine ou après confirmation d’un manque de capacité.",output:"Une fiche comparative ; aucune installation ou permission n’est accordée automatiquement."},
+    Bastien: {title:"Coordinateur compétitions & adversaires",summary:"Fiabiliser calendriers, résultats, classements et analyse adverse.",purpose:"Bastien compare les calendriers et feuilles de résultats aux événements SportEasy, prépare les créations ou saisies à valider, contrôle ensuite le classement et documente le prochain adversaire sans inventer de donnée.",when:"Chaque jour après le contrôle SportEasy, et dès qu’un calendrier, une feuille de résultats, un événement, un score, un classement ou un adversaire change.",output:"Un dossier sourcé : écarts de calendrier, opérations préparées, résultats rapprochés, contrôle de classement, brief adverse, inconnues et validation attendue."},
+    Nora: {title:"Responsable eRH",summary:"Cadrer le travail des agents IA et soumettre les adaptations à Oscar.",purpose:"Nora dirige eRH sous l’autorité d’Oscar. Elle vérifie que chaque agent dispose d’un mandat, de sources, de permissions, d’une charge, d’une durée cible, d’un contrôle qualité et d’une preuve attendue adaptés.",when:"Chaque jour avant le rapport d’Oscar et dès qu’un agent est en retard, surchargé, bloqué ou sans preuve utile.",output:"Un tableau de pilotage par agent avec cadre, charge, temps prévu, preuve, blocage et adaptation proposée à Oscar."},
+    Yanis: {title:"Temps de travail & coûts",summary:"Mesurer durées, attentes, relances, consommations et budgets.",purpose:"Yanis mesure le temps de travail propre aux agents IA : durée d’exécution, attente d’une source, délai maximal, relances et coût. Il repère les missions trop longues, trop fréquentes ou inutilement répétées.",when:"Chaque semaine, après un dépassement de durée ou de coût et lors de toute nouvelle mission récurrente ou capacité payante.",output:"Un budget de temps et de coût par agent et par mission, avec seuils, écarts et proposition de réduction."},
+    Salomé: {title:"Planification & processus",summary:"Organiser le bon timing, les dépendances et les cadences.",purpose:"Salomé organise l’ordre et le moment de travail des agents. Elle tient compte des sources attendues, des dépendances et des validations pour éviter chevauchements, doublons et exécutions trop tôt.",when:"Chaque semaine et lorsqu’une attente, un doublon, un blocage ou une reprise manuelle se répète.",output:"Un planning agentique indiquant ordre, créneau utile, durée cible, dépendances, validation et correction testable."},
+    Malik: {title:"Besoins & missions complémentaires",summary:"Détecter les besoins et proposer une répartition utile aux agents existants.",purpose:"Malik détecte surcharge, sous-utilisation, manque de compétence ou mission orpheline. Il propose d’abord une redistribution ou une mission complémentaire cohérente avant d’envisager un nouvel agent.",when:"Le premier jour de chaque mois à 11 h 15 et lorsqu’un besoin non couvert, une surcharge ou une inactivité persiste malgré les corrections.",output:"Un plan de couverture : mission complémentaire, redistribution, meilleure consigne, nouvel outil ou profil à envisager en dernier recours."},
+    Ella: {title:"Environnement & optimisation",summary:"Adapter outils, sources et cadre technique pour gagner en efficacité.",purpose:"Ella adapte l’environnement de travail aux besoins validés : outil, source, format, automatisation ou niveau de modèle. Elle recherche le meilleur rapport entre efficacité, qualité, coût, permissions et risque.",when:"Chaque semaine, après un besoin confirmé par eRH ou lorsqu’un cadre de travail empêche un agent d’être efficace.",output:"Une fiche d’optimisation avec adaptation proposée, gain attendu, coût, permissions, risques et essai mesurable."},
   };
 
   const operationalProfiles = {
-    Oscar:{inputs:"Objectif, urgence, décision attendue et retours datés des agents mobilisés.",quality:"Vérifier les sources, les contradictions, les absences de réponse et les limites avant toute synthèse.",evidence:"Synthèse signée par Oscar avec responsables, échéances, blocages et décision attendue."},
+    Oscar:{inputs:"Objectif, urgence, décision attendue, cadre eRH applicable et retours datés des agents mobilisés.",quality:"Vérifier les sources, les contradictions, les absences de réponse, les limites et les adaptations proposées par eRH avant toute décision.",evidence:"Synthèse signée par Oscar, eGeneral Director, avec responsables, échéances, blocages, arbitrages eRH et décision attendue."},
     Sophie:{inputs:"Demande administrative et sources autorisées utiles au dossier.",quality:"Élise rapproche les sources ; toute donnée absente reste signalée comme telle.",evidence:"État administratif daté et tableau des pièces concordantes, contradictoires ou manquantes."},
     Nadir:{inputs:"Vidéo autorisée et indexée, contexte du match et principes demandés par les coachs.",quality:"Samir contrôle l’index vidéo ; Nadir cite les séquences et les limites de l’image.",evidence:"Analyse tactique horodatée avec repères vidéo et limites explicites."},
     Alice:{inputs:"Calendrier, groupes et documents Académie strictement nécessaires et autorisés.",quality:"Roman contrôle la confidentialité, les destinataires et la minimisation des données.",evidence:"Suivi Académie daté avec contrôle de confidentialité associé."},
@@ -218,12 +230,12 @@
     Rafael:{inputs:"Contrats, briefs et engagements sponsors explicitement transmis.",quality:"Relier chaque obligation, contrepartie et échéance à un document ou une validation humaine.",evidence:"Registre des engagements et renouvellements avec preuves et points à arbitrer."},
     Alba:{inputs:"Documents, photographies et données datables dont la source est identifiable.",quality:"Distinguer fait, source, contradiction et hypothèse ; aucune mémoire orale non confirmée ne devient un fait.",evidence:"Notice historique versionnée et journal des identités ou doublons corrigés."},
     Lola:{inputs:"Données et analyses validées, brief, public cible et format attendu.",quality:"Alba ou le spécialiste source confirme les faits ; Konstantinos contrôle la cohérence éditoriale.",evidence:"Brouillon sourcé portant explicitement la mention à valider avant publication."},
-    Bastien:{inputs:"Événement SportEasy validé, identité adverse, compétition, résultats et scores des confrontations passées, fraîcheur des données et éventuelle vidéo validée.",quality:"Patricia confirme fraîcheur et doublons, Francisco les calculs et Nadir toute lecture vidéo ; les équipes anonymes ou conteneurs restent médianes.",evidence:"Brief adverse daté avec sources, confrontations, tendances calculables, inconnues et niveau de confiance."},
-    Nora:{inputs:"Cadences, états, preuves, blocages et livrables des quarante agents.",quality:"Contrôler l’utilité réelle et l’existence d’une preuve, sans confondre passage automatique et travail accompli.",evidence:"Tableau quotidien agent par agent avec état, preuve, utilité et action corrective."},
-    Yanis:{inputs:"Exécutions, usages de modèles, licences et coûts autorisés, rattachés à un agent ou une mission.",quality:"Séparer coût mesuré, estimation et donnée absente ; comparer à volume de travail équivalent.",evidence:"Relevé hebdomadaire des coûts et anomalies avec méthode de calcul."},
-    Salomé:{inputs:"Rulebook, déclencheurs, dépendances, contrôles qualité et incidents de processus.",quality:"Vérifier chaque entrée, sortie, responsabilité et validation avant de proposer un changement.",evidence:"Schéma avant-après et scénario de test du processus proposé."},
-    Malik:{inputs:"Rapports de Nora, Yanis et Salomé, charge et compétences existantes.",quality:"Prouver que le manque est durable et qu’une réorganisation ou un outil existant ne suffit pas.",evidence:"Avis de recrutement documenté avec alternatives, coût, risque et validation attendue."},
-    Ella:{inputs:"Besoin validé, catalogue de capacités, plugins, connecteurs et types de renforts agentiques.",quality:"Comparer utilité, permissions, données accessibles, coût, maintenance et risque avec eSécurité.",evidence:"Fiche comparative sans installation, création ni permission automatique."},
+    Bastien:{inputs:"Calendrier autorisé, feuille de résultats, événements et classements SportEasy frais, historique des confrontations et éventuelle vidéo validée.",quality:"Sophie valide le match et le résultat, Patricia la fraîcheur, Francisco les scores et Véronique la passerelle ; doublons, contradictions et conteneurs Tournoi bloquent l’action concernée.",evidence:"Dossier daté avec ligne source, événement visé, état avant/après, opération préparée ou exécutée, contrôle du classement et validation humaine."},
+    Nora:{inputs:"Mandats, sources, permissions, cadences, durées cibles, états, preuves, blocages et livrables des quarante agents.",quality:"Contrôler utilité, charge, temps prévu et preuve sans confondre attente légitime, passage automatique et travail accompli ; soumettre les changements durables à Oscar.",evidence:"Tableau quotidien agent par agent avec cadre, charge, temps, preuve, utilité, adaptation proposée et décision d’Oscar."},
+    Yanis:{inputs:"Heures de début et de fin, temps d’attente, délais maximaux, relances, usages de modèles, licences et coûts rattachés à une mission.",quality:"Séparer exécution, attente de source, estimation et donnée absente ; comparer des missions de volume équivalent et ne jamais inventer une consommation.",evidence:"Relevé des durées et coûts avec seuil autorisé, dépassement, cause et économie proposée."},
+    Salomé:{inputs:"Rulebook, calendriers, déclencheurs, files d’attente, dépendances, contrôles qualité et incidents de processus.",quality:"Vérifier que chaque agent intervient après ses sources et avant son validateur, sans chevauchement, doublon ni raccourci de contrôle.",evidence:"Planning avant-après avec créneau, durée cible, dépendances, délai et scénario de test."},
+    Malik:{inputs:"Rapports de Nora, Yanis et Salomé, charge, compétences, missions et capacités existantes.",quality:"Prouver le besoin, vérifier la compatibilité avec le mandat de l’agent proposé et chiffrer l’impact avant de soumettre une mission complémentaire à Oscar.",evidence:"Plan de couverture documenté avec besoin, agent proposé, mission complémentaire, charge, alternatives et validation attendue."},
+    Ella:{inputs:"Besoin validé, cadre actuel, catalogue de capacités, outils, modèles, plugins et connecteurs autorisés à l’étude.",quality:"Comparer gain mesurable, simplicité, permissions, données accessibles, coût, maintenance et risque avec eSécurité ; préférer l’adaptation la plus légère.",evidence:"Fiche avant-après sans installation automatique, avec essai mesurable et décision d’Oscar attendue."},
   };
 
   const operationalStateLabels = {
@@ -746,14 +758,26 @@
         const heading = document.createElement("h2");
         heading.textContent = `Fil global ${serviceName}`;
         const description = document.createElement("p");
-        description.textContent = entries.length
+        description.textContent = serviceDescriptions[selectedService] || (entries.length
           ? "Tous les contrôles, diagnostics, validations et conclusions du service, du plus récent au plus ancien."
-          : "Aucun récapitulatif publié par ce service pour le moment.";
+          : "Aucun récapitulatif publié par ce service pour le moment.");
         header.append(heading, description);
+        const frameworkItems = serviceFrameworks[selectedService] || [];
+        const framework = document.createElement("dl");
+        framework.className = "lykos-service-framework";
+        for (const [label, value] of frameworkItems) {
+          const item = document.createElement("div");
+          const term = document.createElement("dt");
+          term.textContent = label;
+          const detail = document.createElement("dd");
+          detail.textContent = value;
+          item.append(term, detail);
+          framework.append(item);
+        }
         const list = document.createElement("div");
         list.className = "lykos-service-feed-list";
         renderCards(list, entries, signature);
-        serviceFeed.replaceChildren(header, list);
+        serviceFeed.replaceChildren(header, framework, list);
         serviceFeed.dataset.signature = signature;
       }
     }
@@ -785,7 +809,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.17.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.19.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "40";

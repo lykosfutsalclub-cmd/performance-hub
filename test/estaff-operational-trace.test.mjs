@@ -9,7 +9,7 @@ const workflow = readFileSync(new URL("../.github/workflows/esupport-monitor.yml
 const agents = [
   "Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Patricia", "Gaston", "Véronique", "Sandrine", "Léonard", "Konstantinos",
   "Sonia", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Élise", "Samir", "Roman", "Camélia", "Francisco", "Tamara", "Inès", "Giorgios", "Vincenzo",
-  "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Salomé", "Malik", "Ella", "Diane",
+  "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Salomé", "Malik", "Ella", "Bastien",
 ];
 
 test("les 40 agents possèdent un contrat opérationnel visible", () => {

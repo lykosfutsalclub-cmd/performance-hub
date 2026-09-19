@@ -114,7 +114,7 @@ test("les 40 agents sont consultables et seul Oscar reçoit les missions", async
   const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
   assert.match(bundle, /Rechercher un agent/);
-  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Diane"]) {
+  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Bastien"]) {
     assert.match(bundle, new RegExp(name));
   }
   for (const escapedName of ["V\\xE9ronique", "L\\xE9onard", "\\xC9lise", "Cam\\xE9lia", "In\\xE8s", "Salom\\xE9"]) assert.ok(bundle.includes(escapedName));
@@ -136,9 +136,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.16.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.17.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.16\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.17\.0"/);
 });
 
 test("les récapitulatifs du planificateur cloud rejoignent les fils publics sans remplacer eSupport", async () => {

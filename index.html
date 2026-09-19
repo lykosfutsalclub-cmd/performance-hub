@@ -81,7 +81,7 @@
       100% { transform:translate3d(0,-101%,0); visibility:hidden; }
     }
     @keyframes lykosIntroReduced { to { visibility:hidden; } }
-    #lykos-dashboard-preview .lykos-headbar { min-height:72px; background:rgba(9,29,79,.97); color:#fff; display:flex; align-items:center; gap:28px; padding:0 22px; border-bottom:3px solid var(--lykos-yellow); }
+    #lykos-dashboard-preview .lykos-headbar { min-height:72px; background:rgba(9,29,79,.97); color:#fff; display:flex; align-items:center; gap:28px; padding:0 22px; border-bottom:3px solid var(--lykos-yellow); box-shadow:0 10px 28px rgba(0,0,0,.22); }
     #lykos-dashboard-preview .lykos-headbar-brand { min-width:max-content; display:flex; align-items:center; gap:11px; }
     #lykos-dashboard-preview .lykos-headbar-logo { width:42px; height:48px; object-fit:contain; object-position:center; border:0; background:transparent; }
     #lykos-dashboard-preview .lykos-headbar-title { min-width:max-content; font-family:"OMMarseille", Georgia, serif; font-weight:700; letter-spacing:.08em; font-size:0; line-height:.82; display:flex; flex-direction:column; gap:0; }
@@ -628,6 +628,10 @@
     #lykos-dashboard-preview .lykos-pantheon-empty span { display:block; max-width:420px; margin-top:8px; color:#8fa8c1; font-size:11px; line-height:1.5; }
     #lykos-dashboard-preview .lykos-placeholder { min-height:420px; display:grid; place-items:center; text-align:center; }
     #lykos-dashboard-preview .lykos-placeholder-mark { width:54px; height:54px; margin:0 auto 14px; border-radius:16px; background:var(--lykos-yellow); color:var(--lykos-navy); display:grid; place-items:center; font-size:25px; }
+    @media (min-width: 781px) {
+      #lykos-dashboard-preview .lykos-headbar { position:fixed; top:0; left:0; right:0; z-index:40; }
+      #lykos-dashboard-preview .lykos-shell { padding-top:72px; }
+    }
     @media (max-width: 780px) {
       html, body { background:#011834; }
       #lykos-dashboard-preview { min-height:100dvh; padding-bottom:calc(88px + env(safe-area-inset-bottom)); }
@@ -1968,6 +1972,12 @@
         root.querySelector('.lykos-shell').classList.remove('player-picker-mode');
         root.querySelector('.lykos-shell').classList.add('player-mode');
       };
+      const scrollToViewStart = () => {
+        const scrollingElement = document.scrollingElement || document.documentElement;
+        scrollingElement.scrollTop = 0;
+        root.scrollTop = 0;
+        window.scrollTo({top:0,left:0,behavior:'auto'});
+      };
       root.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
         const view = button.dataset.view;
         root.querySelectorAll('[data-view]').forEach(item => item.setAttribute('aria-selected', String(item === button)));
@@ -1975,6 +1985,7 @@
         root.querySelectorAll('[data-view-panel]').forEach(panel => panel.hidden = panel.dataset.viewPanel !== view);
         if (view === 'players') showPlayerPicker();
         else root.querySelector('.lykos-shell').classList.remove('player-mode','player-picker-mode');
+        requestAnimationFrame(scrollToViewStart);
       }));
       let playerNameFitFrame = 0;
       const fitPlayerName = () => {

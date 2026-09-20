@@ -76,9 +76,12 @@ test("le contrôle eSupport Cloudflare enregistre lui-même son rapport avant le
 });
 
 test("la publication eSupport repart toujours de la branche publique la plus récente", () => {
+  assert.match(workflow, /name: Récupérer le Performance Hub[\s\S]*?fetch-depth:\s*0[\s\S]*?ref:\s*main/);
+  assert.match(workflow, /name: Figer la base publique de cette tentative[\s\S]*?id: public_base[\s\S]*?commit=\$\(git rev-parse HEAD\)/);
   assert.match(workflow, /validated_dir="\$\(mktemp -d\)"/);
   assert.match(workflow, /base_dir="\$\(mktemp -d\)"/);
-  assert.match(workflow, /git show "\$GITHUB_SHA:\$file" > "\$base_dir\/\$file"/);
+  assert.match(workflow, /BASE_COMMIT:\s*\$\{\{ steps\.public_base\.outputs\.commit \}\}/);
+  assert.match(workflow, /git show "\$BASE_COMMIT:\$file" > "\$base_dir\/\$file"/);
   assert.match(workflow, /for attempt in 1 2 3; do[\s\S]*?git fetch origin main/);
   assert.match(workflow, /git worktree add --detach "\$publish_dir" origin\/main/);
   assert.match(workflow, /publication-selection\.mjs "\$base_dir" "\$validated_dir" "\$publish_dir"/);
@@ -90,6 +93,9 @@ test("la publication eSupport repart toujours de la branche publique la plus ré
   assert.match(workflow, /publication eSupport reste en conflit après trois reprises/);
   assert.match(workflow, /proofDirectory = path\.join\(process\.env\.GITHUB_WORKSPACE, "\.estaff-publication-proof"\)/);
   assert.match(workflow, /Buffer\.from\(await response\.arrayBuffer\(\)\)/);
+  assert.match(workflow, /attempt <= 90/);
+  assert.match(workflow, /après quinze minutes/);
+  assert.match(workflow, /Demander la reconstruction de la version publique[\s\S]*?repos\/\$\{GITHUB_REPOSITORY\}\/pages\/builds/);
   assert.doesNotMatch(workflow, /<horodatage>/);
 });
 
@@ -117,11 +123,12 @@ test("la fraîcheur est contrôlée après la reconstruction éventuelle", () =>
   assert.match(workflow, /surveillance-fraicheur:[\s\S]*?needs:\s*chaine-esupport[\s\S]*?if:\s*\$\{\{ always\(\) \}\}/);
 });
 
-test("un premier échec déclenche une seule reprise autonome et ciblée", () => {
+test("un premier échec relance une seule fois les tâches en échec depuis le dernier main", () => {
   assert.match(recoveryWorkflow, /workflows:\s*\["Contrôle quotidien eSupport"\]/);
   assert.match(recoveryWorkflow, /conclusion == 'failure'/);
   assert.match(recoveryWorkflow, /run_attempt == 1/);
   assert.match(recoveryWorkflow, /reRunWorkflowFailedJobs/);
+  assert.doesNotMatch(recoveryWorkflow, /createWorkflowDispatch|event != 'workflow_dispatch'/);
   assert.match(recoveryWorkflow, /permissions:\s*\{\}/);
   assert.match(recoveryWorkflow, /relance-limitee:[\s\S]*?permissions:[\s\S]*?actions:\s*write/);
   assert.doesNotMatch(recoveryWorkflow, /contents:\s*write|pages:\s*write|id-token:\s*write/);

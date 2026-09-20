@@ -68,6 +68,11 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          ref: main
+
+      - name: Figer la base publique de cette tentative
+        id: public_base
+        run: echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Déterminer la mission eSupport
         id: mission
@@ -209,6 +214,8 @@ jobs:
       - name: Véronique publie la synchronisation validée
         id: publish_data
         if: steps.publication.outputs.changed == 'true'
+        env:
+          BASE_COMMIT: ${{ steps.public_base.outputs.commit }}
         run: |
           validated_dir="$(mktemp -d)"
           base_dir="$(mktemp -d)"
@@ -225,7 +232,7 @@ jobs:
           mkdir -p "$proof_dir"
           cp player-secondary-data.js team-data.js pantheon-data.js "$validated_dir/"
           for file in player-secondary-data.js team-data.js pantheon-data.js; do
-            git show "$GITHUB_SHA:$file" > "$base_dir/$file"
+            git show "$BASE_COMMIT:$file" > "$base_dir/$file"
           done
           for attempt in 1 2 3; do
             git fetch origin main
@@ -299,7 +306,7 @@ jobs:
               const bytes = fs.readFileSync(path.join(proofDirectory, file));
               return {file, fingerprint:fingerprint(bytes)};
             });
-            for (let attempt = 1; attempt <= 18; attempt += 1) {
+            for (let attempt = 1; attempt <= 90; attempt += 1) {
               const checks = await Promise.all(expected.map(async ({file, fingerprint:expectedFingerprint}) => {
                 const url = `https://lykosfutsalclub-cmd.github.io/performance-hub/${file}`;
                 const response = await fetch(`${url}?validation=${Date.now()}`, {cache:"no-store"});
@@ -309,7 +316,7 @@ jobs:
               if (checks.every(Boolean)) return;
               await new Promise(resolve => setTimeout(resolve, 10000));
             }
-            throw new Error("La version publique n’a pas confirmé les trois espaces de données dans le délai prévu.");
+            throw new Error("La version publique n’a pas confirmé les trois espaces de données après quinze minutes.");
 
       - name: Lancer le contrôle privé ou le rapport prévu
         id: private_control
@@ -448,7 +455,7 @@ jobs:
         env:
           SYNC_SLOT: ${{ steps.mission.outputs.proof_slot }}
           PUBLISHED_COMMIT: ${{ steps.publish_data.outputs.commit }}
-          BASE_COMMIT: ${{ github.sha }}
+          BASE_COMMIT: ${{ steps.public_base.outputs.commit }}
         run: |
           if [[ ! "$SYNC_SLOT" =~ ^sporteasy-sync:[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
             echo "Clé d’échéance SportEasy invalide."

@@ -120,16 +120,14 @@ test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
 });
 
 test("une échéance manquée reste due jusqu’à sa preuve complète, sans secret persistant", () => {
-  assert.match(workflow, /git["'],\s*\["tag", "--list", "estaff-sync-\*\/\*"\]/);
+  assert.match(workflow, /git["'],\s*\["tag", "--list", "estaff-sync-proof\/\*"\]/);
   assert.match(workflow, /decision\.catchUp/);
   assert.match(workflow, /core\.setOutput\("proof_slot", decision\.proofSlot \|\| ""\)/);
   assert.match(workflow, /name: Sceller l’échéance SportEasy entièrement exécutée/);
   assert.match(workflow, /if: \$\{\{ steps\.mission\.outputs\.proof_slot != '' && success\(\) \}\}/);
   assert.match(workflow, /git tag "\$proof_tag"/);
   assert.match(workflow, /git push origin "refs\/tags\/\$proof_tag"/);
-  assert.match(workflow, /name: Suspendre l’échéance après deux échecs/);
-  assert.match(workflow, /failure\(\) && steps\.mission\.outputs\.proof_slot != '' && github\.run_attempt > 1/);
-  assert.match(workflow, /git push origin "refs\/tags\/\$suspension_tag"/);
+  assert.doesNotMatch(workflow, /estaff-sync-suspended|Suspendre l’échéance/);
   assert.doesNotMatch(workflow, /SYNC_PROOF_TOKEN|SYNC_STATE_SECRET/);
 
   const proof = workflow.indexOf("name: Sceller l’échéance SportEasy entièrement exécutée");

@@ -104,7 +104,6 @@ export function determineScheduleMission({
   observedAt = new Date(),
   individualPublicationAuthorized = false,
   completedSyncSlots = [],
-  suspendedSyncSlots = [],
 } = {}) {
   const isManual = eventName === "workflow_dispatch";
   const isPush = eventName === "push";
@@ -123,16 +122,8 @@ export function determineScheduleMission({
       ? completedSyncSlots.filter((slot) => /^sporteasy-sync:\d{4}-\d{2}-\d{2}$/.test(slot))
       : [],
   );
-  const suspendedSlots = new Set(
-    Array.isArray(suspendedSyncSlots)
-      ? suspendedSyncSlots.filter((slot) => /^sporteasy-sync:\d{4}-\d{2}-\d{2}$/.test(slot))
-      : [],
-  );
   const alreadyCompleted = candidateSyncKey ? completed.has(candidateSyncKey) : false;
-  const suspended = candidateSyncKey
-    ? suspendedSlots.has(candidateSyncKey) && !isManual && !requestedSyncPush
-    : false;
-  const syncSlot = alreadyCompleted || suspended ? null : candidateSyncSlot;
+  const syncSlot = alreadyCompleted ? null : candidateSyncSlot;
   const oscarSlot = OSCAR_BRIEF_CRONS.includes(scheduledCron)
     ? resolveParisSlot(scheduledCron, {hour: 11, minute: 30, observedAt})
     : null;
@@ -171,7 +162,6 @@ export function determineScheduleMission({
     nominalAt: candidateSyncSlot?.nominalAt || oscarSlot?.nominalAt || null,
     catchUp: Boolean(syncSlot && recoverySyncSlot),
     alreadyCompleted,
-    suspended,
     proofSlot: sync ? syncSlotKey(proofSlot) : null,
   };
 }

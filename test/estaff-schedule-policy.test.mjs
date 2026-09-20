@@ -132,30 +132,21 @@ test("aucune preuve n’est promise lorsque la synchronisation nominative est in
   assert.equal(denied.proofSlot,null);
 });
 
-test("deux échecs suspendent les relances automatiques sans effacer l’échéance", () => {
-  const suspendedSyncSlots = ["sporteasy-sync:2026-09-20"];
-  const automatic = determineScheduleMission({
-    ...authorized,
-    suspendedSyncSlots,
-    eventName:"schedule",
-    scheduledCron:"37 * * * *",
-    observedAt:"2026-09-20T12:37:00Z",
-  });
-  const explicit = determineScheduleMission({
-    ...authorized,
-    suspendedSyncSlots,
-    eventName:"push",
-    commitMessage:"[esupport-sync] correctif validé",
-    observedAt:"2026-09-20T12:40:00Z",
-  });
+test("un échec ne bloque pas le prochain contrôle horaire tant que la preuve manque", () => {
+  for (const observedAt of ["2026-09-20T12:37:00Z", "2026-09-20T13:37:00Z"]) {
+    const hourlyControl = determineScheduleMission({
+      ...authorized,
+      eventName:"schedule",
+      scheduledCron:"37 * * * *",
+      observedAt,
+    });
 
-  assert.equal(automatic.sync,false);
-  assert.equal(automatic.active,false);
-  assert.equal(automatic.suspended,true);
-  assert.equal(automatic.slot,"sporteasy-sync:2026-09-20");
-  assert.equal(explicit.sync,true);
-  assert.equal(explicit.suspended,false);
-  assert.equal(explicit.proofSlot,"sporteasy-sync:2026-09-20");
+    assert.equal(hourlyControl.sync,true);
+    assert.equal(hourlyControl.active,true);
+    assert.equal(hourlyControl.catchUp,true);
+    assert.equal(hourlyControl.slot,"sporteasy-sync:2026-09-20");
+    assert.equal(hourlyControl.proofSlot,"sporteasy-sync:2026-09-20");
+  }
 });
 
 test("le rattrapage sélectionne une seule échéance à 10 h en été comme en hiver", () => {

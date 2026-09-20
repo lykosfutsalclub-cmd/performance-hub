@@ -119,6 +119,27 @@ test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
   assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
 });
 
+test("une échéance manquée reste due jusqu’à sa preuve complète, sans secret persistant", () => {
+  assert.match(workflow, /git["'],\s*\["tag", "--list", "estaff-sync-\*\/\*"\]/);
+  assert.match(workflow, /decision\.catchUp/);
+  assert.match(workflow, /core\.setOutput\("proof_slot", decision\.proofSlot \|\| ""\)/);
+  assert.match(workflow, /name: Sceller l’échéance SportEasy entièrement exécutée/);
+  assert.match(workflow, /if: \$\{\{ steps\.mission\.outputs\.proof_slot != '' && success\(\) \}\}/);
+  assert.match(workflow, /git tag "\$proof_tag"/);
+  assert.match(workflow, /git push origin "refs\/tags\/\$proof_tag"/);
+  assert.match(workflow, /name: Suspendre l’échéance après deux échecs/);
+  assert.match(workflow, /failure\(\) && steps\.mission\.outputs\.proof_slot != '' && github\.run_attempt > 1/);
+  assert.match(workflow, /git push origin "refs\/tags\/\$suspension_tag"/);
+  assert.doesNotMatch(workflow, /SYNC_PROOF_TOKEN|SYNC_STATE_SECRET/);
+
+  const proof = workflow.indexOf("name: Sceller l’échéance SportEasy entièrement exécutée");
+  const quality = workflow.indexOf("name: Véronique contrôle et autorise la publication");
+  const publicCheck = workflow.indexOf("name: Attendre les données validées sur le site public");
+  const privateCheck = workflow.indexOf("name: Lancer le contrôle privé ou le rapport prévu");
+  const operationProof = workflow.indexOf("name: Enregistrer séparément les cinq preuves d’exécution");
+  assert.ok(proof > quality && proof > publicCheck && proof > privateCheck && proof > operationProof);
+});
+
 test("Oscar publie à 11 h 30 à Paris sans brief pendant le contrôle de 10 h", () => {
   assert.match(workflow, /cron:\s*"30 9 \* \* \*"/);
   assert.match(workflow, /cron:\s*"30 10 \* \* \*"/);

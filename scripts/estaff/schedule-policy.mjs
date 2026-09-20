@@ -11,6 +11,7 @@ export const OSCAR_BRIEF_CRONS = Object.freeze([
 ]);
 
 export const ESUPPORT_DIGEST_CRON = "17 6 * * 1,4";
+export const HOURLY_RECOVERY_CRON = "37 * * * *";
 
 const parisFormatter = new Intl.DateTimeFormat("en-CA", {
   timeZone: PARIS_TIME_ZONE,
@@ -79,20 +80,59 @@ export function resolveParisSlot(cron, {hour, minute = null, observedAt = new Da
   };
 }
 
+/**
+ * Retrouve la dernière échéance SportEasy qui aurait dû commencer avant
+ * l'instant observé. Une seule des deux expressions UTC correspond à 10 h à
+ * Paris, y compris lors des changements d'heure.
+ */
+export function latestSportEasySyncSlot(observedAt = new Date()) {
+  const candidates = SPORTEASY_SYNC_CRONS
+    .map((cron) => resolveParisSlot(cron, {hour: 10, observedAt}))
+    .filter(Boolean)
+    .sort((left, right) => Date.parse(right.nominalAt) - Date.parse(left.nominalAt));
+  return candidates[0] ?? null;
+}
+
+function syncSlotKey(slot) {
+  return slot ? `sporteasy-sync:${slot.parisDate}` : null;
+}
+
 export function determineScheduleMission({
   eventName,
   commitMessage = "",
   scheduledCron = "",
   observedAt = new Date(),
   individualPublicationAuthorized = false,
+  completedSyncSlots = [],
+  suspendedSyncSlots = [],
 } = {}) {
   const isManual = eventName === "workflow_dispatch";
   const isPush = eventName === "push";
   const requestedSyncPush = isPush && /\[esupport-sync\]/i.test(commitMessage);
 
-  const syncSlot = SPORTEASY_SYNC_CRONS.includes(scheduledCron)
+  const scheduledSyncSlot = SPORTEASY_SYNC_CRONS.includes(scheduledCron)
     ? resolveParisSlot(scheduledCron, {hour: 10, observedAt})
     : null;
+  const recoverySyncSlot = scheduledCron === HOURLY_RECOVERY_CRON
+    ? latestSportEasySyncSlot(observedAt)
+    : null;
+  const candidateSyncSlot = scheduledSyncSlot ?? recoverySyncSlot;
+  const candidateSyncKey = syncSlotKey(candidateSyncSlot);
+  const completed = new Set(
+    Array.isArray(completedSyncSlots)
+      ? completedSyncSlots.filter((slot) => /^sporteasy-sync:\d{4}-\d{2}-\d{2}$/.test(slot))
+      : [],
+  );
+  const suspendedSlots = new Set(
+    Array.isArray(suspendedSyncSlots)
+      ? suspendedSyncSlots.filter((slot) => /^sporteasy-sync:\d{4}-\d{2}-\d{2}$/.test(slot))
+      : [],
+  );
+  const alreadyCompleted = candidateSyncKey ? completed.has(candidateSyncKey) : false;
+  const suspended = candidateSyncKey
+    ? suspendedSlots.has(candidateSyncKey) && !isManual && !requestedSyncPush
+    : false;
+  const syncSlot = alreadyCompleted || suspended ? null : candidateSyncSlot;
   const oscarSlot = OSCAR_BRIEF_CRONS.includes(scheduledCron)
     ? resolveParisSlot(scheduledCron, {hour: 11, minute: 30, observedAt})
     : null;
@@ -100,17 +140,25 @@ export function determineScheduleMission({
   const daily = Boolean(syncSlot);
   const oscarWindow = Boolean(oscarSlot);
   const syncRequested = isManual || daily || requestedSyncPush;
+  const latestDueSlot = latestSportEasySyncSlot(observedAt);
+  const latestDueKey = syncSlotKey(latestDueSlot);
+  const proofSlot = syncSlot ?? (
+    (isManual || requestedSyncPush) && latestDueKey && !completed.has(latestDueKey)
+      ? latestDueSlot
+      : null
+  );
   const active = isManual || isPush || daily || digest;
   const mode = digest ? "digest" : requestedSyncPush || isManual ? "manual" : isPush ? "release" : "daily";
+  const sync = syncRequested && individualPublicationAuthorized;
 
   return {
     active,
     oscar: isManual || oscarWindow,
-    sync: syncRequested && individualPublicationAuthorized,
+    sync,
     syncRequested,
     mode,
-    slot: syncSlot
-      ? `sporteasy-sync:${syncSlot.parisDate}`
+    slot: candidateSyncKey
+      ? candidateSyncKey
       : oscarSlot
         ? `oscar-brief:${oscarSlot.parisDate}`
         : digest
@@ -120,6 +168,10 @@ export function determineScheduleMission({
             : isPush
               ? "release"
               : "none",
-    nominalAt: syncSlot?.nominalAt || oscarSlot?.nominalAt || null,
+    nominalAt: candidateSyncSlot?.nominalAt || oscarSlot?.nominalAt || null,
+    catchUp: Boolean(syncSlot && recoverySyncSlot),
+    alreadyCompleted,
+    suspended,
+    proofSlot: sync ? syncSlotKey(proofSlot) : null,
   };
 }

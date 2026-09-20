@@ -38,6 +38,7 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   }
   const page = await readFile(new URL("estaff/index.html", root), "utf8");
   const client = await readFile(new URL("estaff/assets/notifications.js", root), "utf8");
+  const styles = await readFile(new URL("estaff/assets/notifications.css", root), "utf8");
   const serviceWorker = await readFile(new URL("estaff/sw.js", root), "utf8");
   assert.match(page, /manifest\.webmanifest/);
   assert.match(page, /notifications\.js/);
@@ -46,6 +47,12 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   assert.match(client, /lykos:estaff-cloud-session/);
   assert.match(client, /sameApplicationServerKey/);
   assert.match(client, /section\[aria-label="Synchronisation SportEasy"\]/);
+  assert.match(client, /let button = document\.querySelector\("\.estaff-notify-button"\)/);
+  assert.match(client, /if \(button\.parentElement !== bar\) bar\.append\(button\)/);
+  assert.match(styles, /\.lykos-sporteasy-sync \.estaff-notify-button\{width:auto;min-width:max-content\}/);
+  assert.match(styles, /\.lykos-sporteasy-sync \.estaff-notify-button\{width:100%;min-width:0\}/);
+  assert.match(page, /notifications\.css\?v=20260920-single-control/);
+  assert.match(page, /notifications\.js\?v=20260920-single-control/);
   assert.doesNotMatch(client, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
   assert.match(serviceWorker, /showNotification/);
 });

@@ -2,4 +2,5 @@
 .estaff-notify-button[data-state="active"]{border-color:rgba(64,201,132,.7);background:rgba(31,133,88,.22);color:#8ef0b9}
 .estaff-notify-button[data-state="blocked"],.estaff-notify-button[data-state="error"]{border-color:#8b6670;color:#e3bbc4}
 .estaff-notify-button:disabled{opacity:.65;cursor:default}
-@media(max-width:640px){.estaff-notify-button{grid-column:1/-1;width:100%}}
+.lykos-sporteasy-sync .estaff-notify-button{width:auto;min-width:max-content}
+@media(max-width:640px){.estaff-notify-button{grid-column:1/-1;width:100%}.lykos-sporteasy-sync .estaff-notify-button{width:100%;min-width:0}}

@@ -130,12 +130,15 @@
   function installButton() {
     const bar = document.querySelector('section[aria-label="Synchronisation SportEasy"]')
       || document.querySelector('section[aria-label="Activité"]');
-    if (!bar || bar.querySelector(".estaff-notify-button")) return;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "estaff-notify-button";
-    button.addEventListener("click", () => toggleNotifications(button));
-    bar.append(button);
+    if (!bar) return;
+    let button = document.querySelector(".estaff-notify-button");
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "estaff-notify-button";
+      button.addEventListener("click", () => toggleNotifications(button));
+    }
+    if (button.parentElement !== bar) bar.append(button);
     void refreshButton();
   }
 

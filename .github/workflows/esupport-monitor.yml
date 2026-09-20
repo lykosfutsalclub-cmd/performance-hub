@@ -8,13 +8,13 @@ on:
     # La vérification reste silencieuse et ne crée aucune mission si une donnée manque.
     - cron: "37 * * * *"
     # Synchronisation quotidienne à 10 h Europe/Paris. Les deux créneaux UTC
-    # couvrent automatiquement l'heure d'été et l'heure d'hiver ; le workflow
-    # ignore celui qui ne correspond pas à 10 h à Paris.
+    # couvrent automatiquement l'heure d'été et l'heure d'hiver. La décision
+    # utilise l'heure nominale du cron : un démarrage GitHub tardif reste dû.
     - cron: "7 8 * * *"
     - cron: "7 9 * * *"
     # Rapport quotidien d'Oscar à 11 h 30 Europe/Paris. Les deux créneaux UTC
-    # couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou
-    # ignore celui qui ne correspond pas réellement à 11 h à Paris.
+    # couvrent automatiquement l'heure d'été et l'heure d'hiver ; le créneau
+    # nominal empêche le doublon même lorsque GitHub démarre en retard.
     - cron: "30 9 * * *"
     - cron: "30 10 * * *"
     # Rapport de synthèse chaque lundi et jeudi, autour de 07 h à Paris.
@@ -38,7 +38,7 @@ jobs:
       - name: Vérifier les quatre sources sans produire de rapport incomplet
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          LEONARD_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/leonard-analysis
+          LEONARD_SERVICE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/leonard-analysis
         with:
           script: |
             const identity = await core.getIDToken("lykos-estaff-esupport");
@@ -64,6 +64,11 @@ jobs:
       id-token: write
       pages: write
     steps:
+      - name: Récupérer le Performance Hub
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
       - name: Déterminer la mission eSupport
         id: mission
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -71,36 +76,26 @@ jobs:
           PUBLIC_INDIVIDUAL_DATA_AUTHORIZED: ${{ vars.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED }}
         with:
           script: |
-            const isManual = context.eventName === "workflow_dispatch";
-            const isPush = context.eventName === "push";
-            const requestedSyncPush = isPush && /\[esupport-sync\]/i.test(context.payload.head_commit?.message || "");
-            const scheduledCron = context.payload.schedule || "";
-            const parisHour = Number(new Intl.DateTimeFormat("fr-FR", {
-              timeZone: "Europe/Paris",
-              hour: "2-digit",
-              hour12: false,
-            }).format(new Date()));
-            const dailyWindow = ["7 8 * * *", "7 9 * * *"].includes(scheduledCron);
-            const daily = dailyWindow && parisHour === 10;
-            const oscarWindow = ["30 9 * * *", "30 10 * * *"].includes(scheduledCron) && parisHour === 11;
-            const digest = scheduledCron === "17 6 * * 1,4";
-            const syncRequested = isManual || daily || requestedSyncPush;
-            const individualPublicationAuthorized = process.env.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED === "verified";
-            const active = isManual || isPush || daily || digest;
-            core.setOutput("active", String(active));
-            core.setOutput("oscar", String(isManual || oscarWindow));
-            core.setOutput("sync", String(syncRequested && individualPublicationAuthorized));
-            core.setOutput("mode", digest ? "digest" : requestedSyncPush || isManual ? "manual" : isPush ? "release" : "daily");
-            if (!active && !oscarWindow) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
-            if (syncRequested && !individualPublicationAuthorized) {
+            const {pathToFileURL} = require("url");
+            const policyUrl = pathToFileURL(`${process.env.GITHUB_WORKSPACE}/scripts/estaff/schedule-policy.mjs`).href;
+            const {determineScheduleMission} = await import(policyUrl);
+            const decision = determineScheduleMission({
+              eventName: context.eventName,
+              commitMessage: context.payload.head_commit?.message || "",
+              scheduledCron: context.payload.schedule || "",
+              observedAt: new Date(),
+              individualPublicationAuthorized: process.env.PUBLIC_INDIVIDUAL_DATA_AUTHORIZED === "verified",
+            });
+            core.setOutput("active", String(decision.active));
+            core.setOutput("oscar", String(decision.oscar));
+            core.setOutput("sync", String(decision.sync));
+            core.setOutput("mode", decision.mode);
+            core.setOutput("slot", decision.slot);
+            if (decision.nominalAt) core.notice(`Échéance ${decision.slot}, planifiée ${decision.nominalAt}, conservée malgré l’heure réelle de démarrage.`);
+            if (!decision.active && !decision.oscar) core.notice("Ce déclenchement horaire concerne uniquement la porte de Léonard.");
+            if (decision.syncRequested && !decision.sync) {
               core.warning("Synchronisation nominative bloquée : le registre privé des autorisations n’est pas confirmé.");
             }
-
-      - name: Récupérer le Performance Hub
-        if: steps.mission.outputs.active == 'true'
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          fetch-depth: 0
 
       - name: Préparer Node.js
         if: steps.mission.outputs.sync == 'true'
@@ -127,7 +122,7 @@ jobs:
         id: sync_players
         if: steps.mission.outputs.sync == 'true'
         env:
-          SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
+          SPORTEASY_API_BASE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/sporteasy-read/
           SPORTEASY_TEAM_ID: "1080887"
           SPORTEASY_REQUEST_TIMEOUT_MS: "30000"
         run: |
@@ -149,7 +144,7 @@ jobs:
         id: sync_matches
         if: steps.mission.outputs.sync == 'true'
         env:
-          SPORTEASY_API_BASE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/
+          SPORTEASY_API_BASE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/sporteasy-read/
           SPORTEASY_TEAM_ID: "1080887"
           SPORTEASY_REQUEST_TIMEOUT_MS: "30000"
         run: |
@@ -243,7 +238,7 @@ jobs:
         if: steps.mission.outputs.active == 'true' || steps.mission.outputs.oscar == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          ESTAFF_SERVICE_URL: https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/esupport-check
+          ESTAFF_SERVICE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/esupport-check
           ESTAFF_IMPORT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/esupport-import
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
           ESTAFF_CONTROL: ${{ steps.mission.outputs.active }}

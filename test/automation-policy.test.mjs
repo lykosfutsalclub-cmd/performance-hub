@@ -5,6 +5,7 @@ import { access, readFile } from "node:fs/promises";
 const root = new URL("../", import.meta.url);
 const workflow = await readFile(new URL(".github/workflows/esupport-monitor.yml", root), "utf8");
 const recoveryWorkflow = await readFile(new URL(".github/workflows/esupport-autorecovery.yml", root), "utf8");
+const sportEasyConfig = await readFile(new URL("scripts/sporteasy/lib/config.mjs", root), "utf8");
 const packageJson = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
 
 test("les actions GitHub utilisent toutes une révision exacte", () => {
@@ -53,7 +54,7 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   assert.match(styles, /\.lykos-sporteasy-sync \.estaff-notify-button\{width:100%;min-width:0\}/);
   assert.match(page, /notifications\.css\?v=20260920-single-control/);
   assert.match(page, /notifications\.js\?v=20260920-single-control/);
-  assert.doesNotMatch(client, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
+  assert.doesNotMatch(client, /fab-mysterio|chatgpt[.]site/);
   assert.match(serviceWorker, /showNotification/);
 });
 
@@ -63,7 +64,7 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
   assert.match(workflow, /core\.setFailed\(`ALERTE fraîcheur/);
   const cloudflareAlerts = workflow.match(/https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/mobile-alert/g) || [];
   assert.equal(cloudflareAlerts.length,2);
-  assert.doesNotMatch(workflow, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site\/api\/estaff\/worker\/mobile-alert/);
+  assert.doesNotMatch(workflow, /fab-mysterio|chatgpt[.]site/);
 });
 
 test("le rapport eSupport vérifié est transféré vers Cloudflare avant son verdict", () => {
@@ -73,6 +74,26 @@ test("le rapport eSupport vérifié est transféré vers Cloudflare avant son ve
   const reportImport = workflow.indexOf("const importResponse = await fetch(process.env.ESTAFF_IMPORT_URL");
   const reportVerdict = workflow.indexOf('if (report.status !== "operational")');
   assert.ok(reportRead >= 0 && reportImport > reportRead && reportVerdict > reportImport);
+});
+
+test("toutes les routes privées de l’automatisation passent par l’unique Worker Cloudflare", () => {
+  const workerOrigin = "https://lykos-estaff-service.lykosfutsalclub.workers.dev";
+  const routeUrls = [...workflow.matchAll(/https:\/\/[^\s"']+\/api\/estaff\/worker\/[A-Za-z0-9./-]+/g)]
+    .map((match) => match[0]);
+
+  assert.ok(routeUrls.length >= 8);
+  assert.ok(routeUrls.every((url) => url.startsWith(`${workerOrigin}/api/estaff/worker/`)));
+  assert.match(workflow, new RegExp(`${workerOrigin}/api/estaff/worker/leonard-analysis`.replaceAll(".", "\\.")));
+  assert.match(workflow, new RegExp(`${workerOrigin}/api/estaff/worker/esupport-check`.replaceAll(".", "\\.")));
+  assert.equal(
+    workflow.match(/https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/sporteasy-read\//g)?.length,
+    2,
+  );
+  assert.match(
+    sportEasyConfig,
+    /const ESUPPORT_PROXY_URL = "https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/sporteasy-read\/";/,
+  );
+  assert.doesNotMatch(`${workflow}\n${sportEasyConfig}`, /fab-mysterio|chatgpt[.]site/);
 });
 
 test("la fraîcheur est contrôlée après la reconstruction éventuelle", () => {
@@ -92,16 +113,16 @@ test("un premier échec déclenche une seule reprise autonome et ciblée", () =>
 test("la synchronisation quotidienne vise 10 h à Paris toute l'année", () => {
   assert.match(workflow, /cron:\s*"7 8 \* \* \*"/);
   assert.match(workflow, /cron:\s*"7 9 \* \* \*"/);
-  assert.match(workflow, /timeZone:\s*"Europe\/Paris"/);
-  assert.match(workflow, /dailyWindow && parisHour === 10/);
+  assert.match(workflow, /scripts\/estaff\/schedule-policy\.mjs/);
+  assert.match(workflow, /determineScheduleMission/);
+  assert.doesNotMatch(workflow, /parisHour === 10/);
   assert.doesNotMatch(workflow, /cron:\s*"7 23 \* \* \*"/);
 });
 
 test("Oscar publie à 11 h 30 à Paris sans brief pendant le contrôle de 10 h", () => {
   assert.match(workflow, /cron:\s*"30 9 \* \* \*"/);
   assert.match(workflow, /cron:\s*"30 10 \* \* \*"/);
-  assert.match(workflow, /const oscarWindow = \["30 9 \* \* \*", "30 10 \* \* \*"\]\.includes\(scheduledCron\) && parisHour === 11/);
-  assert.match(workflow, /core\.setOutput\("oscar", String\(isManual \|\| oscarWindow\)\)/);
+  assert.match(workflow, /core\.setOutput\("oscar", String\(decision\.oscar\)\)/);
   assert.match(workflow, /const oscarDue = process\.env\.ESTAFF_OSCAR === "true"/);
   assert.match(workflow, /if \(oscarDue\) \{[\s\S]*?"oscar-brief"/);
   assert.doesNotMatch(workflow, /if \(mode === "daily" \|\| mode === "manual"\)/);
@@ -187,7 +208,7 @@ test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session", \{detail:\{token:payload\.token\}\}\)/);
   assert.match(supervision, /new CustomEvent\("lykos:estaff-cloud-session", \{detail:\{token:""\}\}\)/);
   assert.doesNotMatch(supervision, /CADENCE_API|cadenceToken|connectCadence|loadCadenceReport|cadenceState/);
-  assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /performance-hub-lykos-fc\.fab-mysterio\.chatgpt\.site/);
+  assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /fab-mysterio|chatgpt[.]site/);
   assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
   assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-single-api/);
   assert.match(page, /estaff\.js\?v=20260920-cloudflare-single-api/);

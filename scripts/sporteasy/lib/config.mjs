@@ -1,5 +1,5 @@
 const PRODUCTION_API_ORIGIN = "https://api.sporteasy.net";
-const ESUPPORT_PROXY_URL = "https://performance-hub-lykos-fc.fab-mysterio.chatgpt.site/api/estaff/worker/sporteasy-read/";
+const ESUPPORT_PROXY_URL = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/sporteasy-read/";
 
 export class ConfigurationError extends Error {
   constructor(message) {

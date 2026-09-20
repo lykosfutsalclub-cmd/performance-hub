@@ -1,6 +1,6 @@
 # Reconstruction, tests et publication du Performance Hub
 
-Version opérationnelle : 19 septembre 2026
+Version opérationnelle : 20 septembre 2026
 
 ## Principe
 
@@ -23,7 +23,7 @@ L’automatisation `.github/workflows/esupport-monitor.yml` suit cet ordre :
 
 1. vérifier que la publication individuelle est autorisée ;
 2. recopier les graines privées nécessaires dans l’espace temporaire de l’automatisation ;
-3. obtenir une identité GitHub temporaire pour le relais SportEasy en lecture seule ;
+3. obtenir une identité GitHub temporaire pour le relais Cloudflare SportEasy en lecture seule ;
 4. synchroniser l’effectif, les sources statistiques, les détails, agrégats, matchs, présences et comptes rendus ;
 5. reconstruire le référentiel statistique, le référentiel des matchs et les statistiques secondaires ;
 6. exécuter toute la suite de tests avec `node scripts/verify-publication-tests.mjs` ;
@@ -37,6 +37,21 @@ L’automatisation `.github/workflows/esupport-monitor.yml` suit cet ordre :
 14. relire les trois fichiers sur l’adresse publique et confirmer leurs dates exactes.
 
 Toute commande en échec arrête la chaîne. Les fichiers générés ne sont alors ni installés ni publiés.
+
+## Service privé Cloudflare
+
+Le relais privé unique de l’automatisation est le Worker Cloudflare `https://lykos-estaff-service.lykosfutsalclub.workers.dev`. Un Worker est un petit service exécuté dans le cloud : il reste disponible lorsque l’ordinateur local est éteint. Il ne constitue pas un second site public ; le Performance Hub GitHub Pages demeure l’unique interface publique.
+
+GitHub Actions présente au Worker une identité OIDC temporaire — un justificatif signé, limité à l’exécution en cours et qui n’est pas un mot de passe permanent. Le Worker accepte alors uniquement les routes machine prévues :
+
+- lecture SportEasy : `/api/estaff/worker/sporteasy-read/` ;
+- contrôle eSupport : `/api/estaff/worker/esupport-check` ;
+- rapport d’Oscar : `/api/estaff/worker/oscar-brief` ;
+- analyse de Giannis : `/api/estaff/worker/giannis-analysis` ;
+- porte de complétude de Léonard : `/api/estaff/worker/leonard-analysis` ;
+- preuves d’exécution et alertes : les routes Cloudflare `operation-state` et `mobile-alert`.
+
+La chaîne GitHub ne dépend plus d’aucune route de l’ancien hébergement Sites. Les données SportEasy restent lues par requêtes `GET`, le cookie de session demeure dans le service privé et aucune réponse du relais ne peut renvoyer un cookie au dépôt public.
 
 ## Tests obligatoires
 
@@ -62,8 +77,9 @@ Oscar peut également déclencher cette synchronisation immédiatement, sans att
 - Après un premier échec du « Contrôle quotidien eSupport », `.github/workflows/esupport-autorecovery.yml` relance automatiquement et une seule fois les seules tâches en échec. Cette reprise couvre les incidents temporaires sans rejouer inutilement les tâches déjà réussies.
 - Si la seconde tentative échoue, aucune troisième tentative n’est lancée : l’échec persistant reste visible et nécessite une analyse. Cette limite empêche une boucle infinie et ne contourne jamais les tests, le GO de Véronique, la confidentialité ou la sécurité.
 - Le contrôle de fraîcheur relit chaque heure les trois jeux de données publics. Il échoue si l’un d’eux est inaccessible, non daté ou vieux de plus de 36 heures.
-- La synchronisation SportEasy complète s'exécute chaque jour à **10 h, heure de Paris**. Deux créneaux UTC couvrent automatiquement l'heure d'été et l'heure d'hiver ; un garde-fou n'autorise que l'exécution correspondant réellement à 10 h à Paris.
-- Le contrôle eSupport de 10 h ne publie plus le rapport quotidien d'Oscar. Ce rapport dispose de son propre créneau à **11 h 30, heure de Paris** ; deux créneaux UTC couvrent l'heure d'été et l'heure d'hiver, avec le même garde-fou contre le doublon. Un lancement manuel peut toujours demander immédiatement le contrôle puis le rapport.
+- La synchronisation SportEasy complète s'exécute chaque jour à **10 h, heure de Paris**. Deux créneaux UTC couvrent automatiquement l'heure d'été et l'heure d'hiver. Le moteur reconstitue l'heure nominale portée par le cron : si GitHub démarre le travail en retard, l'échéance reste due et s'exécute ; le second créneau UTC reste ignoré pour éviter un doublon.
+- Le contrôle eSupport de 10 h ne publie plus le rapport quotidien d'Oscar. Ce rapport dispose de son propre créneau à **11 h 30, heure de Paris** et applique la même règle de rattrapage sans doublon. Un lancement manuel peut toujours demander immédiatement le contrôle puis le rapport.
+- La clé d'échéance contient la nature du travail et la date de Paris, par exemple `sporteasy-sync:2026-09-20`. Elle est inscrite dans les traces GitHub pour distinguer l'heure planifiée de l'heure réelle de démarrage. La reprise unique après échec reste autorisée ; elle ne crée pas une nouvelle échéance.
 - Le planificateur privé eStaff est distinct de GitHub Actions : un Cron Trigger Cloudflare le réveille toutes les cinq minutes, puis le registre `3.13.0` détermine quels agents sont réellement dus en heure de Paris. Ces réveils sont des contrôles de code sans intelligence artificielle.
 - Après validation du code d’accès, l’interface fusionne les récapitulatifs de ce planificateur avec les retours eSupport existants. Cette passerelle ne publie aucun second site et n’enregistre jamais le code dans le navigateur. Le service de cadences applique un quota Cloudflare et un compteur privé persistant ; il reste consultatif et refuse les missions, qui continuent de passer uniquement par le service principal d’Oscar.
 - Les passages sans évolution restent absents des fils visibles mais sont inscrits dans le journal privé. Une analyse de Giannis n’est demandée après synchronisation que lorsque les trois fichiers validés ont réellement changé ; le service vérifie aussi leur empreinte afin d’éviter un doublon.
@@ -87,7 +103,7 @@ Le fichier fixe les permissions par tâche. Aucune permission d’écriture glob
 
 Les fichiers compilés de `estaff/assets/` ne constituent jamais la source officielle. Les sources lisibles de l’interface sont conservées dans `estaff-src/` et les ajouts lisibles dans `estaff/assets/esupport-report.js` et ses feuilles de style. Le service privé, ses tests, ses scripts de construction et le Rulebook sont conservés dans le projet source `estaff-cloud-runtime`.
 
-La version de service correspondant à cette procédure est le commit `768d44fd286b00c715110b6de562db1b02441e3b`, publié comme version technique Sites 76. Une nouvelle version doit conserver le code source, les tests et le script de construction avant de remplacer cette référence.
+Le service privé de référence est désormais le Worker Cloudflare `lykos-estaff-service`. Son code source, ses tests et sa configuration versionnée restent conservés dans `estaff-cloud-runtime` avant chaque déploiement. Aucun hébergement Sites n’est requis par cette procédure.
 
 ## Retour arrière
 

@@ -67,13 +67,30 @@ test("les échecs et les données vieilles de plus de 36 heures déclenchent une
   assert.doesNotMatch(workflow, /fab-mysterio|chatgpt[.]site/);
 });
 
-test("le rapport eSupport vérifié est transféré vers Cloudflare avant son verdict", () => {
-  assert.match(workflow, /ESTAFF_IMPORT_URL:\s*https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev\/api\/estaff\/worker\/esupport-import/);
-  assert.match(workflow, /fetch\(process\.env\.ESTAFF_IMPORT_URL,[\s\S]*?Authorization: `Bearer \$\{identity\}`,[\s\S]*?"Content-Type": "application\/json"[\s\S]*?body: JSON\.stringify\(\{report\}\)/);
+test("le contrôle eSupport Cloudflare enregistre lui-même son rapport avant le verdict", () => {
+  assert.doesNotMatch(workflow, /ESTAFF_IMPORT_URL|\/api\/estaff\/worker\/esupport-import/);
   const reportRead = workflow.indexOf("report = await response.json()");
-  const reportImport = workflow.indexOf("const importResponse = await fetch(process.env.ESTAFF_IMPORT_URL");
+  const reportStored = workflow.indexOf("Rapport eSupport enregistré directement par le Worker Cloudflare.");
   const reportVerdict = workflow.indexOf('if (report.status !== "operational")');
-  assert.ok(reportRead >= 0 && reportImport > reportRead && reportVerdict > reportImport);
+  assert.ok(reportRead >= 0 && reportStored > reportRead && reportVerdict > reportStored);
+});
+
+test("la publication eSupport repart toujours de la branche publique la plus récente", () => {
+  assert.match(workflow, /validated_dir="\$\(mktemp -d\)"/);
+  assert.match(workflow, /base_dir="\$\(mktemp -d\)"/);
+  assert.match(workflow, /git show "\$GITHUB_SHA:\$file" > "\$base_dir\/\$file"/);
+  assert.match(workflow, /for attempt in 1 2 3; do[\s\S]*?git fetch origin main/);
+  assert.match(workflow, /git worktree add --detach "\$publish_dir" origin\/main/);
+  assert.match(workflow, /publication-selection\.mjs "\$base_dir" "\$validated_dir" "\$publish_dir"/);
+  assert.match(workflow, /if \[ "\$selection" = "current" \]/);
+  assert.match(workflow, /cp "\$validated_dir\/player-secondary-data\.js" "\$publish_dir\/player-secondary-data\.js"/);
+  assert.match(workflow, /cd "\$publish_dir" &&[\s\S]*?node scripts\/verify-publication-tests\.mjs &&/);
+  assert.match(workflow, /git commit -m "Synchronisation SportEasy validée par eSupport" &&[\s\S]*?git push origin HEAD:main/);
+  assert.match(workflow, /git push origin HEAD:main/);
+  assert.match(workflow, /publication eSupport reste en conflit après trois reprises/);
+  assert.match(workflow, /proofDirectory = path\.join\(process\.env\.GITHUB_WORKSPACE, "\.estaff-publication-proof"\)/);
+  assert.match(workflow, /Buffer\.from\(await response\.arrayBuffer\(\)\)/);
+  assert.doesNotMatch(workflow, /<horodatage>/);
 });
 
 test("toutes les routes privées de l’automatisation passent par l’unique Worker Cloudflare", () => {
@@ -125,7 +142,10 @@ test("une échéance manquée reste due jusqu’à sa preuve complète, sans sec
   assert.match(workflow, /core\.setOutput\("proof_slot", decision\.proofSlot \|\| ""\)/);
   assert.match(workflow, /name: Sceller l’échéance SportEasy entièrement exécutée/);
   assert.match(workflow, /if: \$\{\{ steps\.mission\.outputs\.proof_slot != '' && success\(\) \}\}/);
-  assert.match(workflow, /git tag "\$proof_tag"/);
+  assert.match(workflow, /PUBLISHED_COMMIT:\s*\$\{\{ steps\.publish_data\.outputs\.commit \}\}/);
+  assert.match(workflow, /proof_commit="\$\{PUBLISHED_COMMIT:-\$BASE_COMMIT\}"/);
+  assert.match(workflow, /git fetch origin main --tags/);
+  assert.match(workflow, /git tag "\$proof_tag" "\$proof_commit"/);
   assert.match(workflow, /git push origin "refs\/tags\/\$proof_tag"/);
   assert.doesNotMatch(workflow, /estaff-sync-suspended|Suspendre l’échéance/);
   assert.doesNotMatch(workflow, /SYNC_PROOF_TOKEN|SYNC_STATE_SECRET/);

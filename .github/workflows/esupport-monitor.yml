@@ -210,11 +210,71 @@ jobs:
         id: publish_data
         if: steps.publication.outputs.changed == 'true'
         run: |
-          git config user.name "eSupport Lykos"
-          git config user.email "lykosfutsalclub@gmail.com"
-          git add -- player-secondary-data.js team-data.js pantheon-data.js
-          git commit -m "Synchronisation SportEasy validée par eSupport"
-          git push origin HEAD:main
+          validated_dir="$(mktemp -d)"
+          base_dir="$(mktemp -d)"
+          proof_dir="$GITHUB_WORKSPACE/.estaff-publication-proof"
+          publish_dir=""
+          cleanup_publication() {
+            if [ -n "$publish_dir" ]; then
+              git worktree remove --force "$publish_dir" >/dev/null 2>&1 || true
+            fi
+            rm -rf "$validated_dir" "$base_dir"
+          }
+          trap cleanup_publication EXIT
+          rm -rf "$proof_dir"
+          mkdir -p "$proof_dir"
+          cp player-secondary-data.js team-data.js pantheon-data.js "$validated_dir/"
+          for file in player-secondary-data.js team-data.js pantheon-data.js; do
+            git show "$GITHUB_SHA:$file" > "$base_dir/$file"
+          done
+          for attempt in 1 2 3; do
+            git fetch origin main
+            publish_dir="$(mktemp -d)"
+            git worktree add --detach "$publish_dir" origin/main
+            selection="$(node scripts/estaff/publication-selection.mjs "$base_dir" "$validated_dir" "$publish_dir")"
+            if [ "$selection" = "current" ]; then
+              (
+                cd "$publish_dir"
+                node scripts/verify-publication-tests.mjs
+              )
+              cp "$publish_dir/player-secondary-data.js" "$proof_dir/player-secondary-data.js"
+              cp "$publish_dir/team-data.js" "$proof_dir/team-data.js"
+              cp "$publish_dir/pantheon-data.js" "$proof_dir/pantheon-data.js"
+              winner_sha="$(git -C "$publish_dir" rev-parse HEAD)"
+              echo "commit=$winner_sha" >> "$GITHUB_OUTPUT"
+              git worktree remove --force "$publish_dir"
+              publish_dir=""
+              echo "Le lot concurrent, identique et plus récent, devient la référence publique."
+              exit 0
+            fi
+            cp "$validated_dir/player-secondary-data.js" "$publish_dir/player-secondary-data.js"
+            cp "$validated_dir/team-data.js" "$publish_dir/team-data.js"
+            cp "$validated_dir/pantheon-data.js" "$publish_dir/pantheon-data.js"
+            if (
+              cd "$publish_dir" &&
+              node scripts/verify-publication-tests.mjs &&
+              git config user.name "eSupport Lykos" &&
+              git config user.email "lykosfutsalclub@gmail.com" &&
+              git add -- player-secondary-data.js team-data.js pantheon-data.js &&
+              git commit -m "Synchronisation SportEasy validée par eSupport" &&
+              git push origin HEAD:main
+            ); then
+              cp "$validated_dir/player-secondary-data.js" "$proof_dir/player-secondary-data.js"
+              cp "$validated_dir/team-data.js" "$proof_dir/team-data.js"
+              cp "$validated_dir/pantheon-data.js" "$proof_dir/pantheon-data.js"
+              winner_sha="$(git -C "$publish_dir" rev-parse HEAD)"
+              echo "commit=$winner_sha" >> "$GITHUB_OUTPUT"
+              git worktree remove --force "$publish_dir"
+              publish_dir=""
+              exit 0
+            fi
+            git worktree remove --force "$publish_dir"
+            publish_dir=""
+            if [ "$attempt" -eq 3 ]; then
+              echo "La publication eSupport reste en conflit après trois reprises sur la branche publique la plus récente." >&2
+              exit 1
+            fi
+          done
 
       - name: Demander la reconstruction de la version publique
         id: pages_build
@@ -229,20 +289,22 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
+            const crypto = require("crypto");
             const fs = require("fs");
+            const path = require("path");
             const files = ["player-secondary-data.js", "team-data.js", "pantheon-data.js"];
+            const fingerprint = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
+            const proofDirectory = path.join(process.env.GITHUB_WORKSPACE, ".estaff-publication-proof");
             const expected = files.map(file => {
-              const text = fs.readFileSync(file, "utf8");
-              const generatedAt = text.match(/"generatedAt"\s*:\s*"([^"]+)"/)?.[1];
-              if (!generatedAt) throw new Error(`Date de génération introuvable dans ${file}.`);
-              return {file, generatedAt};
+              const bytes = fs.readFileSync(path.join(proofDirectory, file));
+              return {file, fingerprint:fingerprint(bytes)};
             });
             for (let attempt = 1; attempt <= 18; attempt += 1) {
-              const checks = await Promise.all(expected.map(async ({file, generatedAt}) => {
+              const checks = await Promise.all(expected.map(async ({file, fingerprint:expectedFingerprint}) => {
                 const url = `https://lykosfutsalclub-cmd.github.io/performance-hub/${file}`;
                 const response = await fetch(`${url}?validation=${Date.now()}`, {cache:"no-store"});
-                const text = response.ok ? await response.text() : "";
-                return text.includes(generatedAt);
+                const bytes = response.ok ? Buffer.from(await response.arrayBuffer()) : Buffer.alloc(0);
+                return response.ok && fingerprint(bytes) === expectedFingerprint;
               }));
               if (checks.every(Boolean)) return;
               await new Promise(resolve => setTimeout(resolve, 10000));
@@ -255,7 +317,6 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           ESTAFF_SERVICE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/esupport-check
-          ESTAFF_IMPORT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/esupport-import
           ESTAFF_MODE: ${{ steps.mission.outputs.mode }}
           ESTAFF_CONTROL: ${{ steps.mission.outputs.active }}
           ESTAFF_OSCAR: ${{ steps.mission.outputs.oscar }}
@@ -287,21 +348,7 @@ jobs:
                 return;
               }
               core.notice(report.summary || "Contrôle eSupport terminé.");
-              const importResponse = await fetch(process.env.ESTAFF_IMPORT_URL, {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${identity}`,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({report}),
-              });
-              const importResult = await importResponse.json().catch(() => ({}));
-              if (!importResponse.ok) {
-                const reason = typeof importResult.error === "string" ? ` : ${importResult.error}` : "";
-                core.setFailed(`Cloudflare a refusé le rapport eSupport (${importResponse.status}${reason}).`);
-                return;
-              }
-              core.notice(`Rapport eSupport enregistré dans Cloudflare (${importResult.status || "accepté"}).`);
+              core.notice("Rapport eSupport enregistré directement par le Worker Cloudflare.");
               if (report.status !== "operational") {
                 core.setFailed(report.summary || "eSupport n’est pas pleinement opérationnel.");
               }
@@ -400,17 +447,28 @@ jobs:
         if: ${{ steps.mission.outputs.proof_slot != '' && success() }}
         env:
           SYNC_SLOT: ${{ steps.mission.outputs.proof_slot }}
+          PUBLISHED_COMMIT: ${{ steps.publish_data.outputs.commit }}
+          BASE_COMMIT: ${{ github.sha }}
         run: |
           if [[ ! "$SYNC_SLOT" =~ ^sporteasy-sync:[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
             echo "Clé d’échéance SportEasy invalide."
             exit 1
           fi
           proof_tag="estaff-sync-proof/${SYNC_SLOT#sporteasy-sync:}"
+          proof_commit="${PUBLISHED_COMMIT:-$BASE_COMMIT}"
+          if [[ ! "$proof_commit" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Commit de preuve invalide."
+            exit 1
+          fi
+          git fetch origin main --tags
           if git show-ref --verify --quiet "refs/tags/$proof_tag"; then
-            echo "L’échéance $SYNC_SLOT possède déjà sa preuve."
+            echo "L'échéance $SYNC_SLOT possède déjà sa preuve."
             exit 0
           fi
-          git tag "$proof_tag"
+          if ! git cat-file -e "$proof_commit^{commit}"; then
+            git fetch origin "$proof_commit"
+          fi
+          git tag "$proof_tag" "$proof_commit"
           git push origin "refs/tags/$proof_tag"
 
       - name: Signaler clairement une synchronisation en échec

@@ -72,3 +72,18 @@ test("les workflows Transferts s’imbriquent avec le circuit eStaff existant", 
   assert.match(client, /Les contacts, essais, offres et recrutements restent des décisions humaines/);
   assert.match(client, /43 agents actifs/);
 });
+
+test("les écritures sportives conversationnelles exigent un message d’origine de Fabien Perals", async () => {
+  const [client, styles] = await Promise.all([
+    readFile(new URL("estaff/assets/effectif-workspace.js", root), "utf8"),
+    readFile(new URL("estaff/assets/effectif-workspace.css", root), "utf8"),
+  ]);
+  assert.match(client, /seul un message écrit par Fabien Perals peut alimenter une donnée sportive/);
+  assert.match(client, /fabien_perals:"Message d’origine de Fabien Perals"/);
+  assert.match(client, /const WRITABLE_SOURCE =/);
+  assert.match(client, /sport_source_not_fabien/);
+  assert.match(client, /source:source\.value/);
+  assert.match(client, /source:sourceSelect\.value/);
+  assert.match(client, /source:item\.source/);
+  assert.match(styles, /\.ew-source-policy/);
+});

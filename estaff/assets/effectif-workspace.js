@@ -18,11 +18,16 @@
     retour_progressif_declare:{label:"Retour progressif", icon:"↗", tone:"info"},
   };
   const SOURCE = {
+    fabien_perals:"Message d’origine de Fabien Perals",
     joueur:"Déclaré par le joueur",
     staff:"Déclaré par le staff",
     dirigeant:"Déclaré par un dirigeant",
     sporteasy:"Relevé dans SportEasy",
     non_precise:"Source à préciser",
+  };
+  const WRITABLE_SOURCE = {
+    fabien_perals:"Message d’origine de Fabien Perals",
+    sporteasy:"Relevé dans SportEasy",
   };
   const CASES = {
     arrival:{label:"Arrivée", plural:"Arrivées", icon:"↘", tone:"arrival"},
@@ -161,6 +166,8 @@
       prospect_not_ready_for_arrival:"Le prospect doit atteindre l’étape « Décision » avant de devenir une arrivée.",
       prospect_already_linked:"Un dossier d’arrivée existe déjà pour ce prospect.",
       case_link_immutable:"Le lien entre le prospect et l’arrivée ne peut pas être remplacé.",
+      case_source_immutable:"La provenance du dossier est définitive et ne peut pas être remplacée.",
+      sport_source_not_fabien:"Une information issue d’une conversation ne peut être enregistrée comme donnée sportive que si le message d’origine est de Fabien Perals.",
       health_detail_forbidden:"Aucun détail médical ne doit être saisi ici. Utilisez seulement un état de disponibilité.",
       effectif_storage_limit:"La capacité du registre est atteinte. Oscar doit être alerté.",
       effectif_storage_unavailable:"Le registre privé est momentanément indisponible.",
@@ -293,6 +300,10 @@
             <button type="button" data-action="refresh"><span aria-hidden="true">↻</span> Actualiser</button>
           </div>
         </header>
+        <aside class="ew-source-policy" aria-label="Règle de provenance sportive">
+          <strong>Règle de provenance sportive</strong>
+          <p>Dans une conversation, seul un message écrit par Fabien Perals peut alimenter une donnée sportive. Les messages des autres membres restent du contexte à confirmer. SportEasy conserve son rôle de source officielle distincte.</p>
+        </aside>
         <section class="ew-team" aria-labelledby="ew-team-title">
           <div class="ew-team-heading"><p>LE CIRCUIT DE CONFIANCE</p><h2 id="ew-team-title">Six regards, une décision lisible</h2></div>
           <ol>
@@ -455,7 +466,9 @@
       const sourceLabel = make("label", "", "Source");
       const sourceSelect = document.createElement("select");
       sourceSelect.name = "source";
-      Object.entries(SOURCE).forEach(([id, label]) => sourceSelect.add(new Option(label, id, false, record.source === id)));
+      sourceSelect.required = true;
+      if (!WRITABLE_SOURCE[record.source]) sourceSelect.add(new Option("Choisir une provenance autorisée", "", true, true));
+      Object.entries(WRITABLE_SOURCE).forEach(([id, label]) => sourceSelect.add(new Option(label, id, false, record.source === id)));
       sourceLabel.append(sourceSelect);
       const dateLabel = make("label", "", "Revoir le");
       const dateInput = document.createElement("input");
@@ -669,9 +682,16 @@
     action.autocomplete = "off";
     action.placeholder = "Ex. vérifier les documents vendredi";
     actionLabel.append(action);
+    const sourceLabel = make("label", "", "Provenance sportive");
+    const source = document.createElement("select");
+    source.name = "source";
+    source.required = true;
+    source.add(new Option("Choisir une provenance autorisée", "", true, true));
+    Object.entries(WRITABLE_SOURCE).forEach(([id, label]) => source.add(new Option(label, id)));
+    sourceLabel.append(source);
     const submit = make("button", "ew-button-primary", `${definition.icon} Créer le dossier`);
     submit.type = "submit";
-    fields.append(nameLabel, actionLabel, submit);
+    fields.append(nameLabel, actionLabel, sourceLabel, submit);
     form.append(title, fields);
     form.addEventListener("submit", async event => {
       event.preventDefault();
@@ -680,7 +700,7 @@
       try {
         const payload = await privateRequest("effectif-transfers/case", {
           method:"POST",
-          body:JSON.stringify({type, name:name.value, nextAction:action.value}),
+          body:JSON.stringify({type, name:name.value, nextAction:action.value, source:source.value}),
         });
         state.cases = [payload.case, ...(state.cases || []).filter(item => item.id !== payload.case.id)];
         showFeedback(`${definition.label} · dossier créé.`, "success");
@@ -712,7 +732,12 @@
       person.lastChild.append(make("h3", "", item.name), make("small", "", `Mis à jour ${formatDate(item.updatedAt, true)}`));
       header.append(person, make("span", `ew-pill ${definition.tone}`, STEP_LABELS[item.step] || item.step));
       const details = make("div", "ew-details");
-      details.append(make("strong", "", "Prochaine action"), make("p", "", item.nextAction || "Aucune action renseignée."));
+      details.append(
+        make("strong", "", "Prochaine action"),
+        make("p", "", item.nextAction || "Aucune action renseignée."),
+        make("strong", "", "Provenance sportive"),
+        make("p", "", SOURCE[item.source] || SOURCE.non_precise),
+      );
       const form = document.createElement("form");
       form.className = "ew-case-editor";
       const stepLabel = make("label", "", "Faire avancer le dossier");
@@ -730,16 +755,24 @@
       next.value = item.nextAction || "";
       next.autocomplete = "off";
       nextLabel.append(next);
+      const sourceLabel = make("label", "", "Provenance sportive");
+      const source = document.createElement("select");
+      source.name = "source";
+      source.required = true;
+      if (!WRITABLE_SOURCE[item.source]) source.add(new Option("Choisir une provenance autorisée", "", true, true));
+      Object.entries(WRITABLE_SOURCE).forEach(([id, label]) => source.add(new Option(label, id, false, item.source === id)));
+      source.disabled = Boolean(WRITABLE_SOURCE[item.source]);
+      sourceLabel.append(source);
       const save = make("button", "ew-button-primary", "Mettre à jour");
       save.type = "submit";
-      form.append(stepLabel, nextLabel, save);
+      form.append(stepLabel, nextLabel, sourceLabel, save);
       form.addEventListener("submit", async event => {
         event.preventDefault();
         save.disabled = true;
         try {
           const payload = await privateRequest("effectif-transfers/case", {
             method:"POST",
-            body:JSON.stringify({id:item.id, type, name:item.name, step:select.value, nextAction:next.value}),
+            body:JSON.stringify({id:item.id, type, name:item.name, step:select.value, nextAction:next.value, source:source.value}),
           });
           state.cases = [payload.case, ...(state.cases || []).filter(existing => existing.id !== item.id)];
           showFeedback(`${item.name} · dossier mis à jour.`, "success");
@@ -763,7 +796,7 @@
             try {
               const payload = await privateRequest("effectif-transfers/case", {
                 method:"POST",
-                body:JSON.stringify({type:"arrival", name:item.name, sourceCaseId:item.id, nextAction:"Préparer l’arrivée issue du prospect validé."}),
+                body:JSON.stringify({type:"arrival", name:item.name, sourceCaseId:item.id, nextAction:"Préparer l’arrivée issue du prospect validé.", source:item.source}),
               });
               item.linkedArrivalCaseId = payload.case.id;
               state.cases = [payload.case, ...(state.cases || []).filter(existing => existing.id !== payload.case.id)];

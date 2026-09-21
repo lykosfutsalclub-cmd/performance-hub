@@ -4,16 +4,16 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
-test("l’espace Effectif & transferts est chargé et reste derrière la session eStaff", async () => {
+test("l’espace Effectif & transferts reste préparé mais n’est ni affiché ni chargé dans le eStaff", async () => {
   const [home, page, client] = await Promise.all([
     readFile(new URL("index.html", root), "utf8"),
     readFile(new URL("estaff/index.html", root), "utf8"),
     readFile(new URL("estaff/assets/effectif-workspace.js", root), "utf8"),
   ]);
-  assert.match(home, /aria-label="Accéder à l’effectif et aux transferts"/);
-  assert.match(home, /\.\/estaff\/\?workspace=effectif/);
-  assert.match(page, /effectif-workspace\.css\?v=/);
-  assert.match(page, /effectif-workspace\.js\?v=/);
+  assert.doesNotMatch(home, /aria-label="Accéder à l’effectif et aux transferts"/);
+  assert.doesNotMatch(home, /\.\/estaff\/\?workspace=effectif/);
+  assert.doesNotMatch(page, /effectif-workspace\.css\?v=/);
+  assert.doesNotMatch(page, /effectif-workspace\.js\?v=/);
   assert.match(client, /window\.addEventListener\(SESSION_EVENT/);
   assert.match(client, /if \(!authenticated\) return/);
   assert.match(client, /clearWorkspace\(\)/);

@@ -854,6 +854,14 @@
     return [...unique.values()].sort((left,right) => Date.parse(right.occurredAt || "") - Date.parse(left.occurredAt || ""));
   }
 
+  function shareTeamState() {
+    window.dispatchEvent(new CustomEvent("lykos:estaff-team-state", {detail:{
+      returns:latestReturns,
+      agentStates:latestAgentStates,
+      updatedAt:latestStateUpdatedAt,
+    }}));
+  }
+
   async function loadReport(token, generation) {
     if (generation !== sessionGeneration) return;
     sessionToken = token;
@@ -873,6 +881,8 @@
         latestAgentStates = [];
         latestOperations = {};
         latestBusinessSources = {};
+        latestStateUpdatedAt = "";
+        shareTeamState();
         scheduleReadOnlyMode();
         return;
       }
@@ -896,6 +906,7 @@
         latestBusinessSources?.updatedAt,
         ...latestReturns.map(entry => entry.occurredAt),
       ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
+      shareTeamState();
     } catch {
       if (generation !== sessionGeneration || sessionToken !== token) return;
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
@@ -905,6 +916,7 @@
       latestBusinessSources = {};
       latestStateUpdatedAt = "";
       latestCapabilities = {};
+      shareTeamState();
     }
     scheduleReadOnlyMode();
   }
@@ -944,6 +956,7 @@
       latestCapabilities = {};
       latestAgentStates = [];
       latestOperations = {};
+      shareTeamState();
     }
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});

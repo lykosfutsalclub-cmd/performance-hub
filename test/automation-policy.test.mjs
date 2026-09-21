@@ -190,22 +190,22 @@ test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiat
   assert.match(page, /connect-src 'self'/);
 });
 
-test("la communication eStaff présente uniquement 40 agents", async () => {
+test("la communication eStaff présente uniquement 43 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",
     "estaff/assets/esupport-report.js",
   ];
   const text = (await Promise.all(files.map((path) => readFile(new URL(path, root), "utf8")))).join("\n");
-  assert.match(text, /40 agents/);
+  assert.match(text, /43 agents/);
   assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
 });
 
-test("les 40 agents sont consultables et seul Oscar reçoit les missions", async () => {
+test("les 43 agents sont consultables et seul Oscar reçoit les missions", async () => {
   const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
   const performanceHub = await readFile(new URL("index.html", root), "utf8");
   assert.match(bundle, /Rechercher un agent/);
-  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Bastien"]) {
+  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Bastien", "Salma", "Mateo", "Priya"]) {
     assert.match(bundle, new RegExp(name));
   }
   for (const escapedName of ["V\\xE9ronique", "L\\xE9onard", "\\xC9lise", "Cam\\xE9lia", "In\\xE8s", "Salom\\xE9"]) assert.ok(bundle.includes(escapedName));
@@ -232,9 +232,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.19.1 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.24.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.19\.1"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.24\.0"/);
 });
 
 test("l’interface eStaff utilise une session Cloudflare unique", async () => {
@@ -256,8 +256,8 @@ test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   assert.doesNotMatch(supervision, /CADENCE_API|cadenceToken|connectCadence|loadCadenceReport|cadenceState/);
   assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /fab-mysterio|chatgpt[.]site/);
   assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
-  assert.match(page, /esupport-report\.js\?v=20260920-cloudflare-single-api/);
-  assert.match(page, /estaff\.js\?v=20260920-cloudflare-single-api/);
+  assert.match(page, /esupport-report\.js\?v=20260921-active43/);
+  assert.match(page, /estaff\.js\?v=20260921-active43/);
   assert.match(page, /esupport-report\.css\?v=20260920-hidden-state/);
   const reportStyles = await readFile(new URL("estaff/assets/esupport-report.css", root), "utf8");
   assert.match(reportStyles, /#estaff-root#estaff-root \[hidden\]\{display:none!important\}/);

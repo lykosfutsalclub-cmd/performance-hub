@@ -95,6 +95,10 @@
         -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8l-6 4V5a2 2 0 0 1 2-2Z'/%3E%3C/svg%3E");
         mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8l-6 4V5a2 2 0 0 1 2-2Z'/%3E%3C/svg%3E");
       }
+      #lykos-dashboard-preview .lykos-headnav button[aria-label="Accéder à l’effectif et aux transferts"]::before {
+        -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-5 0-9 2.4-9 5.4V22h18v-2.6c0-3-4-5.4-9-5.4Zm8-9v2h-3v2h3v2l4-3-4-3Z'/%3E%3C/svg%3E");
+        mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-5 0-9 2.4-9 5.4V22h18v-2.6c0-3-4-5.4-9-5.4Zm8-9v2h-3v2h3v2l4-3-4-3Z'/%3E%3C/svg%3E");
+      }
     }
     #lykos-dashboard-preview .lykos-headnav button[aria-selected="true"] { color:#fff; }
     #lykos-dashboard-preview .lykos-headnav button[aria-selected="true"]::after { content:""; position:absolute; left:18px; right:18px; bottom:0; height:3px; border-radius:3px 3px 0 0; background:var(--lykos-yellow); }
@@ -935,6 +939,7 @@
     <nav class="lykos-headnav" aria-label="Rubriques du dashboard">
       <button data-view="team" data-mobile-label="ÉQUIPE" aria-selected="true">STATISTIQUES ÉQUIPE</button>
       <button data-view="players" data-mobile-label="JOUEURS" aria-selected="false">STATISTIQUES JOUEURS</button>
+      <button type="button" data-mobile-label="EFFECTIF" aria-label="Accéder à l’effectif et aux transferts" onclick="location.href='./estaff/?workspace=effectif'">EFFECTIF</button>
       <button data-view="pantheon" data-mobile-label="PANTHÉON" aria-selected="false">PANTHÉON</button>
       <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">ESTAFF</button>
       <button data-view="performance" data-mobile-label="PERF." aria-selected="false">PERFORMANCE</button>
@@ -1241,7 +1246,7 @@
           <article class="lykos-performance-section lykos-estaff-overview">
             <div class="lykos-estaff-head">
               <div><span>Équipe du club</span><h2>eStaff</h2>
-                <p>eStaff réunit 40 agents. Chaque agent est une personne avec une identité, un poste, une responsabilité et une preuve de travail propres au sein de services complémentaires.</p>
+                <p>eStaff réunit 43 agents actifs. Chaque agent est une personne avec une identité, un poste, une responsabilité et une preuve de travail propres au sein de services complémentaires.</p>
               </div>
               <a class="lykos-estaff-link" href="./estaff/">Rencontrer l’équipe</a>
             </div>
@@ -1261,6 +1266,9 @@
                     <div class="lykos-estaff-member"><strong>Bastien</strong><small>Coordinateur compétitions & adversaires</small><p>Contrôle calendriers et feuilles de résultats, prépare les opérations SportEasy à valider, vérifie les classements et analyse les adversaires.</p></div>
                     <div class="lykos-estaff-member"><strong>Victor</strong><small>Gestion de l’effectif</small><p>Analyse les disponibilités et la couverture des postes du groupe.</p></div>
                     <div class="lykos-estaff-member"><strong>Camélia</strong><small>Assiduité factuelle</small><p>Prépare pour Victor les séries de présence sans juger la motivation.</p></div>
+                    <div class="lykos-estaff-member"><strong>Salma</strong><small>Nouvelles arrivées</small><p>Suit chaque arrivée jusqu’à son intégration complète dans l’effectif.</p></div>
+                    <div class="lykos-estaff-member"><strong>Mateo</strong><small>Départs récents</small><p>Documente et clôture les départs sans supprimer leur historique.</p></div>
+                    <div class="lykos-estaff-member"><strong>Priya</strong><small>Prospects & recrutement</small><p>Organise les prospects selon les besoins d’effectif validés par Victor.</p></div>
                   </section>
                   <section class="lykos-estaff-service"><h4>eDatas</h4>
                     <div class="lykos-estaff-member"><strong>Sandrine</strong><small>Amélioration du Hub · responsable du service</small><p>Imagine des améliorations utiles et compréhensibles pour les données du Hub.</p></div>

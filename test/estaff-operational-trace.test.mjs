@@ -40,9 +40,10 @@ test("les cartes agent distinguent la connexion métier de la simple exécution"
   assert.doesNotMatch(source,/cadenceState|CADENCE_API/);
 });
 
-test("les cinq états agentiques sont explicites et jamais remplacés par Disponible", () => {
-  for (const state of ["En attente", "Incomplet", "Exécuté", "Contrôlé", "Bloqué"]) assert.ok(source.includes(state), state);
-  assert.doesNotMatch(source, /\bDisponible\b/);
+test("les états agentiques distinguent disponibilité, travail et reprise automatique", () => {
+  for (const state of ["Disponible", "En cours", "Incomplet", "Exécuté", "Contrôlé", "Bloqué"]) assert.ok(source.includes(state), state);
+  assert.match(source, /available:"Disponible"/);
+  assert.match(source, /waiting:"Incomplet"/);
   assert.match(css, /\.lykos-agent-state\.is-controlled/);
   assert.match(css, /\.lykos-agent-state\.is-blocked/);
 });

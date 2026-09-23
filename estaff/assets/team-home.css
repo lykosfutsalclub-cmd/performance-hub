@@ -123,6 +123,8 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .company-status {display:inline-flex;align-items:center;gap:7px;width:max-content;padding:6px 9px;border:1px solid var(--company-line);border-radius:999px;color:var(--company-muted);background:rgba(0,13,31,.55);font-size:.67rem;font-weight:850;white-space:nowrap}
 .company-status i {width:7px;height:7px;border-radius:50%;background:#7f91ad}
 .company-status.is-active i {background:var(--company-green);box-shadow:0 0 12px var(--company-green)}
+.company-status.is-available i {background:#7f91ad}
+.company-status.is-waiting i {background:var(--company-gold);box-shadow:0 0 10px rgba(208,182,49,.55)}
 .company-status.is-done i {background:var(--company-blue)}
 .company-status.is-review i {background:var(--company-gold)}
 .company-status.is-attention i {background:var(--company-red)}

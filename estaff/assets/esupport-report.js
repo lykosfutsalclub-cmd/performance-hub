@@ -249,7 +249,9 @@
   };
 
   const operationalStateLabels = {
-    waiting:"En attente",
+    available:"Disponible",
+    running:"En cours",
+    waiting:"Incomplet",
     incomplete:"Incomplet",
     executed:"Exécuté",
     controlled:"Contrôlé",
@@ -282,7 +284,7 @@
   }
 
   function fallbackAgentState(entries) {
-    if (!entries.length) return {state:"waiting", evidenceCount:0, latestEvidenceAt:""};
+    if (!entries.length) return {state:"available", evidenceCount:0, latestEvidenceAt:""};
     const latest = entries[0];
     const status = normalizeAgentKey(`${latest.status || ""} ${latest.statusLabel || ""} ${latest.classification || ""} ${latest.title || ""} ${latest.summary || ""}`);
     const state = /bloque|echec|failed|no-go|alerte|refuse|non operationnel/.test(status) ? "blocked"
@@ -753,7 +755,7 @@
     const agentStatus = conversation.querySelector("header > span:last-child");
     if (agentStatus) {
       const current = agentOperationalState(agent, agentEntries);
-      agentStatus.classList.remove("is-waiting", "is-incomplete", "is-executed", "is-controlled", "is-blocked");
+      agentStatus.classList.remove("is-available", "is-running", "is-waiting", "is-incomplete", "is-executed", "is-controlled", "is-blocked");
       agentStatus.classList.add(`is-${current.state}`);
       agentStatus.textContent = operationalStateLabels[current.state] || operationalStateLabels.incomplete;
     }

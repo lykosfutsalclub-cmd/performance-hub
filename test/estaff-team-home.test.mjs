@@ -16,7 +16,12 @@ test("l’accueil eStaff présente les 43 personnes avec leurs portraits", async
   assert.match(script,/Point fort/);
   assert.match(script,/Axe d’amélioration/);
   assert.match(script,/agentDialog/);
-  assert.match(script,/Missions enregistrées/);
+  assert.match(script,/Missions réalisées/);
+  assert.doesNotMatch(script,/Missions enregistrées/);
+  assert.match(script,/Contrôles effectués/);
+  assert.match(script,/activityRows\(Infinity\)/);
+  assert.match(script,/data-feedback="positive"/);
+  assert.match(script,/data-feedback="negative"/);
   assert.match(script,/Sans difficulté/);
   assert.match(script,/Portrait corporate/);
   assert.match(script,/Pas encore de mission enregistrée/);
@@ -41,8 +46,9 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const report = await readFile(new URL("estaff/assets/esupport-report.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260923-lykos-scroll-v2/);
-  assert.match(page,/team-home\.js\?v=20260923-dashboard-label-v5/);
+  assert.match(page,/team-home\.css\?v=20260923-company-v6/);
+  assert.match(page,/team-home\.js\?v=20260923-company-v6/);
+  assert.doesNotMatch(page,/personal-access\.js/);
   assert.ok(page.indexOf("esupport-report.js") < page.indexOf("team-home.js"));
   assert.match(report,/new CustomEvent\("lykos:estaff-team-state"/);
   assert.match(page,/noindex,nofollow/);

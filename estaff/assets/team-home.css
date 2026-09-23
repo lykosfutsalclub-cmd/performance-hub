@@ -128,15 +128,20 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .company-status.is-attention i {background:var(--company-red)}
 
 .company-activity-list {padding:0 16px 16px}
-.company-activity-list>button {display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;width:100%;padding:13px 9px;border:0;border-bottom:1px solid var(--company-line);background:transparent;text-align:left;cursor:pointer}
-.company-activity-list span:nth-child(2) {display:grid;gap:3px}
+.company-activity-row {display:grid;grid-template-columns:auto minmax(150px,.55fr) minmax(220px,1fr) auto auto;align-items:center;gap:12px;width:100%;padding:13px 9px;border-bottom:1px solid var(--company-line);text-align:left}
+.company-activity-row>span:nth-child(2) {display:grid;gap:3px}
+.activity-summary {display:grid;gap:3px;min-width:0;padding:7px 10px;border:0;border-radius:10px;background:rgba(134,185,255,.08);color:inherit;text-align:left;cursor:pointer}
+.activity-summary:hover {background:rgba(134,185,255,.16)}
+.activity-summary:disabled {cursor:default;opacity:.9}
 .company-activity-list small,.company-activity-list time {color:var(--company-muted);font-size:.72rem}
+.agent-name-link {width:max-content;max-width:100%;padding:0;border:0;background:transparent!important;color:#fff!important;font-weight:850;text-decoration:underline;text-decoration-color:var(--service,var(--company-gold));text-underline-offset:3px;cursor:pointer}
+.agent-name-link:hover {color:var(--company-gold)!important}
 .activity-dot {width:9px;height:9px;border-radius:50%;background:#7f91ad}
 .activity-dot.is-done {background:var(--company-blue)}
 .activity-dot.is-attention {background:var(--company-red)}
 .activity-dot.is-active {background:var(--company-green)}
 
-.company-toolbar {display:grid;grid-template-columns:2fr repeat(3,minmax(160px,.65fr));gap:12px;margin-bottom:22px;padding:13px;border:1px solid var(--company-line);border-radius:18px;background:rgba(2,22,50,.72)}
+.company-toolbar {display:grid;grid-template-columns:minmax(260px,2fr) repeat(3,minmax(150px,1fr));align-items:end;gap:12px;margin-bottom:22px;padding:15px;border:1px solid var(--company-line);border-radius:18px;background:rgba(2,22,50,.72)}
 .company-toolbar label {display:grid;gap:6px;color:var(--company-muted);font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 .company-toolbar input,.company-toolbar select {min-width:0;height:44px;padding:0 13px;border:1px solid var(--company-line);border-radius:12px;background:#061e46;color:#fff;outline:none}
 .company-search {position:relative}
@@ -183,14 +188,16 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .company-segmented button {display:flex;gap:8px;padding:9px 13px;border:1px solid var(--company-line);border-radius:999px;background:rgba(2,22,50,.75);color:var(--company-muted);cursor:pointer}
 .company-segmented button.is-active {background:var(--company-gold);color:#09204a;border-color:var(--company-gold);font-weight:850}
 .company-mission-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.company-mission-card {--service:#4ca4ff;display:flex;flex-direction:column;min-height:235px;padding:20px;border:1px solid var(--company-line);border-top:3px solid var(--service);border-radius:18px;background:rgba(6,32,71,.9);text-align:left;cursor:pointer}
+.company-mission-card {--service:#4ca4ff;display:flex;flex-direction:column;min-height:235px;padding:20px;border:1px solid var(--company-line);border-top:3px solid var(--service);border-radius:18px;background:rgba(6,32,71,.9);text-align:left}
 .company-mission-card:hover {transform:translateY(-2px);border-left-color:var(--service);border-right-color:var(--service);border-bottom-color:var(--service)}
 .mission-card-head,.mission-card-foot {display:flex;justify-content:space-between;gap:10px;align-items:center}
 .mission-card-head time,.mission-card-foot {color:var(--company-muted);font-size:.7rem}
-.company-mission-card>strong {margin:18px 0 8px;font-family:Georgia,serif;font-size:1.25rem}
-.company-mission-card>p {margin:0;color:var(--company-muted);line-height:1.5;font-size:.8rem}
+.mission-open {display:grid;gap:8px;margin:10px -8px;padding:8px;border:0;border-radius:12px;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.mission-open:hover {background:rgba(134,185,255,.09)}
+.mission-open strong {font-family:"OMMarseille",Georgia,serif;font-size:1.25rem}
+.mission-open p {margin:0;color:var(--company-muted);line-height:1.5;font-size:.8rem}
 .mission-card-foot {margin-top:auto;padding-top:15px;border-top:1px solid var(--company-line)}
-.mission-card-foot b {color:var(--service)}
+.mission-card-foot>span {display:flex;flex-wrap:wrap;gap:5px}.mission-card-foot i {font-style:normal}.mission-card-foot>button {border:0;background:transparent;color:var(--service);font-weight:800;cursor:pointer}
 
 .company-empty {display:grid;place-items:center;gap:8px;padding:40px;text-align:center;color:var(--company-muted)}
 .company-empty>span {font-size:2rem;color:var(--company-gold)}
@@ -229,6 +236,11 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .profile-two-columns {display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .profile-skill-list {display:flex;flex-wrap:wrap;gap:9px}
 .profile-skill-list span {padding:8px 10px;border-radius:10px;background:rgba(76,164,255,.12);color:#dce9ff}
+.profile-timeline {display:grid;gap:10px}.profile-timeline>button {display:grid;grid-template-columns:135px 1fr;gap:14px;padding:14px;border:1px solid var(--company-line);border-radius:13px;background:rgba(1,24,52,.55);color:inherit;text-align:left;cursor:pointer}.profile-timeline span {display:grid;gap:4px}.profile-timeline small,.profile-timeline time {color:var(--company-muted)}
+.profile-activity-stack {display:grid;gap:15px}.silent-control {display:flex;align-items:center;gap:14px;padding:16px;border:1px solid rgba(64,201,132,.38);border-radius:15px;background:rgba(64,201,132,.09)}.silent-control>span {display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--company-green);color:#062844;font-weight:900}.silent-control div {display:grid;gap:5px}.silent-control small {color:var(--company-muted)}
+.profile-relations>p {color:var(--company-muted)}.relation-people {display:flex;flex-wrap:wrap;gap:16px;padding:10px 0}.relation-people button {display:grid;place-items:center;width:78px;height:78px;padding:4px;border:3px solid color-mix(in srgb,var(--service) 70%,#fff);border-radius:50%;background:#0a2d60;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.25)}.relation-people button:hover {transform:translateY(-3px) scale(1.04);box-shadow:0 0 0 5px color-mix(in srgb,var(--service) 20%,transparent)}.relation-people img {width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top}
+.profile-satisfaction {max-width:720px;padding:24px;border:1px solid var(--company-line);border-radius:18px;background:rgba(1,24,52,.55)}.profile-satisfaction p,.profile-satisfaction>small {color:var(--company-muted)}.profile-satisfaction>div {display:flex;flex-wrap:wrap;gap:14px;margin:22px 0}.profile-satisfaction button {display:flex;align-items:center;gap:10px;min-width:180px;padding:14px 18px;border:2px solid transparent;border-radius:15px;color:#fff;font-weight:850;cursor:pointer}.profile-satisfaction button span {font-size:1.8rem}.feedback-positive {background:#14754b}.feedback-negative {background:#a63d4a}.profile-satisfaction button.is-selected {border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.13)}
+.profile-documents {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.profile-documents a {display:grid;grid-template-columns:auto 1fr;gap:5px 12px;padding:18px;border:1px solid var(--company-line);border-radius:15px;background:rgba(1,24,52,.55);color:#fff;text-decoration:none}.profile-documents a>span {grid-row:1/3;font-size:1.7rem}.profile-documents small {color:var(--company-muted)}
 .profile-actions {display:flex;justify-content:flex-end;gap:10px;padding:18px 24px;border-top:1px solid var(--company-line)}
 .profile-actions>button:not(.company-primary),.company-mission-detail footer button {padding:10px 14px;border:1px solid var(--company-line);border-radius:11px;background:transparent;cursor:pointer}
 .profile-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -254,11 +266,20 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
   .company-kpis {grid-template-columns:repeat(2,1fr)}
 }
 
+@media (min-width:861px) {
+  #lykos-team-home {padding-bottom:82px}
+  .company-topbar {grid-template-columns:minmax(220px,1fr) auto}
+  .company-nav {position:fixed;z-index:70;left:50%;bottom:14px;transform:translateX(-50%);width:min(780px,calc(100vw - 32px));justify-content:space-evenly;background:#d0b631!important;border:1px solid #f4df70!important;box-shadow:0 16px 45px rgba(0,0,0,.45)}
+  .company-nav button {flex:1;color:#071b45!important}.company-nav button:hover,.company-nav button.is-active {background:#0b3974!important;color:#fff!important}.company-nav button.is-active {box-shadow:none!important}
+  .company-actions {grid-column:2}.company-activity-row {grid-template-columns:auto minmax(160px,.55fr) minmax(240px,1fr) auto auto}
+}
+
 @media (max-width:860px) {
   .company-topbar {position:relative;grid-template-columns:1fr auto;padding:12px 18px}.company-nav {grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow:auto}.company-actions .company-primary {display:none}
   .company-main {width:calc(100% - 28px);padding:28px 0 48px}.company-title {align-items:start}.company-title>button,.company-title>span {text-align:right}
   .company-overview-grid {grid-template-columns:1fr}.company-agent-grid,.company-service-grid {grid-template-columns:repeat(2,minmax(0,1fr))}.company-mission-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
-  .company-toolbar {grid-template-columns:1fr 1fr}.company-search {grid-column:1/-1}
+  .company-toolbar {grid-template-columns:repeat(2,minmax(0,1fr))}.company-search {grid-column:1/-1}
+  .company-activity-row {grid-template-columns:auto minmax(120px,.6fr) minmax(180px,1fr) auto}.company-activity-row>b {display:none}
   .profile-header {grid-template-columns:180px 1fr}.profile-header>img {width:180px;height:230px}.profile-header dl {grid-template-columns:1fr}.profile-kpis {grid-template-columns:repeat(2,1fr)}
 }
 
@@ -269,10 +290,11 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
   .company-director {grid-template-columns:1fr 145px;padding-left:20px}.company-director img {height:260px}.company-director h2 {font-size:1.55rem}
   .company-person-row {grid-template-columns:40px 1fr auto;width:calc(100% - 20px);margin-left:10px;margin-right:10px}.company-person-row img {width:40px;height:40px}.company-person-row>em,.company-person-row>b {display:none}.company-person-row .company-status {font-size:0;width:20px;height:20px;padding:6px}
   .company-agent-grid,.company-service-grid,.company-mission-grid {grid-template-columns:1fr}.agent-photo {height:280px}
-  .company-toolbar {grid-template-columns:1fr}.company-search {grid-column:auto}.company-toolbar label>span {display:none}
+  .company-toolbar {grid-template-columns:1fr;padding:10px}.company-search {grid-column:auto}.company-toolbar label>span {display:block}.company-toolbar label {width:100%}.company-toolbar input,.company-toolbar select {width:100%}
+  .company-activity-row {grid-template-columns:auto 1fr auto}.activity-summary {grid-column:2/4}.company-activity-row time {grid-column:3;grid-row:1}.company-activity-row>b {display:none}
   .company-footer {padding-bottom:110px;align-items:flex-start;flex-direction:column}
   .company-dialog-backdrop {padding:0}.company-agent-profile,.company-mission-detail {width:100%;height:100%;max-height:none;border:0;border-radius:0}
-  .profile-header {grid-template-columns:110px 1fr;gap:16px;padding:68px 18px 20px}.profile-header>img {width:110px;height:145px}.profile-header h2 {font-size:2.1rem}.profile-header dl {grid-column:1/-1}.profile-kpis {grid-template-columns:1fr 1fr}.profile-kpis button {padding:15px}.profile-tabs {padding:11px}.profile-content {padding:14px}.profile-overview,.profile-two-columns,.profile-list {grid-template-columns:1fr}.profile-actions {position:sticky;bottom:0;background:#031a3b;padding:12px}.profile-actions button {flex:1}
+  .profile-header {grid-template-columns:110px 1fr;gap:16px;padding:68px 18px 20px}.profile-header>img {width:110px;height:145px}.profile-header h2 {font-size:2.1rem}.profile-header dl {grid-column:1/-1}.profile-kpis {grid-template-columns:1fr 1fr}.profile-kpis button {padding:15px}.profile-tabs {padding:11px}.profile-content {padding:14px}.profile-overview,.profile-two-columns,.profile-list,.profile-documents {grid-template-columns:1fr}.profile-actions {position:sticky;bottom:0;background:#031a3b;padding:12px}.profile-actions button {flex:1}.relation-people button {width:64px;height:64px}
   .mission-facts {grid-template-columns:1fr}.company-mission-detail {padding:70px 18px 24px}.mission-timeline article {grid-template-columns:80px 10px 1fr}
 }
 
@@ -322,3 +344,10 @@ body.lykos-team-home-active {
 .company-dialog-backdrop {background:rgba(0,9,25,.82)}.company-agent-profile,.company-mission-detail {background:#071b45;color:var(--company-ink);border-color:rgba(208,182,49,.38);box-shadow:0 30px 90px rgba(0,0,0,.55)}
 .profile-close {background:#091d4f;color:#fff;border-color:var(--company-line)}.profile-header {background:radial-gradient(circle at 90% 10%,rgba(208,182,49,.18),transparent 35%),linear-gradient(135deg,#0b3974,#071b45)}.profile-header h2,.profile-content h3,.company-mission-detail h2 {color:#fff}.profile-header dl>div,.profile-overview article,.profile-two-columns article,.mission-facts>div {background:rgba(1,24,52,.58)}.profile-kpis button,.profile-tabs {background:rgba(1,24,52,.7);color:var(--company-ink)}.profile-tabs button {color:var(--company-muted)}.profile-tabs button.is-active {background:var(--company-gold);color:#091d4f}.profile-current {background:rgba(1,24,52,.72)!important}.profile-skill-list span {background:rgba(134,185,255,.12);color:#cbe1ff}.profile-actions {background:#071b45}.profile-actions>button:not(.company-primary),.company-mission-detail footer button {background:#091d4f;color:#fff;border-color:var(--company-line)}
 @media (max-width:600px) {.profile-actions {background:#071b45}.company-nav {background:rgba(1,24,52,.94)}}
+
+body:not(.lykos-team-home-active) #estaff-root a[href="/"] span {font-family:"OMMarseille",Georgia,serif!important;letter-spacing:.035em}
+body.lykos-oscar-supervision #estaff-root section[aria-label="Activité"] {display:none!important}
+body.lykos-oscar-supervision #estaff-root section[aria-label^="Espace de"] {grid-column:1!important}
+body.lykos-oscar-supervision #estaff-root section[aria-label^="Espace de"]:not([aria-label="Espace de Oscar"]) {display:none!important}
+body.lykos-oscar-supervision #estaff-root div:has(>section[aria-label="Espace de Oscar"]) {grid-template-columns:minmax(0,1fr) 320px!important}
+body.lykos-oscar-supervision #estaff-root div:has(>section[aria-label="Espace de Oscar"])>aside:first-child {display:none!important}

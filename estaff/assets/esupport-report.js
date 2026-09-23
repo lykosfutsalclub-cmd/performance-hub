@@ -11,6 +11,9 @@
   let latestAgentStates = [];
   let latestOperations = {};
   let latestBusinessSources = {};
+  let latestAutomation = {agents:{}};
+  let latestWorkforce = {agents:[]};
+  let latestFeedback = [];
   let scheduled = false;
   let selectedService = "";
   let selectedAgent = "";
@@ -330,54 +333,6 @@
     return {label, state};
   }
 
-  function renderOperationPanel() {
-    const syncBar = document.querySelector(".lykos-sporteasy-sync");
-    if (!syncBar) return;
-    let panel = document.querySelector(".lykos-operation-trace");
-    if (!panel) {
-      panel = document.createElement("section");
-      panel.className = "lykos-operation-trace";
-      panel.setAttribute("aria-labelledby", "lykos-operation-trace-title");
-      syncBar.after(panel);
-    }
-    const header = document.createElement("header");
-    const heading = document.createElement("h2");
-    heading.id = "lykos-operation-trace-title";
-    heading.textContent = "État réel de la chaîne";
-    const intro = document.createElement("p");
-    intro.textContent = "Chaque jalon possède sa propre preuve : un lancement ne vaut jamais publication.";
-    header.append(heading, intro);
-    const list = document.createElement("div");
-    list.className = "lykos-operation-stage-list";
-    for (const definition of operationStages) {
-      const value = operationStageValue(definition.key);
-      const presentation = operationStagePresentation(definition.key, value);
-      const card = document.createElement("article");
-      card.className = `lykos-operation-stage is-${presentation.state}`;
-      const title = document.createElement("h3");
-      title.textContent = definition.title;
-      const badge = document.createElement("strong");
-      badge.textContent = presentation.label;
-      const description = document.createElement("p");
-      description.textContent = value.detail || definition.description;
-      const footer = document.createElement("footer");
-      const time = document.createElement("time");
-      time.textContent = value.occurredAt ? formatDate(value.occurredAt) : "Aucune exécution enregistrée";
-      footer.append(time);
-      if (value.runUrl) {
-        const proof = document.createElement("a");
-        proof.href = value.runUrl;
-        proof.target = "_blank";
-        proof.rel = "noopener noreferrer";
-        proof.textContent = "Voir la preuve ↗";
-        footer.append(proof);
-      }
-      card.append(title, badge, description, footer);
-      list.append(card);
-    }
-    panel.replaceChildren(header, list);
-  }
-
   function updateSyncBar(message = "") {
     const bar = document.querySelector(".lykos-sporteasy-sync");
     if (!bar) return;
@@ -393,7 +348,7 @@
       status.textContent = message;
       status.hidden = !message;
     }
-    renderOperationPanel();
+    document.querySelector(".lykos-operation-trace")?.remove();
   }
 
   async function requestSportEasySync() {
@@ -859,6 +814,9 @@
     window.dispatchEvent(new CustomEvent("lykos:estaff-team-state", {detail:{
       returns:latestReturns,
       agentStates:latestAgentStates,
+      automation:latestAutomation,
+      workforce:latestWorkforce,
+      feedback:latestFeedback,
       updatedAt:latestStateUpdatedAt,
     }}));
   }
@@ -884,6 +842,9 @@
         latestAgentStates = [];
         latestOperations = {};
         latestBusinessSources = {};
+        latestAutomation = {agents:{}};
+        latestWorkforce = {agents:[]};
+        latestFeedback = [];
         latestStateUpdatedAt = "";
         shareTeamState();
         scheduleReadOnlyMode();
@@ -902,6 +863,9 @@
       }));
       latestOperations = state.operations && typeof state.operations === "object" ? state.operations : {};
       latestBusinessSources = state.businessSources && typeof state.businessSources === "object" ? state.businessSources : latestBusinessSources;
+      latestAutomation = state.automation && typeof state.automation === "object" ? state.automation : {agents:{}};
+      latestWorkforce = state.workforce && typeof state.workforce === "object" ? state.workforce : {agents:[]};
+      latestFeedback = Array.isArray(state.feedback) ? state.feedback.map(entry => ({...entry,agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent})) : [];
       latestStateUpdatedAt = [
         latestReport?.checkedAt,
         state.esupport?.checkedAt,
@@ -917,6 +881,9 @@
       latestAgentStates = [];
       latestOperations = {};
       latestBusinessSources = {};
+      latestAutomation = {agents:{}};
+      latestWorkforce = {agents:[]};
+      latestFeedback = [];
       latestStateUpdatedAt = "";
       latestCapabilities = {};
       shareTeamState();
@@ -939,6 +906,13 @@
     return response;
   };
 
+  window.addEventListener("lykos:estaff-cloud-session", event => {
+    const token = typeof event.detail?.token === "string" ? event.detail.token : "";
+    if (!token || token === sessionToken) return;
+    const generation = ++sessionGeneration;
+    loadReport(token,generation);
+  });
+
   document.addEventListener("click", event => {
     const button = event.target.closest?.("button[aria-pressed]");
     const conversation = selectedConversation();
@@ -949,6 +923,7 @@
   });
 
   new MutationObserver(() => {
+    if (document.body.classList.contains("lykos-team-home-active")) return;
     const loginGraceElapsed = sessionEstablishedAt > 0 && Date.now() - sessionEstablishedAt > 5000;
     if (sessionToken && !loginGraceElapsed) return;
     if (sessionToken && loginGraceElapsed && document.body.textContent.includes("Code d’accès")) {
@@ -964,7 +939,6 @@
       latestOperations = {};
       shareTeamState();
     }
-    if (document.body.classList.contains("lykos-team-home-active")) return;
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});
 })();

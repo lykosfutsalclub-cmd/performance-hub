@@ -3,18 +3,21 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
-const [home, manager, script, styles] = await Promise.all([
+const [home, manager, script, styles, fonts] = await Promise.all([
   readFile(new URL("index.html", root), "utf8"),
   readFile(new URL("five-manager/index.html", root), "utf8"),
   readFile(new URL("five-manager/five-manager.js", root), "utf8"),
   readFile(new URL("five-manager/five-manager.css", root), "utf8"),
+  readFile(new URL("five-manager/fonts.css", root), "utf8"),
 ]);
 
 test("Five Manager est une expérience spéciale distincte de la navigation principale", () => {
   assert.match(home, /class="lykos-manager-launch" href="\.\/five-manager\/"/);
   assert.match(manager, /<b>Performance Hub<\/b>/);
-  assert.match(manager, /Identité temporaire/);
-  assert.doesNotMatch(manager, /logo officiel Five Manager/);
+  assert.match(manager, /logo-five-manager\.png/);
+  assert.doesNotMatch(manager, /Identité temporaire/);
+  assert.match(fonts, /font-family: "OMMarseille"/);
+  assert.match(styles, /--display:"OMMarseille"/);
 });
 
 test("les huit espaces demandés sont présents et l’accès commun les protège", () => {

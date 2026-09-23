@@ -38,8 +38,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const page = await readFile(new URL("estaff/index.html",root),"utf8");
   const report = await readFile(new URL("estaff/assets/esupport-report.js",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260923-company-light-v2/);
-  assert.match(page,/team-home\.js\?v=20260923-company-light-v2/);
+  assert.match(page,/team-home\.css\?v=20260923-company-light-v3/);
+  assert.match(page,/team-home\.js\?v=20260923-company-light-v3/);
   assert.ok(page.indexOf("esupport-report.js") < page.indexOf("team-home.js"));
   assert.match(report,/new CustomEvent\("lykos:estaff-team-state"/);
   assert.match(page,/noindex,nofollow/);

@@ -3,6 +3,7 @@
   const originalFetch = window.fetch.bind(window);
   let sessionToken = "";
   let sessionGeneration = 0;
+  let sessionEstablishedAt = 0;
   let latestReport = null;
   let latestReturns = [];
   let latestStateUpdatedAt = "";
@@ -865,6 +866,7 @@
   async function loadReport(token, generation) {
     if (generation !== sessionGeneration) return;
     sessionToken = token;
+    sessionEstablishedAt = Date.now();
     try {
       const options = {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${token}`}};
       const [response, stateResponse] = await Promise.all([
@@ -875,6 +877,7 @@
       if (response.status === 401 || stateResponse.status === 401) {
         sessionGeneration += 1;
         sessionToken = "";
+        sessionEstablishedAt = 0;
         window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
         latestReport = null;
         latestReturns = [];
@@ -946,9 +949,11 @@
   });
 
   new MutationObserver(() => {
-    if (sessionToken && document.body.textContent.includes("Code d’accès")) {
+    const loginGraceElapsed = sessionEstablishedAt > 0 && Date.now() - sessionEstablishedAt > 5000;
+    if (sessionToken && loginGraceElapsed && document.body.textContent.includes("Code d’accès")) {
       sessionGeneration += 1;
       sessionToken = "";
+      sessionEstablishedAt = 0;
       window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
       latestReport = null;
       latestReturns = [];

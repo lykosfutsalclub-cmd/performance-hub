@@ -12,8 +12,8 @@ const [home, estaff, gate, gateStyles, bridge] = await Promise.all([
 ]);
 
 test("le même contrôle d’accès précède le Performance Hub et le eStaff", () => {
-  assert.match(home, /access-gate\.js\?v=20260924-global-access-v7/);
-  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260924-global-access-v7/);
+  assert.match(home, /access-gate\.js\?v=20260924-global-access-v8/);
+  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260924-global-access-v8/);
   assert.ok(estaff.indexOf("access-gate.js") < estaff.indexOf("estaff.js"));
   assert.ok(estaff.indexOf("hub-session-bridge.js") < estaff.indexOf("estaff.js"));
 });
@@ -39,10 +39,14 @@ test("la session vérifiée est commune aux pages et remplace le second clavier 
 });
 
 test("l’accueil reprend strictement la typographie et le cadrage du PH", () => {
-  assert.match(gate, /PERFORMANCE<br>HUB/);
+  assert.match(gate, /PERFORMANCE HUB/);
   assert.match(gate, /logo-lykos-intro-integral-2026\.png/);
-  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*margin: 20px;/);
+  assert.doesNotMatch(gate, /Bienvenue\.|LYKOS FUTSAL CLUB/);
+  assert.match(gate, /class="lykos-access-sr-only">Accès au Performance Hub/);
+  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*width: clamp\(112px, 30vw, 138px\);/);
+  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*margin: 0;/);
   assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*padding: 0;/);
+  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*object-fit: contain;/);
   assert.match(gateStyles, /\.lykos-access-brand strong \{[\s\S]*font-family: "OMMarseille";/);
   assert.doesNotMatch(gateStyles.match(/\.lykos-access-brand strong \{[\s\S]*?\}/)?.[0] || "", /Georgia|Times New Roman/);
 });

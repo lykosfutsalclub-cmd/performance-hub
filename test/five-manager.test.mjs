@@ -25,7 +25,7 @@ test("les huit espaces demandés sont présents et l’accès commun les protèg
   for (const route of ["home", "squad", "lineup", "match", "report", "availability", "history", "staff"]) {
     assert.match(manager, new RegExp(`data-route="${route}"`));
   }
-  assert.match(manager, /\.\.\/access-gate\.js\?v=20260924-global-access-v7/);
+  assert.match(manager, /\.\.\/access-gate\.js\?v=20260924-global-access-v8/);
   assert.ok(manager.indexOf("access-gate.js") < manager.indexOf("five-manager.js"));
 });
 

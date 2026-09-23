@@ -268,16 +268,14 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
   .company-kpis {grid-template-columns:repeat(2,1fr)}
 }
 
-@media (min-width:861px) {
-  #lykos-team-home {padding-bottom:82px}
-  .company-topbar {grid-template-columns:minmax(220px,1fr) auto}
-  .company-nav {position:fixed;z-index:70;left:50%;bottom:14px;transform:translateX(-50%);width:min(780px,calc(100vw - 32px));justify-content:space-evenly;background:#d0b631!important;border:1px solid #f4df70!important;box-shadow:0 16px 45px rgba(0,0,0,.45)}
-  .company-nav button {flex:1;color:#071b45!important}.company-nav button:hover,.company-nav button.is-active {background:#0b3974!important;color:#fff!important}.company-nav button.is-active {box-shadow:none!important}
-  .company-actions {grid-column:2}.company-activity-row {grid-template-columns:auto minmax(160px,.55fr) minmax(240px,1fr) auto auto}
-}
+#lykos-team-home {padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+.company-topbar {grid-template-columns:minmax(220px,1fr) auto}
+.company-nav {position:fixed;z-index:70;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(780px,calc(100vw - 24px));justify-content:space-evenly;background:#d0b631!important;border:1px solid #f4df70!important;box-shadow:0 16px 45px rgba(0,0,0,.45)}
+.company-nav button {flex:1;color:#071b45!important}.company-nav button:hover,.company-nav button.is-active {background:#0b3974!important;color:#fff!important}.company-nav button.is-active {box-shadow:none!important}
+.company-actions {grid-column:2}.company-activity-row {grid-template-columns:auto minmax(160px,.55fr) minmax(240px,1fr) auto auto}
 
 @media (max-width:860px) {
-  .company-topbar {position:sticky;top:0;grid-template-columns:1fr auto;padding:12px 18px}.company-nav {grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow:auto}.company-actions .company-primary {display:none}
+  .company-topbar {position:sticky;top:0;grid-template-columns:1fr auto;padding:12px 18px}.company-nav {justify-content:flex-start;overflow-x:auto}.company-actions .company-primary {display:none}
   .company-main {width:calc(100% - 28px);padding:28px 0 48px}.company-title {align-items:start}.company-title>button,.company-title>span {text-align:right}
   .company-overview-grid {grid-template-columns:1fr}.company-agent-grid,.company-service-grid {grid-template-columns:repeat(2,minmax(0,1fr))}.company-mission-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
   .company-toolbar {grid-template-columns:repeat(2,minmax(0,1fr))}.company-search {grid-column:1/-1}
@@ -286,7 +284,7 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 }
 
 @media (max-width:600px) {
-  .company-topbar {position:sticky;top:0}.company-brand small {display:none}.company-brand img {width:42px;height:42px}.company-nav {margin:0 -18px -12px;padding:6px 14px;border-radius:0;border-left:0;border-right:0}.company-nav button {font-size:.78rem}
+  .company-topbar {position:sticky;top:0}.company-brand small {display:none}.company-brand img {width:42px;height:42px}.company-nav {margin:0;padding:6px;border-radius:18px}.company-nav button {font-size:.78rem}
   .company-main {width:calc(100% - 22px);padding-top:22px}.company-title {display:grid;gap:12px}.company-title h1 {font-size:2.35rem}.company-title>button,.company-title>span {text-align:left}
   .company-kpis {grid-template-columns:1fr 1fr;gap:9px}.company-kpis>button {display:flex;flex-direction:column;align-items:flex-start;min-height:150px;padding:15px}.company-kpis b {margin-top:auto}.kpi-icon {width:38px;height:38px}
   .company-director {grid-template-columns:1fr 145px;padding-left:20px}.company-director img {height:260px}.company-director h2 {font-size:1.55rem}

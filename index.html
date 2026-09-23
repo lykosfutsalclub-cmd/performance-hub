@@ -3,8 +3,8 @@
 <meta name="theme-color" content="#091d4f">
 <link rel="icon" href="lykos-app-icon.jpg" type="image/jpeg" sizes="512x512">
 <link rel="apple-touch-icon" href="lykos-app-icon.jpg">
-<link rel="stylesheet" href="access-gate.css?v=20260923-global-access-v6">
-<script defer src="access-gate.js?v=20260923-global-access-v6"></script>
+<link rel="stylesheet" href="access-gate.css?v=20260924-global-access-v7">
+<script defer src="access-gate.js?v=20260924-global-access-v7"></script>
 <div id="lykos-dashboard-preview">
   <style>
     @font-face {
@@ -89,6 +89,10 @@
     #lykos-dashboard-preview .lykos-headbar-title { min-width:max-content; font-family:"OMMarseille", Georgia, serif; font-weight:700; letter-spacing:.08em; font-size:0; line-height:.82; display:flex; flex-direction:column; gap:0; }
     #lykos-dashboard-preview .lykos-headbar-title::before { content:"PERFORMANCE"; color:#fff; font-size:15px; }
     #lykos-dashboard-preview .lykos-headbar-title::after { content:"HUB"; color:#fff; font-size:15px; letter-spacing:.08em; }
+    #lykos-dashboard-preview .lykos-manager-launch { margin-left:auto; padding:10px 15px; border:1px solid rgba(243,213,43,.66); background:#f3d52b; color:#091d4f; font-size:11px; font-weight:900; letter-spacing:.08em; text-decoration:none; text-transform:uppercase; box-shadow:0 6px 18px rgba(0,0,0,.18); }
+    #lykos-dashboard-preview .lykos-manager-launch:hover, #lykos-dashboard-preview .lykos-manager-launch:focus-visible { background:#fff16b; outline:2px solid #fff; outline-offset:2px; }
+    #lykos-dashboard-preview .lykos-manager-return { display:none; width:max-content; margin:0 0 12px; padding:9px 12px; border:1px solid rgba(243,213,43,.58); background:#0a326a; color:#fff; font-size:10px; font-weight:800; letter-spacing:.05em; text-decoration:none; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-manager-return[data-visible="true"] { display:inline-flex; }
     #lykos-dashboard-preview { padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
     #lykos-dashboard-preview .lykos-headnav {
       position:fixed; left:50%; bottom:max(0px,env(safe-area-inset-bottom)); z-index:100;
@@ -654,6 +658,7 @@
       #lykos-dashboard-preview .lykos-headbar-logo { width:36px; height:42px; }
       #lykos-dashboard-preview .lykos-headbar-title::before,
       #lykos-dashboard-preview .lykos-headbar-title::after { font-size:13px; }
+      #lykos-dashboard-preview .lykos-manager-launch { margin-left:auto; padding:8px 10px; font-size:9px; }
       #lykos-dashboard-preview .lykos-headnav {
         left:0; right:0; bottom:0; width:100%; height:72px; transform:none;
         z-index:100; padding:5px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));
@@ -948,6 +953,7 @@
       <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">ESTAFF</button>
       <button data-view="performance" data-mobile-label="PERF." aria-selected="false">PERFORMANCE</button>
     </nav>
+    <a class="lykos-manager-launch" href="./five-manager/" aria-label="Ouvrir Five Manager">Five Manager</a>
   </header>
   <div class="lykos-shell">
     <aside class="lykos-sidebar">
@@ -1152,6 +1158,7 @@
           <div class="lykos-player-picker-grid" data-player-picker-grid aria-label="Joueurs disponibles"></div>
         </div>
         <div class="lykos-player-profile" data-player-profile hidden>
+          <a class="lykos-manager-return" data-manager-return href="./five-manager/">← Retour à Five Manager</a>
           <div class="lykos-player-profile-top">
             <div class="lykos-player-identity">
               <figure class="lykos-player-visual">
@@ -3113,7 +3120,20 @@
       };
       applyLogo();
       updateTeam('current');
-      showPlayerPicker();
+      const initialQuery = new URLSearchParams(window.location.search);
+      const requestedPlayer = players.find(player => player.id === initialQuery.get('player'));
+      if (requestedPlayer) {
+        root.querySelectorAll('[data-view]').forEach(item => item.setAttribute('aria-selected',String(item.dataset.view === 'players')));
+        root.querySelectorAll('[data-view-panel]').forEach(panel => panel.hidden = panel.dataset.viewPanel !== 'players');
+        selectPlayer(requestedPlayer);
+        const returnLink = root.querySelector('[data-manager-return]');
+        const savedContext = sessionStorage.getItem('lykos_five_manager_return');
+        returnLink.dataset.visible = String(initialQuery.get('from') === 'five-manager');
+        if (savedContext) {
+          try { returnLink.href = JSON.parse(savedContext).href || './five-manager/'; }
+          catch { returnLink.href = './five-manager/'; }
+        }
+      } else showPlayerPicker();
     })();
   </script>
 </div>

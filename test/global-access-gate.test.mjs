@@ -12,8 +12,8 @@ const [home, estaff, gate, gateStyles, bridge] = await Promise.all([
 ]);
 
 test("le même contrôle d’accès précède le Performance Hub et le eStaff", () => {
-  assert.match(home, /access-gate\.js\?v=20260923-global-access-v6/);
-  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260923-global-access-v6/);
+  assert.match(home, /access-gate\.js\?v=20260924-global-access-v7/);
+  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260924-global-access-v7/);
   assert.ok(estaff.indexOf("access-gate.js") < estaff.indexOf("estaff.js"));
   assert.ok(estaff.indexOf("hub-session-bridge.js") < estaff.indexOf("estaff.js"));
 });

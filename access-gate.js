@@ -1,6 +1,8 @@
 (() => {
   "use strict";
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
+  const ASSET_ROOT = new URL(".", document.currentScript?.src || location.href);
+  const BRAND_LOGO = new URL("logo-lykos-intro-integral-2026.png", ASSET_ROOT).href;
   const STORAGE_KEY = "lykos_performance_hub_tab_session_v2";
   const LEGACY_STORAGE_KEY = "lykos_performance_hub_session_v1";
   let session = null;
@@ -119,7 +121,7 @@
     gate.setAttribute("aria-modal", "true");
     gate.setAttribute("aria-labelledby", "lykos-access-title");
     gate.innerHTML = `<div class="lykos-access-card">
-      <div class="lykos-access-brand"><img src="/performance-hub/logo-lykos-intro-integral-2026.png" alt="Logo Lykos Futsal Club"><div><strong>PERFORMANCE<br>HUB</strong><span>LYKOS FUTSAL CLUB</span></div></div>
+      <div class="lykos-access-brand"><img src="${BRAND_LOGO}" alt="Logo Lykos Futsal Club"><div><strong>PERFORMANCE<br>HUB</strong><span>LYKOS FUTSAL CLUB</span></div></div>
       <h1 id="lykos-access-title">Bienvenue.</h1>
       <p class="lykos-access-intro">Composez le code du club pour ouvrir le Performance Hub et l’ensemble de ses espaces.</p>
       <div class="lykos-access-dots" aria-label="Code à quatre chiffres"><span></span><span></span><span></span><span></span></div>

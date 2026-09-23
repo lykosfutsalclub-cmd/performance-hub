@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#061a3d">
+  <title>Five Manager · Lykos FC</title>
+  <link rel="icon" href="../logo-lykos-intro-carre-2026.png">
+  <link rel="stylesheet" href="../access-gate.css?v=20260924-global-access-v7">
+  <script defer src="../access-gate.js?v=20260924-global-access-v7"></script>
+  <link rel="stylesheet" href="five-manager.css?v=20260924-2">
+</head>
+<body>
+  <div class="fm-app" id="five-manager-app">
+    <header class="fm-header">
+      <a class="fm-back" href="../" aria-label="Retour au Performance Hub"><span aria-hidden="true">←</span><b>Performance Hub</b></a>
+      <div class="fm-brand">
+        <span class="fm-brand-placeholder" aria-hidden="true">FM</span>
+        <span><small>Identité temporaire</small><strong>Five Manager</strong></span>
+      </div>
+      <div class="fm-header-status"><span class="fm-live-dot" aria-hidden="true"></span><span data-freshness>Chargement des données…</span></div>
+    </header>
+
+    <div class="fm-layout">
+      <nav class="fm-nav" aria-label="Espaces Five Manager">
+        <button type="button" data-route="home" aria-current="page"><span aria-hidden="true">⌂</span><b>Accueil</b></button>
+        <button type="button" data-route="squad"><span aria-hidden="true">♟</span><b>Équipe</b></button>
+        <button type="button" data-route="lineup"><span aria-hidden="true">▦</span><b>Composition</b></button>
+        <button type="button" data-route="match"><span aria-hidden="true">◆</span><b>Match</b></button>
+        <button type="button" data-route="report"><span aria-hidden="true">▤</span><b>Rapport</b></button>
+        <button type="button" data-route="availability"><span aria-hidden="true">✚</span><b>Disponibilités</b></button>
+        <button type="button" data-route="history"><span aria-hidden="true">★</span><b>Historique</b></button>
+        <button type="button" data-route="staff"><span aria-hidden="true">◎</span><b>Staff</b></button>
+      </nav>
+
+      <main class="fm-main" tabindex="-1">
+        <div class="fm-page-head">
+          <div><span class="fm-kicker" data-kicker>Centre de gestion</span><h1 data-title>Accueil</h1><p data-subtitle></p></div>
+          <div class="fm-context"><span>Saison <b>2026–2027</b></span><span>Source <b>Performance Hub</b></span></div>
+        </div>
+        <nav class="fm-subnav" data-subnav aria-label="Sous-rubriques" hidden></nav>
+        <section class="fm-content" data-content aria-live="polite"></section>
+      </main>
+    </div>
+
+    <dialog class="fm-dialog" data-dialog>
+      <div class="fm-dialog-head"><strong data-dialog-title>Détail</strong><button type="button" data-dialog-close aria-label="Fermer">×</button></div>
+      <div class="fm-dialog-body" data-dialog-body></div>
+    </dialog>
+    <div class="fm-toast" data-toast role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <script src="../team-data.js"></script>
+  <script src="../player-secondary-data.js"></script>
+  <script src="../pantheon-data.js?v=live-sync-20260918"></script>
+  <script src="five-manager.js?v=20260924-3"></script>
+</body>
+</html>

@@ -12,8 +12,8 @@ const [home, estaff, gate, gateStyles, bridge] = await Promise.all([
 ]);
 
 test("le même contrôle d’accès précède le Performance Hub et le eStaff", () => {
-  assert.match(home, /access-gate\.js\?v=20260923-global-access-v3/);
-  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260923-global-access-v3/);
+  assert.match(home, /access-gate\.js\?v=20260923-global-access-v4/);
+  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260923-global-access-v4/);
   assert.ok(estaff.indexOf("access-gate.js") < estaff.indexOf("estaff.js"));
   assert.ok(estaff.indexOf("hub-session-bridge.js") < estaff.indexOf("estaff.js"));
 });
@@ -42,6 +42,7 @@ test("l’accueil reprend strictement la typographie et le cadrage du PH", () =>
   assert.match(gate, /PERFORMANCE<br>HUB/);
   assert.match(gate, /logo-lykos-intro-carre-2026\.png/);
   assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*margin: 20px;/);
+  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*padding: 6px;/);
   assert.match(gateStyles, /\.lykos-access-brand strong \{[\s\S]*font-family: "OMMarseille";/);
   assert.doesNotMatch(gateStyles.match(/\.lykos-access-brand strong \{[\s\S]*?\}/)?.[0] || "", /Georgia|Times New Roman/);
 });

@@ -37,12 +37,18 @@ test("les indicateurs reposent sur l’activité enregistrée et restent neutres
 test("la page charge l’accueil humain après les protections existantes", async () => {
   const page = await readFile(new URL("estaff/index.html",root),"utf8");
   const report = await readFile(new URL("estaff/assets/esupport-report.js",root),"utf8");
+  const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260923-company-light-v4/);
+  assert.match(page,/team-home\.css\?v=20260923-lykos-identity-v1/);
   assert.match(page,/team-home\.js\?v=20260923-company-light-v4/);
   assert.ok(page.indexOf("esupport-report.js") < page.indexOf("team-home.js"));
   assert.match(report,/new CustomEvent\("lykos:estaff-team-state"/);
   assert.match(page,/noindex,nofollow/);
+  assert.match(style,/Identité Lykos : continuité visuelle avec le Performance Hub/);
+  assert.match(style,/--company-bg:#011834/);
+  assert.match(style,/--company-gold:#d0b631/);
+  assert.match(style,/linear-gradient\(to bottom,#004497 0%,#011834 100%\)/);
+  assert.match(style,/font-family:"OMMarseille",Georgia,serif/);
 });
 
 test("la navigation principale reste fixée en bas et le futur poste eRH attend un prénom", async () => {

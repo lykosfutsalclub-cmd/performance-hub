@@ -257,7 +257,7 @@ test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   assert.doesNotMatch(supervision, /CADENCE_API|cadenceToken|connectCadence|loadCadenceReport|cadenceState/);
   assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /fab-mysterio|chatgpt[.]site/);
   assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
-  assert.match(page, /esupport-report\.js\?v=20260923-company-light-v3/);
+  assert.match(page, /esupport-report\.js\?v=20260923-company-light-v4/);
   assert.match(page, /estaff\.js\?v=20260921-active43/);
   assert.match(page, /esupport-report\.css\?v=20260920-hidden-state/);
   const reportStyles = await readFile(new URL("estaff/assets/esupport-report.css", root), "utf8");

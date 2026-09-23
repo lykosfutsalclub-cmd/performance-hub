@@ -950,6 +950,7 @@
 
   new MutationObserver(() => {
     const loginGraceElapsed = sessionEstablishedAt > 0 && Date.now() - sessionEstablishedAt > 5000;
+    if (sessionToken && !loginGraceElapsed) return;
     if (sessionToken && loginGraceElapsed && document.body.textContent.includes("Code d’accès")) {
       sessionGeneration += 1;
       sessionToken = "";

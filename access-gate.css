@@ -78,7 +78,7 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
   width: 68px;
   height: 68px;
   margin: 20px;
-  padding: 6px;
+  padding: 0;
   flex: 0 0 auto;
   object-fit: contain;
   object-position: center;

@@ -39,7 +39,7 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const report = await readFile(new URL("estaff/assets/esupport-report.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260923-lykos-identity-v1/);
+  assert.match(page,/team-home\.css\?v=20260923-lykos-scroll-v2/);
   assert.match(page,/team-home\.js\?v=20260923-company-light-v4/);
   assert.ok(page.indexOf("esupport-report.js") < page.indexOf("team-home.js"));
   assert.match(report,/new CustomEvent\("lykos:estaff-team-state"/);
@@ -49,6 +49,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   assert.match(style,/--company-gold:#d0b631/);
   assert.match(style,/linear-gradient\(to bottom,#004497 0%,#011834 100%\)/);
   assert.match(style,/font-family:"OMMarseille",Georgia,serif/);
+  assert.match(style,/body\.lykos-team-home-active #estaff-root>main \{[\s\S]*position:static!important;[\s\S]*overflow:visible!important;/);
+  assert.match(style,/body\.lykos-team-home-active \{[\s\S]*overflow-y:auto!important;/);
 });
 
 test("la navigation principale reste fixée en bas et le futur poste eRH attend un prénom", async () => {

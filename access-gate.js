@@ -1,7 +1,8 @@
 (() => {
   "use strict";
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
-  const STORAGE_KEY = "lykos_performance_hub_session_v1";
+  const STORAGE_KEY = "lykos_performance_hub_tab_session_v2";
+  const LEGACY_STORAGE_KEY = "lykos_performance_hub_session_v1";
   let session = null;
   let code = "";
   let busy = false;
@@ -9,10 +10,10 @@
 
   function readStoredSession() {
     try {
-      const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      const value = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "null");
       if (typeof value?.token === "string" && Number.isFinite(value?.expiresAt) && value.expiresAt * 1000 > Date.now()) return value;
     } catch {}
-    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
     return null;
   }
 
@@ -22,7 +23,7 @@
 
   function unlock(value) {
     session = value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(value));
     document.documentElement.classList.remove("lykos-access-locked");
     document.documentElement.classList.add("lykos-access-granted");
     gate?.remove();
@@ -32,7 +33,7 @@
 
   function logout() {
     session = null;
-    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
     location.reload();
   }
 
@@ -145,6 +146,7 @@
   }
 
   async function start() {
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
     const stored = readStoredSession();
     mount(Boolean(stored));
     if (!stored) return;
@@ -152,7 +154,7 @@
       await validate(stored);
       unlock(stored);
     } catch {
-      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(STORAGE_KEY);
       gate?.classList.remove("lykos-access-waiting");
       showMessage("Votre accès a expiré. Composez à nouveau le code.");
     }

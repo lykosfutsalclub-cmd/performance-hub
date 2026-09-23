@@ -1,0 +1,182 @@
+:root {
+  --access-navy: #061a3d;
+  --access-blue: #004497;
+  --access-yellow: #f3d52b;
+  --access-white: #f8fbff;
+}
+
+html:not(.lykos-access-granted) #lykos-dashboard-preview,
+html:not(.lykos-access-granted) #estaff-root {
+  visibility: hidden !important;
+}
+
+html.lykos-access-locked,
+html.lykos-access-locked body {
+  min-height: 100%;
+  overflow: hidden !important;
+}
+
+.lykos-access-gate,
+.lykos-access-gate * {
+  box-sizing: border-box;
+}
+
+.lykos-access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: max(24px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+  color: var(--access-white);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(21, 102, 194, .82), transparent 38%),
+    linear-gradient(155deg, var(--access-blue) 0%, var(--access-navy) 58%, #01132d 100%);
+}
+
+.lykos-access-card {
+  width: min(100%, 430px);
+  padding: clamp(24px, 6vw, 38px);
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 28px;
+  background: rgba(4, 28, 68, .88);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .38);
+  backdrop-filter: blur(18px);
+}
+
+.lykos-access-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.lykos-access-brand img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+
+.lykos-access-brand strong,
+.lykos-access-brand span {
+  display: block;
+  line-height: 1;
+  letter-spacing: .08em;
+}
+
+.lykos-access-brand strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+}
+
+.lykos-access-brand span {
+  margin-top: 7px;
+  color: var(--access-yellow);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.lykos-access-card h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 8vw, 44px);
+  line-height: 1;
+}
+
+.lykos-access-intro {
+  margin: 12px 0 24px;
+  color: #c5d7ed;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.lykos-access-dots {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  min-height: 20px;
+  margin-bottom: 20px;
+}
+
+.lykos-access-dots span {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #7894b9;
+  border-radius: 50%;
+  background: transparent;
+  transition: .16s ease;
+}
+
+.lykos-access-dots span.is-filled {
+  border-color: var(--access-yellow);
+  background: var(--access-yellow);
+  transform: scale(1.08);
+}
+
+.lykos-access-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.lykos-access-keypad button,
+.lykos-access-submit {
+  min-height: 58px;
+  border: 1px solid rgba(152, 184, 224, .5);
+  border-radius: 17px;
+  color: var(--access-white);
+  background: rgba(16, 52, 104, .86);
+  font: inherit;
+  font-size: 24px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.lykos-access-keypad button:hover,
+.lykos-access-keypad button:focus-visible {
+  border-color: var(--access-yellow);
+  background: #16447e;
+  outline: none;
+}
+
+.lykos-access-submit {
+  width: 100%;
+  margin-top: 13px;
+  color: #061a3d;
+  background: var(--access-yellow);
+  border-color: var(--access-yellow);
+  font-size: 16px;
+}
+
+.lykos-access-submit:disabled,
+.lykos-access-keypad button:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+
+.lykos-access-message {
+  min-height: 22px;
+  margin: 14px 0 0;
+  color: #ffb9b9;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lykos-access-waiting .lykos-access-keypad,
+.lykos-access-waiting .lykos-access-dots,
+.lykos-access-waiting .lykos-access-submit {
+  display: none;
+}
+
+.lykos-access-waiting .lykos-access-message {
+  color: #d8e8fb;
+}
+
+@media (max-width: 520px) {
+  .lykos-access-gate { place-items: start center; }
+  .lykos-access-card { border-radius: 23px; }
+  .lykos-access-keypad button { min-height: 62px; }
+}

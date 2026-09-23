@@ -13,8 +13,12 @@ test("l’accueil eStaff présente les 43 personnes avec leurs portraits", async
   assert.equal(new Set(people).size,43);
   assert.equal(portraits.filter(file => file.endsWith(".jpg")).length,43);
   assert.match(script,/Bonjour, voici votre équipe/);
-  assert.match(script,/Son atout/);
-  assert.match(script,/À accompagner/);
+  assert.match(script,/Point fort/);
+  assert.match(script,/Axe d’amélioration/);
+  assert.match(script,/agentDialog/);
+  assert.match(script,/Missions enregistrées/);
+  assert.match(script,/Sans difficulté/);
+  assert.match(script,/Portrait corporate/);
   assert.match(script,/Pas encore de mission enregistrée/);
 });
 
@@ -23,10 +27,10 @@ test("les indicateurs reposent sur l’activité enregistrée et restent neutres
 
   assert.match(script,/teamState\.returns/);
   assert.match(script,/teamState\.agentStates/);
-  assert.match(script,/score === null \? "—"/);
-  assert.match(script,/Missions en cours/);
-  assert.match(script,/Missions réalisées/);
-  assert.match(script,/Validées sans blocage/);
+  assert.match(script,/successRate===null\?"—"/);
+  assert.match(script,/agents en mission/);
+  assert.match(script,/missions terminées aujourd’hui/);
+  assert.match(script,/sans difficulté/);
   assert.doesNotMatch(script,/style="--service|style="--score|style="--filter/);
 });
 
@@ -34,9 +38,18 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const page = await readFile(new URL("estaff/index.html",root),"utf8");
   const report = await readFile(new URL("estaff/assets/esupport-report.js",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260921-human-team/);
-  assert.match(page,/team-home\.js\?v=20260921-human-team/);
+  assert.match(page,/team-home\.css\?v=20260923-company-profiles/);
+  assert.match(page,/team-home\.js\?v=20260923-company-profiles/);
   assert.ok(page.indexOf("esupport-report.js") < page.indexOf("team-home.js"));
   assert.match(report,/new CustomEvent\("lykos:estaff-team-state"/);
   assert.match(page,/noindex,nofollow/);
+});
+
+test("la navigation principale reste fixée en bas et le futur poste eRH attend un prénom", async () => {
+  const performanceHub = await readFile(new URL("index.html",root),"utf8");
+
+  assert.match(performanceHub,/\.lykos-headnav \{[\s\S]*position:fixed;[\s\S]*bottom:/);
+  assert.match(performanceHub,/Poste à pourvoir/);
+  assert.match(performanceHub,/Aucune intégration ne démarre tant que le prénom n’a pas été validé/);
+  assert.doesNotMatch(performanceHub,/eRH · sous l’autorité d’Oscar/);
 });

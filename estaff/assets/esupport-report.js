@@ -22,7 +22,7 @@
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès", "Angela", "Alba", "Lola", "Nora", "Salomé", "Ella", "Salma", "Priya"]);
   const serviceLabels = {coordination:"eGeneral Director", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
   const serviceDescriptions = {
-    hr:"eRH agit sous l’autorité d’Oscar, eGeneral Director. Le service cadre le travail des agents IA, mesure leur temps d’exécution, organise leur timing, évalue les besoins et propose les adaptations qui maintiennent le eStaff efficace.",
+    hr:"eRH agit sous l’autorité d’Oscar, Directeur général. Le service cadre le travail de l’équipe, mesure le temps consacré aux missions, organise les priorités, évalue les besoins et propose les adaptations qui maintiennent le eStaff efficace.",
   };
   const serviceFrameworks = {
     hr:[
@@ -60,15 +60,15 @@
     },
     Sonia: {
       title:"Gestion des identifiants",
-      summary:"Relier les identifiants SportEasy à la session sans intervenir sur l’API.",
-      purpose:"Sonia gère exclusivement le lien sécurisé entre les identifiants chiffrés et la session SportEasy. Elle confirme si la session est utilisable, mais ne contrôle jamais l’API, ses routes, ses données ou la synchronisation.",
+      summary:"Relier les identifiants SportEasy à la session sans intervenir sur les données.",
+      purpose:"Sonia gère exclusivement le lien sécurisé entre les identifiants chiffrés et la session SportEasy. Elle confirme si la session est utilisable, mais ne contrôle jamais les données ni leur synchronisation.",
       when:"Avant chaque synchronisation SportEasy et lorsqu’une session déconnectée ou un identifiant refusé est détecté.",
       output:"Un état des identifiants et de la session transmis à Patricia, puis une preuve à Véronique, sans aucun secret affiché.",
     },
     Patricia: {
       title:"Surveillance des données",
-      summary:"Contrôler les routes SportEasy et détecter les données manquantes.",
-      purpose:"Après confirmation de la session par Sonia, Patricia contrôle l’API, les routes SportEasy, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
+      summary:"Contrôler la disponibilité de SportEasy et détecter les données manquantes.",
+      purpose:"Après confirmation de la session par Sonia, Patricia contrôle les accès SportEasy autorisés, la fraîcheur des données publiques et la présence du dernier match réellement finalisé.",
       when:"Chaque nuit, après une mise en ligne et lors des rapports du lundi et du jeudi.",
       output:"Un relevé précis des contrôles réussis et des anomalies transmis à Gaston.",
     },
@@ -157,7 +157,7 @@
     Akira: {
       title:"Protection des secrets",
       summary:"Détecter les secrets exposés sans jamais les afficher.",
-      purpose:"Akira contrôle les mots de passe, clés API, jetons et cookies de session dans le code et les journaux, sans jamais recopier leur valeur.",
+      purpose:"Akira contrôle les mots de passe, clés d’accès et éléments de session dans les espaces autorisés, sans jamais recopier leur valeur.",
       when:"Chaque jour et après une modification du code ou un déploiement.",
       output:"Un constat expurgé précisant le risque, sa portée et l’action attendue.",
     },
@@ -171,7 +171,7 @@
     Thiago: {
       title:"Sécurité des intégrations",
       summary:"Vérifier les liens, destinations et protections des intégrations.",
-      purpose:"Thiago contrôle la sécurité des liens techniques entre le Performance Hub et les supports du club, sans intervenir sur le fonctionnement métier des API.",
+      purpose:"Thiago contrôle la sécurité des liens entre le Performance Hub et les supports du club, sans intervenir sur leur fonctionnement métier.",
       when:"Toutes les heures et après chaque changement d’intégration.",
       output:"Une carte des liens et protections, accompagnée des anomalies reproductibles.",
     },
@@ -189,11 +189,11 @@
     Alba: {title:"Archiviste & historienne du club",summary:"Consolider l’histoire vérifiée du Lykos depuis 2019.",purpose:"Alba relie les palmarès, équipes de l’année, anciens effectifs, compositions, records, photographies, documents et identités à leurs sources vérifiables.",when:"À chaque nouveau document ou fait historique contrôlé.",output:"Une notice datée avec source, niveau de preuve et contradictions éventuelles."},
     Lola: {title:"Productrice éditoriale",summary:"Transformer les données validées en récits prêts à relire.",purpose:"Lola transforme les analyses et archives déjà validées en résumés, cartes et bilans cohérents avec la voix du club.",when:"Après validation d’un bilan, record, anniversaire ou brief éditorial.",output:"Un brouillon sourcé qui ne peut pas être publié sans validation humaine."},
     Bastien: {title:"Coordinateur compétitions & adversaires",summary:"Fiabiliser calendriers, résultats, classements et analyse adverse.",purpose:"Bastien compare les calendriers et feuilles de résultats aux événements SportEasy, prépare les créations ou saisies à valider, contrôle ensuite le classement et documente le prochain adversaire sans inventer de donnée.",when:"Chaque jour après le contrôle SportEasy, et dès qu’un calendrier, une feuille de résultats, un événement, un score, un classement ou un adversaire change.",output:"Un dossier sourcé : écarts de calendrier, opérations préparées, résultats rapprochés, contrôle de classement, brief adverse, inconnues et validation attendue."},
-    Nora: {title:"Responsable eRH",summary:"Cadrer le travail des agents IA et soumettre les adaptations à Oscar.",purpose:"Nora dirige eRH sous l’autorité d’Oscar. Elle vérifie que chaque agent dispose d’un mandat, de sources, de permissions, d’une charge, d’une durée cible, d’un contrôle qualité et d’une preuve attendue adaptés.",when:"Chaque jour avant le rapport d’Oscar et dès qu’un agent est en retard, surchargé, bloqué ou sans preuve utile.",output:"Un tableau de pilotage par agent avec cadre, charge, temps prévu, preuve, blocage et adaptation proposée à Oscar."},
-    Yanis: {title:"Temps de travail & coûts",summary:"Mesurer durées, attentes, relances, consommations et budgets.",purpose:"Yanis mesure le temps de travail propre aux agents IA : durée d’exécution, attente d’une source, délai maximal, relances et coût. Il repère les missions trop longues, trop fréquentes ou inutilement répétées.",when:"Chaque semaine, après un dépassement de durée ou de coût et lors de toute nouvelle mission récurrente ou capacité payante.",output:"Un budget de temps et de coût par agent et par mission, avec seuils, écarts et proposition de réduction."},
-    Salomé: {title:"Planification & processus",summary:"Organiser le bon timing, les dépendances et les cadences.",purpose:"Salomé organise l’ordre et le moment de travail des agents. Elle tient compte des sources attendues, des dépendances et des validations pour éviter chevauchements, doublons et exécutions trop tôt.",when:"Chaque semaine et lorsqu’une attente, un doublon, un blocage ou une reprise manuelle se répète.",output:"Un planning agentique indiquant ordre, créneau utile, durée cible, dépendances, validation et correction testable."},
+    Nora: {title:"Responsable eRH",summary:"Cadrer le travail de l’équipe et soumettre les adaptations à Oscar.",purpose:"Nora dirige eRH sous l’autorité d’Oscar. Elle vérifie que chaque personne dispose d’un mandat, de sources, de permissions, d’une charge, d’une durée cible, d’un contrôle qualité et d’une preuve attendue adaptés.",when:"Chaque jour avant le rapport d’Oscar et dès qu’une personne est en retard, surchargée, bloquée ou sans preuve utile.",output:"Un tableau de pilotage par personne avec cadre, charge, temps prévu, preuve, blocage et adaptation proposée à Oscar."},
+    Yanis: {title:"Temps de travail & coûts",summary:"Mesurer durées, attentes, relances, consommations et budgets.",purpose:"Yanis mesure le temps consacré aux missions : durée d’exécution, attente d’une source, délai maximal, relances et coût. Il repère les missions trop longues, trop fréquentes ou inutilement répétées.",when:"Chaque semaine, après un dépassement de durée ou de coût et lors de toute nouvelle mission récurrente ou capacité payante.",output:"Un budget de temps et de coût par personne et par mission, avec seuils, écarts et proposition de réduction."},
+    Salomé: {title:"Planification des missions",summary:"Organiser le bon timing, les dépendances et les cadences.",purpose:"Salomé organise l’ordre et le moment de travail de l’équipe. Elle tient compte des sources attendues, des dépendances et des validations pour éviter chevauchements, doublons et interventions trop tôt.",when:"Chaque semaine et lorsqu’une attente, un doublon, un blocage ou une reprise manuelle se répète.",output:"Un planning indiquant ordre, créneau utile, durée cible, dépendances, validation et contrôle attendu."},
     Malik: {title:"Besoins & missions complémentaires",summary:"Détecter les besoins et proposer une répartition utile aux agents existants.",purpose:"Malik détecte surcharge, sous-utilisation, manque de compétence ou mission orpheline. Il propose d’abord une redistribution ou une mission complémentaire cohérente avant d’envisager un nouvel agent.",when:"Le premier jour de chaque mois à 11 h 15 et lorsqu’un besoin non couvert, une surcharge ou une inactivité persiste malgré les corrections.",output:"Un plan de couverture : mission complémentaire, redistribution, meilleure consigne, nouvel outil ou profil à envisager en dernier recours."},
-    Ella: {title:"Environnement & optimisation",summary:"Adapter outils, sources et cadre technique pour gagner en efficacité.",purpose:"Ella adapte l’environnement de travail aux besoins validés : outil, source, format, automatisation ou niveau de modèle. Elle recherche le meilleur rapport entre efficacité, qualité, coût, permissions et risque.",when:"Chaque semaine, après un besoin confirmé par eRH ou lorsqu’un cadre de travail empêche un agent d’être efficace.",output:"Une fiche d’optimisation avec adaptation proposée, gain attendu, coût, permissions, risques et essai mesurable."},
+    Ella: {title:"Environnement & optimisation",summary:"Adapter outils, sources et cadre de travail pour gagner en efficacité.",purpose:"Ella adapte l’environnement de travail aux besoins validés : outil, source, format ou méthode. Elle recherche le meilleur rapport entre efficacité, qualité, coût, permissions et risque.",when:"Chaque semaine, après un besoin confirmé par eRH ou lorsqu’un cadre de travail empêche une personne d’être efficace.",output:"Une fiche d’optimisation avec adaptation proposée, gain attendu, coût, permissions, risques et essai mesurable."},
   };
 
   const operationalProfiles = {
@@ -234,7 +234,7 @@
     Bastien:{inputs:"Calendrier autorisé, feuille de résultats, événements et classements SportEasy frais, historique des confrontations et éventuelle vidéo validée.",quality:"Sophie valide le match et le résultat, Patricia la fraîcheur, Francisco les scores et Véronique la passerelle ; doublons, contradictions et conteneurs Tournoi bloquent l’action concernée.",evidence:"Dossier daté avec ligne source, événement visé, état avant/après, opération préparée ou exécutée, contrôle du classement et validation humaine."},
     Nora:{inputs:"Mandats, sources, permissions, cadences, durées cibles, états, preuves, blocages et livrables des quarante-trois agents.",quality:"Contrôler utilité, charge, temps prévu et preuve sans confondre attente légitime, passage automatique et travail accompli ; soumettre les changements durables à Oscar.",evidence:"Tableau quotidien agent par agent avec cadre, charge, temps, preuve, utilité, adaptation proposée et décision d’Oscar."},
     Yanis:{inputs:"Heures de début et de fin, temps d’attente, délais maximaux, relances, usages de modèles, licences et coûts rattachés à une mission.",quality:"Séparer exécution, attente de source, estimation et donnée absente ; comparer des missions de volume équivalent et ne jamais inventer une consommation.",evidence:"Relevé des durées et coûts avec seuil autorisé, dépassement, cause et économie proposée."},
-    Salomé:{inputs:"Rulebook, calendriers, déclencheurs, files d’attente, dépendances, contrôles qualité et incidents de processus.",quality:"Vérifier que chaque agent intervient après ses sources et avant son validateur, sans chevauchement, doublon ni raccourci de contrôle.",evidence:"Planning avant-après avec créneau, durée cible, dépendances, délai et scénario de test."},
+    Salomé:{inputs:"Rulebook, calendriers, déclencheurs, files d’attente, dépendances, contrôles qualité et incidents de coordination.",quality:"Vérifier que chaque personne intervient après ses sources et avant sa validation, sans chevauchement, doublon ni raccourci de contrôle.",evidence:"Planning avant-après avec créneau, durée cible, dépendances, délai et scénario de contrôle."},
     Malik:{inputs:"Rapports de Nora, Yanis et Salomé, charge, compétences, missions et capacités existantes.",quality:"Prouver le besoin, vérifier la compatibilité avec le mandat de l’agent proposé et chiffrer l’impact avant de soumettre une mission complémentaire à Oscar.",evidence:"Plan de couverture documenté avec besoin, agent proposé, mission complémentaire, charge, alternatives et validation attendue."},
     Ella:{inputs:"Besoin validé, cadre actuel, catalogue de capacités, outils, modèles, plugins et connecteurs autorisés à l’étude.",quality:"Comparer gain mesurable, simplicité, permissions, données accessibles, coût, maintenance et risque avec eSécurité ; préférer l’adaptation la plus légère.",evidence:"Fiche avant-après sans installation automatique, avec essai mesurable et décision d’Oscar attendue."},
     Salma:{inputs:"Arrivées validées, état du dossier et informations d’effectif autorisées.",quality:"Contrôler étapes, pièces, doublons et responsabilités sans compléter une donnée absente.",evidence:"Dossier d’arrivée daté avec état, manque et prochaine action."},
@@ -399,7 +399,7 @@
     if (syncBusy || !sessionToken || latestCapabilities.oscarMissions !== true) return;
     const previousSync = syncTime;
     syncBusy = true;
-    updateSyncBar("Lancement du workflow…");
+    updateSyncBar("Lancement de la synchronisation…");
     try {
       const response = await originalFetch(`${API}/jobs`, {
         method:"POST", cache:"no-store", credentials:"omit",
@@ -407,17 +407,17 @@
         body:JSON.stringify({agent:"oscar", conversationId:`sporteasy-sync-${Date.now()}`, message:SPORTEASY_SYNC_PROMPT}),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Le workflow n’a pas pu être lancé.");
+      if (!response.ok) throw new Error(data.message || "La synchronisation n’a pas pu être lancée.");
       const jobDeadline = Date.now() + 120_000;
       while (Date.now() < jobDeadline) {
         await new Promise(resolve => setTimeout(resolve, 1_200));
         const pending = await originalFetch(`${API}/jobs/${data.id}`, {cache:"no-store", credentials:"omit", headers:{Authorization:`Bearer ${sessionToken}`}});
         const result = await pending.json();
         if (pending.status === 202) continue;
-        if (!pending.ok || result.error) throw new Error(result.message || result.error || "Le workflow n’a pas pu être lancé.");
+        if (!pending.ok || result.error) throw new Error(result.message || result.error || "La synchronisation n’a pas pu être lancée.");
         break;
       }
-      updateSyncBar("Workflow lancé · publication en cours");
+      updateSyncBar("Synchronisation lancée · publication en cours");
       const publicationDeadline = Date.now() + 12 * 60_000;
       while (Date.now() < publicationDeadline) {
         await new Promise(resolve => setTimeout(resolve, 10_000));
@@ -428,7 +428,7 @@
           return;
         }
       }
-      updateSyncBar("Workflow lancé · vérification encore en cours");
+      updateSyncBar("Synchronisation lancée · vérification encore en cours");
     } catch (error) {
       updateSyncBar(error instanceof Error ? error.message : "Synchronisation impossible pour le moment.");
     } finally {
@@ -726,7 +726,7 @@
       if (roleLabels[0]) roleLabels[0].textContent = isFemale ? "Quand la solliciter" : "Quand le solliciter";
       if (roleLabels[1]) roleLabels[1].textContent = isFemale ? "Ce qu’elle prépare" : "Ce qu’il prépare";
       const roleFooter = roleDisclosure.querySelector("footer");
-      if (roleFooter) roleFooter.textContent = `${isFemale ? "Agente installée" : "Agent installé"} dans le moteur privé OpenClaw du club. Ses outils restent cloisonnés selon sa mission.`;
+      if (roleFooter) roleFooter.textContent = "Membre de l’équipe privée du club. Son espace de travail reste limité à sa mission.";
     }
 
     const agentContract = renderAgentContract(conversation, agent, agentEntries, roleDisclosure || chatHeader);
@@ -813,7 +813,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.24.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.25.1";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "43";

@@ -2,347 +2,153 @@
   "use strict";
 
   const SERVICES = {
-    direction:{label:"Direction générale",color:"#dbc35b"},
-    operations:{label:"eOpérations",color:"#86b9ff"},
-    sport:{label:"eSportif",color:"#80d3a2"},
-    data:{label:"eDatas",color:"#75d8eb"},
-    academy:{label:"eAcadémie",color:"#ffb185"},
-    support:{label:"eSupport",color:"#cba0f6"},
-    brand:{label:"eBrand",color:"#e78bbd"},
-    security:{label:"eSécurité",color:"#e98a92"},
-    finance:{label:"eFinance",color:"#dcc665"},
-    equipment:{label:"eÉquipements",color:"#d4a27f"},
-    partnerships:{label:"ePartenariats",color:"#e89ab0"},
-    memory:{label:"eMémoire",color:"#a9bdd2"},
-    hr:{label:"eRH",color:"#9e9cdd"},
+    direction:{label:"Direction générale",short:"Direction"}, operations:{label:"eOpérations",short:"Opérations"},
+    sport:{label:"eSportif",short:"Sport"}, data:{label:"eDatas",short:"Data"}, academy:{label:"eAcadémie",short:"Académie"},
+    support:{label:"eSupport",short:"Support"}, brand:{label:"eBrand",short:"Marque"}, security:{label:"eSécurité",short:"Sécurité"},
+    finance:{label:"eFinance",short:"Finance"}, equipment:{label:"eÉquipements",short:"Équipements"},
+    partnerships:{label:"ePartenariats",short:"Partenariats"}, memory:{label:"eMémoire",short:"Mémoire"}, hr:{label:"eRH",short:"Ressources humaines"},
   };
 
   const PEOPLE = [
-    ["Oscar","direction","Directeur général","Coordination","Décision","Vision d’ensemble","Rassembler les expertises","Garder du temps pour les décisions qui comptent"],
-    ["Sophie","operations","Responsable administrative","Organisation","Suivi","Coordination","Mettre de l’ordre dans les informations","Obtenir les éléments manquants sans délai"],
-    ["Élise","operations","Référente des sources","Vérification","Cohérence","Précision","Rapprocher les informations avec méthode","Trancher lorsque deux sources se contredisent"],
-    ["Léonard","sport","Conseiller sportif","Préparation","Conseil","Anticipation","Transformer les informations en préparation utile","Attendre un dossier complet avant de conclure"],
-    ["Nadir","sport","Analyste vidéo","Lecture du jeu","Tactique","Synthèse","Faire parler les images avec justesse","Recevoir une vidéo exploitable au bon moment"],
-    ["Victor","sport","Responsable de l’effectif","Disponibilités","Suivi humain","Anticipation","Garder une vision claire du groupe","Être informé dès qu’une situation change"],
-    ["Camélia","sport","Référente de l’assiduité","Régularité","Présences","Objectivité","Suivre l’engagement avec équité","Distinguer absence, indisponibilité et oubli"],
-    ["Salma","sport","Chargée des nouvelles arrivées","Accueil","Intégration","Suivi","Soigner chaque arrivée dans le groupe","Réunir les informations avant l’intégration"],
-    ["Mateo","sport","Chargé des départs","Transition","Historique","Clarté","Accompagner chaque départ proprement","Éviter qu’un dossier reste inachevé"],
-    ["Priya","sport","Chargée du recrutement","Prospection","Évaluation","Suivi","Faire progresser les pistes avec discernement","Garder une information suffisamment qualifiée"],
-    ["Vincenzo","sport","Veille vidéo","Recherche","Patience","Vérification","Retrouver les bons matchs au bon moment","Composer avec les petites différences d’affichage"],
-    ["Samir","sport","Documentaliste vidéo","Classement","Repérage","Transmission","Rendre chaque vidéo facile à exploiter","Recevoir une vidéo confirmée avant son classement"],
-    ["Bastien","sport","Référent des rencontres","Calendrier","Contexte","Fiabilité","Relier chaque rencontre à son contexte","Faire confirmer les changements tardifs"],
-    ["Sandrine","data","Responsable amélioration","Recul","Expérience","Propositions","Remettre l’existant en question avec tact","Prioriser les idées qui apportent un vrai bénéfice"],
-    ["Giannis","data","Analyste de la performance","Interprétation","Metron","Pédagogie","Donner du sens aux performances","Éviter les conclusions hâtives sur peu de recul"],
-    ["Francisco","data","Contrôleur des données","Exactitude","Cohérence","Vigilance","Repérer les anomalies avant qu’elles ne se propagent","Faire corriger la source plutôt que le symptôme"],
-    ["Inès","data","Référente compréhension","Clarté","Parcours","Pédagogie","Rendre les informations faciles à comprendre","Simplifier sans perdre la nuance"],
-    ["Alice","academy","Responsable Académie","Accompagnement","Planning","Continuité","Veiller au bon suivi de l’Académie","Avancer malgré les informations parfois tardives"],
-    ["Roman","academy","Référent confidentialité","Discrétion","Protection","Vigilance","Protéger les informations les plus sensibles","Vérifier chaque nouvelle diffusion"],
-    ["Véronique","support","Responsable eSupport","Validation","Continuité","Coordination","S’assurer que tout fonctionne vraiment","Ne valider qu’avec une confirmation claire"],
-    ["Sonia","support","Référente des accès","Continuité","Accès","Réactivité","Rétablir les accès avec discrétion","Dépendre parfois d’une validation personnelle"],
-    ["Patricia","support","Référente SportEasy","Surveillance","Fraîcheur","Détection","Repérer très vite ce qui manque","Différencier un retard normal d’une vraie anomalie"],
-    ["Gaston","support","Référent des corrections","Diagnostic","Réparation","Fiabilité","Trouver la cause avant de corriger","Recevoir un constat assez précis pour agir vite"],
-    ["Tamara","support","Référente des essais","Vérification","Parcours","Exigence","Tester les changements comme un utilisateur","Couvrir les cas rares sans ralentir l’équipe"],
-    ["Konstantinos","brand","Responsable image et contenus","Identité","Contenus","Partenariats","Faire rayonner une image cohérente","Préserver l’identité sur chaque nouveau support"],
-    ["Giorgios","brand","Observateur des canaux publics","Veille","Tendances","Réputation","Voir rapidement ce qui change à l’extérieur","Distinguer le bruit d’un signal utile"],
-    ["Lola","brand","Chargée des publications","Rédaction","Calendrier","Tonalité","Donner une voix constante au club","Conserver le bon ton dans l’urgence"],
-    ["Amara","security","Responsable de la protection","Arbitrage","Vigilance","Coordination","Porter une vision globale de la protection","Faire simple sans baisser le niveau d’exigence"],
-    ["Elena","security","Référente des droits","Accès","Contrôle","Traçabilité","Donner à chacun le juste niveau d’accès","Retirer rapidement les droits devenus inutiles"],
-    ["Akira","security","Gardien des secrets","Discrétion","Prévention","Rigueur","Veiller sur les informations confidentielles","Renouveler les protections au bon moment"],
-    ["Joyce","security","Référente des données","Confidentialité","Partages","Respect","Protéger les données dans chaque échange","Vérifier les nouveaux partages avant diffusion"],
-    ["Thiago","security","Référent des connexions","Surveillance","Domaines","Continuité","Veiller sur les liens entre les services","Réagir sans précipitation aux signaux inhabituels"],
-    ["Jefferson","security","Référent des incidents","Réponse","Calme","Documentation","Garder la tête froide lorsqu’un incident survient","Réunir des faits fiables avant de conclure"],
-    ["Angela","finance","Responsable financière","Suivi","Prévision","Sobriété","Garder les dépenses utiles et maîtrisées","Anticiper les variations de consommation"],
-    ["Juan","equipment","Responsable équipements","Inventaire","Besoins","Disponibilité","S’assurer que chacun dispose du nécessaire","Prévoir les besoins avant qu’ils deviennent urgents"],
-    ["Marco","equipment","Référent du matériel","État","Entretien","Renouvellement","Prolonger la vie du matériel","Repérer assez tôt les signes d’usure"],
-    ["Rafael","partnerships","Responsable partenariats","Relations","Suivi","Opportunités","Entretenir des relations durables","Faire avancer chaque échange sans le brusquer"],
-    ["Alba","memory","Gardienne de la mémoire","Histoire","Classement","Transmission","Préserver ce que le club construit","Faire vivre les archives sans les encombrer"],
-    ["Nora","hr","Responsable des ressources humaines","Cadre","Équilibre","Organisation","Donner à chacun un cadre de travail juste","Adapter les rythmes aux besoins réels"],
-    ["Yanis","hr","Référent de la charge de travail","Rythmes","Capacité","Alerte","Prévenir la surcharge avant qu’elle arrive","Distinguer une pointe d’activité d’un déséquilibre"],
-    ["Salomé","hr","Référente des compétences","Savoir-faire","Progression","Besoins","Faire grandir les compétences utiles","Proposer des évolutions vraiment adaptées"],
-    ["Malik","hr","Référent des missions","Répartition","Renfort","Priorités","Confier la bonne mission à la bonne personne","Éviter de disperser les expertises"],
-    ["Ella","hr","Référente du bien-être au travail","Équilibre","Écoute","Amélioration","Préserver un rythme de travail sain","Détecter les petites frictions avant qu’elles durent"],
-  ].map(([name,service,role,...rest]) => ({
-    name,service,role,skills:rest.slice(0,3),strength:rest[3],attention:rest[4],
+    ["Oscar","direction","Directeur général",["Coordination","Décision","Vision d’ensemble"],"Rassembler les expertises et rendre les décisions simples.","Conserve les décisions engageantes sous l’autorité de Fabien.","A2","Opère en interne","Fabien"],
+    ["Sophie","operations","Responsable administrative",["Dossiers","Suivi","Organisation"],"Fiabiliser le suivi administratif sans créer de doublon.","Prépare les actions sensibles avant validation.","A2","Opère en interne","Oscar"],
+    ["Élise","operations","Référente des sources",["Vérification","Cohérence","Précision"],"Rapprocher plusieurs sources avec méthode.","Signale les contradictions sans les trancher seule.","A2","Opère en interne","Sophie"],
+    ["Léonard","sport","Conseiller sportif",["Préparation","Conseil","Synthèse"],"Transformer un dossier sportif complet en conseils courts.","Reste consultatif et attend toujours les quatre sources obligatoires.","A1","Propose","Oscar"],
+    ["Nadir","sport","Analyste vidéo",["Lecture du jeu","Tactique","Synthèse"],"Relier les images aux principes de jeu du Lykos.","Sépare toujours observation et interprétation.","A2","Opère en interne","Léonard"],
+    ["Victor","sport","Responsable de l’effectif",["Disponibilités","Postes","Anticipation"],"Donner une photographie fiable et factuelle du groupe.","Ne déduit jamais une intention d’une absence de réponse.","A2","Opère en interne","Léonard"],
+    ["Camélia","sport","Référente de l’assiduité",["Présences","Régularité","Objectivité"],"Calculer l’assiduité à partir des présences réellement saisies.","Ne transforme jamais une présence inconnue en absence.","A2","Opère en interne","Victor"],
+    ["Salma","sport","Coordinatrice des arrivées",["Accueil","Dossiers","Intégration"],"Suivre chaque arrivée jusqu’à son intégration confirmée.","Ne confirme aucune arrivée et ne contacte personne seule.","A2","Opère en interne","Victor"],
+    ["Mateo","sport","Coordinateur des départs",["Transition","Historique","Clarté"],"Accompagner proprement chaque départ confirmé.","N’ouvre jamais un départ sans confirmation humaine.","A2","Opère en interne","Victor"],
+    ["Priya","sport","Coordinatrice du recrutement",["Prospection","Évaluation","Suivi"],"Structurer les prospects autour des besoins validés.","Tout contact, essai ou recrutement reste une décision humaine.","A1–A2","Propose et suit","Victor"],
+    ["Vincenzo","sport","Référent de la veille vidéo",["Recherche","Rapprochement","Patience"],"Retrouver la bonne vidéo au bon moment.","Attend la validation de Samir avant toute récupération.","A2–A3","Opère dans son cadre","Oscar"],
+    ["Samir","sport","Documentaliste vidéo",["Classement","Repérage","Transmission"],"Rendre chaque vidéo validée facile à exploiter.","N’interprète pas la tactique à la place de Nadir.","A2","Opère en interne","Nadir"],
+    ["Bastien","sport","Coordinateur des compétitions",["Calendrier","Résultats","Adversaires"],"Fiabiliser rencontres, résultats et contexte adverse.","Ne réalise aucune écriture SportEasy sans validation humaine.","A2","Opère en interne","Léonard"],
+    ["Sandrine","data","Responsable amélioration",["Recul","Expérience","Propositions"],"Questionner le Hub pour le rendre plus utile et lisible.","Propose les évolutions sans les appliquer elle-même.","A1","Propose","Oscar"],
+    ["Giannis","data","Analyste de la performance",["Metron","Tendances","Pédagogie"],"Donner du sens aux données sans surinterpréter.","Cite toujours la période, l’échantillon et la version Metron.","A2","Opère en interne","Sandrine"],
+    ["Francisco","data","Contrôleur des données",["Exactitude","Cohérence","Vigilance"],"Repérer les anomalies avant toute interprétation.","Corrige la source avec l’équipe compétente, jamais les chiffres au hasard.","A2","Opère en interne","Giannis"],
+    ["Inès","data","Référente compréhension",["Clarté","Parcours","Pédagogie"],"Rendre les données compréhensibles sur tous les écrans.","Simplifie sans supprimer les limites importantes.","A2","Opère en interne","Sandrine"],
+    ["Alice","academy","Responsable Académie",["Accompagnement","Planning","Continuité"],"Libérer Alex du suivi opérationnel de l’Académie.","L’autorité pédagogique et humaine reste à Alex.","A2","Opère en interne","Oscar"],
+    ["Roman","academy","Référent confidentialité",["Discrétion","Protection","Vigilance"],"Protéger chaque information liée à l’Académie.","Bloque tout partage qui dépasse le strict besoin.","A1","Propose","Alice"],
+    ["Véronique","support","Responsable eSupport",["Validation","Continuité","Coordination"],"S’assurer que chaque correction fonctionne réellement.","Ne prononce une validation qu’avec des contrôles suffisants.","A2","Valide le service","Oscar"],
+    ["Sonia","support","Référente des accès",["Continuité","Accès","Réactivité"],"Maintenir une session SportEasy utilisable avec discrétion.","Ne lit ni les données métier ni les échanges SportEasy.","A2","Opère en interne","Véronique"],
+    ["Patricia","support","Référente SportEasy",["Surveillance","Fraîcheur","Détection"],"Repérer rapidement une rupture ou une donnée manquante.","Documente l’incident sans corriger elle-même.","A2","Opère en interne","Véronique"],
+    ["Gaston","support","Référent des corrections",["Diagnostic","Correction","Fiabilité"],"Trouver la cause réelle avant de corriger.","Remet chaque correction à Véronique avant mise en ligne.","A2–A3","Corrige dans son cadre","Véronique"],
+    ["Tamara","support","Référente des essais",["Vérification","Parcours","Exigence"],"Vérifier qu’un changement ne casse rien ailleurs.","Consigne clairement les contrôles non exécutés.","A2","Opère en interne","Véronique"],
+    ["Konstantinos","brand","Responsable image et contenus",["Identité","Contenus","Partenariats"],"Faire rayonner une image cohérente et utile.","Toute publication ou relation extérieure reste validée humainement.","A2","Opère en interne","Oscar"],
+    ["Giorgios","brand","Observateur des canaux publics",["Veille","Tendances","Réputation"],"Repérer les changements publics significatifs.","Distingue un signal utile du simple bruit.","A2","Opère en interne","Konstantinos"],
+    ["Lola","brand","Productrice éditoriale",["Rédaction","Histoire","Tonalité"],"Transformer des faits validés en contenus clairs.","Chaque production reste un brouillon avant validation.","A1","Propose","Konstantinos"],
+    ["Amara","security","Responsable de la protection",["Arbitrage","Vigilance","Coordination"],"Transformer les constats en décisions de protection compréhensibles.","Ne valide jamais seule une correction qu’elle a produite.","A2","Coordonne et protège","Oscar"],
+    ["Elena","security","Référente des droits",["Accès","Contrôle","Traçabilité"],"Vérifier que chacun possède uniquement les droits nécessaires.","Ne crée, ne modifie et ne supprime aucun accès.","A1","Propose","Amara"],
+    ["Akira","security","Gardien des secrets",["Discrétion","Prévention","Rigueur"],"Détecter une exposition sans jamais révéler le secret.","Ne copie, n’exporte et ne renouvelle aucun secret seul.","A1","Propose","Amara"],
+    ["Joyce","security","Référente des données",["Confidentialité","Partages","Respect"],"Limiter chaque donnée à son usage légitime.","Ne supprime et ne transmet aucune donnée seule.","A1","Propose","Amara"],
+    ["Thiago","security","Référent des connexions",["Surveillance","Domaines","Continuité"],"Vérifier que chaque liaison mène au bon endroit en sécurité.","Ne coupe et ne modifie aucune liaison durablement.","A1","Propose","Amara"],
+    ["Jefferson","security","Référent des incidents",["Réponse","Calme","Chronologie"],"Conserver les faits et coordonner les premières mesures.","N’accuse personne et ne clôture jamais seul un incident.","A2","Opère en interne","Amara"],
+    ["Angela","finance","Responsable financière",["Suivi","Prévision","Sobriété"],"Rapprocher les pièces et signaler les écarts utiles.","Ne paie, ne rembourse et ne contacte aucun fournisseur.","A1","Propose","Oscar"],
+    ["Juan","equipment","Responsable équipements",["Inventaire","Besoins","Disponibilité"],"Tenir une vision fiable des stocks et commandes.","Ne commande rien et n’invente aucune taille.","A2","Opère en interne","Oscar"],
+    ["Marco","equipment","Référent équipementier",["Produits","Contrat","Comparaison"],"Maîtriser l’offre et le contrat Macron du club.","Ne commande, ne négocie et ne contacte pas Macron.","A1","Propose","Juan"],
+    ["Rafael","partnerships","Responsable partenariats",["Relations","Suivi","Engagements"],"Suivre les contreparties et échéances des partenaires.","Ne contacte aucun partenaire et ne promet rien seul.","A1","Propose","Oscar"],
+    ["Alba","memory","Gardienne de la mémoire",["Histoire","Classement","Transmission"],"Préserver une histoire du club vérifiée et sourcée.","Ne transforme jamais un souvenir non confirmé en fait.","A2","Opère en interne","Oscar"],
+    ["Nora","hr","Responsable des ressources humaines",["Cadre","Équilibre","Organisation"],"Maintenir une organisation utile, mesurable et soutenable.","N’occupe jamais artificiellement un agent.","A2","Opère en interne","Oscar"],
+    ["Yanis","hr","Référent du temps et des coûts",["Rythmes","Capacité","Alerte"],"Repérer les consommations inutiles ou anormales.","Sépare toujours mesure, estimation et donnée absente.","A1","Propose","Nora"],
+    ["Salomé","hr","Référente de la planification",["Organisation","Simplification","Qualité"],"Rendre les circuits de travail plus simples et fiables.","Ne modifie aucune cadence ni règle seule.","A1","Propose","Nora"],
+    ["Malik","hr","Référent des besoins",["Répartition","Renfort","Priorités"],"Résoudre un besoin avec l’équipe existante avant tout recrutement.","Ne crée, ne nomme et n’active aucun agent.","A1","Propose","Nora"],
+    ["Ella","hr","Référente de l’environnement",["Outils","Capacités","Optimisation"],"Comparer les adaptations capables d’améliorer le travail.","N’installe rien et n’accorde aucune permission seule.","A1","Propose","Nora"],
+  ].map(([name,service,role,skills,strength,vigilance,autonomy,autonomyLabel,manager]) => ({
+    name,service,role,skills,strength,vigilance,autonomy,autonomyLabel,manager,
     portrait:`./assets/portraits/team/${name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}.jpg`,
   }));
 
-  let authenticated = false;
-  let homeActive = true;
-  let teamState = {returns:[],agentStates:[],updatedAt:""};
-  let selectedService = "all";
-  let searchTerm = "";
-  let renderQueued = false;
-
   const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-  const validPattern = /(valid|confirm|control|termin|livr|publ|reussi|operationnel|effectue|complete|done|success)/i;
-  const blockedPattern = /(bloqu|incident|echec|erreur|failed|impossible)/i;
+  const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g,char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
+  const blockedPattern = /(bloqu|incident|echec|erreur|failed|impossible|refuse|no-go)/i;
+  const validPattern = /(valid|confirm|control|termin|livr|publ|reussi|operationnel|effectue|complete|done|success|\bgo\b)/i;
   const activePattern = /(cours|pending|waiting|attente|incomplete|executed|validation|mission|running|started|processing)/i;
+  let authenticated=false,homeActive=true,currentView="overview",selectedService="all",selectedStatus="all",missionFilter="all",sortMode="recent",searchTerm="",openAgentName="",openAgentTab="overview",openMissionId="",renderQueued=false;
+  let teamState={returns:[],agentStates:[],updatedAt:""};
 
-  function statusText(value) {
-    const state = normalize(value);
-    if (state.includes("block") || state.includes("incident")) return {label:"A besoin d’aide",tone:"help"};
-    if (state.includes("incomplete")) return {label:"En attente d’un élément",tone:"waiting"};
-    if (state.includes("executed") || state.includes("validation")) return {label:"En attente de validation",tone:"review"};
-    if (state.includes("progress") || state.includes("cours") || state.includes("mission")) return {label:"En mission",tone:"active"};
-    if (state.includes("controlled") || state.includes("disponible")) return {label:"Disponible",tone:"available"};
-    return {label:"Au repos",tone:"rest"};
+  function humanizeText(value) {
+    return String(value || "").replace(/agents? IA/gi,"agents").replace(/intelligence artificielle/gi,"expertise d’analyse").replace(/automatisation/gi,"mission programmée").replace(/workflow/gi,"circuit de travail").replace(/API/gi,"liaison de données").replace(/OpenClaw/gi,"équipe privée").replace(/worker/gi,"service").replace(/process(?:us)?/gi,"déroulement").replace(/LLM/gi,"outil d’analyse").replace(/prompt/gi,"consigne");
+  }
+  function dateValue(value){const date=value?new Date(value):null;return date&&Number.isFinite(date.getTime())?date:null;}
+  function formatDate(value,{short=false}={}){const date=dateValue(value);if(!date)return"Pas encore de mission enregistrée";return new Intl.DateTimeFormat("fr-FR",short?{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Paris"}:{dateStyle:"medium",timeStyle:"short",timeZone:"Europe/Paris"}).format(date);}
+  function relativeDate(value){const date=dateValue(value);if(!date)return"Pas encore de mission enregistrée";const minutes=Math.floor(Math.max(0,Date.now()-date.getTime())/60000);if(minutes<2)return"À l’instant";if(minutes<60)return`Il y a ${minutes} min`;const hours=Math.floor(minutes/60);if(hours<24)return`Il y a ${hours} h`;if(hours<48)return"Hier";return formatDate(value,{short:true});}
+  function parisDay(value){const date=dateValue(value);return date?new Intl.DateTimeFormat("fr-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"Europe/Paris"}).format(date):"";}
+  function statusPresentation(value){const state=normalize(value);if(state.includes("suspend"))return{label:"Indisponible",tone:"off"};if(state.includes("block")||state.includes("incident")||blockedPattern.test(state))return{label:"Attention requise",tone:"attention"};if(state.includes("executed")||state.includes("validation"))return{label:"À valider",tone:"review"};if(state.includes("progress")||state.includes("cours")||state.includes("mission"))return{label:"En mission",tone:"active"};if(state.includes("controlled")||state.includes("controle"))return{label:"Contrôlé",tone:"done"};return{label:"En attente",tone:"waiting"};}
+  function missionStatus(entry){const value=`${entry?.status||""} ${entry?.statusLabel||""} ${entry?.classification||""}`;if(blockedPattern.test(value))return{label:"Attention requise",tone:"attention",kind:"attention"};if(validPattern.test(value))return{label:"Terminée",tone:"done",kind:"done"};if(activePattern.test(value))return{label:"En cours",tone:"active",kind:"active"};return{label:"À examiner",tone:"waiting",kind:"waiting"};}
+
+  function groupedMissions(entries=teamState.returns){
+    const groups=new Map();
+    for(const entry of Array.isArray(entries)?entries:[]){const id=entry.missionId||entry.returnId||`${entry.agent||"mission"}-${entry.occurredAt||"date"}-${entry.title||"travail"}`;if(!groups.has(id))groups.set(id,{id,entries:[]});groups.get(id).entries.push(entry);}
+    return[...groups.values()].map(group=>{group.entries.sort((a,b)=>Date.parse(a.occurredAt||"")-Date.parse(b.occurredAt||""));const first=group.entries[0]||{},latest=group.entries.at(-1)||first,contributors=[...new Set(group.entries.map(entry=>entry.agent).filter(Boolean))];return{...group,first,latest,contributors,status:missionStatus(latest)};}).sort((a,b)=>Date.parse(b.latest.occurredAt||"")-Date.parse(a.latest.occurredAt||""));
+  }
+  function missionsFor(name){return groupedMissions((teamState.returns||[]).filter(entry=>normalize(entry.agent)===normalize(name)));}
+  function personData(person){const missions=missionsFor(person.name),remote=(teamState.agentStates||[]).find(entry=>normalize(entry.agent)===normalize(person.name)),current=missions.find(m=>m.status.kind==="active"),latest=missions[0],blocked=missions.filter(m=>m.status.kind==="attention"),completed=missions.filter(m=>m.status.kind==="done"),status=statusPresentation(current?"mission":remote?.state||latest?.latest?.status||"waiting"),closed=completed.length+blocked.length,successRate=closed?Math.round(completed.length/closed*100):null;return{missions,remote,current,latest,blocked,completed,status,successRate,lastAt:latest?.latest?.occurredAt||remote?.latestEvidenceAt||""};}
+  function metrics(){const missions=groupedMissions(),people=PEOPLE.map(personData),today=parisDay(new Date());return{active:people.filter(item=>item.status.tone==="active").length,completedToday:missions.filter(m=>m.status.kind==="done"&&parisDay(m.latest.occurredAt)===today).length,completed:missions.filter(m=>m.status.kind==="done").length,attention:missions.filter(m=>m.status.kind==="attention").length};}
+  function serviceKeyFromEntry(entry){const raw=normalize(entry?.service);return Object.keys(SERVICES).find(key=>raw.includes(normalize(SERVICES[key].label))||raw.includes(normalize(SERVICES[key].short)))||PEOPLE.find(person=>normalize(person.name)===normalize(entry?.agent))?.service||"direction";}
+  function stateBadge(status){return`<span class="company-status is-${status.tone}"><i aria-hidden="true"></i>${escapeHtml(status.label)}</span>`;}
+
+  function topBar(){const updated=teamState.updatedAt?`Actualisé ${relativeDate(teamState.updatedAt).toLowerCase()}`:"Première activité attendue";return`<header class="company-topbar"><a class="company-brand" href="../" aria-label="Retour au Performance Hub"><img src="../logo-lykos-intro-carre-2026.png" alt="Lykos Futsal Club"><span><small>Performance Hub</small><strong>eStaff</strong></span></a><nav class="company-nav" aria-label="Navigation eStaff">${[["overview","Entreprise"],["team","Équipe"],["services","Services"],["missions","Missions"],["activity","Activité"]].map(([key,label])=>`<button type="button" data-view="${key}" class="${currentView===key?"is-active":""}">${label}</button>`).join("")}</nav><div class="company-actions"><span class="company-updated">${updated}</span><button type="button" class="company-primary" data-oscar>+ Confier une mission</button><button type="button" class="company-icon-button" data-logout aria-label="Fermer l’accès">↗</button></div></header>`;}
+  function metricCards(){const value=metrics();return`<section class="company-kpis" aria-label="Situation de l’entreprise"><button type="button" data-view="team"><span class="kpi-icon is-people">●●</span><span><strong>${PEOPLE.length}</strong><small>agents dans l’équipe</small></span><b>Voir l’équipe →</b></button><button type="button" data-view="missions" data-mission-kind="active"><span class="kpi-icon is-active">↗</span><span><strong>${value.active}</strong><small>agents en mission</small></span><b>Voir les missions →</b></button><button type="button" data-view="missions" data-mission-kind="done"><span class="kpi-icon is-done">✓</span><span><strong>${value.completedToday}</strong><small>missions terminées aujourd’hui</small></span><b>${value.completed} au total →</b></button><button type="button" data-view="missions" data-mission-kind="attention"><span class="kpi-icon is-attention">!</span><span><strong>${value.attention}</strong><small>mission${value.attention===1?"":"s"} à examiner</small></span><b>${value.attention?"Voir maintenant →":"Aucune alerte"}</b></button></section>`;}
+  function compactPerson(person){const data=personData(person);return`<button type="button" class="company-person-row service-${person.service}" data-open-agent="${escapeHtml(person.name)}"><img src="${person.portrait}" alt="Portrait corporate de ${escapeHtml(person.name)}" loading="lazy"><span><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.role)}</small></span>${stateBadge(data.status)}<em>${data.current?escapeHtml(humanizeText(data.current.latest.title||"Mission en cours")):relativeDate(data.lastAt)}</em><b aria-hidden="true">›</b></button>`;}
+  function activityRows(limit=8){const entries=(teamState.returns||[]).slice(0,limit);if(!entries.length)return`<div class="company-empty"><span>◌</span><strong>L’activité apparaîtra ici.</strong><p>Aucun travail n’a encore été enregistré dans cette vue.</p></div>`;return`<div class="company-activity-list">${entries.map(entry=>{const status=missionStatus(entry);return`<button type="button" data-open-mission="${escapeHtml(entry.missionId||entry.returnId||"")}"><span class="activity-dot is-${status.tone}"></span><span><strong>${escapeHtml(entry.agent||"Équipe")}</strong><small>${escapeHtml(humanizeText(entry.title||entry.summary||"Nouvelle activité"))}</small></span><time>${relativeDate(entry.occurredAt)}</time><b>›</b></button>`;}).join("")}</div>`;}
+
+  function overviewView(){
+    const people=PEOPLE.map(person=>({person,data:personData(person)}));
+    const active=people.filter(item=>item.data.status.tone==="active").slice(0,5);
+    const attention=people.filter(item=>item.data.status.tone==="attention").slice(0,5);
+    const recent=people.filter(item=>item.data.lastAt).sort((a,b)=>Date.parse(b.data.lastAt)-Date.parse(a.data.lastAt)).slice(0,5);
+    const spotlight=active.length?active:recent;
+    return`<main class="company-main"><section class="company-title"><div><p>Vue entreprise</p><h1>Bonjour, voici votre équipe.</h1></div><button type="button" data-view="team">Explorer les ${PEOPLE.length} agents →</button></section>${metricCards()}<section class="company-overview-grid"><article class="company-panel company-now"><header><div><small>En ce moment</small><h2>${spotlight.length?"L’équipe au travail":"Aucune mission active"}</h2></div><button type="button" data-view="team">Toute l’équipe</button></header><div>${spotlight.length?spotlight.map(item=>compactPerson(item.person)).join(""):`<p class="company-calm">Aucune mission active n’est enregistrée. Cette vue restera neutre jusqu’au prochain travail réellement consigné.</p>`}</div></article><article class="company-panel company-director"><div class="director-copy"><span class="company-eyebrow">Direction générale</span><h2>Oscar coordonne l’ensemble du eStaff.</h2><p>Il reçoit vos demandes, choisit les bons spécialistes et vous remet une réponse unifiée.</p><button type="button" class="company-primary" data-oscar>Parler à Oscar →</button></div><img src="./assets/portraits/team/oscar.jpg" alt="Portrait fictif d’Oscar"></article><article class="company-panel company-attention"><header><div><small>Votre attention</small><h2>${attention.length?`${attention.length} situation${attention.length>1?"s":""} à suivre`:"Tout est sous contrôle"}</h2></div><button type="button" data-view="missions" data-mission-kind="attention">Voir</button></header><div>${attention.length?attention.map(item=>compactPerson(item.person)).join(""):`<p class="company-calm">Aucune difficulté enregistrée ne demande votre intervention.</p>`}</div></article><article class="company-panel company-feed"><header><div><small>Dernières nouvelles</small><h2>Activité récente</h2></div><button type="button" data-view="activity">Tout voir</button></header>${activityRows(6)}</article></section></main>`;
   }
 
-  function dateValue(value) {
-    const date = value ? new Date(value) : null;
-    return date && Number.isFinite(date.getTime()) ? date : null;
-  }
+  function personCard(person){const data=personData(person),missionLabel=data.current?humanizeText(data.current.latest.title||"Mission en cours"):data.latest?`Dernière mission · ${relativeDate(data.lastAt)}`:"Pas encore de mission enregistrée";return`<button type="button" class="company-agent-card service-${person.service}" data-open-agent="${escapeHtml(person.name)}"><span class="agent-photo"><img src="${person.portrait}" alt="Portrait corporate de ${escapeHtml(person.name)}" loading="lazy"><span class="agent-card-status">${stateBadge(data.status)}</span></span><span class="agent-card-body"><span class="agent-card-title"><span><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.role)}</small></span><b aria-hidden="true">•••</b></span><span class="agent-current">${escapeHtml(missionLabel)}</span><span class="agent-tags">${person.skills.map(skill=>`<em>${escapeHtml(skill)}</em>`).join("")}</span><span class="agent-card-numbers"><span><strong>${data.completed.length}</strong><small>missions terminées</small></span><span><strong>${data.successRate===null?"—":`${data.successRate}%`}</strong><small>sans difficulté</small></span></span></span></button>`;}
+  function teamView(){const visible=PEOPLE.filter(person=>{const data=personData(person);return(selectedService==="all"||person.service===selectedService)&&(selectedStatus==="all"||data.status.tone===selectedStatus)&&(!searchTerm||normalize(`${person.name} ${person.role} ${SERVICES[person.service].label} ${person.skills.join(" ")}`).includes(normalize(searchTerm)));}).sort((left,right)=>{const a=personData(left),b=personData(right);if(sortMode==="name")return left.name.localeCompare(right.name,"fr");if(sortMode==="missions")return b.missions.length-a.missions.length;return Date.parse(b.lastAt||"")-Date.parse(a.lastAt||"");});return`<main class="company-main"><section class="company-title"><div><p>Les agents</p><h1>Une équipe de ${PEOPLE.length} talents.</h1></div><span>${visible.length} affiché${visible.length>1?"s":""}</span></section><section class="company-toolbar" aria-label="Recherche et filtres"><label class="company-search"><span>⌕</span><input type="search" value="${escapeHtml(searchTerm)}" placeholder="Rechercher un agent ou un savoir-faire…"></label><label><span>Service</span><select data-filter-service><option value="all">Tous les services</option>${Object.entries(SERVICES).map(([key,service])=>`<option value="${key}" ${selectedService===key?"selected":""}>${service.label}</option>`).join("")}</select></label><label><span>Statut</span><select data-filter-status><option value="all">Tous les statuts</option><option value="active" ${selectedStatus==="active"?"selected":""}>En mission</option><option value="available" ${selectedStatus==="available"?"selected":""}>Disponible</option><option value="waiting" ${selectedStatus==="waiting"?"selected":""}>En attente</option><option value="review" ${selectedStatus==="review"?"selected":""}>À valider</option><option value="attention" ${selectedStatus==="attention"?"selected":""}>Attention requise</option></select></label><label><span>Trier</span><select data-sort><option value="recent" ${sortMode==="recent"?"selected":""}>Activité récente</option><option value="missions" ${sortMode==="missions"?"selected":""}>Nombre de missions</option><option value="name" ${sortMode==="name"?"selected":""}>Prénom</option></select></label></section><section class="company-agent-grid">${visible.map(personCard).join("")}</section>${visible.length?"":`<div class="company-empty is-wide"><span>⌕</span><strong>Aucun agent ne correspond.</strong><p>Modifiez la recherche ou les filtres.</p></div>`}</main>`;}
 
-  function formatDate(value) {
-    const date = dateValue(value);
-    if (!date) return "Pas encore de mission enregistrée";
-    const diff = Date.now() - date.getTime();
-    const hours = Math.max(0,Math.floor(diff / 3600000));
-    if (hours < 1) return "Il y a moins d’une heure";
-    if (hours < 24) return `Il y a ${hours} h`;
-    if (hours < 48) return "Hier";
-    return new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(date);
-  }
+  function serviceCard(key,service){const members=PEOPLE.filter(person=>person.service===key),missions=groupedMissions((teamState.returns||[]).filter(entry=>serviceKeyFromEntry(entry)===key)),active=members.filter(person=>personData(person).status.tone==="active").length,done=missions.filter(m=>m.status.kind==="done").length,closed=done+missions.filter(m=>m.status.kind==="attention").length,rate=closed?Math.round(done/closed*100):null;return`<button type="button" class="company-service-card service-${key}" data-service-card="${key}"><span class="service-card-top"><i></i><span>${members.length} agent${members.length>1?"s":""}</span></span><strong>${service.label}</strong><small>${active?`${active} en mission`:"Aucune mission active"}</small><span class="service-avatars">${members.slice(0,5).map(person=>`<img src="${person.portrait}" alt="${escapeHtml(person.name)}" loading="lazy">`).join("")}${members.length>5?`<b>+${members.length-5}</b>`:""}</span><span class="service-stats"><span><b>${done}</b><small>terminées</small></span><span><b>${rate===null?"—":`${rate}%`}</b><small>sans difficulté</small></span></span><em>Ouvrir le service →</em></button>`;}
+  function servicesView(){return`<main class="company-main"><section class="company-title"><div><p>Organisation</p><h1>Les services du Lykos.</h1></div><span>Cliquez sur un service pour rencontrer son équipe.</span></section><section class="company-service-grid">${Object.entries(SERVICES).map(([key,service])=>serviceCard(key,service)).join("")}</section></main>`;}
+  function missionCard(mission){return`<button type="button" class="company-mission-card service-${serviceKeyFromEntry(mission.latest)}" data-open-mission="${escapeHtml(mission.id)}"><span class="mission-card-head">${stateBadge(mission.status)}<time>${relativeDate(mission.latest.occurredAt)}</time></span><strong>${escapeHtml(humanizeText(mission.latest.title||mission.first.title||"Mission eStaff"))}</strong><p>${escapeHtml(humanizeText(mission.latest.summary||"Aucun récapitulatif détaillé n’est encore disponible."))}</p><span class="mission-card-foot"><span>${mission.contributors.map(name=>escapeHtml(name)).join(" · ")||"Équipe"}</span><b>Voir la mission →</b></span></button>`;}
+  function missionsView(){const all=groupedMissions(),visible=all.filter(mission=>missionFilter==="all"||mission.status.kind===missionFilter);return`<main class="company-main"><section class="company-title"><div><p>Centre des missions</p><h1>${all.length} mission${all.length===1?"":"s"} enregistrée${all.length===1?"":"s"}.</h1></div><button type="button" class="company-primary" data-oscar>+ Confier une mission à Oscar</button></section><div class="company-segmented" role="group" aria-label="Filtrer les missions">${[["all","Toutes",all.length],["active","En cours",all.filter(m=>m.status.kind==="active").length],["waiting","À examiner",all.filter(m=>m.status.kind==="waiting").length],["done","Terminées",all.filter(m=>m.status.kind==="done").length],["attention","Attention",all.filter(m=>m.status.kind==="attention").length]].map(([key,label,count])=>`<button type="button" data-mission-filter="${key}" class="${missionFilter===key?"is-active":""}">${label}<span>${count}</span></button>`).join("")}</div><section class="company-mission-grid">${visible.map(missionCard).join("")}</section>${visible.length?"":`<div class="company-empty is-wide"><span>✓</span><strong>Aucune mission dans cette catégorie.</strong><p>La vue se complétera avec les prochains travaux réellement enregistrés.</p></div>`}</main>`;}
+  function activityView(){return`<main class="company-main"><section class="company-title"><div><p>Journal de l’équipe</p><h1>Ce que l’équipe a fait.</h1></div><span>${(teamState.returns||[]).length} étape${(teamState.returns||[]).length===1?"":"s"} enregistrée${(teamState.returns||[]).length===1?"":"s"}</span></section><section class="company-panel company-activity-full">${activityRows(100)}</section></main>`;}
 
-  function personData(person) {
-    const entries = (teamState.returns || []).filter(entry => normalize(entry.agent) === normalize(person.name));
-    const missions = [];
-    const seen = new Set();
-    for (const entry of entries) {
-      const key = entry.missionId || entry.returnId || `${entry.occurredAt}-${entry.title || "mission"}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      missions.push(entry);
-    }
-    const remote = (teamState.agentStates || []).find(entry => normalize(entry.agent) === normalize(person.name));
-    const status = statusText(remote?.state || missions[0]?.status || "waiting");
-    const completed = missions.filter(entry => !activePattern.test(String(entry.status || "")) && !blockedPattern.test(String(entry.status || "")));
-    const validated = completed.filter(entry => validPattern.test(`${entry.status || ""} ${entry.statusLabel || ""} ${entry.classification || ""}`));
-    const blocked = missions.filter(entry => blockedPattern.test(`${entry.status || ""} ${entry.statusLabel || ""} ${entry.classification || ""}`));
-    const closed = completed.length + blocked.length;
-    const smooth = closed ? Math.round((completed.length / closed) * 100) : null;
-    const lastAt = missions[0]?.occurredAt || remote?.latestEvidenceAt || "";
-    return {entries,missions,remote,status,completed,validated,blocked,smooth,lastAt};
-  }
+  function shell(){const view=currentView==="team"?teamView():currentView==="services"?servicesView():currentView==="missions"?missionsView():currentView==="activity"?activityView():overviewView();return`<section id="lykos-team-home" aria-label="Centre de management eStaff">${topBar()}${view}<footer class="company-footer"><span>Chaque personne dispose de son portrait corporate et de son espace de travail.</span><button type="button" data-threads>Consulter les fils de missions →</button></footer>${agentDialog()}${missionDialog()}</section>`;}
 
-  function allMetrics() {
-    const data = PEOPLE.map(person => personData(person));
-    const unique = new Map();
-    for (const entry of teamState.returns || []) {
-      const key = entry.missionId || entry.returnId || `${entry.agent}-${entry.occurredAt}-${entry.title || "mission"}`;
-      if (!unique.has(key)) unique.set(key,entry);
-    }
-    const missions = [...unique.values()];
-    const ongoing = missions.filter(entry => activePattern.test(String(entry.status || ""))).length || data.filter(item => item.status.tone === "active").length;
-    const completed = missions.filter(entry => !activePattern.test(String(entry.status || "")) && !blockedPattern.test(String(entry.status || "")));
-    const validated = completed.filter(entry => validPattern.test(`${entry.status || ""} ${entry.statusLabel || ""} ${entry.classification || ""}`));
-    const available = data.filter(item => ["available","rest"].includes(item.status.tone)).length;
-    return {ongoing,completed:completed.length,validated:validated.length,available};
-  }
+  function agentDialog(){if(!openAgentName)return"";const person=PEOPLE.find(item=>item.name===openAgentName);if(!person)return"";const data=personData(person),tabs=[["overview","Vue générale"],["missions","Missions"],["skills","Compétences"],["activity","Activité"],["relations","Relations"],["progress","Progression"],["satisfaction","Satisfaction"]];return`<div class="company-dialog-backdrop" data-close-dialog><section class="company-agent-profile service-${person.service}" role="dialog" aria-modal="true" aria-labelledby="profile-title" data-dialog-panel><button type="button" class="profile-close" data-close-dialog aria-label="Fermer la fiche">×</button><header class="profile-header"><img src="${person.portrait}" alt="Portrait corporate de ${escapeHtml(person.name)}"><div><span class="company-eyebrow">Fiche agent · ${SERVICES[person.service].label}</span><h2 id="profile-title">${escapeHtml(person.name)}</h2><p>${escapeHtml(person.role)}</p>${stateBadge(data.status)}<dl><div><dt>Responsable</dt><dd>${escapeHtml(person.manager)}</dd></div><div><dt>Autonomie</dt><dd>${escapeHtml(person.autonomy)} · ${escapeHtml(person.autonomyLabel)}</dd></div><div><dt>Mission actuelle</dt><dd>${escapeHtml(data.current?humanizeText(data.current.latest.title||"Mission en cours"):"Aucune mission en cours")}</dd></div></dl></div></header><div class="profile-kpis"><button type="button" data-tab="missions"><strong>${data.missions.length}</strong><small>Missions enregistrées</small></button><button type="button" data-tab="missions"><strong>${data.completed.length}</strong><small>Missions terminées</small></button><button type="button" data-tab="missions"><strong>${data.successRate===null?"—":`${data.successRate}%`}</strong><small>Sans difficulté</small></button><button type="button" data-tab="activity"><strong>${data.lastAt?relativeDate(data.lastAt):"—"}</strong><small>Dernière activité</small></button></div><nav class="profile-tabs" aria-label="Rubriques de la fiche">${tabs.map(([key,label])=>`<button type="button" data-tab="${key}" class="${openAgentTab===key?"is-active":""}">${label}</button>`).join("")}</nav><div class="profile-content">${agentTabContent(person,data)}</div><footer class="profile-actions"><button type="button" data-open-feed="${escapeHtml(person.name)}">Voir son fil de missions</button><button type="button" class="company-primary" data-oscar>${person.name==="Oscar"?"Parler à Oscar":"Confier une mission à Oscar"}</button></footer></section></div>`;}
+  function agentTabContent(person,data){if(openAgentTab==="missions")return data.missions.length?`<div class="profile-list">${data.missions.map(missionCard).join("")}</div>`:emptyMeasure("Aucune mission enregistrée","La première mission réelle apparaîtra ici avec son résultat et son historique.");if(openAgentTab==="skills")return`<section class="profile-two-columns"><article><span class="profile-section-label">Savoir-faire</span><h3>Compétences mobilisables</h3><div class="profile-skill-list">${person.skills.map(skill=>`<span>✓ ${escapeHtml(skill)}</span>`).join("")}</div></article><article><span class="profile-section-label">Cadre professionnel</span><h3>${escapeHtml(person.autonomyLabel)}</h3><p>Niveau ${escapeHtml(person.autonomy)} selon le Rulebook actuel. Toute évolution doit correspondre à une responsabilité réellement accordée.</p></article></section>`;if(openAgentTab==="activity")return data.missions.length?activityRowsForAgent(person.name):emptyMeasure("Pas encore d’activité visible","Les contrôles silencieux sans évolution restent dans le registre privé et ne gonflent pas artificiellement cette fiche.");if(openAgentTab==="relations")return relationsContent(person);if(openAgentTab==="progress")return progressContent(person,data);if(openAgentTab==="satisfaction")return emptyMeasure("Satisfaction pas encore recueillie","Aucun retour 🙂 ou 🙁 n’est stocké aujourd’hui. Cette rubrique restera neutre jusqu’à la mise en place d’un historique réel et distinct des évaluations d’Oscar.");return`<section class="profile-overview"><article class="profile-current"><span class="profile-section-label">Aujourd’hui</span><h3>${data.current?escapeHtml(humanizeText(data.current.latest.title||"Mission en cours")):"Aucune mission en cours"}</h3><p>${data.current?escapeHtml(humanizeText(data.current.latest.summary||"La mission est en cours de traitement.")):"Aucune mission en cours n’est enregistrée."}</p></article><article><span class="profile-section-label">Point fort</span><h3>${escapeHtml(person.strength)}</h3><p>Ce savoir-faire est défini par son rôle officiel. Son évolution sera ensuite étayée par les missions et les retours réels.</p></article><article><span class="profile-section-label">Cadre de vigilance</span><h3>${escapeHtml(person.vigilance)}</h3><p>Cette limite protège la qualité de son travail et l’autorité des dirigeants.</p></article><article><span class="profile-section-label">Axe d’amélioration</span><h3>Pas encore établi</h3><p>Un axe sera affiché uniquement lorsqu’un historique de missions et de retours permettra de le justifier.</p></article></section>`;}
+  function activityRowsForAgent(name){const entries=(teamState.returns||[]).filter(entry=>normalize(entry.agent)===normalize(name));return`<div class="profile-timeline">${entries.map(entry=>`<button type="button" data-open-mission="${escapeHtml(entry.missionId||entry.returnId||"")}"><time>${formatDate(entry.occurredAt,{short:true})}</time><span><strong>${escapeHtml(humanizeText(entry.title||"Mission"))}</strong><small>${escapeHtml(humanizeText(entry.summary||missionStatus(entry).label))}</small></span></button>`).join("")}</div>`;}
+  function relationsContent(person){const colleagues=PEOPLE.filter(item=>item.name!==person.name&&(item.service===person.service||item.name===person.manager||item.manager===person.name)).slice(0,8);return`<section class="profile-relations"><div class="relation-focus"><img src="${person.portrait}" alt=""><strong>${escapeHtml(person.name)}</strong><small>${escapeHtml(person.role)}</small></div><div class="relation-people">${colleagues.map(item=>`<button type="button" data-open-agent="${escapeHtml(item.name)}"><img src="${item.portrait}" alt=""><span><strong>${escapeHtml(item.name)}</strong><small>${item.name===person.manager?"Responsable":item.manager===person.name?"Travaille sous sa responsabilité":"Collaboration de service"}</small></span></button>`).join("")}</div></section>`;}
+  function progressContent(person,data){const now=Date.now(),recent=data.missions.filter(m=>now-Date.parse(m.latest.occurredAt||"")<=30*86400000).length,previous=data.missions.filter(m=>{const age=now-Date.parse(m.latest.occurredAt||"");return age>30*86400000&&age<=60*86400000;}).length;return`<section class="profile-two-columns"><article><span class="profile-section-label">30 derniers jours</span><h3>${recent} mission${recent===1?"":"s"} enregistrée${recent===1?"":"s"}</h3><p>Période précédente : ${previous}. Ce volume décrit l’activité, pas la valeur professionnelle de ${escapeHtml(person.name)}.</p></article><article><span class="profile-section-label">Autonomie</span><h3>${escapeHtml(person.autonomy)} · ${escapeHtml(person.autonomyLabel)}</h3><p>Aucune progression chiffrée n’est affichée tant que ses conditions ne sont pas mesurées et approuvées.</p></article></section>`;}
+  function emptyMeasure(title,description){return`<div class="company-empty is-profile"><span>—</span><strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p></div>`;}
+  function missionDialog(){if(!openMissionId)return"";const mission=groupedMissions().find(item=>item.id===openMissionId);if(!mission)return"";const title=humanizeText(mission.latest.title||mission.first.title||"Mission eStaff");return`<div class="company-dialog-backdrop" data-close-dialog><section class="company-mission-detail service-${serviceKeyFromEntry(mission.latest)}" role="dialog" aria-modal="true" aria-labelledby="mission-title" data-dialog-panel><button type="button" class="profile-close" data-close-dialog aria-label="Fermer la mission">×</button><header><span class="company-eyebrow">Fiche mission</span><h2 id="mission-title">${escapeHtml(title)}</h2>${stateBadge(mission.status)}<p>${escapeHtml(humanizeText(mission.latest.summary||"Aucun récapitulatif détaillé n’est encore disponible."))}</p></header><dl class="mission-facts"><div><dt>Responsable et contributions</dt><dd>${mission.contributors.map(name=>escapeHtml(name)).join(" · ")||"Non attribué"}</dd></div><div><dt>Début enregistré</dt><dd>${formatDate(mission.first.occurredAt)}</dd></div><div><dt>Dernière étape</dt><dd>${formatDate(mission.latest.occurredAt)}</dd></div><div><dt>Difficulté, temps rendu et valeur</dt><dd>Pas encore mesurés pour cette mission.</dd></div></dl><section class="mission-timeline"><span class="profile-section-label">Histoire de la mission</span>${mission.entries.map(entry=>`<article><time>${formatDate(entry.occurredAt,{short:true})}</time><i></i><div><strong>${escapeHtml(entry.agent||"Équipe")}</strong><p>${escapeHtml(humanizeText(entry.title||entry.summary||missionStatus(entry).label))}</p></div></article>`).join("")}</section><footer><button type="button" data-close-dialog>Fermer</button>${mission.contributors[0]?`<button type="button" class="company-primary" data-open-agent="${escapeHtml(mission.contributors[0])}">Voir la fiche de ${escapeHtml(mission.contributors[0])}</button>`:""}</footer></section></div>`;}
 
-  function sparkline(entries,color) {
-    const days = Array(7).fill(0);
-    for (const entry of entries) {
-      const date = dateValue(entry.occurredAt);
-      if (!date) continue;
-      const ago = Math.floor((Date.now() - date.getTime()) / 86400000);
-      if (ago >= 0 && ago < 7) days[6 - ago] += 1;
-    }
-    const max = Math.max(1,...days);
-    const points = days.map((value,index) => `${index * 28},${34 - (value / max) * 26}`).join(" ");
-    return `<svg class="team-sparkline" viewBox="0 0 168 40" role="img" aria-label="Activité des sept derniers jours"><polyline points="${points}"/></svg>`;
-  }
+  function rootMain(){return document.querySelector("#estaff-root > main");}
+  function render(){renderQueued=false;if(!authenticated)return;const main=rootMain();if(!main||document.body.textContent.includes("Code d’accès"))return;let home=document.getElementById("lykos-team-home");if(!home){home=document.createElement("section");home.id="lykos-team-home";main.prepend(home);}if(homeActive){const holder=document.createElement("div");holder.innerHTML=shell();home.replaceWith(holder.firstElementChild);}document.body.classList.toggle("lykos-team-home-active",homeActive);ensureReturnButton();}
+  function scheduleRender(){if(renderQueued)return;renderQueued=true;requestAnimationFrame(render);}
+  function ensureReturnButton(){let button=document.getElementById("lykos-team-return");if(!button){button=document.createElement("button");button.id="lykos-team-return";button.type="button";button.textContent="← Retour au centre de management";button.addEventListener("click",showHome);document.body.append(button);}button.hidden=!authenticated||homeActive;}
+  function showHome(){homeActive=true;scheduleRender();window.scrollTo({top:0,behavior:"smooth"});}
+  function showExisting(){homeActive=false;document.body.classList.remove("lykos-team-home-active");ensureReturnButton();}
+  function findRosterButton(name){return[...document.querySelectorAll("button[aria-pressed]")].find(button=>normalize(button.querySelector("strong")?.textContent||button.textContent).startsWith(normalize(name)));}
+  function openLegacyPerson(name){openAgentName="";openMissionId="";showExisting();requestAnimationFrame(()=>{findRosterButton(name)?.click();if(name==="Oscar")setTimeout(()=>document.querySelector("textarea")?.focus(),180);window.scrollTo({top:0,behavior:"smooth"});});}
+  function openAgent(name){openMissionId="";openAgentName=name;openAgentTab="overview";scheduleRender();}
+  function closeDialogs(){openAgentName="";openMissionId="";scheduleRender();}
 
-  function cardTemplate(person) {
-    const data = personData(person);
-    const service = SERVICES[person.service];
-    const score = data.smooth;
-    const ring = score === null ? "—" : `${score}%`;
-    const scoreClass = `score-${score === null ? 0 : Math.round(score / 5) * 5}`;
-    return `<article class="team-person service-${person.service}" data-person="${person.name}">
-      <button class="team-person-main" type="button" aria-label="Voir le travail de ${person.name}">
-        <img src="${person.portrait}" alt="Portrait fictif de ${person.name}" loading="lazy" width="560" height="560">
-        <span class="team-person-copy">
-          <span class="team-person-heading"><strong>${person.name}</strong><span class="team-state team-state-${data.status.tone}"><i></i>${data.status.label}</span></span>
-          <span class="team-role">${person.role} · ${service.label}</span>
-          <span class="team-skills">${person.skills.map(skill => `<em>${skill}</em>`).join("")}</span>
-          ${sparkline(data.entries,service.color)}
-          <span class="team-last"><b>Dernière mission</b>${formatDate(data.lastAt)}</span>
-        </span>
-        <span class="team-person-score ${scoreClass}"><span>${ring}</span><small>Missions fluides</small></span>
-      </button>
-      <div class="team-person-story">
-        <p><b>Son atout</b>${person.strength}</p>
-        <p><b>À accompagner</b>${person.attention}</p>
-        <p><b>Parcours</b>${data.completed.length} réalisée${data.completed.length === 1 ? "" : "s"} · ${data.validated.length} validée${data.validated.length === 1 ? "" : "s"}</p>
-      </div>
-      <button class="team-open" type="button">${person.name === "Oscar" ? "Parler à Oscar" : "Voir son travail"}<span aria-hidden="true">→</span></button>
-    </article>`;
-  }
-
-  function homeTemplate() {
-    const metrics = allMetrics();
-    const visiblePeople = PEOPLE.filter(person => {
-      const serviceMatch = selectedService === "all" || person.service === selectedService;
-      const searchMatch = !searchTerm || normalize(`${person.name} ${person.role} ${SERVICES[person.service].label} ${person.skills.join(" ")}`).includes(normalize(searchTerm));
-      return serviceMatch && searchMatch;
-    });
-    return `<section id="lykos-team-home" aria-label="Accueil de l’équipe eStaff">
-      <header class="team-home-header">
-        <div class="team-brand"><img src="../logo-lykos-intro-carre-2026.png" alt="Lykos Futsal Club"><span><small>Performance Hub</small><strong>Notre eStaff</strong></span></div>
-        <div class="team-header-actions"><button type="button" data-team-action="threads">Voir les fils de missions</button><button type="button" data-team-action="logout">Fermer l’accès</button></div>
-      </header>
-      <div class="team-welcome">
-        <p class="team-eyebrow">Le collectif qui veille sur le club</p>
-        <h1>Bonjour, voici votre équipe.</h1>
-        <p>Chaque personne met son savoir-faire au service du Lykos. Vous voyez ici où elle en est, ce qu’elle a accompli et quand elle est intervenue pour la dernière fois.</p>
-      </div>
-      <div class="team-metrics" aria-label="Vue d’ensemble">
-        <article><span class="team-metric-icon">↗</span><p><strong>${metrics.ongoing}</strong><small>Missions en cours</small></p></article>
-        <article><span class="team-metric-icon">✓</span><p><strong>${metrics.completed}</strong><small>Missions réalisées</small></p></article>
-        <article><span class="team-metric-icon">★</span><p><strong>${metrics.validated}</strong><small>Validées sans blocage</small></p></article>
-        <article><span class="team-metric-icon">☺</span><p><strong>${metrics.available}<sup> / ${PEOPLE.length}</sup></strong><small>Disponibles ou au repos</small></p></article>
-      </div>
-      <section class="team-directory" aria-labelledby="team-directory-title">
-        <div class="team-directory-head">
-          <div><p class="team-eyebrow">${PEOPLE.length} savoir-faire complémentaires</p><h2 id="team-directory-title">Rencontrez l’équipe</h2></div>
-          <label class="team-search"><span class="sr-only">Rechercher une personne ou un savoir-faire</span><input type="search" value="${searchTerm.replace(/"/g,"&quot;")}" placeholder="Rechercher une personne ou un savoir-faire…"></label>
-        </div>
-        <div class="team-filters" role="list" aria-label="Filtrer par service">
-          <button type="button" class="${selectedService === "all" ? "is-selected" : ""}" data-service="all">Toute l’équipe</button>
-          ${Object.entries(SERVICES).map(([key,service]) => `<button type="button" class="service-${key} ${selectedService === key ? "is-selected" : ""}" data-service="${key}">${service.label}</button>`).join("")}
-        </div>
-        <div class="team-grid">${visiblePeople.map(cardTemplate).join("")}</div>
-        ${visiblePeople.length ? "" : `<div class="team-empty"><strong>Aucun résultat pour cette recherche.</strong><span>Essayez un prénom, un service ou un savoir-faire.</span></div>`}
-      </section>
-      <footer class="team-home-footer"><span>Les portraits sont des représentations fictives créées pour le eStaff.</span><span>${teamState.updatedAt ? `Dernière mise à jour ${formatDate(teamState.updatedAt).toLowerCase()}` : "Les premiers travaux apparaîtront ici dès leur enregistrement."}</span></footer>
-    </section>`;
-  }
-
-  function rootMain() {
-    return document.querySelector("#estaff-root > main");
-  }
-
-  function renderHome() {
-    renderQueued = false;
-    if (!authenticated) return;
-    const main = rootMain();
-    if (!main || document.body.textContent.includes("Code d’accès")) return;
-    let home = document.getElementById("lykos-team-home");
-    if (!home) {
-      home = document.createElement("section");
-      home.id = "lykos-team-home";
-      main.prepend(home);
-    }
-    if (homeActive) {
-      const shell = document.createElement("div");
-      shell.innerHTML = homeTemplate();
-      home.replaceWith(shell.firstElementChild);
-    }
-    document.body.classList.toggle("lykos-team-home-active",homeActive);
-    ensureReturnButton();
-  }
-
-  function scheduleRender() {
-    if (renderQueued) return;
-    renderQueued = true;
-    requestAnimationFrame(renderHome);
-  }
-
-  function ensureReturnButton() {
-    let button = document.getElementById("lykos-team-return");
-    if (!button) {
-      button = document.createElement("button");
-      button.id = "lykos-team-return";
-      button.type = "button";
-      button.textContent = "← Retour à l’équipe";
-      button.addEventListener("click",showHome);
-      document.body.append(button);
-    }
-    button.hidden = !authenticated || homeActive;
-  }
-
-  function showHome() {
-    homeActive = true;
-    scheduleRender();
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-
-  function showExistingView() {
-    homeActive = false;
-    document.body.classList.remove("lykos-team-home-active");
-    ensureReturnButton();
-  }
-
-  function findRosterButton(name) {
-    return [...document.querySelectorAll("button[aria-pressed]")].find(button => normalize(button.querySelector("strong")?.textContent || button.textContent).startsWith(normalize(name)));
-  }
-
-  function openPerson(name) {
-    showExistingView();
-    requestAnimationFrame(() => {
-      const button = findRosterButton(name);
-      button?.click();
-      if (name === "Oscar") setTimeout(() => document.querySelector("textarea")?.focus(),150);
-      window.scrollTo({top:0,behavior:"smooth"});
-    });
-  }
-
-  document.addEventListener("click", event => {
-    if (!authenticated) return;
-    const action = event.target.closest?.("[data-team-action]")?.dataset.teamAction;
-    if (action === "threads") showExistingView();
-    if (action === "logout") {
-      const button = [...document.querySelectorAll("button")].find(node => {
-        const label = normalize(node.textContent);
-        return !node.closest("#lykos-team-home") && label.includes("fermer") && label.includes("acces");
-      });
-      button?.click();
-    }
-    const filter = event.target.closest?.("[data-service]");
-    if (filter) {
-      selectedService = filter.dataset.service;
-      scheduleRender();
-    }
-    const card = event.target.closest?.(".team-person");
-    if (card && (event.target.closest(".team-person-main") || event.target.closest(".team-open"))) openPerson(card.dataset.person);
+  document.addEventListener("click",event=>{
+    if(!authenticated)return;
+    if(event.target.matches?.("[data-close-dialog]")){closeDialogs();return;}
+    const viewButton=event.target.closest?.("[data-view]");if(viewButton){currentView=viewButton.dataset.view;if(viewButton.dataset.missionKind)missionFilter=viewButton.dataset.missionKind;closeDialogs();window.scrollTo({top:0,behavior:"smooth"});}
+    const agentButton=event.target.closest?.("[data-open-agent]");if(agentButton){openAgent(agentButton.dataset.openAgent);return;}
+    const missionButton=event.target.closest?.("[data-open-mission]");if(missionButton?.dataset.openMission){openAgentName="";openMissionId=missionButton.dataset.openMission;scheduleRender();return;}
+    const tab=event.target.closest?.("[data-tab]");if(tab){openAgentTab=tab.dataset.tab;scheduleRender();return;}
+    const service=event.target.closest?.("[data-service-card]");if(service){selectedService=service.dataset.serviceCard;currentView="team";scheduleRender();window.scrollTo({top:0,behavior:"smooth"});}
+    const missionTab=event.target.closest?.("[data-mission-filter]");if(missionTab){missionFilter=missionTab.dataset.missionFilter;scheduleRender();}
+    const feed=event.target.closest?.("[data-open-feed]");if(feed)openLegacyPerson(feed.dataset.openFeed);
+    if(event.target.closest?.("[data-oscar]"))openLegacyPerson("Oscar");
+    if(event.target.closest?.("[data-threads]"))showExisting();
+    if(event.target.closest?.("[data-logout]")){const button=[...document.querySelectorAll("button")].find(node=>{const label=normalize(node.textContent);return!node.closest("#lykos-team-home")&&label.includes("fermer")&&label.includes("acces");});button?.click();}
   });
-
-  document.addEventListener("input", event => {
-    if (!event.target.matches?.(".team-search input")) return;
-    searchTerm = event.target.value;
-    const cursor = event.target.selectionStart;
-    scheduleRender();
-    requestAnimationFrame(() => {
-      const input = document.querySelector(".team-search input");
-      input?.focus();
-      input?.setSelectionRange(cursor,cursor);
-    });
-  });
-
-  window.addEventListener("lykos:estaff-cloud-session", event => {
-    authenticated = Boolean(event.detail?.token);
-    homeActive = authenticated;
-    if (!authenticated) {
-      document.body.classList.remove("lykos-team-home-active");
-      document.getElementById("lykos-team-home")?.remove();
-      document.getElementById("lykos-team-return")?.remove();
-      teamState = {returns:[],agentStates:[],updatedAt:""};
-      return;
-    }
-    setTimeout(scheduleRender,0);
-  });
-
-  window.addEventListener("lykos:estaff-team-state", event => {
-    teamState = {
-      returns:Array.isArray(event.detail?.returns) ? event.detail.returns : [],
-      agentStates:Array.isArray(event.detail?.agentStates) ? event.detail.agentStates : [],
-      updatedAt:event.detail?.updatedAt || "",
-    };
-    scheduleRender();
-  });
-
-  new MutationObserver(() => {
-    if (authenticated && !document.getElementById("lykos-team-home")) scheduleRender();
-  }).observe(document.getElementById("estaff-root"),{childList:true,subtree:true});
+  document.addEventListener("input",event=>{if(!event.target.matches?.(".company-search input"))return;searchTerm=event.target.value;const cursor=event.target.selectionStart;scheduleRender();requestAnimationFrame(()=>{const input=document.querySelector(".company-search input");input?.focus();input?.setSelectionRange(cursor,cursor);});});
+  document.addEventListener("change",event=>{if(event.target.matches?.("[data-filter-service]"))selectedService=event.target.value;else if(event.target.matches?.("[data-filter-status]"))selectedStatus=event.target.value;else if(event.target.matches?.("[data-sort]"))sortMode=event.target.value;else return;scheduleRender();});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&(openAgentName||openMissionId))closeDialogs();});
+  window.addEventListener("lykos:estaff-cloud-session",event=>{authenticated=Boolean(event.detail?.token);homeActive=authenticated;if(!authenticated){document.body.classList.remove("lykos-team-home-active");document.getElementById("lykos-team-home")?.remove();document.getElementById("lykos-team-return")?.remove();teamState={returns:[],agentStates:[],updatedAt:""};return;}setTimeout(scheduleRender,0);});
+  window.addEventListener("lykos:estaff-team-state",event=>{teamState={returns:Array.isArray(event.detail?.returns)?event.detail.returns:[],agentStates:Array.isArray(event.detail?.agentStates)?event.detail.agentStates:[],updatedAt:event.detail?.updatedAt||""};scheduleRender();});
+  new MutationObserver(()=>{if(authenticated&&!document.getElementById("lykos-team-home"))scheduleRender();}).observe(document.getElementById("estaff-root"),{childList:true,subtree:true});
 })();

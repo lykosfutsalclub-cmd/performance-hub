@@ -22,13 +22,13 @@ test("les 43 agents possèdent un contrat opérationnel visible", () => {
   for (const label of ["Déclencheur", "Informations nécessaires", "Résultat attendu", "Contrôle qualité", "Preuve visible", "État actuel"]) {
     assert.ok(source.includes(label), label);
   }
-  for (const label of ["Responsable eRH", "Temps de travail & coûts", "Planification & processus", "Besoins & missions complémentaires", "Environnement & optimisation"]) {
+  for (const label of ["Responsable eRH", "Temps de travail & coûts", "Planification des missions", "Besoins & missions complémentaires", "Environnement & optimisation"]) {
     assert.ok(source.includes(label), label);
   }
   for (const responsibility of ["Cadre de travail", "Temps de travail", "Timing", "Besoins", "Optimisation"]) {
     assert.ok(source.includes(responsibility), responsibility);
   }
-  assert.match(source, /eRH agit sous l’autorité d’Oscar, eGeneral Director/);
+  assert.match(source, /eRH agit sous l’autorité d’Oscar, Directeur général/);
   assert.match(source, /mission complémentaire/);
 });
 

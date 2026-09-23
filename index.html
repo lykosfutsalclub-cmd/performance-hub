@@ -87,8 +87,15 @@
     #lykos-dashboard-preview .lykos-headbar-title { min-width:max-content; font-family:"OMMarseille", Georgia, serif; font-weight:700; letter-spacing:.08em; font-size:0; line-height:.82; display:flex; flex-direction:column; gap:0; }
     #lykos-dashboard-preview .lykos-headbar-title::before { content:"PERFORMANCE"; color:#fff; font-size:15px; }
     #lykos-dashboard-preview .lykos-headbar-title::after { content:"HUB"; color:#fff; font-size:15px; letter-spacing:.08em; }
-    #lykos-dashboard-preview .lykos-headnav { display:flex; align-self:stretch; gap:5px; flex:1; justify-content:center; }
-    #lykos-dashboard-preview .lykos-headnav button { position:relative; border:0; background:transparent; color:#a9bfd5; padding:0 18px; font-size:13px; font-weight:650; cursor:pointer; }
+    #lykos-dashboard-preview { padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
+    #lykos-dashboard-preview .lykos-headnav {
+      position:fixed; left:50%; bottom:max(0px,env(safe-area-inset-bottom)); z-index:100;
+      display:flex; width:min(860px,calc(100vw - 28px)); height:68px; padding:5px; gap:4px;
+      justify-content:stretch; transform:translateX(-50%); overflow:visible;
+      border:1px solid rgba(255,255,255,.16); border-bottom:0; border-radius:20px 20px 0 0;
+      background:rgba(9,29,79,.97); box-shadow:0 -12px 34px rgba(0,0,0,.34);
+    }
+    #lykos-dashboard-preview .lykos-headnav button { position:relative; flex:1; border:0; background:transparent; color:#a9bfd5; padding:0 18px; font-size:13px; font-weight:650; cursor:pointer; }
     #lykos-dashboard-preview .lykos-headnav button:hover { color:#fff; background:rgba(255,255,255,.05); }
     @media (max-width:780px) {
       #lykos-dashboard-preview .lykos-headnav button[aria-label="Accéder au eStaff"]::before {
@@ -646,11 +653,11 @@
       #lykos-dashboard-preview .lykos-headbar-title::before,
       #lykos-dashboard-preview .lykos-headbar-title::after { font-size:13px; }
       #lykos-dashboard-preview .lykos-headnav {
-        position:fixed; left:12px; right:12px; bottom:calc(10px + env(safe-area-inset-bottom));
-        z-index:100; height:66px; padding:5px; gap:3px; align-items:stretch;
-        justify-content:stretch; overflow:visible; border:1px solid rgba(255,255,255,.16);
-        border-radius:21px; background:rgba(9,29,79,.96); box-shadow:0 14px 34px rgba(0,0,0,.44);
-        backdrop-filter:blur(18px);
+        left:0; right:0; bottom:0; width:100%; height:72px; transform:none;
+        z-index:100; padding:5px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));
+        gap:3px; align-items:stretch; justify-content:stretch; overflow:visible;
+        border:1px solid rgba(255,255,255,.16); border-bottom:0; border-radius:18px 18px 0 0;
+        background:rgba(9,29,79,.98); box-shadow:0 -12px 34px rgba(0,0,0,.44); backdrop-filter:blur(18px);
       }
       #lykos-dashboard-preview .lykos-headnav button {
         min-width:0; min-height:54px; flex:1; padding:5px 4px; border-radius:16px;
@@ -908,7 +915,7 @@
       #lykos-dashboard-preview .lykos-kpis { gap:7px; }
       #lykos-dashboard-preview .lykos-kpi { padding:11px; }
       #lykos-dashboard-preview .lykos-period button { font-size:9px; }
-      #lykos-dashboard-preview .lykos-headnav { left:8px; right:8px; }
+      #lykos-dashboard-preview .lykos-headnav { left:0; right:0; }
       #lykos-dashboard-preview .lykos-player-identity { grid-template-columns:94px minmax(0,1fr); gap:9px; }
       #lykos-dashboard-preview .lykos-player-visual { height:150px; }
       #lykos-dashboard-preview .lykos-player-name-wrap h1 { font-size:var(--player-name-fitted-size,clamp(27px,10.5vw,40px)); }
@@ -1241,7 +1248,7 @@
           <article class="lykos-performance-section lykos-estaff-overview">
             <div class="lykos-estaff-head">
               <div><span>Équipe du club</span><h2>eStaff</h2>
-                <p>eStaff réunit 43 agents actifs. Chaque agent est une personne avec une identité, un poste, une responsabilité et une preuve de travail propres au sein de services complémentaires.</p>
+                <p>eStaff réunit les personnes qui travaillent au service du club. Chacune possède une identité, un poste, une responsabilité et une preuve de travail propres au sein de services complémentaires.</p>
               </div>
               <a class="lykos-estaff-link" href="./estaff/">Rencontrer l’équipe</a>
             </div>
@@ -1277,7 +1284,7 @@
                   </section>
                   <section class="lykos-estaff-service"><h4>eSupport</h4>
                     <div class="lykos-estaff-member"><strong>Véronique</strong><small>Responsable eSupport</small><p>Valide les connexions, contrôle la qualité et répartit les missions du service.</p></div>
-                    <div class="lykos-estaff-member"><strong>Sonia</strong><small>Gestion des identifiants</small><p>Relie les identifiants chiffrés à la session SportEasy sans intervenir sur l’API.</p></div>
+                    <div class="lykos-estaff-member"><strong>Sonia</strong><small>Gestion des identifiants</small><p>Relie les identifiants chiffrés à la session SportEasy sans intervenir sur les données.</p></div>
                     <div class="lykos-estaff-member"><strong>Patricia</strong><small>Surveillance des données</small><p>Contrôle les routes SportEasy et détecte les données manquantes.</p></div>
                     <div class="lykos-estaff-member"><strong>Gaston</strong><small>Développeur</small><p>Prépare les corrections techniques et les évolutions validées.</p></div>
                     <div class="lykos-estaff-member"><strong>Tamara</strong><small>Tests de régression</small><p>Exécute pour Véronique les vérifications qui évitent le retour d’anciennes pannes.</p></div>
@@ -1308,12 +1315,13 @@
                   <section class="lykos-estaff-service"><h4>eMémoire</h4>
                     <div class="lykos-estaff-member"><strong>Alba</strong><small>Archiviste et historienne du club</small><p>Consolide uniquement les faits historiques vérifiés du Lykos depuis 2019.</p></div>
                   </section>
-                  <section class="lykos-estaff-service"><h4>eRH · sous l’autorité d’Oscar</h4>
-                    <div class="lykos-estaff-member"><strong>Nora</strong><small>Responsable eRH</small><p>Cadre le travail des agents IA et soumet à Oscar les adaptations nécessaires.</p></div>
+                  <section class="lykos-estaff-service"><h4>eRH</h4>
+                    <div class="lykos-estaff-member"><strong>Nora</strong><small>Responsable eRH</small><p>Cadre le travail des agents et soumet les adaptations nécessaires.</p></div>
                     <div class="lykos-estaff-member"><strong>Yanis</strong><small>Temps de travail & coûts</small><p>Mesure durées, attentes, relances, consommations et budgets de chaque mission.</p></div>
-                    <div class="lykos-estaff-member"><strong>Salomé</strong><small>Planification & processus</small><p>Organise le bon timing, les dépendances et les cadences de travail.</p></div>
+                    <div class="lykos-estaff-member"><strong>Salomé</strong><small>Planification des missions</small><p>Organise le bon timing, les dépendances et les cadences de travail.</p></div>
                     <div class="lykos-estaff-member"><strong>Malik</strong><small>Besoins & missions complémentaires</small><p>Détecte les besoins et propose une répartition utile entre les agents existants.</p></div>
                     <div class="lykos-estaff-member"><strong>Ella</strong><small>Environnement & optimisation</small><p>Adapte outils, sources et cadre technique pour maintenir efficacité, qualité et maîtrise des coûts.</p></div>
+                    <div class="lykos-estaff-member"><strong>Poste à pourvoir</strong><small>Responsable de l’intégration des nouveaux agents</small><p>Prépare le parcours d’intégration, les missions, l’espace dédié, le portrait et la personnalité. Aucune intégration ne démarre tant que le prénom n’a pas été validé.</p></div>
                   </section>
             </div>
           </article>

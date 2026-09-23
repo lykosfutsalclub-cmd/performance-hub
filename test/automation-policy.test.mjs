@@ -217,7 +217,8 @@ test("les 43 agents sont consultables et seul Oscar reçoit les missions", async
   assert.match(supervision, /coordination:"eGeneral Director"/);
   assert.match(performanceHub, /eGeneral Director · Direction générale/);
   assert.doesNotMatch(`${bundle}\n${supervision}\n${performanceHub}`, /eChief/);
-  assert.match(performanceHub, /eRH · sous l’autorité d’Oscar/);
+  assert.match(performanceHub, /<h4>eRH<\/h4>/);
+  assert.doesNotMatch(performanceHub, /eRH · sous l’autorité d’Oscar/);
 });
 
 test("Vincenzo appartient à eSportif dans les deux présentations publiques", async () => {
@@ -232,9 +233,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.24.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.25.1 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.24\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.25\.1"/);
 });
 
 test("l’interface eStaff utilise une session Cloudflare unique", async () => {

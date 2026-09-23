@@ -52,6 +52,7 @@
   }
 
   function renderButton(button, state) {
+    if (button.dataset.state === state) return;
     button.disabled = ["busy", "blocked", "unsupported", "unavailable"].includes(state);
     button.dataset.state = state;
     button.textContent = state === "active" ? "🔔 Notifications activées · désactiver"
@@ -132,14 +133,19 @@
       || document.querySelector('section[aria-label="Activité"]');
     if (!bar) return;
     let button = document.querySelector(".estaff-notify-button");
+    let changed = false;
     if (!button) {
       button = document.createElement("button");
       button.type = "button";
       button.className = "estaff-notify-button";
       button.addEventListener("click", () => toggleNotifications(button));
+      changed = true;
     }
-    if (button.parentElement !== bar) bar.append(button);
-    void refreshButton();
+    if (button.parentElement !== bar) {
+      bar.append(button);
+      changed = true;
+    }
+    if (changed) void refreshButton();
   }
 
   if (supported()) navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(() => {});

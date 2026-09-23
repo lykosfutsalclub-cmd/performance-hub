@@ -49,11 +49,12 @@ test("les notifications mobiles ont une interface, un manifeste et un service ac
   assert.match(client, /sameApplicationServerKey/);
   assert.match(client, /section\[aria-label="Synchronisation SportEasy"\]/);
   assert.match(client, /let button = document\.querySelector\("\.estaff-notify-button"\)/);
-  assert.match(client, /if \(button\.parentElement !== bar\) bar\.append\(button\)/);
+  assert.match(client, /if \(button\.parentElement !== bar\) \{/);
+  assert.match(client, /if \(changed\) void refreshButton\(\)/);
   assert.match(styles, /\.lykos-sporteasy-sync \.estaff-notify-button\{width:auto;min-width:max-content\}/);
   assert.match(styles, /\.lykos-sporteasy-sync \.estaff-notify-button\{width:100%;min-width:0\}/);
   assert.match(page, /notifications\.css\?v=20260920-single-control/);
-  assert.match(page, /notifications\.js\?v=20260920-single-control/);
+  assert.match(page, /notifications\.js\?v=20260923-company-loop-fix-v1/);
   assert.doesNotMatch(client, /fab-mysterio|chatgpt[.]site/);
   assert.match(serviceWorker, /showNotification/);
 });

@@ -16,6 +16,27 @@ html.lykos-access-locked body {
   overflow: hidden !important;
 }
 
+html.lykos-access-granted.lykos-estaff-bridging #estaff-root {
+  visibility: hidden !important;
+}
+
+html.lykos-access-granted.lykos-estaff-bridging body::after {
+  content: "Ouverture du eStaff…";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #f3d52b;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(21, 102, 194, .82), transparent 38%),
+    linear-gradient(155deg, #004497 0%, #061a3d 58%, #01132d 100%);
+  font: 850 clamp(20px, 4vw, 30px)/1.2 Georgia, "Times New Roman", serif;
+  letter-spacing: .03em;
+  text-align: center;
+}
+
 .lykos-access-gate,
 .lykos-access-gate * {
   box-sizing: border-box;

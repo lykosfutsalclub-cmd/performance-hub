@@ -33,4 +33,6 @@ test("la session vérifiée est commune aux pages et remplace le second clavier 
   assert.match(bridge, /LYKOS_HUB_ACCESS/);
   assert.match(bridge, /hubSession/);
   assert.match(bridge, /requestSubmit/);
+  assert.match(bridge, /lykos-estaff-bridging/);
+  assert.match(bridge, /revealInterfaceWhenReady/);
 });

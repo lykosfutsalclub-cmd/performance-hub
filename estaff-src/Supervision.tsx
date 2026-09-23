@@ -6,8 +6,8 @@ import theme from "./theme.module.css";
 
 const SERVICE = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
 const OSCAR_ID = "oscar";
-const ESTAFF_AGENT_COUNT = 43;
-const ACTIVE_CONTRIBUTORS = 42;
+const ESTAFF_AGENT_COUNT = 44;
+const ACTIVE_CONTRIBUTORS = 43;
 const TOTAL_REPORT_PROMPT = "Rapport total : sollicite tous les agents actifs et autorisés. Attends leurs retours, indique clairement qui a répondu, qui est bloqué ou sans réponse, puis livre-moi une synthèse globale avec les priorités, les décisions à prendre, les responsables et les échéances.";
 const SPORTEASY_SYNC_PROMPT = "ACTION_SYSTÈME PUB2 : déclenche immédiatement le workflow officiel de synchronisation SportEasy complète vers le Performance Hub, puis confirme uniquement son lancement.";
 

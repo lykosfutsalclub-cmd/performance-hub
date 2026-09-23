@@ -191,23 +191,24 @@ test("Oscar affiche la fraîcheur et peut demander une synchronisation immédiat
   assert.match(page, /connect-src 'self'/);
 });
 
-test("la communication eStaff présente uniquement 43 agents", async () => {
+test("la communication eStaff présente uniquement 44 agents", async () => {
   const files = [
     "estaff-src/Supervision.tsx",
     "estaff/assets/esupport-report.js",
   ];
   const text = (await Promise.all(files.map((path) => readFile(new URL(path, root), "utf8")))).join("\n");
-  assert.match(text, /43 agents/);
+  assert.match(text, /44 agents/);
   assert.doesNotMatch(text, /sous[- ]agents?|agents? directs?/i);
 });
 
-test("les 43 agents sont consultables et seul Oscar reçoit les missions", async () => {
+test("les 44 agents sont consultables et seul Oscar reçoit les missions", async () => {
   const bundle = await readFile(new URL("estaff/assets/estaff.js", root), "utf8");
+  const teamHome = await readFile(new URL("estaff/assets/team-home.js", root), "utf8");
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
   const performanceHub = await readFile(new URL("index.html", root), "utf8");
   assert.match(bundle, /Rechercher un agent/);
-  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Bastien", "Salma", "Mateo", "Priya"]) {
-    assert.match(bundle, new RegExp(name));
+  for (const name of ["Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Sonia", "Patricia", "Gaston", "Vincenzo", "Sandrine", "Konstantinos", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Samir", "Roman", "Francisco", "Tamara", "Giorgios", "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Malik", "Ella", "Ezio", "Bastien", "Salma", "Mateo", "Priya"]) {
+    assert.match(`${bundle}\n${teamHome}`, new RegExp(name));
   }
   for (const escapedName of ["V\\xE9ronique", "L\\xE9onard", "\\xC9lise", "Cam\\xE9lia", "In\\xE8s", "Salom\\xE9"]) assert.ok(bundle.includes(escapedName));
   assert.match(supervision, /agent === "Oscar" && latestCapabilities\.oscarMissions === true/);

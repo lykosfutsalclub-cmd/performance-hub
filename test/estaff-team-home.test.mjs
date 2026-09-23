@@ -4,14 +4,14 @@ import {readFile,readdir} from "node:fs/promises";
 
 const root = new URL("../",import.meta.url);
 
-test("l’accueil eStaff présente les 43 personnes avec leurs portraits", async () => {
+test("l’accueil eStaff présente les 44 personnes avec leurs portraits", async () => {
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const portraits = await readdir(new URL("estaff/assets/portraits/team/",root));
   const people = [...script.matchAll(/^\s*\["([^"]+)","(?:direction|operations|sport|data|academy|support|brand|security|finance|equipment|partnerships|memory|hr)"/gm)].map(match => match[1]);
 
-  assert.equal(people.length,43);
-  assert.equal(new Set(people).size,43);
-  assert.equal(portraits.filter(file => file.endsWith(".jpg")).length,43);
+  assert.equal(people.length,44);
+  assert.equal(new Set(people).size,44);
+  assert.equal(portraits.filter(file => file.endsWith(".jpg")).length,44);
   assert.match(script,/Bonjour, voici votre équipe/);
   assert.match(script,/Point fort/);
   assert.match(script,/Axe d’amélioration/);
@@ -61,11 +61,11 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   assert.match(style,/body\.lykos-team-home-active \{[\s\S]*overflow-y:auto!important;/);
 });
 
-test("la navigation principale reste fixée en bas et le futur poste eRH attend un prénom", async () => {
+test("la navigation principale reste fixée en bas et Ezio est intégré à eRH", async () => {
   const performanceHub = await readFile(new URL("index.html",root),"utf8");
 
   assert.match(performanceHub,/\.lykos-headnav \{[\s\S]*position:fixed;[\s\S]*bottom:/);
-  assert.match(performanceHub,/Poste à pourvoir/);
-  assert.match(performanceHub,/Aucune intégration ne démarre tant que le prénom n’a pas été validé/);
+  assert.match(performanceHub,/<strong>Ezio<\/strong><small>Responsable de l’intégration<\/small>/);
+  assert.doesNotMatch(performanceHub,/Poste à pourvoir/);
   assert.doesNotMatch(performanceHub,/eRH · sous l’autorité d’Oscar/);
 });

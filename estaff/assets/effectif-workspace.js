@@ -628,7 +628,7 @@
       feed.append(feedHeader, list);
     }
 
-    const notice = make("p", "ew-agent-notice", `${agent.name} fait partie des 43 agents actifs. Son contrôle est déterministe et n’utilise aucune intelligence artificielle par défaut.`);
+    const notice = make("p", "ew-agent-notice", `${agent.name} fait partie des 44 personnes actives de l’eStaff. Son contrôle suit les règles métier validées et reste traçable.`);
     space.append(header, facts, workflow, feed, notice);
     return space;
   }

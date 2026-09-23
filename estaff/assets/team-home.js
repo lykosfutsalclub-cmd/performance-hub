@@ -53,6 +53,7 @@
     ["Salomé","hr","Référente de la planification",["Organisation","Simplification","Qualité"],"Rendre les circuits de travail plus simples et fiables.","Ne modifie aucune cadence ni règle seule.","A1","Propose","Nora"],
     ["Malik","hr","Référent des besoins",["Répartition","Renfort","Priorités"],"Résoudre un besoin avec l’équipe existante avant tout recrutement.","Ne crée, ne nomme et n’active aucun agent.","A1","Propose","Nora"],
     ["Ella","hr","Référente de l’environnement",["Outils","Capacités","Optimisation"],"Comparer les adaptations capables d’améliorer le travail.","N’installe rien et n’accorde aucune permission seule.","A1","Propose","Nora"],
+    ["Ezio","hr","Responsable de l’intégration",["Accueil","Parcours","Coordination"],"Donner à chaque nouvelle personne un cadre de travail clair, humain et complet.","N’active aucune intégration sans prénom et rôle validés par Fabien.","A2","Opère en interne","Nora"],
   ].map(([name,service,role,skills,strength,vigilance,autonomy,autonomyLabel,manager]) => ({
     name,service,role,skills,strength,vigilance,autonomy,autonomyLabel,manager,
     portrait:`./assets/portraits/team/${name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}.jpg`,

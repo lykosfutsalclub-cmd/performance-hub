@@ -58,7 +58,8 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
 }
 
 .lykos-access-card {
-  width: min(100%, 430px);
+  width: min(430px, calc(100vw - 36px));
+  min-width: 0;
   padding: clamp(24px, 6vw, 38px);
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 28px;
@@ -71,6 +72,7 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
   display: flex;
   align-items: center;
   gap: 15px;
+  min-width: 0;
   margin-bottom: 28px;
 }
 
@@ -205,6 +207,14 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
   .lykos-access-gate { place-items: start center; }
   .lykos-access-card { border-radius: 23px; }
   .lykos-access-keypad button { min-height: 62px; }
+}
+
+@media (max-width: 360px) {
+  .lykos-access-card { padding-inline: 20px; }
+  .lykos-access-brand { gap: 9px; }
+  .lykos-access-brand img { width: 52px; height: 52px; margin: 8px; }
+  .lykos-access-brand strong { font-size: 17px; }
+  .lykos-access-brand span { font-size: 10px; }
 }
 
 @media (max-height: 720px) {

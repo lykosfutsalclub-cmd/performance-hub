@@ -11,10 +11,15 @@ test("le Performance Hub autorise le zoom du navigateur", async () => {
 });
 
 test("la porte d’accès est annoncée comme une fenêtre et reçoit le focus", async () => {
-  const gate = await readFile(new URL("access-gate.js", root), "utf8");
+  const [gate, styles] = await Promise.all([
+    readFile(new URL("access-gate.js", root), "utf8"),
+    readFile(new URL("access-gate.css", root), "utf8"),
+  ]);
   assert.match(gate, /gate\.setAttribute\("role", "dialog"\)/);
   assert.match(gate, /gate\.setAttribute\("aria-modal", "true"\)/);
   assert.match(gate, /keypad\.querySelector\("button"\)\?\.focus\(\)/);
+  assert.match(styles, /width: min\(430px, calc\(100vw - 36px\)\)/);
+  assert.match(styles, /@media \(max-width: 360px\)/);
 });
 
 test("la navigation eStaff reste visible et remonte après le rendu", async () => {

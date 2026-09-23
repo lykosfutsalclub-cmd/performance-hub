@@ -206,3 +206,13 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
   .lykos-access-card { border-radius: 23px; }
   .lykos-access-keypad button { min-height: 62px; }
 }
+
+@media (max-height: 720px) {
+  .lykos-access-gate { place-items: start center; }
+  .lykos-access-card { padding: 20px clamp(20px, 6vw, 30px); }
+  .lykos-access-brand { margin-bottom: 18px; }
+  .lykos-access-brand img { width: 56px; height: 56px; margin: 12px; }
+  .lykos-access-intro { margin-bottom: 16px; }
+  .lykos-access-dots { margin-bottom: 14px; }
+  .lykos-access-keypad button { min-height: 50px; }
+}

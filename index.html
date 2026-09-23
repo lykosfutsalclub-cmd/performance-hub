@@ -89,8 +89,9 @@
     #lykos-dashboard-preview .lykos-headbar-title { min-width:max-content; font-family:"OMMarseille", Georgia, serif; font-weight:700; letter-spacing:.08em; font-size:0; line-height:.82; display:flex; flex-direction:column; gap:0; }
     #lykos-dashboard-preview .lykos-headbar-title::before { content:"PERFORMANCE"; color:#fff; font-size:15px; }
     #lykos-dashboard-preview .lykos-headbar-title::after { content:"HUB"; color:#fff; font-size:15px; letter-spacing:.08em; }
-    #lykos-dashboard-preview .lykos-manager-launch { margin-left:auto; padding:10px 15px; border:1px solid rgba(243,213,43,.66); background:#f3d52b; color:#091d4f; font-size:11px; font-weight:900; letter-spacing:.08em; text-decoration:none; text-transform:uppercase; box-shadow:0 6px 18px rgba(0,0,0,.18); }
-    #lykos-dashboard-preview .lykos-manager-launch:hover, #lykos-dashboard-preview .lykos-manager-launch:focus-visible { background:#fff16b; outline:2px solid #fff; outline-offset:2px; }
+    #lykos-dashboard-preview .lykos-manager-launch { position:relative; display:block; width:136px; height:44px; margin-left:auto; overflow:hidden; border:1px solid rgba(243,213,43,.66); background:#071c40; text-decoration:none; box-shadow:0 6px 18px rgba(0,0,0,.18); }
+    #lykos-dashboard-preview .lykos-manager-launch img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(2.65); transform-origin:center; }
+    #lykos-dashboard-preview .lykos-manager-launch:hover, #lykos-dashboard-preview .lykos-manager-launch:focus-visible { border-color:#fff16b; background:#0a326a; outline:2px solid #fff; outline-offset:2px; }
     #lykos-dashboard-preview .lykos-manager-return { display:none; width:max-content; margin:0 0 12px; padding:9px 12px; border:1px solid rgba(243,213,43,.58); background:#0a326a; color:#fff; font-size:10px; font-weight:800; letter-spacing:.05em; text-decoration:none; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-manager-return[data-visible="true"] { display:inline-flex; }
     #lykos-dashboard-preview { padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
@@ -658,7 +659,7 @@
       #lykos-dashboard-preview .lykos-headbar-logo { width:36px; height:42px; }
       #lykos-dashboard-preview .lykos-headbar-title::before,
       #lykos-dashboard-preview .lykos-headbar-title::after { font-size:13px; }
-      #lykos-dashboard-preview .lykos-manager-launch { margin-left:auto; padding:8px 10px; font-size:9px; }
+      #lykos-dashboard-preview .lykos-manager-launch { width:96px; height:34px; margin-left:auto; }
       #lykos-dashboard-preview .lykos-headnav {
         left:0; right:0; bottom:0; width:100%; height:72px; transform:none;
         z-index:100; padding:5px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));
@@ -953,7 +954,7 @@
       <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">ESTAFF</button>
       <button data-view="performance" data-mobile-label="PERF." aria-selected="false">PERFORMANCE</button>
     </nav>
-    <a class="lykos-manager-launch" href="./five-manager/" aria-label="Ouvrir Five Manager">Five Manager</a>
+    <a class="lykos-manager-launch" href="./five-manager/" aria-label="Ouvrir Five Manager"><img src="five-manager/logo-five-manager.png" alt="" aria-hidden="true"></a>
   </header>
   <div class="lykos-shell">
     <aside class="lykos-sidebar">

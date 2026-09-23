@@ -13,6 +13,7 @@ const [home, manager, script, styles, fonts] = await Promise.all([
 
 test("Five Manager est une expérience spéciale distincte de la navigation principale", () => {
   assert.match(home, /class="lykos-manager-launch" href="\.\/five-manager\/"/);
+  assert.match(home, /five-manager\/logo-five-manager\.png/);
   assert.match(manager, /<b>Performance Hub<\/b>/);
   assert.match(manager, /logo-five-manager\.png/);
   assert.doesNotMatch(manager, /Identité temporaire/);

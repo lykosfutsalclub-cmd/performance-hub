@@ -270,7 +270,7 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 
 #lykos-team-home {padding-bottom:calc(82px + env(safe-area-inset-bottom))}
 .company-topbar {grid-template-columns:minmax(220px,1fr) auto}
-.company-nav {position:fixed;z-index:70;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(780px,calc(100vw - 24px));justify-content:space-evenly;background:#d0b631!important;border:1px solid #f4df70!important;box-shadow:0 16px 45px rgba(0,0,0,.45)}
+.company-nav {position:fixed;z-index:70;left:50%;bottom:10px;bottom:max(10px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(780px,calc(100vw - 24px));justify-content:space-evenly;background:#d0b631!important;border:1px solid #f4df70!important;box-shadow:0 16px 45px rgba(0,0,0,.45)}
 .company-nav button {flex:1;color:#071b45!important}.company-nav button:hover,.company-nav button.is-active {background:#0b3974!important;color:#fff!important}.company-nav button.is-active {box-shadow:none!important}
 .company-actions {grid-column:2}.company-activity-row {grid-template-columns:auto minmax(160px,.55fr) minmax(240px,1fr) auto auto}
 

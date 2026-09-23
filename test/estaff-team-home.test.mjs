@@ -47,7 +47,7 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260923-company-v8/);
+  assert.match(page,/team-home\.css\?v=20260923-company-v9/);
   assert.match(page,/team-home\.js\?v=20260923-company-v7/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
@@ -76,7 +76,7 @@ test("la navigation principale reste fixée en bas et Ezio est intégré à eRH"
 test("la navigation eStaff reste en bas quelle que soit la largeur", async () => {
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
   assert.match(style,/#lykos-team-home \{padding-bottom:calc\(82px \+ env\(safe-area-inset-bottom\)\)\}/);
-  assert.match(style,/\.company-nav \{position:fixed;z-index:70;left:50%;bottom:max\(10px,env\(safe-area-inset-bottom\)\)/);
+  assert.match(style,/\.company-nav \{position:fixed;z-index:70;left:50%;bottom:10px;bottom:max\(10px,env\(safe-area-inset-bottom,0px\)\)/);
   assert.doesNotMatch(style,/@media \(min-width:861px\) \{[\s\S]*?\.company-nav \{position:fixed/);
   assert.doesNotMatch(style,/\.company-nav \{grid-column:1\/-1;grid-row:2/);
 });

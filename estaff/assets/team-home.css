@@ -31,6 +31,7 @@ body.lykos-team-home-active #estaff-root>main {
 }
 
 body.lykos-team-home-active #estaff-root>main>:not(#lykos-team-home) {display:none!important}
+body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 
 #lykos-team-home,#lykos-team-home * {box-sizing:border-box}
 #lykos-team-home {min-height:100vh;color:var(--company-ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -257,3 +258,38 @@ body.lykos-team-home-active #estaff-root>main>:not(#lykos-team-home) {display:no
 }
 
 @media (prefers-reduced-motion:reduce) {#lykos-team-home * {scroll-behavior:auto!important;transition:none!important}}
+
+/* Direction artistique claire : bureau de direction premium, lisible et humain. */
+:root {
+  --company-bg:#f3f5f8;
+  --company-panel:#ffffff;
+  --company-panel-2:#eef2f7;
+  --company-ink:#142139;
+  --company-muted:#69768b;
+  --company-line:#e1e6ee;
+  --company-gold:#b99818;
+  --company-green:#238451;
+  --company-red:#b93b47;
+  --company-blue:#286ebd;
+}
+body.lykos-team-home-active {background:linear-gradient(180deg,#fff 0,#f6f8fb 270px,#f3f5f8 100%)}
+#lykos-team-home {background:transparent;color:var(--company-ink)}
+.company-topbar {background:rgba(255,255,255,.94);box-shadow:0 10px 30px rgba(31,48,77,.07)}
+.company-brand img {background:#edf1f7}.company-brand strong,.company-title h1 {color:#071e49}
+.company-nav {background:#f3f5f8}.company-nav button:hover,.company-nav button.is-active {color:#071e49;background:#fff}.company-nav button.is-active {box-shadow:0 5px 16px rgba(23,39,67,.08),inset 0 -2px var(--company-gold)}
+.company-primary {background:#071e49;color:#fff!important;border-color:#071e49}.company-icon-button {background:#fff;color:#59667a!important}
+.company-kpis>button,.company-panel,.company-agent-card,.company-service-card,.company-mission-card {background:#fff;box-shadow:0 14px 36px rgba(28,44,73,.08)}
+.company-kpis>button {color:var(--company-ink)}.company-kpis strong,.company-panel h2,.company-agent-card strong,.company-service-card>strong,.company-mission-card>strong {color:#071e49}
+.company-panel>header small {color:var(--company-gold)}
+.company-director {background:linear-gradient(135deg,#071e49,#12386f);color:#fff}.company-director h2 {color:#fff}.company-director .company-primary {background:#d9bd3a;color:#071e49!important;border-color:#d9bd3a}
+.company-person-row {background:#f7f9fc;color:var(--company-ink)}.company-person-row:hover {background:#eef2f7}.company-person-row strong {color:#071e49}
+.company-status {background:#edf1f5;color:#526078}.company-status.is-active {background:#e3f5eb;color:#23784b}.company-status.is-review {background:#fff3d9;color:#8c6718}.company-status.is-attention {background:#fde9eb;color:#a3323d}
+.company-activity-list>button {color:var(--company-ink)}
+.company-toolbar {background:#fff;box-shadow:0 10px 28px rgba(28,44,73,.06)}.company-toolbar input,.company-toolbar select {background:#fff;color:#142139}
+.agent-photo {background:#edf1f6}.agent-photo:after {background:linear-gradient(transparent,rgba(7,30,73,.66))}.agent-current {color:#35435b}.agent-tags em {background:#f4f6f9;color:#5f6d82}
+.service-avatars img,.service-avatars b {border-color:#fff}.service-avatars b,.service-stats span {background:#f2f5f8}.service-stats b {color:#071e49}
+.company-segmented button {background:#fff;color:#67748a}.company-segmented button.is-active {background:#071e49;color:#fff;border-color:#071e49}
+.company-empty>strong {color:#071e49}.company-footer {background:#fff;color:#69768b}
+.company-dialog-backdrop {background:rgba(7,22,48,.64)}.company-agent-profile,.company-mission-detail {background:#f7f9fb;color:#142139;box-shadow:0 30px 90px rgba(6,20,43,.3)}
+.profile-close {background:#071e49;color:#fff}.profile-header {background:linear-gradient(135deg,#f3f6fa,#fff)}.profile-header h2,.profile-content h3,.company-mission-detail h2 {color:#071e49}.profile-header dl>div,.profile-overview article,.profile-two-columns article,.mission-facts>div {background:#fff}.profile-kpis button,.profile-tabs {background:#fff;color:#142139}.profile-tabs button.is-active {background:#071e49;color:#fff}.profile-current {background:#fff!important}.profile-skill-list span {background:#eaf0f8;color:#244e84}.profile-actions {background:#fff}.profile-actions>button:not(.company-primary),.company-mission-detail footer button {background:#fff;color:#071e49}
+@media (max-width:600px) {.profile-actions {background:#fff}}

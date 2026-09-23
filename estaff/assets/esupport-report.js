@@ -958,6 +958,7 @@
       latestOperations = {};
       shareTeamState();
     }
+    if (document.body.classList.contains("lykos-team-home-active")) return;
     scheduleReadOnlyMode();
   }).observe(document.documentElement, {childList:true, subtree:true});
 })();

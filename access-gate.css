@@ -77,6 +77,7 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
 .lykos-access-brand img {
   width: 68px;
   height: 68px;
+  margin: 20px;
   object-fit: contain;
 }
 
@@ -88,8 +89,9 @@ html.lykos-access-granted.lykos-estaff-bridging body::after {
 }
 
 .lykos-access-brand strong {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "OMMarseille";
   font-size: 20px;
+  line-height: .82;
 }
 
 .lykos-access-brand span {

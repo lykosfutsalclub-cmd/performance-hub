@@ -3,16 +3,17 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
-const [home, estaff, gate, bridge] = await Promise.all([
+const [home, estaff, gate, gateStyles, bridge] = await Promise.all([
   readFile(new URL("index.html", root), "utf8"),
   readFile(new URL("estaff/index.html", root), "utf8"),
   readFile(new URL("access-gate.js", root), "utf8"),
+  readFile(new URL("access-gate.css", root), "utf8"),
   readFile(new URL("estaff/assets/hub-session-bridge.js", root), "utf8"),
 ]);
 
 test("le même contrôle d’accès précède le Performance Hub et le eStaff", () => {
-  assert.match(home, /access-gate\.js\?v=20260923-global-access-v2/);
-  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260923-global-access-v2/);
+  assert.match(home, /access-gate\.js\?v=20260923-global-access-v3/);
+  assert.match(estaff, /\.\.\/access-gate\.js\?v=20260923-global-access-v3/);
   assert.ok(estaff.indexOf("access-gate.js") < estaff.indexOf("estaff.js"));
   assert.ok(estaff.indexOf("hub-session-bridge.js") < estaff.indexOf("estaff.js"));
 });
@@ -35,4 +36,12 @@ test("la session vérifiée est commune aux pages et remplace le second clavier 
   assert.match(bridge, /requestSubmit/);
   assert.match(bridge, /lykos-estaff-bridging/);
   assert.match(bridge, /revealInterfaceWhenReady/);
+});
+
+test("l’accueil reprend strictement la typographie et le cadrage du PH", () => {
+  assert.match(gate, /PERFORMANCE<br>HUB/);
+  assert.match(gate, /logo-lykos-intro-carre-2026\.png/);
+  assert.match(gateStyles, /\.lykos-access-brand img \{[\s\S]*margin: 20px;/);
+  assert.match(gateStyles, /\.lykos-access-brand strong \{[\s\S]*font-family: "OMMarseille";/);
+  assert.doesNotMatch(gateStyles.match(/\.lykos-access-brand strong \{[\s\S]*?\}/)?.[0] || "", /Georgia|Times New Roman/);
 });

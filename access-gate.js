@@ -117,7 +117,7 @@
     gate.className = `lykos-access-gate${waiting ? " lykos-access-waiting" : ""}`;
     gate.setAttribute("aria-label", "Accès au Performance Hub");
     gate.innerHTML = `<div class="lykos-access-card">
-      <div class="lykos-access-brand"><img src="/performance-hub/logo-lykos-intro-carre-2026.png" alt="Logo Lykos Futsal Club"><div><strong>PERFORMANCE HUB</strong><span>LYKOS FUTSAL CLUB</span></div></div>
+      <div class="lykos-access-brand"><img src="/performance-hub/logo-lykos-intro-carre-2026.png" alt="Logo Lykos Futsal Club"><div><strong>PERFORMANCE<br>HUB</strong><span>LYKOS FUTSAL CLUB</span></div></div>
       <h1>Bienvenue.</h1>
       <p class="lykos-access-intro">Composez le code du club pour ouvrir le Performance Hub et l’ensemble de ses espaces.</p>
       <div class="lykos-access-dots" aria-label="Code à quatre chiffres"><span></span><span></span><span></span><span></span></div>

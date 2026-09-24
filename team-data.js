@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-09-23T10:22:43.964Z",
+  "generatedAt": "2026-09-24T11:42:58.414Z",
   "periods": {
     "current": {
-      "matchesPlayed": 3,
-      "wins": 2,
+      "matchesPlayed": 4,
+      "wins": 3,
       "draws": 0,
       "losses": 1,
-      "goalsFor": 61,
-      "goalsAgainst": 31,
-      "goalsForPerMatch": 20.33,
-      "goalsAgainstPerMatch": 10.33,
-      "winRate": 66.7,
-      "goalDifference": 30,
-      "averageGoalDifference": 10,
-      "recentFormScore": 66.7,
+      "goalsFor": 79,
+      "goalsAgainst": 47,
+      "goalsForPerMatch": 19.75,
+      "goalsAgainstPerMatch": 11.75,
+      "winRate": 75,
+      "goalDifference": 32,
+      "averageGoalDifference": 8,
+      "recentFormScore": 75,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -61,8 +61,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 2,
-          "matches": 1,
+          "matches": 2,
           "fixtures": [
+            {
+              "eventId": "match-2026-09-23-ase",
+              "date": "2026-09-23",
+              "opponent": "ASE",
+              "scoreFor": 18,
+              "scoreAgainst": 16,
+              "difference": 2
+            },
             {
               "eventId": "match-2026-09-02-fc-lancon",
               "date": "2026-09-02",
@@ -240,19 +248,20 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "victory",
+        "victory",
         "defeat",
         "victory"
       ],
       "streaks": {
         "wins": {
-          "count": 1,
-          "startAt": "2026-09-02",
-          "endAt": "2026-09-02"
+          "count": 2,
+          "startAt": "2026-09-16",
+          "endAt": "2026-09-23"
         },
         "unbeaten": {
-          "count": 1,
-          "startAt": "2026-09-02",
-          "endAt": "2026-09-02"
+          "count": 2,
+          "startAt": "2026-09-16",
+          "endAt": "2026-09-23"
         },
         "losses": {
           "count": 1,
@@ -266,9 +275,9 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 67.2,
-        "label": "POSITIVE",
-        "matchCount": 3,
+        "value": 73.5,
+        "label": "BONNE",
+        "matchCount": 4,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }
@@ -940,16 +949,16 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 157,
-      "wins": 74,
+      "matchesPlayed": 158,
+      "wins": 75,
       "draws": 7,
       "losses": 76,
-      "goalsFor": 1790,
-      "goalsAgainst": 1610,
-      "goalsForPerMatch": 11.4,
-      "goalsAgainstPerMatch": 10.25,
-      "winRate": 47.1,
-      "goalDifference": 180,
+      "goalsFor": 1808,
+      "goalsAgainst": 1626,
+      "goalsForPerMatch": 11.44,
+      "goalsAgainstPerMatch": 10.29,
+      "winRate": 47.5,
+      "goalDifference": 182,
       "averageGoalDifference": 1.15,
       "recentFormScore": 50,
       "scoreDistribution": [
@@ -1795,8 +1804,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 2,
-          "matches": 7,
+          "matches": 8,
           "fixtures": [
+            {
+              "eventId": "match-2026-09-23-ase",
+              "date": "2026-09-23",
+              "opponent": "ASE",
+              "scoreFor": 18,
+              "scoreAgainst": 16,
+              "difference": 2
+            },
             {
               "eventId": "match-2026-09-02-fc-lancon",
               "date": "2026-09-02",
@@ -2490,14 +2507,14 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "victory",
-        "defeat",
-        "victory",
-        "defeat",
-        "defeat",
-        "defeat",
         "victory",
         "defeat",
         "victory",
+        "defeat",
+        "defeat",
+        "defeat",
+        "victory",
+        "defeat",
         "victory"
       ],
       "streaks": {
@@ -2523,7 +2540,7 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 53.6,
+        "value": 54.8,
         "label": "MOYENNE",
         "matchCount": 10,
         "eventRatingCoverage": 80,
@@ -2536,7 +2553,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 3,
+      "matchCount": 4,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2618,12 +2635,39 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "match-2026-09-23-ase",
+          "index": 4,
+          "date": "2026-09-23",
+          "opponent": "ASE",
+          "score": "18–16",
+          "winRate": 75,
+          "goalsForPerMatch": 19.75,
+          "goalsAgainstPerMatch": 11.75,
+          "goalDifferencePerMatch": 8,
+          "teamForm": 92.5,
+          "formTrace": {
+            "value": 92.5,
+            "playerGradeAverage": 8.33,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 6,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 100,
+            "opponentDifficulty": {
+              "value": 92.2,
+              "sampleSize": 17,
+              "policy": "previous-head-to-head"
+            },
+            "importance": 1,
+            "availableWeight": 1
+          }
         }
       ],
       "form": {
-        "value": 67.2,
-        "label": "POSITIVE",
-        "matchCount": 3,
+        "value": 73.5,
+        "label": "BONNE",
+        "matchCount": 4,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }

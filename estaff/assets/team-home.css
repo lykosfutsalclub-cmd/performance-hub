@@ -133,6 +133,8 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .company-activity-row {display:grid;grid-template-columns:auto minmax(150px,.55fr) minmax(220px,1fr) auto auto;align-items:center;gap:12px;width:100%;padding:13px 9px;border-bottom:1px solid var(--company-line);text-align:left}
 .company-activity-row>span:nth-child(2) {display:grid;gap:3px}
 .activity-summary {display:grid;gap:3px;min-width:0;padding:7px 10px;border:0;border-radius:10px;background:rgba(134,185,255,.08);color:inherit;text-align:left;cursor:pointer}
+.activity-summary strong {font-size:.82rem;line-height:1.28}
+.activity-summary small {display:-webkit-box;overflow:hidden;line-height:1.4;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .activity-summary:hover {background:rgba(134,185,255,.16)}
 .activity-summary:disabled {cursor:default;opacity:.9}
 .company-activity-list small,.company-activity-list time {color:var(--company-muted);font-size:.72rem}
@@ -320,7 +322,7 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
   .company-person-row {grid-template-columns:40px 1fr auto;width:calc(100% - 20px);margin-left:10px;margin-right:10px}.company-person-row img {width:40px;height:40px}.company-person-row>em,.company-person-row>b {display:none}.company-person-row .company-status {font-size:0;width:20px;height:20px;padding:6px}
   .company-agent-grid,.company-service-grid,.company-mission-grid {grid-template-columns:1fr}.agent-photo {height:280px}
   .company-toolbar {grid-template-columns:1fr;padding:10px}.company-search {grid-column:auto}.company-toolbar label>span {display:block}.company-toolbar label {width:100%}.company-toolbar input,.company-toolbar select {width:100%}
-  .company-activity-row {grid-template-columns:auto 1fr auto}.activity-summary {grid-column:2/4}.company-activity-row time {grid-column:3;grid-row:1}.company-activity-row>b {display:none}
+  .company-activity-row {grid-template-columns:auto 1fr auto}.activity-summary {grid-column:2/4;padding:10px 12px}.activity-summary strong {font-size:.86rem}.company-activity-row time {grid-column:3;grid-row:1}.company-activity-row>b {display:none}
   .company-footer {padding-bottom:110px;align-items:flex-start;flex-direction:column}
   .company-dialog-backdrop {padding:0}.company-agent-profile,.company-mission-detail {width:100%;height:100%;max-height:none;border:0;border-radius:0}
   .profile-header {grid-template-columns:110px 1fr;gap:16px;padding:68px 18px 20px}.profile-header>img {grid-row:1;width:110px;height:145px}.profile-header h2 {font-size:2.1rem}.profile-header dl {grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.profile-header dl>div {min-width:0;padding:12px}.profile-header .profile-current-mission {grid-column:1/-1}.profile-kpis {grid-template-columns:1fr 1fr}.profile-kpis button {padding:15px}.profile-tabs {padding:11px}.profile-content {padding:14px}.profile-overview,.profile-two-columns,.profile-list,.profile-documents {grid-template-columns:1fr}.profile-actions {position:sticky;bottom:0;background:#031a3b;padding:12px}.profile-actions button {flex:1}.relation-people button {width:64px;height:64px}

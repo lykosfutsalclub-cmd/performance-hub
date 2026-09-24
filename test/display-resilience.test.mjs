@@ -29,7 +29,7 @@ test("la navigation eStaff reste visible et remonte après le rendu", async () =
   ]);
   assert.match(client, /function renderThenScrollToStart\(\)\{scheduleRender\(\);requestAnimationFrame\(scrollToPageStart\);\}/);
   assert.match(client, /aria-pressed="\$\{currentView===key\}"/);
-  assert.match(styles, /@media \(max-width:860px\) \{\s*\.company-topbar \{position:sticky;top:0;/);
+  assert.match(styles, /@media \(max-width:860px\) \{[\s\S]*?\.company-topbar \{position:sticky;top:0;/);
 });
 
 test("les fenêtres eStaff reprennent le focus et gardent des actions tactiles", async () => {

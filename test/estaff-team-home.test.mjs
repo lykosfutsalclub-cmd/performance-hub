@@ -51,8 +51,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260924-company-v13/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v12/);
+  assert.match(page,/team-home\.css\?v=20260924-company-v14/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v13/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -89,18 +89,21 @@ test("la navigation principale reste fixée en bas et Ezio est intégré à eRH"
 test("la navigation eStaff reste en bas quelle que soit la largeur", async () => {
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
-  assert.match(style,/#lykos-team-home \{padding-bottom:calc\(78px \+ env\(safe-area-inset-bottom\)\)\}/);
-  assert.match(style,/\.company-nav \{position:fixed;z-index:70;left:50%;bottom:0;[\s\S]*?width:min\(860px,calc\(100vw - 28px\)\);height:68px/);
+  assert.match(style,/#lykos-team-home \{padding-bottom:calc\(88px \+ env\(safe-area-inset-bottom\)\)\}/);
+  assert.match(style,/\.company-nav \{position:fixed;z-index:70;left:50%;bottom:0;[\s\S]*?width:min\(1120px,calc\(100vw - 40px\)\);height:76px/);
   assert.match(style,/background:rgba\(9,29,79,\.97\)!important/);
   assert.match(style,/\.company-nav button\.is-active::after \{[\s\S]*?background:var\(--company-gold\)\}/);
   assert.doesNotMatch(style,/\.company-nav \{[^}]*background:#d0b631!important/);
   assert.doesNotMatch(style,/@media \(min-width:861px\) \{[\s\S]*?\.company-nav \{position:fixed/);
   assert.doesNotMatch(style,/\.company-nav \{grid-column:1\/-1;grid-row:2/);
-  assert.match(script,/<\/header><nav class="company-nav" aria-label="Navigation eStaff">/);
+  assert.match(script,/<\/header><nav class="company-nav" aria-label="Navigation eStaff"><span class="company-nav-context"/);
+  assert.match(script,/class="company-nav-items"/);
+  assert.match(script,/class="company-nav-status"[\s\S]*?\$\{PEOPLE\.length\} agents/);
   assert.match(script,/\["overview","Tableau de bord","Accueil"\]/);
   assert.match(script,/class="company-nav-mobile-label" aria-hidden="true">/);
   assert.match(script,/aria-label="\$\{label\}" aria-pressed=/);
-  assert.match(style,/@media \(max-width:600px\) \{[\s\S]*?\.company-nav button::before \{[\s\S]*?-webkit-mask-size:contain/);
+  assert.match(style,/\.company-nav button::before \{[\s\S]*?-webkit-mask-size:contain/);
+  assert.match(style,/@media \(max-width:860px\) \{[\s\S]*?\.company-nav-context,\.company-nav-status \{display:none\}/);
   assert.match(style,/\.company-nav-label \{display:none\}\.company-nav-mobile-label \{display:block/);
 });
 

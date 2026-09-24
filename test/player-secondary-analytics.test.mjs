@@ -232,7 +232,7 @@ test("une année civile traite à égalité joueurs actuels et anciens dès 9 ap
   assert.equal(annual.minimumMatches, 9);
   assert.equal(annual.eligiblePlayerCount, 2);
   assert.deepEqual(annual.players["1"].performance, annual.players["2"].performance);
-  assert.equal(annual.players["1"].performance.confidence, 9 / 15);
+  assert.equal(annual.players["1"].performance.confidence, 1);
   assert.equal(annual.reconciliation.status, "verified");
 });
 

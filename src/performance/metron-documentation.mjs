@@ -12,6 +12,10 @@ function percent(value) {
   return `${numberFr(value * 100)} %`;
 }
 
+function ratingAnchor(percentile) {
+  return SCORING_CONFIG.RATING_ANCHORS.find((anchor) => anchor.percentile === percentile)?.rating;
+}
+
 function roleRow(label, key) {
   const weights = SCORING_CONFIG.OVERALL_BY_POSITION[key];
   return `            <tr><td data-label="Profil">${label}</td><td data-label="Création">${percent(weights.creation)}</td><td data-label="Finition">${percent(weights.finishing)}</td><td data-label="Défensif">${percent(weights.defensive)}</td><td data-label="Note moyenne">${percent(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT)}</td></tr>`;
@@ -22,11 +26,14 @@ export function renderMetronContent() {
     version: SCORING_CONFIG.VERSION,
     effectiveDate: SCORING_CONFIG.EFFECTIVE_DATE,
     rating: [SCORING_CONFIG.RATING_MIN, SCORING_CONFIG.RATING_MAX],
+    ratingAnchors: SCORING_CONFIG.RATING_ANCHORS,
     matches: SCORING_CONFIG.MATCH_WEIGHTS,
     roles: SCORING_CONFIG.OVERALL_BY_POSITION,
     grade: SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT,
     manOfTheMatch: SCORING_CONFIG.MAN_OF_MATCH_COMPONENTS,
-    recognitionAffectsOverall: SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL,
+    manOfTheMatchBonusMax: SCORING_CONFIG.MAN_OF_MATCH_BONUS_MAX,
+    tenure: [SCORING_CONFIG.TENURE_BONUS_PER_ADDITIONAL_SEASON, SCORING_CONFIG.TENURE_BONUS_MAX],
+    awards: SCORING_CONFIG.AWARD_BONUSES,
     samples: [SCORING_CONFIG.MIN_OVERALL_MATCHES, SCORING_CONFIG.CURRENT_CONFIDENCE_MATCHES],
     currentMinimumMatches: SCORING_CONFIG.CURRENT_MIN_OVERALL_MATCHES,
     calendarYearMinimumMatches: SCORING_CONFIG.MIN_CALENDAR_YEAR_MATCHES,
@@ -35,7 +42,7 @@ export function renderMetronContent() {
   return `${START}
         <!-- Configuration Metron synchronisée automatiquement : ${configSnapshot} -->
         <div class="lykos-heading">
-          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC · ${SCORING_CONFIG.VERSION}, en vigueur depuis le ${new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "UTC" }).format(new Date(SCORING_CONFIG.EFFECTIVE_DATE))}.</div></div>
+          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC · ${SCORING_CONFIG.VERSION}, en vigueur depuis le ${new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "UTC" }).format(new Date(SCORING_CONFIG.EFFECTIVE_DATE))}.</div><div class="lykos-freshness" data-freshness="metron"></div></div>
         </div>
         <p class="lykos-metron-intro">Metron transforme les données réelles issues de SportEasy en notes comparatives de ${SCORING_CONFIG.RATING_MIN} à ${SCORING_CONFIG.RATING_MAX}. Son objectif n’est pas de résumer un joueur à un chiffre, mais de replacer ses performances dans le contexte de son poste, de la période, du niveau des matchs et du reste de l’effectif.</p>
 
@@ -67,12 +74,20 @@ export function renderMetronContent() {
         <article class="lykos-metron-section">
           <h2>4. Percentiles et notes /${SCORING_CONFIG.RATING_MAX}</h2>
           <p>Chaque sous-statistique est comparée aux autres joueurs disposant de cette donnée sur la même période. Le percentile indique la place relative : « Percentile 80/100 » signifie que le joueur se situe au niveau ou au-dessus d’environ 80 % de la population comparable.</p>
-          <p>Pour les données où une valeur faible est préférable, comme les buts encaissés par match, le classement est inversé. Les percentiles alimentent ensuite les notes d’axe entre ${SCORING_CONFIG.RATING_MIN} et ${SCORING_CONFIG.RATING_MAX}. Une note proche de ${SCORING_CONFIG.RATING_MEDIAN} représente le centre de la population ; 90 ou davantage doit rester rare.</p>
+          <p>Pour les données où une valeur faible est préférable, comme les buts encaissés par match, le classement est inversé. Les percentiles alimentent ensuite une échelle inspirée des cartes de jeux de football : ${SCORING_CONFIG.RATING_MEDIAN} représente une performance correcte au niveau du groupe, et non un joueur faible.</p>
+          <div class="lykos-metron-table-wrap"><table class="lykos-metron-table"><thead><tr><th>Place dans le groupe</th><th>Note repère</th><th>Lecture</th></tr></thead><tbody>
+            <tr><td data-label="Place dans le groupe">10e percentile</td><td data-label="Note repère">${ratingAnchor(0.1)}</td><td data-label="Lecture">Performance en retrait</td></tr>
+            <tr><td data-label="Place dans le groupe">25e percentile</td><td data-label="Note repère">${ratingAnchor(0.25)}</td><td data-label="Lecture">Sous la moyenne</td></tr>
+            <tr><td data-label="Place dans le groupe">50e percentile</td><td data-label="Note repère">${ratingAnchor(0.5)}</td><td data-label="Lecture">Performance correcte</td></tr>
+            <tr><td data-label="Place dans le groupe">75e percentile</td><td data-label="Note repère">${ratingAnchor(0.75)}</td><td data-label="Lecture">Très bonne performance</td></tr>
+            <tr><td data-label="Place dans le groupe">90e percentile</td><td data-label="Note repère">${ratingAnchor(0.9)}</td><td data-label="Lecture">Performance dominante</td></tr>
+            <tr><td data-label="Place dans le groupe">Meilleur repère</td><td data-label="Note repère">${ratingAnchor(1)}</td><td data-label="Lecture">Sommet de la période</td></tr>
+          </tbody></table></div>
         </article>
 
         <article class="lykos-metron-section">
           <h2>5. Construction de la note générale</h2>
-          <p>La construction suit une logique inspirée des cartes de jeux de football, sans prétendre reproduire une formule propriétaire : la qualité principale du poste pèse davantage, les qualités complémentaires restent utiles et la note moyenne du joueur apporte un regard transversal.</p>
+          <p>Les attentes sont adaptées au dernier poste renseigné dans SportEasy tout en restant compatibles avec le football à 5, où chaque joueur doit contribuer dans plusieurs dimensions du jeu.</p>
           <div class="lykos-metron-table-wrap"><table class="lykos-metron-table"><thead><tr><th>Profil</th><th>Création</th><th>Finition</th><th>Défensif</th><th>Note moyenne</th></tr></thead><tbody>
 ${roleRow("Gardien pur", "G")}
 ${roleRow("Défenseur", "D")}
@@ -81,13 +96,13 @@ ${roleRow("Attaquant", "A")}
           </tbody></table></div>
           <p>Metron retient uniquement le dernier poste renseigné dans SportEasy. Il ne construit jamais de profil hybride « gardien-joueur ». Lorsque plusieurs postes figurent dans le champ SportEasy, seul le dernier est utilisé. Un poste absent est automatiquement traité comme « milieu polyvalent ».</p>
           <p>La note moyenne SportEasy est elle-même comparée aux autres joueurs de la période avant d’entrer pour ${percent(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT)} dans Metron. Sur un petit nombre de matchs, elle reçoit la même correction de prudence que les autres indicateurs : un seul match exceptionnel ne suffit donc plus à créer artificiellement une très haute note générale.</p>
-          <div class="lykos-metron-callout">La note générale est désormais une vraie moyenne pondérée des qualités observées. Elle reste comprise entre les composantes utilisées : aucune ancienneté, aucun trophée et aucun statut historique ne peut la faire dépasser le niveau sportif mesuré.</div>
         </article>
 
         <article class="lykos-metron-section">
-          <h2>6. Reconnaissance et fiabilité</h2>
-          <h3>Hommes du match</h3><p>Le total et la fréquence des distinctions restent visibles dans les statistiques du joueur. Ils servent à raconter ses performances marquantes, mais ne sont plus ajoutés une seconde fois à la note générale.</p>
-          <h3>Ancienneté et palmarès individuel</h3><p>L’ancienneté, les titres de meilleur buteur, de meilleur passeur et de joueur de l’année restent pleinement visibles dans la fiche et le Panthéon. Ils relèvent de la reconnaissance du parcours ; ils ne modifient plus la moyenne sportive de la période.</p>
+          <h2>6. Reconnaissance, ancienneté et fiabilité</h2>
+          <h3>Hommes du match</h3><p>Metron combine leur fréquence par match (${percent(SCORING_CONFIG.MAN_OF_MATCH_COMPONENTS.perMatch)}) et leur total (${percent(SCORING_CONFIG.MAN_OF_MATCH_COMPONENTS.total)}). Seuls les profils situés au-dessus de la médiane obtiennent un bonus permettant de distinguer les joueurs qui sortent régulièrement du lot. Ce bonus est limité à +${numberFr(SCORING_CONFIG.MAN_OF_MATCH_BONUS_MAX)}.</p>
+          <h3>Ancienneté</h3><p>Chaque saison SportEasy connue après la première apporte +${numberFr(SCORING_CONFIG.TENURE_BONUS_PER_ADDITIONAL_SEASON)} point, avec un maximum de +${numberFr(SCORING_CONFIG.TENURE_BONUS_MAX)}. Le bonus reste volontairement léger : il reconnaît la continuité au club sans remplacer la performance.</p>
+          <h3>Palmarès individuel</h3><p>Les distinctions officielles déjà recensées restent prises en compte : meilleur buteur +${SCORING_CONFIG.AWARD_BONUSES.top_scorer}, meilleur passeur +${SCORING_CONFIG.AWARD_BONUSES.top_assist_provider} et joueur de l’année +${SCORING_CONFIG.AWARD_BONUSES.player_of_year}.</p>
           <h3>Taille de l’échantillon</h3><p>Sur la saison actuelle, Metron calcule les notes dès ${SCORING_CONFIG.CURRENT_MIN_OVERALL_MATCHES} match joué, sous réserve de données suffisantes. Sans apparition, aucune note n’est attribuée. La saison précédente et l’historique All-time demandent au moins ${SCORING_CONFIG.MIN_OVERALL_MATCHES} matchs pour la note générale. Une année civile demande exactement ${SCORING_CONFIG.MIN_CALENDAR_YEAR_MATCHES} matchs : les totaux bruts restent visibles dès la première apparition, mais les classements, percentiles et notes annuelles attendent ce seuil. Jusqu’à ${SCORING_CONFIG.CURRENT_CONFIDENCE_MATCHES} matchs, les notes d’axe des joueurs actuels sont rapprochées progressivement de ${SCORING_CONFIG.RATING_MEDIAN} : les premières notes restent provisoires et évoluent avec les matchs. Les anciens joueurs ayant moins de ${SCORING_CONFIG.FORMER_MIN_CAREER_MATCHES} matchs en carrière ne sont pas notés et ne participent pas aux comparaisons.</p>
           <h3>Lecture avec / sans le joueur</h3><p>La fiche affiche également la moyenne des étoiles données au match par le coach sur 6 et le niveau collectif Metron sur 99, séparés entre les matchs avec le joueur et les matchs sans lui. Le niveau collectif reprend la note d’équipe calculée match par match à partir des notes individuelles disponibles, de la note du coach et du résultat replacé dans son contexte. Un match sans composition connue est exclu de cette comparaison afin de ne jamais fabriquer une absence.</p>
         </article>

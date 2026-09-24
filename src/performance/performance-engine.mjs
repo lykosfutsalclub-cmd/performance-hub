@@ -423,12 +423,9 @@ export function calculatePeriodPerformanceRatings({
       matchAverageRating: averageMatchRatingScore,
     });
     const awardBonus = calculateAwardBonus(awardsByPlayer.get(record.playerId) ?? []);
-    const rawTenureBonus = calculateTenureBonus(record.tenureSeasons);
-    const rawManOfTheMatchBonus = calculateManOfTheMatchBonus(manOfTheMatchScore.rating);
-    const recognitionCanAffectOverall = SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL && overall.rating !== null;
-    const appliedAwardBonus = recognitionCanAffectOverall ? awardBonus.bonus : 0;
-    const tenureBonus = recognitionCanAffectOverall ? rawTenureBonus : 0;
-    const manOfTheMatchBonus = recognitionCanAffectOverall ? rawManOfTheMatchBonus : 0;
+    const appliedAwardBonus = overall.rating === null ? 0 : awardBonus.bonus;
+    const tenureBonus = overall.rating === null ? 0 : calculateTenureBonus(record.tenureSeasons);
+    const manOfTheMatchBonus = overall.rating === null ? 0 : calculateManOfTheMatchBonus(manOfTheMatchScore.rating);
     const finalOverall = overall.rating === null ? null : clampRating(overall.rating + appliedAwardBonus + tenureBonus + manOfTheMatchBonus);
     record.performance = { ...emptyPerformance, ...blocks, overall: finalOverall, awardBonus: appliedAwardBonus, tenureBonus, manOfTheMatchBonus };
     record.trace = {
@@ -451,11 +448,8 @@ export function calculatePeriodPerformanceRatings({
         awardBonus: appliedAwardBonus,
         rawAwardBonus: awardBonus.rawBonus,
         tenureBonus,
-        rawTenureBonus,
         tenureSeasons: record.tenureSeasons,
         manOfTheMatchBonus,
-        rawManOfTheMatchBonus,
-        recognitionAffectsOverall: SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL,
         awards: awardBonus.awards,
       },
     };

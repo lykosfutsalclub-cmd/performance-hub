@@ -160,17 +160,21 @@ try {
           Number.isFinite(analytics.performance.manOfTheMatchBonus)
           && analytics.performance.manOfTheMatchBonus >= 0
           && analytics.performance.manOfTheMatchBonus <= 3,
-        recognitionSeparatedFromOverall:
+        overallIncludesMetronBonuses:
           analytics.performance.overall === null
             ? overallTrace.baseRating === null
               && analytics.performance.awardBonus === 0
               && analytics.performance.tenureBonus === 0
               && analytics.performance.manOfTheMatchBonus === 0
-            : overallTrace.recognitionAffectsOverall === false
-              && analytics.performance.awardBonus === 0
-              && analytics.performance.tenureBonus === 0
-              && analytics.performance.manOfTheMatchBonus === 0
-              && analytics.performance.overall === overallTrace.baseRating,
+            : analytics.performance.overall === Math.min(
+              99,
+              Math.max(1, Math.round(
+                overallTrace.baseRating
+                + analytics.performance.awardBonus
+                + analytics.performance.tenureBonus
+                + analytics.performance.manOfTheMatchBonus
+              )),
+            ),
         teamGoalShareAvailable:
           !Number.isFinite(actual.matches)
           || actual.matches === 0

@@ -62,22 +62,26 @@ test("l'échelle de notation est strictement limitée à 1–99", () => {
   assert.equal(clampRating(0), 1);
   assert.equal(clampRating(100), 99);
   assert.equal(clampRating(500), 99);
-  assert.equal(ratingFromPercentile(0), 1);
+  assert.equal(ratingFromPercentile(0), 35);
+  assert.equal(ratingFromPercentile(0.1), 50);
+  assert.equal(ratingFromPercentile(0.25), 60);
   assert.equal(ratingFromPercentile(1), 99);
-  assert.equal(ratingFromPercentile(0.5), 50);
+  assert.equal(ratingFromPercentile(0.5), 70);
+  assert.equal(ratingFromPercentile(0.75), 80);
+  assert.equal(ratingFromPercentile(0.9), 88);
 });
 
-test("le meilleur percentile atteint 99, le plus faible 1 et la médiane 50", () => {
+test("le meilleur percentile atteint 99, le plus faible 35 et la médiane 70", () => {
   const population = [10, 20, 30];
-  assert.equal(ratingFromPercentile(percentile(10, population)), 1);
-  assert.equal(ratingFromPercentile(percentile(20, population)), 50);
+  assert.equal(ratingFromPercentile(percentile(10, population)), 35);
+  assert.equal(ratingFromPercentile(percentile(20, population)), 70);
   assert.equal(ratingFromPercentile(percentile(30, population)), 99);
 });
 
 test("une métrique où moins est mieux inverse correctement la distribution", () => {
   const population = [2, 5, 9];
   assert.equal(ratingFromPercentile(percentile(2, population, "lower")), 99);
-  assert.equal(ratingFromPercentile(percentile(9, population, "lower")), 1);
+  assert.equal(ratingFromPercentile(percentile(9, population, "lower")), 35);
 });
 
 test("la pondération reste douce tout en respectant la hiérarchie sportive", () => {
@@ -131,11 +135,11 @@ test("NULL reste indisponible et n'est jamais converti en zéro", () => {
   assert.equal(adjustRatingForSample(null, 1), null);
 });
 
-test("les petits échantillons sont ramenés vers 50 et la correction disparaît à 15 matchs", () => {
-  assert.equal(sampleConfidence(1), 1 / 15);
-  assert.ok(adjustRatingForSample(99, sampleConfidence(1)) < 60);
-  assert.equal(sampleConfidence(15), 1);
-  assert.equal(adjustRatingForSample(88, sampleConfidence(15)), 88);
+test("les petits échantillons sont ramenés vers 70 et la correction disparaît à 8 matchs", () => {
+  assert.equal(sampleConfidence(1), 1 / 8);
+  assert.equal(adjustRatingForSample(99, sampleConfidence(1)), 74);
+  assert.equal(sampleConfidence(8), 1);
+  assert.equal(adjustRatingForSample(88, sampleConfidence(8)), 88);
 });
 
 test("OFFENSIF n'est pas recompté dans l'indice global", () => {
@@ -154,15 +158,14 @@ test("l'indice global reste compris entre les blocs qui le composent", () => {
 });
 
 test("les pondérations globales reflètent le poste", () => {
-  assert.deepEqual(SCORING_CONFIG.OVERALL_BY_POSITION.G, { creation: 0.1, finishing: 0, defensive: 0.65 });
+  assert.deepEqual(SCORING_CONFIG.OVERALL_BY_POSITION.G, { creation: 0.1, finishing: 0, defensive: 0.75 });
   assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.GM, undefined);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.defensive, 0.45);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.creation, 0.2);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.defensive, 0.4);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.creation, 0.3);
   assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.finishing, 0.4);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.defensive, 0.1);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.M.creation, 0.35);
-  assert.equal(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT, 0.25);
-  assert.equal(SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL, false);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.defensive, 0.2);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.M.creation, 0.4);
+  assert.equal(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT, 0.15);
 });
 
 test("le dernier poste SportEasy est utilisé sans créer de profil hybride", () => {
@@ -187,7 +190,7 @@ test("les bonus officiels sont +2, +2 et +4, cumulables sans plafond intermédia
   assert.equal(calculateAwardBonus(Array.from({ length: 10 }, () => ({ type: "player_of_year" }))).bonus, 40);
 });
 
-test("le palmarès reste reconnu sans modifier la moyenne sportive", () => {
+test("le bonus de palmarès augmente seulement la note globale et ne dépasse jamais 99", () => {
   const periodMatches = Array.from({ length: 15 }, (_, index) => scoringMatch({
     id: index + 1,
     participants: ["1", "2"],
@@ -205,19 +208,19 @@ test("le palmarès reste reconnu sans modifier la moyenne sportive", () => {
     ...baseArgs,
     awardsByPlayer: new Map([["1", [{ type: "player_of_year" }, { type: "top_scorer" }]]]),
   }).players["1"].performance;
-  assert.equal(withAwards.awardBonus, 0);
-  assert.equal(withAwards.overall, withoutAwards.overall);
+  assert.equal(withAwards.awardBonus, 6);
+  assert.equal(withAwards.overall, Math.min(99, withoutAwards.overall + 6));
   assert.equal(withAwards.creation, withoutAwards.creation);
   assert.equal(withAwards.finishing, withoutAwards.finishing);
   assert.equal(withAwards.defensive, withoutAwards.defensive);
 });
 
-test("la note moyenne des matchs pèse 25 % de la note générale lorsqu'elle existe", () => {
+test("la note moyenne des matchs pèse 15 % de la note générale lorsqu'elle existe", () => {
   const withoutGrade = calculateOverallRating({ position: "A", blocks: { creation: 50, finishing: 50, defensive: 50 }, matchesPlayed: 10 });
   const withGrade = calculateOverallRating({ position: "A", blocks: { creation: 50, finishing: 50, defensive: 50 }, matchesPlayed: 10, matchAverageRating: 99 });
   assert.equal(withoutGrade.rating, 50);
   assert.ok(withGrade.rating > withoutGrade.rating);
-  assert.equal(withGrade.usedBlocks.find(({ block }) => block === "matchAverage")?.weight, 0.25);
+  assert.equal(withGrade.usedBlocks.find(({ block }) => block === "matchAverage")?.weight, 0.15);
 });
 
 test("une seule note de match exceptionnelle reste prudente", () => {
@@ -229,7 +232,7 @@ test("une seule note de match exceptionnelle reste prudente", () => {
     averageRatingsByPlayer: new Map([["1", 10], ["2", 5]]),
   }).players["1"];
   assert.equal(result.trace.rawAverageMatchRatingScore, 99);
-  assert.equal(result.trace.averageMatchRatingScore, 53);
+  assert.equal(result.trace.averageMatchRatingScore, 74);
 });
 
 test("les Hommes du match distinguent les performances dominantes sans modifier les poids de base", () => {
@@ -330,7 +333,7 @@ test("la saison actuelle note dès une apparition, sans changer les seuils histo
   };
   const current = calculatePeriodPerformanceRatings({ ...args, periodKey: "current" });
   assert.ok(Number.isInteger(current.players["1"].performance.overall));
-  assert.equal(current.players["1"].performance.confidence, 1 / 15);
+  assert.equal(current.players["1"].performance.confidence, 1 / 8);
   assert.equal(current.players["2"].performance.overall, null);
   for (const periodKey of ["previous", "allTime"]) {
     assert.equal(calculatePeriodPerformanceRatings({ ...args, periodKey }).players["1"].performance.overall, null);

@@ -21,7 +21,15 @@ export function clampRating(value) {
 export function ratingFromPercentile(percentile) {
   if (!Number.isFinite(percentile)) return null;
   const bounded = Math.min(1, Math.max(0, percentile));
-  return clampRating(SCORING_CONFIG.RATING_MIN + 98 * bounded);
+  const anchors = SCORING_CONFIG.RATING_ANCHORS;
+  for (let index = 1; index < anchors.length; index += 1) {
+    const lower = anchors[index - 1];
+    const upper = anchors[index];
+    if (bounded > upper.percentile) continue;
+    const progress = (bounded - lower.percentile) / (upper.percentile - lower.percentile);
+    return clampRating(lower.rating + progress * (upper.rating - lower.rating));
+  }
+  return clampRating(anchors.at(-1).rating);
 }
 
 export function sampleConfidence(matchesPlayed) {

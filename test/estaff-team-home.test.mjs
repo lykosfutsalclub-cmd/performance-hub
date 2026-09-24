@@ -58,7 +58,7 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
   assert.match(page,/team-home\.css\?v=20260924-company-v17/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v16/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v17/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -146,4 +146,17 @@ test("le Journal d’équipe reprend les mêmes titres courts et résumés méti
   assert.match(script,/activityPresentation\(\{\.\.\.entry,activityType:"mission"\}\)/);
   assert.doesNotMatch(script,/class="activity-summary"[\s\S]{0,300}<strong>\$\{escapeHtml\(humanizeText\(entry\.title/);
   assert.match(style,/\.activity-summary small \{[^}]*-webkit-line-clamp:2/);
+});
+
+test("les fiches agent écartent les attributions historiques seulement supposées", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+
+  assert.match(script,/function isReconstructedHistory\(entry\)/);
+  assert.match(script,/function isConfirmedMissionEntry\(entry\)/);
+  assert.match(script,/entry\?\.contributionConfirmed===true/);
+  assert.match(script,/entry\?\.historicalRole==="responsible"/);
+  assert.match(script,/Number\(entry\?\.sequence\|\|0\)===1/);
+  assert.match(script,/for\(const entry of Array\.isArray\(entries\)\?entries:\[\]\)\{if\(!isConfirmedMissionEntry\(entry\)\)continue;/);
+  assert.match(script,/\(teamState\.returns\|\|\[\]\)\.filter\(isConfirmedMissionEntry\)/);
+  assert.match(script,/normalize\(entry\.agent\)===normalize\(name\)&&isConfirmedMissionEntry\(entry\)/);
 });

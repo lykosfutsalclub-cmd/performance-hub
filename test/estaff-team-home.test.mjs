@@ -51,8 +51,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260924-company-v10/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v9/);
+  assert.match(page,/team-home\.css\?v=20260924-company-v11/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v10/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -85,4 +85,14 @@ test("la navigation eStaff reste en bas quelle que soit la largeur", async () =>
   assert.doesNotMatch(style,/@media \(min-width:861px\) \{[\s\S]*?\.company-nav \{position:fixed/);
   assert.doesNotMatch(style,/\.company-nav \{grid-column:1\/-1;grid-row:2/);
   assert.match(script,/<\/header><nav class="company-nav" aria-label="Navigation eStaff">/);
+});
+
+test("les informations principales d’une fiche agent remplissent la largeur sur mobile", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+  const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
+
+  assert.match(script,/<\/div><dl><div><dt>Responsable<\/dt>/);
+  assert.match(script,/class="profile-current-mission"><dt>Mission actuelle<\/dt>/);
+  assert.match(style,/@media \(max-width:600px\) \{[\s\S]*?\.profile-header dl \{grid-column:1\/-1;grid-template-columns:repeat\(2,minmax\(0,1fr\)\);gap:10px\}/);
+  assert.match(style,/\.profile-header \.profile-current-mission \{grid-column:1\/-1\}/);
 });

@@ -1339,9 +1339,9 @@
       </section>
       <section class="lykos-content lykos-metron-page" data-view-panel="metron" hidden>
         <!-- METRON_CONTENT_START -->
-        <!-- Configuration Metron synchronisée automatiquement : {"version":"METRON 1.0.1","effectiveDate":"2026-09-08","rating":[1,99],"matches":{"TEST_MATCH":1,"COMPETITION":1.25,"PROTOUR":1.5},"roles":{"G":{"creation":0.1,"finishing":0,"defensive":0.75},"D":{"creation":0.3,"finishing":0.15,"defensive":0.4},"M":{"creation":0.4,"finishing":0.225,"defensive":0.225},"A":{"creation":0.25,"finishing":0.4,"defensive":0.2},"DEFAULT":{"creation":0.4,"finishing":0.225,"defensive":0.225}},"grade":0.15,"manOfTheMatch":{"total":0.35,"perMatch":0.65},"manOfTheMatchBonusMax":3,"tenure":[0.5,3],"awards":{"top_scorer":2,"top_assist_provider":2,"player_of_year":4},"samples":[10,15],"currentMinimumMatches":1,"calendarYearMinimumMatches":9,"positionPolicy":"latest-sporteasy-position-no-hybrid"} -->
+        <!-- Configuration Metron synchronisée automatiquement : {"version":"METRON 1.1.0","effectiveDate":"2026-09-24","rating":[1,99],"matches":{"TEST_MATCH":1,"COMPETITION":1.25,"PROTOUR":1.5},"roles":{"G":{"creation":0.1,"finishing":0,"defensive":0.65},"D":{"creation":0.2,"finishing":0.1,"defensive":0.45},"M":{"creation":0.35,"finishing":0.2,"defensive":0.2},"A":{"creation":0.25,"finishing":0.4,"defensive":0.1},"DEFAULT":{"creation":0.35,"finishing":0.2,"defensive":0.2}},"grade":0.25,"manOfTheMatch":{"total":0.35,"perMatch":0.65},"recognitionAffectsOverall":false,"samples":[10,15],"currentMinimumMatches":1,"calendarYearMinimumMatches":9,"positionPolicy":"latest-sporteasy-position-no-hybrid"} -->
         <div class="lykos-heading">
-          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC · METRON 1.0.1, en vigueur depuis le 8 septembre 2026.</div><div class="lykos-freshness" data-freshness="metron"></div></div>
+          <div><h1>Metron</h1><div class="lykos-subtitle">Le système de notation individuelle du Performance Hub Lykos FC · METRON 1.1.0, en vigueur depuis le 24 septembre 2026.</div></div>
         </div>
         <p class="lykos-metron-intro">Metron transforme les données réelles issues de SportEasy en notes comparatives de 1 à 99. Son objectif n’est pas de résumer un joueur à un chiffre, mais de replacer ses performances dans le contexte de son poste, de la période, du niveau des matchs et du reste de l’effectif.</p>
 
@@ -1349,7 +1349,7 @@
           <h2>1. Ce que Metron utilise</h2>
           <p>La source de vérité reste SportEasy : matchs joués, buts, passes décisives, Hommes du match, notes et résultats collectifs. Les statistiques visibles restent toujours les valeurs réelles. La pondération n’est utilisée qu’à l’intérieur du calcul des notes.</p>
           <p>Metron recalcule séparément la saison actuelle, la saison précédente, chaque année civile et l’historique All-time. Une statistique d’une période n’est jamais comparée à la population d’une autre période. Les années civiles sont reconstruites directement à partir des matchs compris entre le 1er janvier et le 31 décembre, et non par addition approximative de pages déjà affichées.</p>
-          <div class="lykos-metron-callout">Une donnée absente n’est jamais transformée en zéro. Elle est retirée du calcul et les poids encore disponibles sont rééquilibrés. Exception contrôlée : un but ou une passe décisive omis sur une fiche de match vaut zéro uniquement lorsque la participation du joueur est confirmée et que les totaux restent conciliés avec SportEasy. Une note d’axe exige 60 % de couverture ; la note générale en exige 85 %. Sinon, la note affichée est « — ».</div>
+          <div class="lykos-metron-callout">Une donnée absente n’est jamais transformée en zéro. Elle est retirée du calcul et les poids encore disponibles sont rééquilibrés. Exception contrôlée : un but ou une passe décisive omis sur une fiche de match vaut zéro uniquement lorsque la participation du joueur est confirmée et que les totaux restent conciliés avec SportEasy. Une note d’axe exige 60 % de couverture ; la note générale en exige 75 %. Sinon, la note affichée est « — ».</div>
         </article>
 
         <article class="lykos-metron-section">
@@ -1378,22 +1378,22 @@
 
         <article class="lykos-metron-section">
           <h2>5. Construction de la note générale</h2>
-          <p>Les attentes sont adaptées au dernier poste renseigné dans SportEasy tout en restant compatibles avec le football à 5, où chaque joueur doit contribuer dans plusieurs dimensions du jeu.</p>
+          <p>La construction suit une logique inspirée des cartes de jeux de football, sans prétendre reproduire une formule propriétaire : la qualité principale du poste pèse davantage, les qualités complémentaires restent utiles et la note moyenne du joueur apporte un regard transversal.</p>
           <div class="lykos-metron-table-wrap"><table class="lykos-metron-table"><thead><tr><th>Profil</th><th>Création</th><th>Finition</th><th>Défensif</th><th>Note moyenne</th></tr></thead><tbody>
-            <tr><td data-label="Profil">Gardien pur</td><td data-label="Création">10 %</td><td data-label="Finition">0 %</td><td data-label="Défensif">75 %</td><td data-label="Note moyenne">15 %</td></tr>
-            <tr><td data-label="Profil">Défenseur</td><td data-label="Création">30 %</td><td data-label="Finition">15 %</td><td data-label="Défensif">40 %</td><td data-label="Note moyenne">15 %</td></tr>
-            <tr><td data-label="Profil">Milieu polyvalent</td><td data-label="Création">40 %</td><td data-label="Finition">22,5 %</td><td data-label="Défensif">22,5 %</td><td data-label="Note moyenne">15 %</td></tr>
-            <tr><td data-label="Profil">Attaquant</td><td data-label="Création">25 %</td><td data-label="Finition">40 %</td><td data-label="Défensif">20 %</td><td data-label="Note moyenne">15 %</td></tr>
+            <tr><td data-label="Profil">Gardien pur</td><td data-label="Création">10 %</td><td data-label="Finition">0 %</td><td data-label="Défensif">65 %</td><td data-label="Note moyenne">25 %</td></tr>
+            <tr><td data-label="Profil">Défenseur</td><td data-label="Création">20 %</td><td data-label="Finition">10 %</td><td data-label="Défensif">45 %</td><td data-label="Note moyenne">25 %</td></tr>
+            <tr><td data-label="Profil">Milieu polyvalent</td><td data-label="Création">35 %</td><td data-label="Finition">20 %</td><td data-label="Défensif">20 %</td><td data-label="Note moyenne">25 %</td></tr>
+            <tr><td data-label="Profil">Attaquant</td><td data-label="Création">25 %</td><td data-label="Finition">40 %</td><td data-label="Défensif">10 %</td><td data-label="Note moyenne">25 %</td></tr>
           </tbody></table></div>
           <p>Metron retient uniquement le dernier poste renseigné dans SportEasy. Il ne construit jamais de profil hybride « gardien-joueur ». Lorsque plusieurs postes figurent dans le champ SportEasy, seul le dernier est utilisé. Un poste absent est automatiquement traité comme « milieu polyvalent ».</p>
-          <p>La note moyenne SportEasy est elle-même comparée aux autres joueurs de la période avant d’entrer pour 15 % dans Metron.</p>
+          <p>La note moyenne SportEasy est elle-même comparée aux autres joueurs de la période avant d’entrer pour 25 % dans Metron. Sur un petit nombre de matchs, elle reçoit la même correction de prudence que les autres indicateurs : un seul match exceptionnel ne suffit donc plus à créer artificiellement une très haute note générale.</p>
+          <div class="lykos-metron-callout">La note générale est désormais une vraie moyenne pondérée des qualités observées. Elle reste comprise entre les composantes utilisées : aucune ancienneté, aucun trophée et aucun statut historique ne peut la faire dépasser le niveau sportif mesuré.</div>
         </article>
 
         <article class="lykos-metron-section">
-          <h2>6. Reconnaissance, ancienneté et fiabilité</h2>
-          <h3>Hommes du match</h3><p>Metron combine leur fréquence par match (65 %) et leur total (35 %). Seuls les profils situés au-dessus de la médiane obtiennent un bonus permettant de distinguer les joueurs qui sortent régulièrement du lot. Ce bonus est limité à +3.</p>
-          <h3>Ancienneté</h3><p>Chaque saison SportEasy connue après la première apporte +0,5 point, avec un maximum de +3. Le bonus reste volontairement léger : il reconnaît la continuité au club sans remplacer la performance.</p>
-          <h3>Palmarès individuel</h3><p>Les distinctions officielles déjà recensées restent prises en compte : meilleur buteur +2, meilleur passeur +2 et joueur de l’année +4.</p>
+          <h2>6. Reconnaissance et fiabilité</h2>
+          <h3>Hommes du match</h3><p>Le total et la fréquence des distinctions restent visibles dans les statistiques du joueur. Ils servent à raconter ses performances marquantes, mais ne sont plus ajoutés une seconde fois à la note générale.</p>
+          <h3>Ancienneté et palmarès individuel</h3><p>L’ancienneté, les titres de meilleur buteur, de meilleur passeur et de joueur de l’année restent pleinement visibles dans la fiche et le Panthéon. Ils relèvent de la reconnaissance du parcours ; ils ne modifient plus la moyenne sportive de la période.</p>
           <h3>Taille de l’échantillon</h3><p>Sur la saison actuelle, Metron calcule les notes dès 1 match joué, sous réserve de données suffisantes. Sans apparition, aucune note n’est attribuée. La saison précédente et l’historique All-time demandent au moins 10 matchs pour la note générale. Une année civile demande exactement 9 matchs : les totaux bruts restent visibles dès la première apparition, mais les classements, percentiles et notes annuelles attendent ce seuil. Jusqu’à 15 matchs, les notes d’axe des joueurs actuels sont rapprochées progressivement de 50 : les premières notes restent provisoires et évoluent avec les matchs. Les anciens joueurs ayant moins de 10 matchs en carrière ne sont pas notés et ne participent pas aux comparaisons.</p>
           <h3>Lecture avec / sans le joueur</h3><p>La fiche affiche également la moyenne des étoiles données au match par le coach sur 6 et le niveau collectif Metron sur 99, séparés entre les matchs avec le joueur et les matchs sans lui. Le niveau collectif reprend la note d’équipe calculée match par match à partir des notes individuelles disponibles, de la note du coach et du résultat replacé dans son contexte. Un match sans composition connue est exclu de cette comparaison afin de ne jamais fabriquer une absence.</p>
         </article>
@@ -2115,12 +2115,12 @@
         return rank < 0 ? null : rank + 1;
       };
       const formatRank = rank => rank === null ? '' : `${rank}${rank === 1 ? 'er' : 'e'} de l’équipe`;
-      const renderPerformanceScore = (score,ranking=null,awardBonus=0) => {
+      const renderPerformanceScore = (score,ranking=null) => {
         const scoreNode = root.querySelector('[data-performance-score]');
         const rankNode = root.querySelector('[data-performance-rank]');
         scoreNode.removeAttribute('data-level');
         scoreNode.textContent = score === null ? '—' : formatValue(score);
-        rankNode.textContent = score === null ? 'Non noté' : `/ 99${ranking?.rank ? ` · ${formatRank(ranking.rank)}` : ''}${awardBonus > 0 ? ` · bonus palmarès +${awardBonus}` : ''}`;
+        rankNode.textContent = score === null ? 'Non noté' : `/ 99${ranking?.rank ? ` · ${formatRank(ranking.rank)}` : ''}`;
         if (score === null) return;
         scoreNode.dataset.level = metronLevel(score);
       };
@@ -2416,7 +2416,7 @@
         });
         const periodKey = secondaryPeriodKeys[selectedPlayerPeriod];
         const performance = secondaryData[periodKey]?.players?.[selectedPlayer.id]?.performance ?? null;
-        renderPerformanceScore(performance?.overall ?? null,performance?.rankings?.overall ?? null,performance?.awardBonus ?? 0);
+        renderPerformanceScore(performance?.overall ?? null,performance?.rankings?.overall ?? null);
         renderPlayerPrime(selectedPlayer);
         renderPlayerHonours(selectedPlayer);
         renderSecondaryStats();

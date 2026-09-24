@@ -56,8 +56,8 @@ function players(current = true) {
 }
 
 test("l'échelle de notation est strictement limitée à 1–99", () => {
-  assert.equal(SCORING_CONFIG.VERSION, "METRON 1.0.1");
-  assert.equal(SCORING_CONFIG.EFFECTIVE_DATE, "2026-09-08");
+  assert.equal(SCORING_CONFIG.VERSION, "METRON 1.1.0");
+  assert.equal(SCORING_CONFIG.EFFECTIVE_DATE, "2026-09-24");
   assert.equal(clampRating(-200), 1);
   assert.equal(clampRating(0), 1);
   assert.equal(clampRating(100), 99);
@@ -154,14 +154,15 @@ test("l'indice global reste compris entre les blocs qui le composent", () => {
 });
 
 test("les pondérations globales reflètent le poste", () => {
-  assert.deepEqual(SCORING_CONFIG.OVERALL_BY_POSITION.G, { creation: 0.1, finishing: 0, defensive: 0.75 });
+  assert.deepEqual(SCORING_CONFIG.OVERALL_BY_POSITION.G, { creation: 0.1, finishing: 0, defensive: 0.65 });
   assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.GM, undefined);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.defensive, 0.4);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.creation, 0.3);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.defensive, 0.45);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.D.creation, 0.2);
   assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.finishing, 0.4);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.defensive, 0.2);
-  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.M.creation, 0.4);
-  assert.equal(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT, 0.15);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.A.defensive, 0.1);
+  assert.equal(SCORING_CONFIG.OVERALL_BY_POSITION.M.creation, 0.35);
+  assert.equal(SCORING_CONFIG.OVERALL_MATCH_GRADE_WEIGHT, 0.25);
+  assert.equal(SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL, false);
 });
 
 test("le dernier poste SportEasy est utilisé sans créer de profil hybride", () => {
@@ -186,7 +187,7 @@ test("les bonus officiels sont +2, +2 et +4, cumulables sans plafond intermédia
   assert.equal(calculateAwardBonus(Array.from({ length: 10 }, () => ({ type: "player_of_year" }))).bonus, 40);
 });
 
-test("le bonus de palmarès augmente seulement la note globale et ne dépasse jamais 99", () => {
+test("le palmarès reste reconnu sans modifier la moyenne sportive", () => {
   const periodMatches = Array.from({ length: 15 }, (_, index) => scoringMatch({
     id: index + 1,
     participants: ["1", "2"],
@@ -204,19 +205,31 @@ test("le bonus de palmarès augmente seulement la note globale et ne dépasse ja
     ...baseArgs,
     awardsByPlayer: new Map([["1", [{ type: "player_of_year" }, { type: "top_scorer" }]]]),
   }).players["1"].performance;
-  assert.equal(withAwards.awardBonus, 6);
-  assert.equal(withAwards.overall, Math.min(99, withoutAwards.overall + 6));
+  assert.equal(withAwards.awardBonus, 0);
+  assert.equal(withAwards.overall, withoutAwards.overall);
   assert.equal(withAwards.creation, withoutAwards.creation);
   assert.equal(withAwards.finishing, withoutAwards.finishing);
   assert.equal(withAwards.defensive, withoutAwards.defensive);
 });
 
-test("la note moyenne des matchs pèse 15 % de la note générale lorsqu'elle existe", () => {
+test("la note moyenne des matchs pèse 25 % de la note générale lorsqu'elle existe", () => {
   const withoutGrade = calculateOverallRating({ position: "A", blocks: { creation: 50, finishing: 50, defensive: 50 }, matchesPlayed: 10 });
   const withGrade = calculateOverallRating({ position: "A", blocks: { creation: 50, finishing: 50, defensive: 50 }, matchesPlayed: 10, matchAverageRating: 99 });
   assert.equal(withoutGrade.rating, 50);
   assert.ok(withGrade.rating > withoutGrade.rating);
-  assert.equal(withGrade.usedBlocks.find(({ block }) => block === "matchAverage")?.weight, 0.15);
+  assert.equal(withGrade.usedBlocks.find(({ block }) => block === "matchAverage")?.weight, 0.25);
+});
+
+test("une seule note de match exceptionnelle reste prudente", () => {
+  const periodMatches = [scoringMatch({ participants: ["1"] })];
+  const result = calculatePeriodPerformanceRatings({
+    periodKey: "current",
+    periodMatches,
+    players: players(),
+    averageRatingsByPlayer: new Map([["1", 10], ["2", 5]]),
+  }).players["1"];
+  assert.equal(result.trace.rawAverageMatchRatingScore, 99);
+  assert.equal(result.trace.averageMatchRatingScore, 53);
 });
 
 test("les Hommes du match distinguent les performances dominantes sans modifier les poids de base", () => {

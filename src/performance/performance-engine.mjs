@@ -403,9 +403,12 @@ export function calculatePeriodPerformanceRatings({
       ]),
     );
     const blocks = Object.fromEntries(Object.entries(blockResults).map(([key, result]) => [key, result.rating]));
-    const averageMatchRatingScore = Number.isFinite(record.averageMatchRating)
+    const rawAverageMatchRatingScore = Number.isFinite(record.averageMatchRating)
       ? ratingFromPercentile(percentile(record.averageMatchRating, averageRatingPopulation, "higher"))
       : null;
+    const averageMatchRatingScore = Number.isFinite(rawAverageMatchRatingScore) && record.applySampleConfidence
+      ? adjustRatingForSample(rawAverageMatchRatingScore, record.confidence)
+      : rawAverageMatchRatingScore;
     const manOfTheMatchScore = calculateManOfTheMatchRating({
       total: record.manOfTheMatch.total,
       matches: record.manOfTheMatch.matches,
@@ -420,9 +423,12 @@ export function calculatePeriodPerformanceRatings({
       matchAverageRating: averageMatchRatingScore,
     });
     const awardBonus = calculateAwardBonus(awardsByPlayer.get(record.playerId) ?? []);
-    const appliedAwardBonus = overall.rating === null ? 0 : awardBonus.bonus;
-    const tenureBonus = overall.rating === null ? 0 : calculateTenureBonus(record.tenureSeasons);
-    const manOfTheMatchBonus = overall.rating === null ? 0 : calculateManOfTheMatchBonus(manOfTheMatchScore.rating);
+    const rawTenureBonus = calculateTenureBonus(record.tenureSeasons);
+    const rawManOfTheMatchBonus = calculateManOfTheMatchBonus(manOfTheMatchScore.rating);
+    const recognitionCanAffectOverall = SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL && overall.rating !== null;
+    const appliedAwardBonus = recognitionCanAffectOverall ? awardBonus.bonus : 0;
+    const tenureBonus = recognitionCanAffectOverall ? rawTenureBonus : 0;
+    const manOfTheMatchBonus = recognitionCanAffectOverall ? rawManOfTheMatchBonus : 0;
     const finalOverall = overall.rating === null ? null : clampRating(overall.rating + appliedAwardBonus + tenureBonus + manOfTheMatchBonus);
     record.performance = { ...emptyPerformance, ...blocks, overall: finalOverall, awardBonus: appliedAwardBonus, tenureBonus, manOfTheMatchBonus };
     record.trace = {
@@ -433,6 +439,7 @@ export function calculatePeriodPerformanceRatings({
       scoringMatches: record.performanceMetrics.matchCount,
       performanceMetrics: record.performanceMetrics,
       averageMatchRating: record.averageMatchRating,
+      rawAverageMatchRatingScore,
       averageMatchRatingScore,
       manOfTheMatch: manOfTheMatchScore,
       tenureSeasons: record.tenureSeasons,
@@ -444,8 +451,11 @@ export function calculatePeriodPerformanceRatings({
         awardBonus: appliedAwardBonus,
         rawAwardBonus: awardBonus.rawBonus,
         tenureBonus,
+        rawTenureBonus,
         tenureSeasons: record.tenureSeasons,
         manOfTheMatchBonus,
+        rawManOfTheMatchBonus,
+        recognitionAffectsOverall: SCORING_CONFIG.RECOGNITION_AFFECTS_OVERALL,
         awards: awardBonus.awards,
       },
     };

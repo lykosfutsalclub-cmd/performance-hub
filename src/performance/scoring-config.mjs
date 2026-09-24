@@ -1,6 +1,6 @@
 export const SCORING_CONFIG = Object.freeze({
-  VERSION: "METRON 1.0.1",
-  EFFECTIVE_DATE: "2026-09-08",
+  VERSION: "METRON 1.1.0",
+  EFFECTIVE_DATE: "2026-09-24",
   RATING_MIN: 1,
   RATING_MAX: 99,
   RATING_MEDIAN: 50,
@@ -10,8 +10,9 @@ export const SCORING_CONFIG = Object.freeze({
   CURRENT_MIN_OVERALL_MATCHES: 1,
   FORMER_MIN_CAREER_MATCHES: 10,
   MIN_BLOCK_WEIGHT_COVERAGE: 0.6,
-  MIN_OVERALL_WEIGHT_COVERAGE: 0.85,
-  OVERALL_MATCH_GRADE_WEIGHT: 0.15,
+  MIN_OVERALL_WEIGHT_COVERAGE: 0.75,
+  OVERALL_MATCH_GRADE_WEIGHT: 0.25,
+  RECOGNITION_AFFECTS_OVERALL: false,
   MAN_OF_MATCH_BONUS_MAX: 3,
   MAN_OF_MATCH_COMPONENTS: Object.freeze({
     total: 0.35,
@@ -67,10 +68,10 @@ export const SCORING_CONFIG = Object.freeze({
     }),
   }),
   OVERALL_BY_POSITION: Object.freeze({
-    G: Object.freeze({ creation: 0.1, finishing: 0, defensive: 0.75 }),
-    D: Object.freeze({ creation: 0.3, finishing: 0.15, defensive: 0.4 }),
-    M: Object.freeze({ creation: 0.4, finishing: 0.225, defensive: 0.225 }),
-    A: Object.freeze({ creation: 0.25, finishing: 0.4, defensive: 0.2 }),
-    DEFAULT: Object.freeze({ creation: 0.4, finishing: 0.225, defensive: 0.225 }),
+    G: Object.freeze({ creation: 0.1, finishing: 0, defensive: 0.65 }),
+    D: Object.freeze({ creation: 0.2, finishing: 0.1, defensive: 0.45 }),
+    M: Object.freeze({ creation: 0.35, finishing: 0.2, defensive: 0.2 }),
+    A: Object.freeze({ creation: 0.25, finishing: 0.4, defensive: 0.1 }),
+    DEFAULT: Object.freeze({ creation: 0.35, finishing: 0.2, defensive: 0.2 }),
   }),
 });

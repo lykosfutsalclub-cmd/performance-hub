@@ -19,6 +19,7 @@ test("Five Manager est une expérience spéciale distincte de la navigation prin
   assert.doesNotMatch(manager, /Identité temporaire/);
   assert.match(fonts, /font-family: "OMMarseille"/);
   assert.match(styles, /--display:"OMMarseille"/);
+  assert.match(home, /\.lykos-manager-launch \{[^}]*border:0;[^}]*background:transparent;[^}]*box-shadow:none;/);
 });
 
 test("les huit espaces demandés sont présents et l’accès commun les protège", () => {

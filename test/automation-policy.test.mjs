@@ -235,9 +235,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.34.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.36.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.34\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.36\.0"/);
 });
 
 test("l’interface eStaff utilise une session Cloudflare unique", async () => {

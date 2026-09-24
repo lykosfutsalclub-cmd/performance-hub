@@ -6,6 +6,7 @@
   let sessionEstablishedAt = 0;
   let latestReport = null;
   let latestReturns = [];
+  let latestTickets = [];
   let latestStateUpdatedAt = "";
   let latestCapabilities = {};
   let latestAgentStates = [];
@@ -774,7 +775,7 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.34.0";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.36.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
     if (activityCounters[0]) activityCounters[0].textContent = "45";
@@ -818,6 +819,7 @@
   function shareTeamState() {
     window.dispatchEvent(new CustomEvent("lykos:estaff-team-state", {detail:{
       returns:latestReturns,
+      tickets:latestTickets,
       agentStates:latestAgentStates,
       automation:latestAutomation,
       workforce:latestWorkforce,
@@ -847,6 +849,7 @@
         window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
         latestReport = null;
         latestReturns = [];
+        latestTickets = [];
         latestAgentStates = [];
         latestOperations = {};
         latestBusinessSources = {};
@@ -865,6 +868,7 @@
         ...entry,
         agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
       }));
+      latestTickets = Array.isArray(state.tickets) ? state.tickets : [];
       latestAgentStates = (Array.isArray(state.agentStates) ? state.agentStates : []).map(entry => ({
         ...entry,
         agent:agentDisplayNames[String(entry.agent || "").toLocaleLowerCase("fr")] || entry.agent,
@@ -880,12 +884,14 @@
       latestOperations?.updatedAt,
         latestBusinessSources?.updatedAt,
         ...latestReturns.map(entry => entry.occurredAt),
+        ...latestTickets.map(ticket => ticket.createdAt),
       ].filter(Boolean).sort((left, right) => Date.parse(right) - Date.parse(left))[0] || "";
       shareTeamState();
     } catch {
       if (generation !== sessionGeneration || sessionToken !== token) return;
       latestReport = {status:"pending", summary:"Le rapport automatique eSupport est momentanément indisponible."};
       latestReturns = [];
+      latestTickets = [];
       latestAgentStates = [];
       latestOperations = {};
       latestBusinessSources = {};
@@ -941,6 +947,7 @@
       window.dispatchEvent(new CustomEvent("lykos:estaff-cloud-session", {detail:{token:""}}));
       latestReport = null;
       latestReturns = [];
+      latestTickets = [];
       latestStateUpdatedAt = "";
       latestCapabilities = {};
       latestAgentStates = [];

@@ -17,13 +17,14 @@ test("l’accueil eStaff présente les 45 personnes avec leurs portraits", async
   assert.match(script,/Point fort/);
   assert.match(script,/Axe d’amélioration/);
   assert.match(script,/agentDialog/);
-  assert.match(script,/Missions réalisées/);
+  assert.match(script,/Missions contrôlées/);
   assert.doesNotMatch(script,/Missions enregistrées/);
-  assert.match(script,/Contrôles effectués/);
+  assert.match(script,/Contrôles programmés/);
   assert.match(script,/activityRows\(Infinity\)/);
   assert.match(script,/data-feedback="positive"/);
   assert.match(script,/data-feedback="negative"/);
-  assert.match(script,/Sans difficulté/);
+  assert.match(script,/Missions bloquées/);
+  assert.doesNotMatch(script,/Sans difficulté/);
   assert.match(script,/Portrait corporate/);
   assert.match(script,/Pas encore de mission enregistrée/);
   assert.match(script,/\["overview","Tableau de bord","Accueil"\]/);
@@ -38,10 +39,15 @@ test("les indicateurs reposent sur l’activité enregistrée et restent neutres
   assert.match(script,/État non vérifié/);
   assert.match(script,/Disponible vérifié/);
   assert.match(script,/engineProof/);
-  assert.match(script,/successRate===null\?"—"/);
+  assert.match(script,/data-ticket/);
+  assert.match(script,/tickets\/record/);
+  assert.doesNotMatch(script,/data-oscar/);
+  assert.match(script,/Exécutée · à contrôler/);
+  assert.match(script,/Incomplète/);
+  assert.match(script,/data-view="connections"/);
   assert.match(script,/agents en mission/);
   assert.match(script,/missions terminées aujourd’hui/);
-  assert.match(script,/sans difficulté/);
+  assert.match(script,/missions bloquées/);
   assert.doesNotMatch(script,/style="--service|style="--score|style="--filter/);
 });
 
@@ -51,8 +57,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260924-company-v16/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v15/);
+  assert.match(page,/team-home\.css\?v=20260924-company-v17/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v16/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);

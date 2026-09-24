@@ -251,8 +251,12 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .profile-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 
 .company-mission-detail {width:min(850px,100%);padding:30px}
-.company-mission-detail h2 {margin:8px 0;font-family:Georgia,serif;font-size:2.5rem}
-.company-mission-detail header>p {color:var(--company-muted);line-height:1.55}
+.mission-detail-heading {display:flex;align-items:center;justify-content:space-between;gap:16px;padding-right:52px}
+.mission-detail-heading .company-eyebrow {margin:0}
+.company-mission-detail h2 {max-width:700px;margin:18px 0 16px;font-family:Georgia,serif;font-size:clamp(1.45rem,2.3vw,2rem);line-height:1.14;letter-spacing:-.01em;text-wrap:balance}
+.mission-summary {max-width:720px;padding:16px 18px;border-left:3px solid var(--service);border-radius:0 13px 13px 0;background:rgba(1,24,52,.58)}
+.mission-summary>span {display:block;margin-bottom:6px;color:#9fb3cc;font-size:.66rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
+.mission-summary p {margin:0;color:#e5edf7;font-size:.98rem;line-height:1.58}
 .mission-facts {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px 0}
 .mission-facts>div {padding:14px;border:1px solid var(--company-line);border-radius:13px}
 .mission-facts dt {color:var(--company-muted);font-size:.7rem;text-transform:uppercase}
@@ -320,7 +324,7 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
   .company-footer {padding-bottom:110px;align-items:flex-start;flex-direction:column}
   .company-dialog-backdrop {padding:0}.company-agent-profile,.company-mission-detail {width:100%;height:100%;max-height:none;border:0;border-radius:0}
   .profile-header {grid-template-columns:110px 1fr;gap:16px;padding:68px 18px 20px}.profile-header>img {grid-row:1;width:110px;height:145px}.profile-header h2 {font-size:2.1rem}.profile-header dl {grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.profile-header dl>div {min-width:0;padding:12px}.profile-header .profile-current-mission {grid-column:1/-1}.profile-kpis {grid-template-columns:1fr 1fr}.profile-kpis button {padding:15px}.profile-tabs {padding:11px}.profile-content {padding:14px}.profile-overview,.profile-two-columns,.profile-list,.profile-documents {grid-template-columns:1fr}.profile-actions {position:sticky;bottom:0;background:#031a3b;padding:12px}.profile-actions button {flex:1}.relation-people button {width:64px;height:64px}
-  .mission-facts {grid-template-columns:1fr}.company-mission-detail {padding:70px 18px 24px}.mission-timeline article {grid-template-columns:80px 10px 1fr}
+  .mission-facts {grid-template-columns:1fr}.company-mission-detail {padding:70px 18px 24px}.mission-detail-heading {align-items:flex-start;padding-right:34px}.company-mission-detail h2 {margin-top:14px;font-size:1.45rem}.mission-summary {padding:14px}.mission-timeline article {grid-template-columns:80px 10px 1fr}
   .company-brief {align-items:flex-start;flex-direction:column}.company-brief button {width:100%}.connection-grid {grid-template-columns:1fr;padding:0 12px 12px}
 }
 

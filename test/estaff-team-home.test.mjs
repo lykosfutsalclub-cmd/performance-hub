@@ -51,8 +51,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20260924-company-v14/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v13/);
+  assert.match(page,/team-home\.css\?v=20260924-company-v15/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v14/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -115,4 +115,17 @@ test("les informations principales d’une fiche agent remplissent la largeur su
   assert.match(script,/class="profile-current-mission"><dt>Mission actuelle<\/dt>/);
   assert.match(style,/@media \(max-width:600px\) \{[\s\S]*?\.profile-header dl \{grid-column:1\/-1;grid-template-columns:repeat\(2,minmax\(0,1fr\)\);gap:10px\}/);
   assert.match(style,/\.profile-header \.profile-current-mission \{grid-column:1\/-1\}/);
+});
+
+test("les fiches mission résument le travail sans transformer la demande brute en grand titre", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+  const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
+
+  assert.match(script,/function missionPresentation\(mission\)/);
+  assert.match(script,/title="Refonte de la navigation eStaff"/);
+  assert.match(script,/class="mission-summary"><span>Résumé<\/span>/);
+  assert.match(script,/Historique et demande d’origine/);
+  assert.doesNotMatch(script,/<h2 id="mission-title">\$\{escapeHtml\(humanizeText\(mission\.latest\.title/);
+  assert.match(style,/\.company-mission-detail h2 \{[^}]*font-size:clamp\(1\.45rem,2\.3vw,2rem\)/);
+  assert.match(style,/\.mission-summary \{[^}]*border-left:3px solid var\(--service\)/);
 });

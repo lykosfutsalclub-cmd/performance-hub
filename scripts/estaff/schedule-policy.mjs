@@ -138,7 +138,12 @@ export function determineScheduleMission({
       ? latestDueSlot
       : null
   );
-  const active = isManual || isPush || daily || digest;
+  // Un simple push peut ne contenir qu'une évolution de l'interface. Le
+  // contrôle privé ne doit alors ni s'exécuter, ni conclure abusivement que
+  // SportEasy est en retard : seuls une synchronisation demandée, un créneau
+  // quotidien/rattrapé, un rapport programmé ou une exécution manuelle
+  // démarrent la chaîne eSupport.
+  const active = isManual || daily || digest || requestedSyncPush;
   const mode = digest ? "digest" : requestedSyncPush || isManual ? "manual" : isPush ? "release" : "daily";
   const sync = syncRequested && individualPublicationAuthorized;
 

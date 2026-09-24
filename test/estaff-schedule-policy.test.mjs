@@ -203,7 +203,7 @@ test("les déclenchements manuel, push et horaire conservent leurs périmètres"
   });
 
   assert.deepEqual([manual.active, manual.sync, manual.oscar, manual.mode], [true, true, true, "manual"]);
-  assert.deepEqual([release.active, release.sync, release.oscar, release.mode], [true, false, false, "release"]);
+  assert.deepEqual([release.active, release.sync, release.oscar, release.mode], [false, false, false, "release"]);
   assert.deepEqual([forced.active, forced.sync, forced.oscar, forced.mode], [true, true, false, "manual"]);
   assert.deepEqual([hourly.active, hourly.sync, hourly.oscar], [false, false, false]);
 });

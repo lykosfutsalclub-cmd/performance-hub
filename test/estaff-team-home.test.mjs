@@ -52,7 +52,7 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
   assert.match(page,/team-home\.css\?v=20260924-company-v13/);
-  assert.match(page,/team-home\.js\?v=20260924-company-v11/);
+  assert.match(page,/team-home\.js\?v=20260924-company-v12/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -66,6 +66,15 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   assert.match(style,/font-family:"OMMarseille",Georgia,serif/);
   assert.match(style,/body\.lykos-team-home-active #estaff-root>main \{[\s\S]*position:static!important;[\s\S]*overflow:visible!important;/);
   assert.match(style,/body\.lykos-team-home-active \{[\s\S]*overflow-y:auto!important;/);
+});
+
+test("les identifiants techniques des personnes sont affichés avec leur prénom officiel", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+
+  assert.match(script,/const displayAgentName = value => PEOPLE\.find/);
+  assert.match(script,/map\(displayAgentName\)/);
+  assert.match(script,/openAgentName=displayAgentName\(name\)/);
+  assert.match(script,/agentName=displayAgentName\(entry\.agent\)/);
 });
 
 test("la navigation principale reste fixée en bas et Ezio est intégré à eRH", async () => {

@@ -47,6 +47,16 @@ test("la composition est interactive, persistante et fondée sur Metron", () => 
   assert.match(script, /lykos_fm_lineup_v1/);
   assert.match(script, /player\.metron/);
   assert.match(script, /bestWinningPartner/);
+  assert.match(script, /lykos_fm_lineup_scenarios_v1/);
+  assert.match(script, /Comparateur de compositions/);
+  for (const metric of ["metron", "creation", "finishing", "defensive"]) assert.match(script, new RegExp(metric));
+});
+
+test("le dossier de match permet d’avancer sans fabriquer une donnée officielle", () => {
+  assert.match(script, /lykos_fm_match_dossier_v1/);
+  assert.match(script, /Brouillon local · à confirmer/);
+  assert.match(script, /ne deviennent jamais une donnée officielle/);
+  assert.match(script, /data-match-dossier/);
 });
 
 test("les données absentes restent explicitement à confirmer", () => {
@@ -60,7 +70,8 @@ test("les données absentes restent explicitement à confirmer", () => {
 test("l’interface est dense mais reste utilisable sur mobile", () => {
   assert.match(styles, /\.fm-lineup-layout/);
   assert.match(styles, /@media\(max-width:780px\)/);
-  assert.match(styles, /\.fm-nav\{position:sticky/);
+  assert.match(styles, /\.fm-nav\{position:fixed/);
+  assert.match(styles, /bottom:max\(12px,env\(safe-area-inset-bottom,0px\)\)/);
   assert.match(styles, /touch-action:manipulation/);
   assert.match(manager, /aria-live="polite"/);
   assert.match(manager, /<dialog/);

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../access-gate.css?v=20260924-global-access-v8">
   <script defer src="../access-gate.js?v=20260924-global-access-v8"></script>
   <link rel="stylesheet" href="fonts.css?v=20260924-1">
-  <link rel="stylesheet" href="five-manager.css?v=20260924-4">
+  <link rel="stylesheet" href="five-manager.css?v=20260924-5">
 </head>
 <body>
   <div class="fm-app" id="five-manager-app">
@@ -25,10 +25,13 @@
         <button type="button" data-route="squad"><span aria-hidden="true">♟</span><b>Équipe</b></button>
         <button type="button" data-route="lineup"><span aria-hidden="true">▦</span><b>Composition</b></button>
         <button type="button" data-route="match"><span aria-hidden="true">◆</span><b>Match</b></button>
-        <button type="button" data-route="report"><span aria-hidden="true">▤</span><b>Rapport</b></button>
-        <button type="button" data-route="availability"><span aria-hidden="true">✚</span><b>Disponibilités</b></button>
-        <button type="button" data-route="history"><span aria-hidden="true">★</span><b>Historique</b></button>
-        <button type="button" data-route="staff"><span aria-hidden="true">◎</span><b>Staff</b></button>
+        <button type="button" data-more-toggle aria-expanded="false"><span aria-hidden="true">•••</span><b>Plus</b></button>
+        <div class="fm-more-menu" data-more-menu hidden>
+          <button type="button" data-route="report"><span aria-hidden="true">▤</span><b>Rapport</b></button>
+          <button type="button" data-route="availability"><span aria-hidden="true">✚</span><b>Disponibilités</b></button>
+          <button type="button" data-route="history"><span aria-hidden="true">★</span><b>Historique</b></button>
+          <button type="button" data-route="staff"><span aria-hidden="true">◎</span><b>Staff</b></button>
+        </div>
       </nav>
 
       <main class="fm-main" tabindex="-1">
@@ -51,6 +54,6 @@
   <script src="../team-data.js"></script>
   <script src="../player-secondary-data.js"></script>
   <script src="../pantheon-data.js?v=live-sync-20260918"></script>
-  <script src="five-manager.js?v=20260924-3"></script>
+  <script src="five-manager.js?v=20260924-4"></script>
 </body>
 </html>

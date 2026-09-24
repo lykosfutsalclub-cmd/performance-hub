@@ -10,12 +10,12 @@ const agents = [
   "Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Patricia", "Gaston", "Véronique", "Sandrine", "Léonard", "Konstantinos",
   "Sonia", "Amara", "Elena", "Akira", "Joyce", "Thiago", "Jefferson", "Élise", "Samir", "Roman", "Camélia", "Francisco", "Tamara", "Inès", "Giorgios", "Vincenzo",
   "Angela", "Juan", "Marco", "Rafael", "Alba", "Lola", "Nora", "Yanis", "Salomé", "Malik", "Ella", "Bastien",
-  "Salma", "Mateo", "Priya", "Ezio",
+  "Salma", "Mateo", "Priya", "Ezio", "Nathan",
 ];
 
-test("les 44 agents possèdent un contrat opérationnel visible", () => {
-  assert.equal(agents.length, 44);
-  assert.equal(new Set(agents).size, 44);
+test("les 45 agents possèdent un contrat opérationnel visible", () => {
+  assert.equal(agents.length, 45);
+  assert.equal(new Set(agents).size, 45);
   for (const agent of agents) {
     assert.match(source, new RegExp(`${agent.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*:\\s*\\{inputs:`), agent);
   }

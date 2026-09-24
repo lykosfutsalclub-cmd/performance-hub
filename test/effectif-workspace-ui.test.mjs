@@ -70,7 +70,7 @@ test("les workflows Transferts s’imbriquent avec le circuit eStaff existant", 
   for (const actor of ["Patricia", "Sophie", "Victor", "Camélia", "Joyce · Francisco", "Oscar", "Dirigeant"]) assert.match(client, new RegExp(actor));
   assert.match(client, /ne confirme jamais seul un départ/);
   assert.match(client, /Les contacts, essais, offres et recrutements restent des décisions humaines/);
-  assert.match(client, /44 personnes actives/);
+  assert.match(client, /45 personnes actives/);
 });
 
 test("les écritures sportives conversationnelles exigent un message d’origine de Fabien Perals", async () => {

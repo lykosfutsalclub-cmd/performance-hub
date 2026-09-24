@@ -58,7 +58,7 @@
     Oscar: {
       title:"eGeneral Director",
       summary:"Diriger les services, arbitrer leurs priorités et valider les adaptations proposées par eRH.",
-      purpose:"Oscar dirige les quarante-trois autres agents. Il répartit les missions entre les services, arbitre les priorités et valide le cadre de travail proposé par eRH avant de remettre une synthèse fiable aux dirigeants.",
+      purpose:"Oscar dirige les quarante-quatre autres agents. Il répartit les missions entre les services, arbitre les priorités et valide le cadre de travail proposé par eRH avant de remettre une synthèse fiable aux dirigeants.",
       when:"Pour missionner le eStaff, arbitrer une charge, valider une adaptation eRH ou conclure un contrôle transversal.",
       output:"Une décision ou une synthèse consolidée avec priorités, responsables, échéances, blocages et limites.",
     },
@@ -236,8 +236,9 @@
     Rafael:{inputs:"Contrats, briefs et engagements sponsors explicitement transmis.",quality:"Relier chaque obligation, contrepartie et échéance à un document ou une validation humaine.",evidence:"Registre des engagements et renouvellements avec preuves et points à arbitrer."},
     Alba:{inputs:"Documents, photographies et données datables dont la source est identifiable.",quality:"Distinguer fait, source, contradiction et hypothèse ; aucune mémoire orale non confirmée ne devient un fait.",evidence:"Notice historique versionnée et journal des identités ou doublons corrigés."},
     Lola:{inputs:"Données et analyses validées, brief, public cible et format attendu.",quality:"Alba ou le spécialiste source confirme les faits ; Konstantinos contrôle la cohérence éditoriale.",evidence:"Brouillon sourcé portant explicitement la mention à valider avant publication."},
+    Nathan:{inputs:"Besoin produit et UX validé, identité Lykos, écran concerné, données réelles et contraintes d’accessibilité.",quality:"Sandrine contrôle le besoin et l’UX, Gaston la faisabilité technique, Véronique l’accessibilité et la qualité avant toute publication.",evidence:"Spécification visuelle datée avec écran avant-après, règles appliquées, limites et validations attendues."},
     Bastien:{inputs:"Calendrier autorisé, feuille de résultats, événements et classements SportEasy frais, historique des confrontations et éventuelle vidéo validée.",quality:"Sophie valide le match et le résultat, Patricia la fraîcheur, Francisco les scores et Véronique la passerelle ; doublons, contradictions et conteneurs Tournoi bloquent l’action concernée.",evidence:"Dossier daté avec ligne source, événement visé, état avant/après, opération préparée ou exécutée, contrôle du classement et validation humaine."},
-    Nora:{inputs:"Mandats, sources, permissions, cadences, durées cibles, états, preuves, blocages et livrables des quarante-quatre personnes du eStaff.",quality:"Contrôler utilité, charge, temps prévu et preuve sans confondre attente légitime, passage automatique et travail accompli ; soumettre les changements durables à Oscar.",evidence:"Tableau quotidien personne par personne avec cadre, charge, temps, preuve, utilité, adaptation proposée et décision d’Oscar."},
+    Nora:{inputs:"Mandats, sources, permissions, cadences, durées cibles, états, preuves, blocages et livrables des quarante-cinq personnes du eStaff.",quality:"Contrôler utilité, charge, temps prévu et preuve sans confondre attente légitime, passage automatique et travail accompli ; soumettre les changements durables à Oscar.",evidence:"Tableau quotidien personne par personne avec cadre, charge, temps, preuve, utilité, adaptation proposée et décision d’Oscar."},
     Yanis:{inputs:"Heures de début et de fin, temps d’attente, délais maximaux, relances, usages de modèles, licences et coûts rattachés à une mission.",quality:"Séparer exécution, attente de source, estimation et donnée absente ; comparer des missions de volume équivalent et ne jamais inventer une consommation.",evidence:"Relevé des durées et coûts avec seuil autorisé, dépassement, cause et économie proposée."},
     Salomé:{inputs:"Rulebook, calendriers, déclencheurs, files d’attente, dépendances, contrôles qualité et incidents de coordination.",quality:"Vérifier que chaque personne intervient après ses sources et avant sa validation, sans chevauchement, doublon ni raccourci de contrôle.",evidence:"Planning avant-après avec créneau, durée cible, dépendances, délai et scénario de contrôle."},
     Malik:{inputs:"Rapports de Nora, Yanis et Salomé, charge, compétences, missions et capacités existantes.",quality:"Prouver le besoin, vérifier la compatibilité avec le mandat de l’agent proposé et chiffrer l’impact avant de soumettre une mission complémentaire à Oscar.",evidence:"Plan de couverture documenté avec besoin, agent proposé, mission complémentaire, charge, alternatives et validation attendue."},
@@ -773,13 +774,13 @@
     const footerStatus = [...document.querySelectorAll("footer span")].find(node => node.textContent.includes("moteur local"));
     if (footerStatus) footerStatus.textContent = "Récapitulatifs automatiques";
     for (const version of document.querySelectorAll("small")) {
-      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.25.1";
+      if (/^Rulebook \d+\.\d+\.\d+$/.test(version.textContent.trim())) version.textContent = "Rulebook 3.34.0";
     }
     const activityCounters = document.querySelectorAll('section[aria-label="Activité"] strong');
-    if (activityCounters[0]) activityCounters[0].textContent = "44";
-    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "44";
+    if (activityCounters[0]) activityCounters[0].textContent = "45";
+    if (activityCounters[1] && activityCounters[1].textContent !== "0") activityCounters[1].textContent = "45";
     const rosterCount = [...document.querySelectorAll("aside h2 small")].find(node => node.textContent.includes("installé"));
-    if (rosterCount) rosterCount.textContent = "44 agents installés";
+    if (rosterCount) rosterCount.textContent = "45 agents installés";
 
     document.getElementById("lykos-esupport-report")?.remove();
     if (!messages) return;
@@ -821,6 +822,9 @@
       automation:latestAutomation,
       workforce:latestWorkforce,
       feedback:latestFeedback,
+      operations:latestOperations,
+      businessSources:latestBusinessSources,
+      report:latestReport,
       updatedAt:latestStateUpdatedAt,
     }}));
   }

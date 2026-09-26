@@ -1,5 +1,5 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-09-25T12:12:45.160Z",
+  "generatedAt": "2026-09-26T10:14:24.166Z",
   "periods": {
     "current": {
       "matchesPlayed": 4,

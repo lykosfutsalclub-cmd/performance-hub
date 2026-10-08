@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-10-07T09:13:39.889Z",
+  "generatedAt": "2026-10-08T22:25:48.454Z",
   "periods": {
     "current": {
-      "matchesPlayed": 4,
-      "wins": 3,
+      "matchesPlayed": 5,
+      "wins": 4,
       "draws": 0,
       "losses": 1,
-      "goalsFor": 79,
-      "goalsAgainst": 47,
-      "goalsForPerMatch": 19.75,
-      "goalsAgainstPerMatch": 11.75,
-      "winRate": 75,
-      "goalDifference": 32,
-      "averageGoalDifference": 8,
-      "recentFormScore": 75,
+      "goalsFor": 89,
+      "goalsAgainst": 56,
+      "goalsForPerMatch": 17.8,
+      "goalsAgainstPerMatch": 11.2,
+      "winRate": 80,
+      "goalDifference": 33,
+      "averageGoalDifference": 6.6,
+      "recentFormScore": 80,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -56,8 +56,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 1,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-07-mannschaft",
+              "date": "2026-10-07",
+              "opponent": "Mannschaft",
+              "scoreFor": 10,
+              "scoreAgainst": 9,
+              "difference": 1
+            }
+          ]
         },
         {
           "difference": 2,
@@ -249,19 +258,20 @@ window.LYKOS_TEAM_STATS = {
       "recentResults": [
         "victory",
         "victory",
+        "victory",
         "defeat",
         "victory"
       ],
       "streaks": {
         "wins": {
-          "count": 2,
+          "count": 3,
           "startAt": "2026-09-16",
-          "endAt": "2026-09-23"
+          "endAt": "2026-10-07"
         },
         "unbeaten": {
-          "count": 2,
+          "count": 3,
           "startAt": "2026-09-16",
-          "endAt": "2026-09-23"
+          "endAt": "2026-10-07"
         },
         "losses": {
           "count": 1,
@@ -275,11 +285,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 73.5,
+        "value": 78.8,
         "label": "BONNE",
-        "matchCount": 4,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 100
+        "matchCount": 5,
+        "eventRatingCoverage": 80,
+        "gradeCoverage": 80
       }
     },
     "previous": {
@@ -949,16 +959,16 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 158,
-      "wins": 75,
+      "matchesPlayed": 159,
+      "wins": 76,
       "draws": 7,
       "losses": 76,
-      "goalsFor": 1808,
-      "goalsAgainst": 1626,
-      "goalsForPerMatch": 11.44,
-      "goalsAgainstPerMatch": 10.29,
-      "winRate": 47.5,
-      "goalDifference": 182,
+      "goalsFor": 1818,
+      "goalsAgainst": 1635,
+      "goalsForPerMatch": 11.43,
+      "goalsAgainstPerMatch": 10.28,
+      "winRate": 47.8,
+      "goalDifference": 183,
       "averageGoalDifference": 1.15,
       "recentFormScore": 50,
       "scoreDistribution": [
@@ -1718,8 +1728,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 1,
-          "matches": 10,
+          "matches": 11,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-07-mannschaft",
+              "date": "2026-10-07",
+              "opponent": "Mannschaft",
+              "scoreFor": 10,
+              "scoreAgainst": 9,
+              "difference": 1
+            },
             {
               "eventId": "match-2025-10-21-la-selecao",
               "date": "2025-10-21",
@@ -2508,14 +2526,14 @@ window.LYKOS_TEAM_STATS = {
       "recentResults": [
         "victory",
         "victory",
+        "victory",
         "defeat",
         "victory",
         "defeat",
         "defeat",
         "defeat",
         "victory",
-        "defeat",
-        "victory"
+        "defeat"
       ],
       "streaks": {
         "wins": {
@@ -2540,11 +2558,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 54.8,
-        "label": "MOYENNE",
+        "value": 57.2,
+        "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 80,
-        "gradeCoverage": 90
+        "eventRatingCoverage": 70,
+        "gradeCoverage": 80
       }
     }
   },
@@ -2553,7 +2571,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 4,
+      "matchCount": 5,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2662,14 +2680,41 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "match-2026-10-07-mannschaft",
+          "index": 5,
+          "date": "2026-10-07",
+          "opponent": "Mannschaft",
+          "score": "10–9",
+          "winRate": 80,
+          "goalsForPerMatch": 17.8,
+          "goalsAgainstPerMatch": 11.2,
+          "goalDifferencePerMatch": 6.6,
+          "teamForm": 100,
+          "formTrace": {
+            "value": 100,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": null,
+            "eventRatingVoteCount": null,
+            "contextualResult": 100,
+            "opponentDifficulty": {
+              "value": 100,
+              "sampleSize": 1,
+              "policy": "previous-head-to-head"
+            },
+            "importance": 1,
+            "availableWeight": 0.4
+          }
         }
       ],
       "form": {
-        "value": 73.5,
+        "value": 78.8,
         "label": "BONNE",
-        "matchCount": 4,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 100
+        "matchCount": 5,
+        "eventRatingCoverage": 80,
+        "gradeCoverage": 80
       }
     },
     {

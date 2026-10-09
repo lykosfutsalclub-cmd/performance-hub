@@ -13,7 +13,14 @@
   const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const notify = () => window.dispatchEvent(new CustomEvent("lykos:match-entry-updated"));
 
-  function message(error) {
+  function message(error, step = "") {
+    const stepLabels = {
+      score:"du score et des buts contre son camp",
+      goals:"des buts et des passes décisives",
+      playerRatings:"des notes des joueurs",
+      matchRating:"de la note du match",
+      mvp:"du vote de l’homme du match",
+    };
     const messages = {
       sporteasy_authentication_failed:"La connexion SportEasy doit être renouvelée.",
       no_recent_match:"Aucun match récent n’a été trouvé dans SportEasy.",
@@ -27,6 +34,9 @@
       incomplete_player_ratings:"Tous les joueurs proposés doivent avoir une note sur 10.",
       match_rating_already_submitted:"La note de ce match a déjà été envoyée depuis ce compte SportEasy.",
       match_update_failed:"La mise à jour SportEasy n’a pas pu être terminée.",
+      sporteasy_update_failed:stepLabels[step]
+        ? `SportEasy a refusé la mise à jour ${stepLabels[step]}. Vos autres informations restent protégées et pourront reprendre sans doublon.`
+        : "SportEasy a refusé une étape de la mise à jour. Vos informations restent protégées et pourront reprendre sans doublon.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
   }
@@ -38,7 +48,7 @@
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const error = new Error(message(payload.error));
+      const error = new Error(message(payload.error,payload.step));
       error.code = payload.error;
       throw error;
     }

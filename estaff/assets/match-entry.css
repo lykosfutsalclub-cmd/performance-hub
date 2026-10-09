@@ -4,3 +4,4 @@
 .match-player-row{grid-template-columns:42px minmax(150px,1fr) 82px 82px minmax(170px,1fr)}
 @media(max-width:800px){.match-player-row{grid-template-columns:38px minmax(90px,1fr) 72px 72px}.match-player-rating,.match-rating-state{grid-column:2/5}}
 @media(max-width:520px){.match-player-row{grid-template-columns:34px minmax(0,1fr) 62px 62px}}
+.match-scan-error{display:grid;justify-items:start;gap:8px}.match-scan-error .match-error{margin-bottom:0}.match-retry-scan{padding:8px 11px;border:1px solid rgba(255,194,194,.35);border-radius:9px;background:rgba(255,105,105,.08);color:#ffd4d4;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}.match-retry-scan:hover{background:rgba(255,105,105,.16)}

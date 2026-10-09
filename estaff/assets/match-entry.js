@@ -4,7 +4,7 @@
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   const state = {
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
-    preview:"", proposal:null, form:null, submitting:false, result:null,
+    preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
 
   const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[character]));
@@ -18,6 +18,8 @@
       match_context_unavailable:"Les informations du match sont momentanément indisponibles.",
       match_photo_reader_unavailable:"La lecture de photo n’est pas disponible. La saisie manuelle reste possible.",
       match_photo_read_failed:"La photo n’a pas pu être lue. Recadrez-la ou saisissez les informations manuellement.",
+      match_photo_response_invalid:"L’IA a lu la photo, mais son relevé est resté incomplet après deux tentatives. Vous pouvez relancer la lecture ou saisir les valeurs manuellement.",
+      match_photo_service_unavailable:"Le service de lecture d’image n’a pas répondu après deux tentatives. Réessayez dans un instant ; votre photo reste prête.",
       match_changed_since_review:"La fiche SportEasy a changé pendant votre saisie. Rechargez-la avant de valider.",
       match_goals_score_mismatch:"Le total des buts des joueurs et des buts contre son camp doit être égal au score du Lykos.",
       incomplete_player_ratings:"Tous les joueurs proposés doivent avoir une note sur 10.",
@@ -152,7 +154,7 @@
           </label>
           <p class="match-privacy">🔒 La photo est transmise de façon temporaire pour être lue, puis n’est pas conservée. Vous pouvez aussi tout saisir à la main.</p>
           ${state.scanStatus==="loading"?`<p class="match-processing"><i></i>Lecture de la feuille en cours…</p>`:""}
-          ${state.scanError?`<p class="match-error" role="alert">${escapeHtml(state.scanError)}</p>`:""}
+          ${state.scanError?`<div class="match-scan-error"><p class="match-error" role="alert">${escapeHtml(state.scanError)}</p>${state.lastFile?`<button type="button" class="match-retry-scan" data-match-scan-retry>Réessayer la lecture</button>`:""}</div>`:""}
           ${warnings()}
         </section>
 
@@ -203,12 +205,21 @@
         const image = new Image();
         image.onerror = reject;
         image.onload = () => {
-          const scale = Math.min(1,1800/Math.max(image.width,image.height));
-          const canvas = document.createElement("canvas");
-          canvas.width = Math.max(1,Math.round(image.width*scale));
-          canvas.height = Math.max(1,Math.round(image.height*scale));
-          canvas.getContext("2d",{alpha:false}).drawImage(image,0,0,canvas.width,canvas.height);
-          resolve(canvas.toDataURL("image/jpeg",.84));
+          let maximum = 2400;
+          let quality = .9;
+          let encoded = "";
+          for (let attempt = 0; attempt < 6; attempt += 1) {
+            const scale = Math.min(1,maximum/Math.max(image.width,image.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1,Math.round(image.width*scale));
+            canvas.height = Math.max(1,Math.round(image.height*scale));
+            canvas.getContext("2d",{alpha:false}).drawImage(image,0,0,canvas.width,canvas.height);
+            encoded = canvas.toDataURL("image/jpeg",quality);
+            if (encoded.length <= 4_000_000) break;
+            if (quality > .7) quality -= .08;
+            else maximum = Math.round(maximum*.82);
+          }
+          resolve(encoded);
         };
         image.src = reader.result;
       };
@@ -245,6 +256,7 @@
 
   async function scan(file) {
     if (!file || !state.data || state.scanStatus === "loading") return;
+    state.lastFile = file;
     state.scanStatus = "loading"; state.scanError = ""; state.proposal = null; notify();
     try {
       state.preview = await readImage(file);
@@ -302,6 +314,7 @@
   document.addEventListener("click", event => {
     const retry = event.target.closest?.("[data-match-retry]");
     if (retry) {state.error="";state.data=null;load();return;}
+    if (event.target.closest?.("[data-match-scan-retry]") && state.lastFile) {scan(state.lastFile);return;}
     const star = event.target.closest?.("[data-match-star]");
     if (star && state.form) {state.form.matchRating=Number(star.dataset.matchStar);notify();}
     const step = event.target.closest?.("[data-match-step-target]");

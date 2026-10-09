@@ -134,7 +134,7 @@
         <div><h1>Saisie match</h1><span>Transformez la feuille du banc en statistiques SportEasy contrôlées.</span></div>
         <span class="match-safety"><i></i><b>Validation humaine</b>Aucune publication automatique</span>
       </section>
-      <nav class="match-progress" aria-label="Parcours de saisie"><button type="button" data-match-step-target="match-step-context"><b>1</b>Rencontre</button><button type="button" data-match-step-target="match-step-photo"><b>2</b>Photo</button><button type="button" data-match-step-target="match-step-stats"><b>3</b>Statistiques</button><button type="button" data-match-step-target="match-step-rating"><b>4</b>Note</button><button type="button" data-match-step-target="match-step-submit"><b>5</b>Envoi</button></nav>
+      <nav class="match-progress" aria-label="Parcours de saisie"><button type="button" data-match-step-target="match-step-context"><b>1</b><span class="match-step-label" data-short="Rencontre">Rencontre</span></button><button type="button" data-match-step-target="match-step-photo"><b>2</b><span class="match-step-label" data-short="Photo">Photo</span></button><button type="button" data-match-step-target="match-step-stats"><b>3</b><span class="match-step-label" data-short="Stats">Statistiques</span></button><button type="button" data-match-step-target="match-step-rating"><b>4</b><span class="match-step-label" data-short="Note">Note</span></button><button type="button" data-match-step-target="match-step-submit"><b>5</b><span class="match-step-label" data-short="Envoi">Envoi</span></button></nav>
       <form data-match-form class="match-workflow">
         <section class="match-card match-context" id="match-step-context">
           <header><span>1</span><div><h2>La rencontre</h2></div></header>

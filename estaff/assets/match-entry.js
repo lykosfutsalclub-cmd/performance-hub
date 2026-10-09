@@ -141,8 +141,28 @@
     return items.length ? `<div class="match-warning"><strong>Points à contrôler</strong><ul>${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : `<p class="match-ok">✓ Lecture nette. Un contrôle humain reste obligatoire.</p>`;
   }
 
+  function matchIsComplete(match) {
+    return Boolean(
+      match?.matchRatingLocked
+      && match?.mvpVoteLocked
+      && !match.players?.some(player => player.ratingEligible)
+    );
+  }
+
+  function emptyView() {
+    return `<main class="company-main match-entry-main">
+      <section class="company-title match-title">
+        <div><h1>Saisie match</h1><span>Transformez la feuille du banc en statistiques SportEasy contrôlées.</span></div>
+      </section>
+      <div class="match-empty" role="status">
+        <strong>Aucun match à saisir en attente</strong>
+      </div>
+    </main>`;
+  }
+
   function readyView() {
     const match = state.data.match;
+    if (matchIsComplete(match)) return emptyView();
     const form = state.form || freshForm(match);
     const eligible = match.players.filter(player => player.ratingEligible);
     return `<main class="company-main match-entry-main">

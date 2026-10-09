@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v7/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v7/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v8/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v8/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -27,8 +27,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(hubStyle,/grid-auto-columns: 68px/);
   assert.match(client,/class="match-progress"/);
   assert.match(client,/class="match-camera-icon"/);
-  assert.match(client,/capture="environment"/);
-  assert.match(client,/accept="image\/jpeg,image\/png,image\/webp"/);
+  assert.match(client,/accept="image\/\*"/);
+  assert.doesNotMatch(client,/capture="environment"/);
+  assert.match(client,/Galerie ou appareil photo/);
   assert.match(client,/Aucune publication automatique/);
   assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs, toutes les notes et le choix de l’homme du match/);
   assert.match(client,/match-entry\/scan/);

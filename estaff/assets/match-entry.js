@@ -145,8 +145,8 @@
         <section class="match-card match-photo" id="match-step-photo">
           <header><span>2</span><div><h2>Photographier ou importer</h2></div></header>
           <label class="match-drop ${state.preview?"has-preview":""}">
-            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<span class="match-camera-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M8 20.5h10l4.8-7h18.4l4.8 7h10a4 4 0 0 1 4 4v25a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-25a4 4 0 0 1 4-4Z"/><circle cx="32" cy="37" r="11"/><path d="M50 15.5h6M53 12.5v6"/></svg></span><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Prendre une photo ou parcourir</em>`}
-            <input type="file" data-match-photo accept="image/jpeg,image/png,image/webp" capture="environment">
+            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<span class="match-camera-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M8 20.5h10l4.8-7h18.4l4.8 7h10a4 4 0 0 1 4 4v25a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-25a4 4 0 0 1 4-4Z"/><circle cx="32" cy="37" r="11"/><path d="M50 15.5h6M53 12.5v6"/></svg></span><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Galerie ou appareil photo</em>`}
+            <input type="file" data-match-photo accept="image/*">
           </label>
           <p class="match-privacy">🔒 La photo est transmise de façon temporaire pour être lue, puis n’est pas conservée. Vous pouvez aussi tout saisir à la main.</p>
           ${state.scanStatus==="loading"?`<p class="match-processing"><i></i>Lecture de la feuille en cours…</p>`:""}

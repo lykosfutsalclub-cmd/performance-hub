@@ -685,6 +685,11 @@
         position:static; width:auto; height:auto; background:none; border-radius:0;
         content:attr(data-mobile-label); font-size:9px; line-height:1.1; letter-spacing:.07em; font-weight:700;
       }
+      @media (max-width:420px) {
+        #lykos-dashboard-preview .lykos-headnav { gap:4px; }
+        #lykos-dashboard-preview .lykos-headnav button { padding-inline:2px; }
+        #lykos-dashboard-preview .lykos-headnav button::after { font-size:8px; letter-spacing:.025em; }
+      }
       #lykos-dashboard-preview .lykos-headnav button[data-view="team"]::before {
         -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6.5 1A3.5 3.5 0 1 0 5.5 5a3.5 3.5 0 0 0 0 7Zm13 0a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM12 13c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5Zm-6.8.7C2.2 14.2 0 15.8 0 18v2h3v-2c0-1.7.8-3.2 2.2-4.3Zm13.6 0c1.4 1.1 2.2 2.6 2.2 4.3v2h3v-2c0-2.2-2.2-3.8-5.2-4.3Z'/%3E%3C/svg%3E");
         mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6.5 1A3.5 3.5 0 1 0 5.5 5a3.5 3.5 0 0 0 0 7Zm13 0a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM12 13c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5Zm-6.8.7C2.2 14.2 0 15.8 0 18v2h3v-2c0-1.7.8-3.2 2.2-4.3Zm13.6 0c1.4 1.1 2.2 2.6 2.2 4.3v2h3v-2c0-2.2-2.2-3.8-5.2-4.3Z'/%3E%3C/svg%3E");

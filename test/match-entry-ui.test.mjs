@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v8/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v8/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v9/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v9/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -31,7 +31,7 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.doesNotMatch(client,/capture="environment"/);
   assert.match(client,/Galerie ou appareil photo/);
   assert.match(client,/Aucune publication automatique/);
-  assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs, toutes les notes et le choix de l’homme du match/);
+  assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs, toutes les passes décisives, toutes les notes et le choix de l’homme du match/);
   assert.match(client,/match-entry\/scan/);
   assert.match(client,/match-entry\/approve/);
   assert.match(client,/Note sur 10/);
@@ -41,6 +41,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/data-short="Stats"/);
   assert.match(client,/data-match-mvp/);
   assert.match(client,/mvpProfileId/);
+  assert.match(client,/name="assist-\$\{player\.id\}"/);
+  assert.match(client,/const assists = match\.players\.map/);
+  assert.match(client,/goals, assists, playerRatings/);
   assert.doesNotMatch(client,/Voir dans SportEasy/);
   assert.doesNotMatch(client,/<small>Match SportEasy<\/small>/);
   assert.match(client,/goalTotal !== payload\.score\.lykos/);

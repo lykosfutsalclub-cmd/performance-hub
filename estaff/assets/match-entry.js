@@ -47,6 +47,7 @@
       scoreOpponent:match.score.opponent ?? "",
       ownGoals:match.ownGoals || 0,
       goals:Object.fromEntries(match.players.map(player => [player.id, player.goals || 0])),
+      assists:Object.fromEntries(match.players.map(player => [player.id, player.assists || 0])),
       ratings:{},
       matchRating:0,
       mvpProfileId:"",
@@ -102,6 +103,7 @@
         <span class="match-player-initial">${escapeHtml((player.firstName || player.name || "?").slice(0,1).toUpperCase())}</span>
         <div><strong>${escapeHtml(player.name)}</strong><small>${player.played?"A participé au match":"Statistiques disponibles"}</small></div>
         <label><span>Buts</span><input type="number" min="0" max="40" inputmode="numeric" name="goal-${player.id}" value="${escapeHtml(form.goals[player.id] ?? 0)}"></label>
+        <label><span>Passes D.</span><input type="number" min="0" max="40" inputmode="numeric" name="assist-${player.id}" value="${escapeHtml(form.assists[player.id] ?? 0)}" aria-label="Passes décisives de ${escapeHtml(player.name)}"></label>
         ${eligible ? `<label class="match-player-rating"><span>Note sur 10</span><div class="match-rating-control"><input type="range" min="1" max="10" step="1" value="${escapeHtml(form.ratings[player.id] || 5)}" data-match-rating="${player.id}" aria-label="Note de ${escapeHtml(player.name)} sur 10" style="--match-rating-pct:${form.ratings[player.id]?((Number(form.ratings[player.id])-1)/9)*100:44.44}%;--match-rating-color:${ratingColor(Number(form.ratings[player.id] || 5))}"><output data-match-rating-output="${player.id}" style="--match-rating-color:${ratingColor(Number(form.ratings[player.id] || 5))}">${escapeHtml(form.ratings[player.id] || "—")}</output><input type="hidden" name="rating-${player.id}" value="${escapeHtml(form.ratings[player.id] ?? "")}"></div></label>` : `<span class="match-rating-state">${player.ratingLocked?"Note déjà envoyée":player.played?"Votre propre fiche":"Non noté"}</span>`}
       </article>`;
     }).join("");
@@ -155,7 +157,7 @@
         </section>
 
         <section class="match-card match-score-card" id="match-step-stats">
-          <header><span>3</span><div><h2>Score, buteurs et notes</h2></div></header>
+          <header><span>3</span><div><h2>Score, buts, passes et notes</h2></div></header>
           <div class="match-score">
             <label><span>Lykos FC</span><input type="number" min="0" max="99" inputmode="numeric" name="scoreLykos" value="${escapeHtml(form.scoreLykos)}" required></label>
             <b>–</b>
@@ -177,9 +179,9 @@
 
         <section class="match-card match-approval" id="match-step-submit">
           <header><span>5</span><div><h2>Approuver et envoyer</h2></div></header>
-          <label class="match-confirm"><input type="checkbox" name="confirmed" ${form.confirmed?"checked":""} required><span>J’ai contrôlé le match, le score, tous les buteurs, toutes les notes et le choix de l’homme du match. J’autorise leur mise à jour immédiate dans SportEasy.</span></label>
+          <label class="match-confirm"><input type="checkbox" name="confirmed" ${form.confirmed?"checked":""} required><span>J’ai contrôlé le match, le score, tous les buteurs, toutes les passes décisives, toutes les notes et le choix de l’homme du match. J’autorise leur mise à jour immédiate dans SportEasy.</span></label>
           ${state.error?`<p class="match-error" role="alert">${escapeHtml(state.error)}</p>`:""}
-          ${state.result?`<div class="match-success"><strong>✓ SportEasy est à jour</strong><span>Score, buts, notes et vote ont été enregistrés.</span></div>`:""}
+          ${state.result?`<div class="match-success"><strong>✓ SportEasy est à jour</strong><span>Score, buts, passes décisives, notes et vote ont été enregistrés.</span></div>`:""}
           <button type="submit" class="company-primary match-submit" ${state.submitting||match.matchRatingLocked||!eligible.length?"disabled":""}>${state.submitting?"Synchronisation en cours…":"Approuver et mettre à jour SportEasy"}</button>
         </section>
       </form>
@@ -229,6 +231,15 @@
       if (candidates.length === 1) form.goals[candidates[0].id] = goal.count;
       else unmatched.push(`Buteur à identifier : ${goal.name} (${goal.count})`);
     }
+    for (const assist of proposal.assists || []) {
+      const query = normalize(assist.name);
+      const candidates = state.data.match.players.filter(player => {
+        const name = normalize(player.name);
+        return name === query || name.includes(query) || query.includes(normalize(player.firstName));
+      });
+      if (candidates.length === 1) form.assists[candidates[0].id] = assist.count;
+      else unmatched.push(`Passeur à identifier : ${assist.name} (${assist.count})`);
+    }
     proposal.warnings = [...(proposal.warnings || []),...unmatched];
   }
 
@@ -261,11 +272,12 @@
     const data = new FormData(formElement);
     const match = state.data.match;
     const goals = match.players.map(player => ({profileId:player.id,count:integer(data,`goal-${player.id}`)}));
+    const assists = match.players.map(player => ({profileId:player.id,count:integer(data,`assist-${player.id}`)}));
     const playerRatings = match.players.filter(player => player.ratingEligible).map(player => ({profileId:player.id,grade:integer(data,`rating-${player.id}`)}));
     const payload = {
       confirmed:data.get("confirmed") === "on", eventId:match.id, revision:match.revision,
       score:{lykos:integer(data,"scoreLykos"),opponent:integer(data,"scoreOpponent")},
-      ownGoals:integer(data,"ownGoals"), goals, playerRatings, matchRating:state.form.matchRating,
+      ownGoals:integer(data,"ownGoals"), goals, assists, playerRatings, matchRating:state.form.matchRating,
       mvpProfileId:state.form.mvpProfileId || null,
     };
     const goalTotal = goals.reduce((total,item) => total + (Number.isFinite(item.count)?item.count:0),0) + payload.ownGoals;
@@ -320,6 +332,7 @@
     else if (name === "ownGoals") state.form.ownGoals = event.target.value;
     else if (name === "confirmed") state.form.confirmed = event.target.checked;
     else if (name.startsWith("goal-")) state.form.goals[name.slice(5)] = event.target.value;
+    else if (name.startsWith("assist-")) state.form.assists[name.slice(7)] = event.target.value;
     else if (event.target.matches?.("[data-match-rating]")) {
       const playerId = event.target.dataset.matchRating;
       const value = Number(event.target.value);

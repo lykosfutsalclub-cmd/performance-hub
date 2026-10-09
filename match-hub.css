@@ -58,7 +58,7 @@
 .lykos-match-page .match-score > b { padding-bottom: 19px; color: var(--company-gold); }
 .lykos-match-page .match-own-goals { max-width: 620px; padding: 9px 12px; }
 .lykos-match-page .match-player-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
-.lykos-match-page .match-player-row { grid-template-columns: 34px minmax(105px, 1fr) 66px minmax(170px, 1.05fr); gap: 9px; padding: 9px; border-color: rgba(164, 190, 228, .1); border-radius: 11px; }
+.lykos-match-page .match-player-row { grid-template-columns: 34px minmax(95px, 1fr) 58px 58px minmax(145px, 1fr); gap: 8px; padding: 9px; border-color: rgba(164, 190, 228, .1); border-radius: 11px; }
 .lykos-match-page .match-player-initial { width: 32px; height: 32px; background: rgba(42, 111, 181, .45); font-size: 11px; }
 .lykos-match-page .match-player-row strong { font-size: 11px; }
 .lykos-match-page .match-player-row small { font-size: 8px; }
@@ -95,8 +95,8 @@
   .lykos-match-page .match-selected time { grid-column: 1 / -1; }
   .lykos-match-page .match-drop { min-height: 190px; }
   .lykos-match-page .match-player-list { grid-template-columns: 1fr; }
-  .lykos-match-page .match-player-row { grid-template-columns: 32px minmax(90px, 1fr) 66px; }
-  .lykos-match-page .match-player-rating, .lykos-match-page .match-rating-state { grid-column: 2 / 4; }
+  .lykos-match-page .match-player-row { grid-template-columns: 32px minmax(90px, 1fr) 62px 62px; }
+  .lykos-match-page .match-player-rating, .lykos-match-page .match-rating-state { grid-column: 2 / 5; }
   .lykos-match-page .match-stars { justify-content: space-between; }
   .lykos-match-page .match-stars button { width: min(48px, 14vw); }
   .lykos-match-page .match-approval { grid-template-columns: 1fr; }
@@ -110,6 +110,6 @@
   .lykos-match-page .match-progress button { min-width: 0; flex-direction: column; gap: 1px; padding: 3px 5px; border: 1px solid rgba(255, 255, 255, .08) !important; border-radius: 9px; background: rgba(255, 255, 255, .035); font-family: Arial, sans-serif; font-size: 7px; line-height: 1.15; scroll-snap-align: center; }
   .lykos-match-page .match-step-label { font-size: 0; }
   .lykos-match-page .match-step-label::after { content: attr(data-short); font-size: 7px; }
-  .lykos-match-page .match-player-row { grid-template-columns: 30px minmax(0, 1fr) 64px; }
-  .lykos-match-page .match-player-row label:last-of-type, .lykos-match-page .match-rating-state { grid-column: 2 / 4; }
+  .lykos-match-page .match-player-row { grid-template-columns: 30px minmax(0, 1fr) 58px 58px; }
+  .lykos-match-page .match-player-rating, .lykos-match-page .match-rating-state { grid-column: 2 / 5; }
 }

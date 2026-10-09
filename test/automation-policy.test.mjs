@@ -235,9 +235,9 @@ test("Vincenzo appartient à eSportif dans les deux présentations publiques", a
   assert.doesNotMatch(supportSection, /<strong>Vincenzo<\/strong>/);
 });
 
-test("l’interface publique annonce la version 3.36.0 du Rulebook", async () => {
+test("l’interface publique annonce la version 3.37.0 du Rulebook", async () => {
   const supervision = await readFile(new URL("estaff/assets/esupport-report.js", root), "utf8");
-  assert.match(supervision, /version\.textContent = "Rulebook 3\.36\.0"/);
+  assert.match(supervision, /version\.textContent = "Rulebook 3\.37\.0"/);
 });
 
 test("l’interface eStaff utilise une session Cloudflare unique", async () => {
@@ -259,7 +259,7 @@ test("l’interface eStaff utilise une session Cloudflare unique", async () => {
   assert.doesNotMatch(supervision, /CADENCE_API|cadenceToken|connectCadence|loadCadenceReport|cadenceState/);
   assert.doesNotMatch(`${page}\n${supervision}\n${bundle}\n${readableSource}`, /fab-mysterio|chatgpt[.]site/);
   assert.match(page, /connect-src 'self' https:\/\/lykos-estaff-service\.lykosfutsalclub\.workers\.dev;/);
-  assert.match(page, /esupport-report\.js\?v=20260923-company-v6/);
+  assert.match(page, /esupport-report\.js\?v=20261009-rulebook-337/);
   assert.match(page, /estaff\.js\?v=20260921-active43/);
   assert.match(page, /esupport-report\.css\?v=20260920-hidden-state/);
   const reportStyles = await readFile(new URL("estaff/assets/esupport-report.css", root), "utf8");

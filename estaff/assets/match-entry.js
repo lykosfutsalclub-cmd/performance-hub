@@ -110,18 +110,22 @@
     const form = state.form || freshForm(match);
     const eligible = match.players.filter(player => player.ratingEligible);
     return `<main class="company-main match-entry-main">
-      <section class="company-title match-title"><div><p>Compte-rendu terrain</p><h1>Match</h1><span>Photo, contrôle humain, puis synchronisation SportEasy.</span></div><span class="match-safety">Aucune donnée n’est publiée avant votre approbation.</span></section>
+      <section class="company-title match-title">
+        <div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1><span>Transformez la feuille du banc en statistiques SportEasy contrôlées.</span></div>
+        <span class="match-safety"><i></i><b>Validation humaine</b>Aucune publication automatique</span>
+      </section>
+      <nav class="match-progress" aria-label="Parcours de saisie"><span><b>1</b>Rencontre</span><span><b>2</b>Photo</span><span><b>3</b>Statistiques</span><span><b>4</b>Note</span><span><b>5</b>Envoi</span></nav>
       <form data-match-form class="match-workflow">
         <section class="match-card match-context">
-          <header><span>1</span><div><small>Match SportEasy</small><h2>Choisir la bonne rencontre</h2></div></header>
+          <header><span>1</span><div><small>Match SportEasy</small><h2>La rencontre</h2></div></header>
           <label class="match-select"><span>Rencontre à compléter</span><select data-match-select>${state.data.candidates.map(candidate => `<option value="${candidate.id}" ${candidate.id===match.id?"selected":""}>${escapeHtml(candidate.opponent)} · ${escapeHtml(formatDate(candidate.startAt))}</option>`).join("")}</select></label>
-          <div class="match-selected"><strong>${escapeHtml(match.name)}</strong><span>${escapeHtml(formatDate(match.startAt))}</span><a href="https://app.sporteasy.net/event/${encodeURIComponent(match.id)}/" target="_blank" rel="noopener noreferrer">Ouvrir la fiche SportEasy ↗</a></div>
+          <div class="match-selected"><span class="match-club">LYKOS FC</span><i>VS</i><span class="match-opponent">${escapeHtml(match.opponent)}</span><time>${escapeHtml(formatDate(match.startAt))}</time><a href="https://app.sporteasy.net/event/${encodeURIComponent(match.id)}/" target="_blank" rel="noopener noreferrer">Voir dans SportEasy ↗</a></div>
         </section>
 
         <section class="match-card match-photo">
           <header><span>2</span><div><small>Feuille de bord terrain</small><h2>Photographier ou importer</h2></div></header>
           <label class="match-drop ${state.preview?"has-preview":""}">
-            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<b>📷</b><strong>Prendre la feuille en photo</strong><small>Bien cadrée, à plat, avec les noms et les traits de buts visibles.</small>`}
+            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<b class="match-camera" aria-hidden="true"></b><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Prendre une photo ou parcourir</em>`}
             <input type="file" data-match-photo accept="image/jpeg,image/png,image/webp" capture="environment">
           </label>
           <p class="match-privacy">🔒 La photo est transmise de façon temporaire pour être lue, puis n’est pas conservée. Vous pouvez aussi tout saisir à la main.</p>
@@ -160,8 +164,8 @@
 
   function view() {
     ensureLoaded();
-    if (state.loading && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Compte-rendu terrain</p><h1>Match</h1></div></section><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
-    if (state.error && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Compte-rendu terrain</p><h1>Match</h1></div></section><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
+    if (state.loading && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1></div></section><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
+    if (state.error && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1></div></section><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
     return state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
   }
 

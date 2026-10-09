@@ -1,59 +1,114 @@
 .lykos-match-page {
-  --company-bg: #031936;
-  --company-panel: #082653;
-  --company-panel-2: #0b3168;
-  --company-ink: #f7f9ff;
-  --company-muted: #aebed9;
-  --company-line: rgba(164, 190, 228, .18);
+  --company-ink: #fff;
+  --company-muted: #91a8c2;
+  --company-line: rgba(151, 185, 221, .16);
   --company-gold: #d0b631;
-  --company-green: #31cc8a;
-  --company-red: #ff6969;
+  --company-green: #65d99f;
+  --company-red: #ff7b7b;
   --company-blue: #4ca4ff;
   color: var(--company-ink);
 }
 
-.lykos-match-page .company-main {
-  width: min(1180px, 100%);
-  margin: 0 auto;
-  padding: 14px 0 42px;
-}
+.lykos-match-page .company-main { width: min(1120px, 100%); margin: 0 auto; padding: 8px 0 46px; }
+.lykos-match-page .company-title { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 20px; }
+.lykos-match-page .company-title p { margin: 0 0 9px; color: var(--company-gold); font-size: 10px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.lykos-match-page .company-title h1 { margin: 0; color: #fff; font-family: "OMMarseille", Georgia, serif; font-size: clamp(38px, 5.2vw, 66px); line-height: .9; letter-spacing: .015em; text-transform: uppercase; }
+.lykos-match-page .match-title > div > span { max-width: 610px; margin-top: 13px; color: rgba(255, 255, 255, .78); font-size: 12px; line-height: 1.5; }
 
-.lykos-match-page .company-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 28px;
-  margin-bottom: 25px;
-}
+.lykos-match-page .match-safety { display: grid; grid-template-columns: 10px auto; max-width: none; padding: 11px 14px; border: 1px solid rgba(101, 217, 159, .28); border-radius: 12px; background: rgba(6, 37, 72, .72); color: #9eb3c9 !important; font-size: 9px; line-height: 1.35; }
+.lykos-match-page .match-safety i { grid-row: 1 / 3; align-self: center; width: 8px; height: 8px; border-radius: 50%; background: var(--company-green); box-shadow: 0 0 0 4px rgba(101, 217, 159, .12); }
+.lykos-match-page .match-safety b { color: #eaf7f1; font-size: 10px; }
 
-.lykos-match-page .company-title p {
-  margin: 0 0 8px;
-  color: var(--company-gold);
-  font-size: .72rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .16em;
-}
+.lykos-match-page .match-progress { display: grid; grid-template-columns: repeat(5, 1fr); margin-bottom: 13px; padding: 8px; border: 1px solid rgba(255, 255, 255, .11); border-radius: 15px; background: rgba(9, 29, 79, .78); }
+.lykos-match-page .match-progress span { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; color: #8fa8c1; font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.lykos-match-page .match-progress span + span { border-left: 1px solid rgba(255, 255, 255, .09); }
+.lykos-match-page .match-progress b { color: var(--company-gold); font-size: 10px; }
 
-.lykos-match-page .company-title h1 {
-  margin: 0;
-  color: #fff;
-  font-family: "OMMarseille", Georgia, serif;
-  font-size: clamp(2rem, 3.6vw, 4rem);
-  line-height: 1;
-}
+.lykos-match-page .match-workflow { grid-template-areas: "context context" "photo rating" "score score" "approval approval"; grid-template-columns: minmax(0, 1.05fr) minmax(330px, .95fr); gap: 13px; }
+.lykos-match-page .match-context { grid-area: context; }
+.lykos-match-page .match-photo { grid-area: photo; }
+.lykos-match-page .match-score-card { grid-area: score; }
+.lykos-match-page .match-rating-card { grid-area: rating; }
+.lykos-match-page .match-approval { grid-area: approval; }
 
-.lykos-match-page .company-primary {
-  border: 1px solid rgba(208, 182, 49, .55);
-  border-radius: 12px;
-  padding: 11px 16px;
-  background: var(--company-gold);
-  color: #07214d !important;
-  font-weight: 850;
-  cursor: pointer;
-}
+.lykos-match-page .match-card { grid-column: auto; padding: 18px; border: 1px solid rgba(151, 185, 221, .16); border-radius: 18px; background: linear-gradient(145deg, rgba(9, 41, 87, .94), rgba(3, 27, 61, .96)); box-shadow: 0 16px 38px rgba(0, 0, 0, .13); }
+.lykos-match-page .match-card > header { gap: 11px; margin-bottom: 15px; }
+.lykos-match-page .match-card > header > span { flex-basis: 32px; height: 32px; border-color: rgba(208, 182, 49, .36); border-radius: 9px; background: rgba(208, 182, 49, .08); color: var(--company-gold); font-size: 11px; }
+.lykos-match-page .match-card header small { margin-bottom: 2px; color: var(--company-gold); font-size: 8px; letter-spacing: .12em; }
+.lykos-match-page .match-card h2 { font-family: "OMMarseille", Georgia, serif; font-size: 21px; letter-spacing: .02em; text-transform: uppercase; }
+
+.lykos-match-page .match-context { display: grid; grid-template-columns: minmax(260px, .78fr) minmax(0, 1.22fr); gap: 12px 20px; align-items: end; }
+.lykos-match-page .match-context > header { grid-column: 1 / -1; margin-bottom: 0; }
+.lykos-match-page .match-select > span, .lykos-match-page .match-own-goals > span { color: #9db3ca; font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
+.lykos-match-page .match-card input, .lykos-match-page .match-card select { min-height: 44px; border-color: rgba(255, 255, 255, .14); border-radius: 11px; background: rgba(0, 14, 36, .72); font: inherit; outline: none; }
+.lykos-match-page .match-card input:focus, .lykos-match-page .match-card select:focus { border-color: rgba(208, 182, 49, .75); box-shadow: 0 0 0 3px rgba(208, 182, 49, .09); }
+
+.lykos-match-page .match-selected { display: grid; grid-template-columns: auto 34px minmax(120px, 1fr) auto; gap: 4px 12px; margin: 0; padding: 13px 15px; border: 1px solid rgba(255, 255, 255, .09); border-radius: 13px; background: rgba(0, 14, 36, .48); }
+.lykos-match-page .match-selected .match-club, .lykos-match-page .match-selected .match-opponent { align-self: center; color: #fff; font-family: "OMMarseille", Georgia, serif; font-size: 18px; text-transform: uppercase; }
+.lykos-match-page .match-selected i { align-self: center; color: var(--company-gold); font-size: 9px; font-style: normal; font-weight: 900; text-align: center; }
+.lykos-match-page .match-selected time { grid-column: 1 / 4; color: #829db7; font-size: 9px; }
+.lykos-match-page .match-selected a { grid-column: 4; grid-row: 1 / 3; align-self: center; margin: 0; padding: 8px 10px; border: 1px solid rgba(208, 182, 49, .28); border-radius: 9px; color: #eadb70; text-decoration: none; }
+
+.lykos-match-page .match-drop { min-height: 210px; border-color: rgba(151, 185, 221, .25); border-radius: 14px; background: radial-gradient(circle at 50% 20%, rgba(42, 111, 181, .14), transparent 48%), rgba(0, 14, 36, .4); }
+.lykos-match-page .match-camera { position: relative; width: 48px; height: 38px; border: 2px solid #a9bfd5; border-radius: 9px; }
+.lykos-match-page .match-camera::before { content: ""; position: absolute; left: 12px; top: -8px; width: 20px; height: 8px; border: 2px solid #a9bfd5; border-bottom: 0; border-radius: 5px 5px 0 0; }
+.lykos-match-page .match-camera::after { content: ""; position: absolute; left: 14px; top: 7px; width: 14px; height: 14px; border: 3px solid var(--company-gold); border-radius: 50%; }
+.lykos-match-page .match-drop strong { color: #fff; font-family: "OMMarseille", Georgia, serif; font-size: 18px; text-transform: uppercase; }
+.lykos-match-page .match-drop em { padding: 7px 10px; border-radius: 999px; background: rgba(208, 182, 49, .12); color: #eadb70; font-size: 9px; font-style: normal; font-weight: 800; text-transform: uppercase; }
+
+.lykos-match-page .match-score { max-width: 620px; margin-bottom: 14px; }
+.lykos-match-page .match-score label span { font-family: "OMMarseille", Georgia, serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.lykos-match-page .match-score input { height: 64px; border-radius: 13px; font-size: 28px; }
+.lykos-match-page .match-score > b { padding-bottom: 19px; color: var(--company-gold); }
+.lykos-match-page .match-own-goals { max-width: 620px; padding: 9px 12px; }
+.lykos-match-page .match-player-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.lykos-match-page .match-player-row { grid-template-columns: 34px minmax(110px, 1fr) 70px 82px; gap: 9px; padding: 9px; border-color: rgba(164, 190, 228, .1); border-radius: 11px; }
+.lykos-match-page .match-player-initial { width: 32px; height: 32px; background: rgba(42, 111, 181, .45); font-size: 11px; }
+.lykos-match-page .match-player-row strong { font-size: 11px; }
+.lykos-match-page .match-player-row small { font-size: 8px; }
+.lykos-match-page .match-player-row input { min-height: 38px; padding: 7px; }
+
+.lykos-match-page .match-rating-card { display: flex; flex-direction: column; }
+.lykos-match-page .match-stars { flex: 1; align-items: center; margin: 4px 0 14px; gap: 6px; }
+.lykos-match-page .match-stars button { width: 48px; height: 52px; border-radius: 12px; font-size: 19px; }
+.lykos-match-page .match-rating-card > p { color: #91a8c2; font-size: 10px; }
+
+.lykos-match-page .match-approval { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 13px 20px; align-items: center; }
+.lykos-match-page .match-approval > header { grid-column: 1 / -1; margin-bottom: 0; }
+.lykos-match-page .match-confirm { padding: 13px 15px; border-color: rgba(208, 182, 49, .25); background: rgba(208, 182, 49, .05); color: #dce8f5; font-size: 11px; }
+.lykos-match-page .match-submit { min-width: 300px; margin: 0; min-height: 52px; border: 0; background: var(--company-gold); box-shadow: 0 10px 25px rgba(0, 0, 0, .18); color: #091d4f !important; font-size: 11px; letter-spacing: .03em; }
+.lykos-match-page .match-privacy { color: #829db7; font-size: 9px; }
+.lykos-match-page .match-loading, .lykos-match-page .match-empty { min-height: 360px; background: rgba(5, 35, 75, .72); }
 
 @media (max-width: 800px) {
-  .lykos-match-page .company-main { padding-top: 4px; }
-  .lykos-match-page .company-title { align-items: stretch; flex-direction: column; gap: 14px; }
+  .lykos-match-page .company-main { padding-top: 3px; }
+  .lykos-match-page .company-title { align-items: stretch; flex-direction: column; gap: 13px; margin-bottom: 14px; }
+  .lykos-match-page .company-title h1 { font-size: 42px; }
+  .lykos-match-page .match-safety { align-self: stretch; }
+  .lykos-match-page .match-progress { margin: 0 -3px 10px; padding: 5px 3px; }
+  .lykos-match-page .match-progress span { gap: 3px; min-height: 32px; font-size: 7px; letter-spacing: .02em; }
+  .lykos-match-page .match-progress b { font-size: 8px; }
+  .lykos-match-page .match-workflow { grid-template-areas: "context" "photo" "score" "rating" "approval"; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .lykos-match-page .match-card { padding: 15px; }
+  .lykos-match-page .match-card h2 { font-size: 19px; }
+  .lykos-match-page .match-context { grid-template-columns: 1fr; }
+  .lykos-match-page .match-context > header { grid-column: 1; }
+  .lykos-match-page .match-selected { grid-template-columns: 1fr 28px 1fr; text-align: center; }
+  .lykos-match-page .match-selected .match-club, .lykos-match-page .match-selected .match-opponent { font-size: 15px; }
+  .lykos-match-page .match-selected time { grid-column: 1 / -1; }
+  .lykos-match-page .match-selected a { grid-column: 1 / -1; grid-row: auto; justify-self: center; }
+  .lykos-match-page .match-drop { min-height: 190px; }
+  .lykos-match-page .match-player-list { grid-template-columns: 1fr; }
+  .lykos-match-page .match-player-row { grid-template-columns: 32px minmax(90px, 1fr) 66px 76px; }
+  .lykos-match-page .match-stars { justify-content: space-between; }
+  .lykos-match-page .match-stars button { width: min(48px, 14vw); }
+  .lykos-match-page .match-approval { grid-template-columns: 1fr; }
+  .lykos-match-page .match-approval > header { grid-column: 1; }
+  .lykos-match-page .match-submit { width: 100%; min-width: 0; }
+}
+
+@media (max-width: 420px) {
+  .lykos-match-page .match-progress span { flex-direction: column; }
+  .lykos-match-page .match-player-row { grid-template-columns: 30px minmax(0, 1fr) 64px; }
+  .lykos-match-page .match-player-row label:last-of-type, .lykos-match-page .match-rating-state { grid-column: 2 / 4; }
 }

@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-main-match-v2/);
-  assert.match(page,/match-entry\.js\?v=20261009-main-match-v2/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v3/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v3/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -23,9 +23,12 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.doesNotMatch(estaffPage,/match-entry\.(?:css|js)/);
   assert.doesNotMatch(home,/\["match","Match","Match"\]/);
   assert.match(hubStyle,/\.lykos-match-page/);
+  assert.match(hubStyle,/grid-template-areas: "context context" "photo rating" "score score" "approval approval"/);
+  assert.match(client,/class="match-progress"/);
+  assert.match(client,/class="match-camera"/);
   assert.match(client,/capture="environment"/);
   assert.match(client,/accept="image\/jpeg,image\/png,image\/webp"/);
-  assert.match(client,/Aucune donnée n’est publiée avant votre approbation/);
+  assert.match(client,/Aucune publication automatique/);
   assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs et toutes les notes/);
   assert.match(client,/match-entry\/scan/);
   assert.match(client,/match-entry\/approve/);

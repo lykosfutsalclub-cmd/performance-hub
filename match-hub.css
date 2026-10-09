@@ -105,7 +105,7 @@
 }
 
 @media (max-width: 420px) {
-  .lykos-match-page .match-progress { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 96px; justify-content: start; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; scrollbar-width: none; }
+  .lykos-match-page .match-progress { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 68px; justify-content: center; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; scrollbar-width: none; }
   .lykos-match-page .match-progress::-webkit-scrollbar { display: none; }
   .lykos-match-page .match-progress button { min-width: 0; flex-direction: column; gap: 1px; padding: 3px 7px; border-left: 0 !important; border-radius: 9px; background: rgba(255, 255, 255, .025); font-family: Arial, sans-serif; font-size: 7px; line-height: 1.15; scroll-snap-align: center; }
   .lykos-match-page .match-progress button + button { margin-left: 3px; }

@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v10/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v10/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v11/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v11/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -27,10 +27,12 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(hubStyle,/grid-auto-columns: 68px/);
   assert.match(client,/class="match-progress"/);
   assert.match(client,/class="match-camera-icon"/);
-  assert.match(client,/accept="image\/\*"/);
+  assert.match(client,/accept="image\/\*,\.heic,\.heif"/);
   assert.doesNotMatch(client,/capture="environment"/);
   assert.match(client,/Galerie ou appareil photo/);
   assert.match(client,/maximum = 2400/);
+  assert.match(client,/heic2any-0\.0\.4\.min\.js/);
+  assert.match(client,/toType:"image\/jpeg"/);
   assert.match(client,/data-match-scan-retry/);
   assert.match(client,/après deux tentatives/);
   assert.match(client,/Aucune publication automatique/);

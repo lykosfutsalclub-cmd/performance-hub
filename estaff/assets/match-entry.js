@@ -1,7 +1,9 @@
 (() => {
   "use strict";
 
+  const MATCH_ASSET_BASE = new URL(".",document.currentScript?.src || window.location.href).href;
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
+  let heicConverterPromise = null;
   const state = {
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
@@ -150,7 +152,7 @@
           <header><span>2</span><div><h2>Photographier ou importer</h2></div></header>
           <label class="match-drop ${state.preview?"has-preview":""}">
             ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<span class="match-camera-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M8 20.5h10l4.8-7h18.4l4.8 7h10a4 4 0 0 1 4 4v25a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-25a4 4 0 0 1 4-4Z"/><circle cx="32" cy="37" r="11"/><path d="M50 15.5h6M53 12.5v6"/></svg></span><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Galerie ou appareil photo</em>`}
-            <input type="file" data-match-photo accept="image/*">
+            <input type="file" data-match-photo accept="image/*,.heic,.heif">
           </label>
           <p class="match-privacy">🔒 La photo est transmise de façon temporaire pour être lue, puis n’est pas conservée. Vous pouvez aussi tout saisir à la main.</p>
           ${state.scanStatus==="loading"?`<p class="match-processing"><i></i>Lecture de la feuille en cours…</p>`:""}
@@ -197,7 +199,34 @@
     return state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
   }
 
-  function readImage(file) {
+  function loadHeicConverter() {
+    if (typeof window.heic2any === "function") return Promise.resolve(window.heic2any);
+    if (heicConverterPromise) return heicConverterPromise;
+    heicConverterPromise = new Promise((resolve,reject) => {
+      const script = document.createElement("script");
+      script.src = `${MATCH_ASSET_BASE}vendor/heic2any-0.0.4.min.js`;
+      script.async = true;
+      script.onload = () => typeof window.heic2any === "function" ? resolve(window.heic2any) : reject(new Error("Convertisseur HEIC indisponible."));
+      script.onerror = () => reject(new Error("Convertisseur HEIC indisponible."));
+      document.head.appendChild(script);
+    });
+    return heicConverterPromise;
+  }
+
+  async function browserImage(file) {
+    const isHeic = /image\/(?:hei[cf])/i.test(file?.type || "") || /\.(?:hei[cf])$/i.test(file?.name || "");
+    if (!isHeic) return file;
+    try {
+      const convert = await loadHeicConverter();
+      const result = await convert({blob:file,toType:"image/jpeg",quality:.94});
+      return Array.isArray(result) ? result[0] : result;
+    } catch {
+      throw new Error("La photo HEIC n’a pas pu être convertie. Réessayez ou choisissez une version JPEG.");
+    }
+  }
+
+  async function readImage(file) {
+    const source = await browserImage(file);
     return new Promise((resolve,reject) => {
       const reader = new FileReader();
       reader.onerror = reject;
@@ -223,7 +252,7 @@
         };
         image.src = reader.result;
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(source);
     });
   }
 

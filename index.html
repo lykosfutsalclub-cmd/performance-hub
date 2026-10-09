@@ -4,7 +4,10 @@
 <link rel="icon" href="lykos-app-icon.jpg" type="image/jpeg" sizes="512x512">
 <link rel="apple-touch-icon" href="lykos-app-icon.jpg">
 <link rel="stylesheet" href="access-gate.css?v=20260924-global-access-v8">
+<link rel="stylesheet" href="estaff/assets/match-entry.css?v=20261009-main-match-v2">
+<link rel="stylesheet" href="match-hub.css?v=20261009-main-match-v2">
 <script defer src="access-gate.js?v=20260924-global-access-v8"></script>
+<script defer src="estaff/assets/match-entry.js?v=20261009-main-match-v2"></script>
 <div id="lykos-dashboard-preview">
   <style>
     @font-face {
@@ -97,7 +100,7 @@
     #lykos-dashboard-preview { padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
     #lykos-dashboard-preview .lykos-headnav {
       position:fixed; left:50%; bottom:max(0px,env(safe-area-inset-bottom)); z-index:100;
-      display:flex; width:min(860px,calc(100vw - 28px)); height:68px; padding:5px; gap:4px;
+      display:flex; width:min(1040px,calc(100vw - 28px)); height:68px; padding:5px; gap:4px;
       justify-content:stretch; transform:translateX(-50%); overflow:visible;
       border:1px solid rgba(255,255,255,.16); border-bottom:0; border-radius:20px 20px 0 0;
       background:rgba(9,29,79,.97); box-shadow:0 -12px 34px rgba(0,0,0,.34);
@@ -694,6 +697,10 @@
         -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 2H6v3H2v3c0 3 2.2 5.5 5.1 6A6 6 0 0 0 11 17.9V20H7v2h10v-2h-4v-2.1a6 6 0 0 0 3.9-3.9c2.9-.5 5.1-3 5.1-6V5h-4V2ZM6 11.8A4 4 0 0 1 4 8V7h2v4.8ZM20 8a4 4 0 0 1-2 3.8V7h2v1Z'/%3E%3C/svg%3E");
         mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 2H6v3H2v3c0 3 2.2 5.5 5.1 6A6 6 0 0 0 11 17.9V20H7v2h10v-2h-4v-2.1a6 6 0 0 0 3.9-3.9c2.9-.5 5.1-3 5.1-6V5h-4V2ZM6 11.8A4 4 0 0 1 4 8V7h2v4.8ZM20 8a4 4 0 0 1-2 3.8V7h2v1Z'/%3E%3C/svg%3E");
       }
+      #lykos-dashboard-preview .lykos-headnav button[data-view="match"]::before {
+        -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 2h10v2h3v18H4V4h3V2Zm2 2v2h6V4H9Zm-2 4v12h10V8H7Zm2 2h6v2H9v-2Zm0 4h6v2H9v-2Z'/%3E%3C/svg%3E");
+        mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 2h10v2h3v18H4V4h3V2Zm2 2v2h6V4H9Zm-2 4v12h10V8H7Zm2 2h6v2H9v-2Zm0 4h6v2H9v-2Z'/%3E%3C/svg%3E");
+      }
       #lykos-dashboard-preview .lykos-headnav button[data-view="performance"]::before {
         -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 20V10h4v10H3Zm7 0V4h4v16h-4Zm7 0v-7h4v7h-4ZM2 22h20v-2H2v2Z'/%3E%3C/svg%3E");
         mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 20V10h4v10H3Zm7 0V4h4v16h-4Zm7 0v-7h4v7h-4ZM2 22h20v-2H2v2Z'/%3E%3C/svg%3E");
@@ -951,6 +958,7 @@
       <button data-view="team" data-mobile-label="ÉQUIPE" aria-selected="true">STATISTIQUES ÉQUIPE</button>
       <button data-view="players" data-mobile-label="JOUEURS" aria-selected="false">STATISTIQUES JOUEURS</button>
       <button data-view="pantheon" data-mobile-label="PANTHÉON" aria-selected="false">PANTHÉON</button>
+      <button data-view="match" data-mobile-label="MATCH" aria-selected="false">MATCH</button>
       <button type="button" data-mobile-label="ESTAFF" aria-label="Accéder au eStaff" onclick="location.href='./estaff/'">ESTAFF</button>
       <button data-view="performance" data-mobile-label="DATAS" aria-selected="false">DATAS</button>
     </nav>
@@ -1216,6 +1224,9 @@
         </div>
         <div class="lykos-pantheon-grid" data-pantheon></div>
         <div class="lykos-pantheon-rankings" data-pantheon-rankings></div>
+      </section>
+      <section class="lykos-content lykos-match-page" data-view-panel="match" hidden>
+        <div data-match-entry-root aria-live="polite"></div>
       </section>
       <section class="lykos-content lykos-performance-page" data-view-panel="performance" hidden>
         <div class="lykos-freshness" data-freshness="performance"></div>
@@ -2029,13 +2040,23 @@
         root.scrollTop = 0;
         window.scrollTo({top:0,left:0,behavior:'auto'});
       };
+      const renderMatchEntry = () => {
+        const host = root.querySelector('[data-match-entry-root]');
+        if (!host || host.closest('[data-view-panel]')?.hidden) return;
+        host.innerHTML = window.LykosMatchEntry?.view() || '<div class="match-loading"><strong>Ouverture de l’espace Match…</strong></div>';
+      };
+      window.addEventListener('lykos:match-entry-updated',renderMatchEntry);
+      window.addEventListener('lykos:hub-session',renderMatchEntry);
       root.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
         const view = button.dataset.view;
         root.querySelectorAll('[data-view]').forEach(item => item.setAttribute('aria-selected', String(item === button)));
         if (view === 'metron') root.querySelector('.lykos-headnav [data-view="performance"]')?.setAttribute('aria-selected','true');
         root.querySelectorAll('[data-view-panel]').forEach(panel => panel.hidden = panel.dataset.viewPanel !== view);
         if (view === 'players') showPlayerPicker();
-        else root.querySelector('.lykos-shell').classList.remove('player-mode','player-picker-mode');
+        else {
+          root.querySelector('.lykos-shell').classList.remove('player-mode','player-picker-mode');
+          if (view === 'match') renderMatchEntry();
+        }
         requestAnimationFrame(scrollToViewStart);
       }));
       let playerNameFitFrame = 0;

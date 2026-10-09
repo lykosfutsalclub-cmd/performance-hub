@@ -283,7 +283,7 @@ body:not(.lykos-team-home-active) #lykos-team-home {display:none!important}
 .company-nav-context {display:flex;flex-direction:column;justify-content:center;min-width:0;padding-right:16px;border-right:1px solid rgba(164,190,228,.17);line-height:1.05}
 .company-nav-context b {font-family:"OMMarseille",Georgia,serif;color:#fff;font-size:1.08rem;letter-spacing:.03em}
 .company-nav-context small {margin-top:5px;color:#91a8c2;font-size:.61rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-.company-nav-items {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;min-width:0}
+.company-nav-items {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;min-width:0}
 .company-nav button {position:relative;display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;min-height:58px;padding:0 9px;border-radius:13px;color:#a9bfd5!important;font-size:.76rem;font-weight:700;white-space:nowrap;transition:background .18s ease,color .18s ease,transform .18s ease}
 .company-nav button::before {content:"";display:block;width:18px;height:18px;flex:0 0 auto;background:currentColor;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
 .company-nav button[data-view="overview"]::before {-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10-3h8v11h-8V10Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10-3h8v11h-8V10Z'/%3E%3C/svg%3E")}

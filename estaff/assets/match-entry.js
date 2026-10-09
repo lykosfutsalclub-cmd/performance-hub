@@ -69,6 +69,10 @@
   }
 
   function ensureLoaded() {
+    if (!state.token) {
+      const sharedSession = window.LYKOS_HUB_ACCESS?.getSession?.();
+      if (typeof sharedSession?.token === "string") state.token = sharedSession.token;
+    }
     if (state.token && !state.loading && !state.data && !state.error) load();
   }
 
@@ -278,10 +282,13 @@
     if (!event.target.matches?.("[data-match-form]")) return;
     event.preventDefault(); submit(event.target);
   });
-  window.addEventListener("lykos:estaff-cloud-session", event => {
+  const receiveSession = event => {
     state.token = typeof event.detail?.token === "string" ? event.detail.token : "";
     if (!state.token) Object.assign(state,{loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
-  });
+    notify();
+  };
+  window.addEventListener("lykos:hub-session",receiveSession);
+  window.addEventListener("lykos:estaff-cloud-session",receiveSession);
 
   window.LykosMatchEntry = {view};
 })();

@@ -4,18 +4,25 @@ import {readFile} from "node:fs/promises";
 
 const root = new URL("../",import.meta.url);
 
-test("l'onglet Match suit photo, contrôle humain et synchronisation SportEasy", async () => {
-  const [page,home,client,style] = await Promise.all([
+test("l'onglet Match appartient à la barre principale du Performance Hub", async () => {
+  const [page,estaffPage,home,client,style,hubStyle] = await Promise.all([
+    readFile(new URL("index.html",root),"utf8"),
     readFile(new URL("estaff/index.html",root),"utf8"),
     readFile(new URL("estaff/assets/team-home.js",root),"utf8"),
     readFile(new URL("estaff/assets/match-entry.js",root),"utf8"),
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
+    readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-v1/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-v1/);
-  assert.ok(page.indexOf("match-entry.js") < page.indexOf("team-home.js"));
-  assert.match(home,/\["match","Match","Match"\]/);
-  assert.match(home,/window\.LykosMatchEntry\?\.view\(\)/);
+  assert.match(page,/match-entry\.css\?v=20261009-main-match-v2/);
+  assert.match(page,/match-entry\.js\?v=20261009-main-match-v2/);
+  assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
+  assert.match(page,/data-view-panel="match"/);
+  assert.match(page,/data-match-entry-root/);
+  assert.match(page,/\.lykos-headnav \{\s*position:fixed;/);
+  assert.match(page,/\.lykos-headnav \{\s*left:0; right:0; bottom:0; width:100%; height:72px/);
+  assert.doesNotMatch(estaffPage,/match-entry\.(?:css|js)/);
+  assert.doesNotMatch(home,/\["match","Match","Match"\]/);
+  assert.match(hubStyle,/\.lykos-match-page/);
   assert.match(client,/capture="environment"/);
   assert.match(client,/accept="image\/jpeg,image\/png,image\/webp"/);
   assert.match(client,/Aucune donnée n’est publiée avant votre approbation/);
@@ -25,6 +32,7 @@ test("l'onglet Match suit photo, contrôle humain et synchronisation SportEasy",
   assert.match(client,/Note \/10/);
   assert.match(client,/\[1,2,3,4,5,6\]/);
   assert.match(client,/goalTotal !== payload\.score\.lykos/);
+  assert.match(client,/lykos:hub-session/);
   assert.match(style,/\.match-workflow/);
 });
 

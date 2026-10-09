@@ -57,8 +57,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20261009-match-v1/);
-  assert.match(page,/team-home\.js\?v=20261009-match-v1/);
+  assert.match(page,/team-home\.css\?v=20261009-main-match-v2/);
+  assert.match(page,/team-home\.js\?v=20261009-main-match-v2/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);

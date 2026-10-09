@@ -1,0 +1,59 @@
+.lykos-match-page {
+  --company-bg: #031936;
+  --company-panel: #082653;
+  --company-panel-2: #0b3168;
+  --company-ink: #f7f9ff;
+  --company-muted: #aebed9;
+  --company-line: rgba(164, 190, 228, .18);
+  --company-gold: #d0b631;
+  --company-green: #31cc8a;
+  --company-red: #ff6969;
+  --company-blue: #4ca4ff;
+  color: var(--company-ink);
+}
+
+.lykos-match-page .company-main {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 14px 0 42px;
+}
+
+.lykos-match-page .company-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 28px;
+  margin-bottom: 25px;
+}
+
+.lykos-match-page .company-title p {
+  margin: 0 0 8px;
+  color: var(--company-gold);
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+}
+
+.lykos-match-page .company-title h1 {
+  margin: 0;
+  color: #fff;
+  font-family: "OMMarseille", Georgia, serif;
+  font-size: clamp(2rem, 3.6vw, 4rem);
+  line-height: 1;
+}
+
+.lykos-match-page .company-primary {
+  border: 1px solid rgba(208, 182, 49, .55);
+  border-radius: 12px;
+  padding: 11px 16px;
+  background: var(--company-gold);
+  color: #07214d !important;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .lykos-match-page .company-main { padding-top: 4px; }
+  .lykos-match-page .company-title { align-items: stretch; flex-direction: column; gap: 14px; }
+}

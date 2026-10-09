@@ -49,6 +49,7 @@
       goals:Object.fromEntries(match.players.map(player => [player.id, player.goals || 0])),
       ratings:{},
       matchRating:0,
+      mvpProfileId:"",
       confirmed:false,
     };
   }
@@ -82,7 +83,16 @@
   }
 
   function stars(value) {
-    return `<div class="match-stars" role="radiogroup" aria-label="Note du match sur 6">${[1,2,3,4,5,6].map(number => `<button type="button" data-match-star="${number}" role="radio" aria-checked="${value===number}" class="${value>=number?"is-selected":""}">★<span>${number}</span></button>`).join("")}</div>`;
+    const icon = `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 2.4 2.86 5.8 6.4.93-4.63 4.51 1.1 6.38L12 17l-5.73 3.02 1.1-6.38-4.63-4.51 6.4-.93L12 2.4Z"/></svg>`;
+    return `<div class="match-stars" role="radiogroup" aria-label="Note du match sur 6">${[1,2,3,4,5,6].map(number => `<button type="button" data-match-star="${number}" role="radio" aria-label="${number} étoile${number>1?"s":""}" aria-checked="${value===number}" class="${value>=number?"is-selected":""}">${icon}</button>`).join("")}</div><p class="match-star-value" aria-live="polite">${value?`${value} étoile${value>1?"s":""} sélectionnée${value>1?"s":""}`:"Survolez puis cliquez pour choisir"}</p>`;
+  }
+
+  function ratingColor(value) {
+    if (value <= 2) return "#ef4444";
+    if (value <= 4) return "#f97316";
+    if (value <= 6) return "#facc15";
+    if (value <= 8) return "#84cc16";
+    return "#22c55e";
   }
 
   function playerRows(match, form) {
@@ -92,9 +102,19 @@
         <span class="match-player-initial">${escapeHtml((player.firstName || player.name || "?").slice(0,1).toUpperCase())}</span>
         <div><strong>${escapeHtml(player.name)}</strong><small>${player.played?"A participé au match":"Statistiques disponibles"}</small></div>
         <label><span>Buts</span><input type="number" min="0" max="40" inputmode="numeric" name="goal-${player.id}" value="${escapeHtml(form.goals[player.id] ?? 0)}"></label>
-        ${eligible ? `<label><span>Note /10</span><input type="number" min="1" max="10" inputmode="numeric" name="rating-${player.id}" value="${escapeHtml(form.ratings[player.id] ?? "")}" required></label>` : `<span class="match-rating-state">${player.ratingLocked?"Note déjà envoyée":player.played?"Votre propre fiche":"Non noté"}</span>`}
+        ${eligible ? `<label class="match-player-rating"><span>Note sur 10</span><div class="match-rating-control"><input type="range" min="1" max="10" step="1" value="${escapeHtml(form.ratings[player.id] || 5)}" data-match-rating="${player.id}" aria-label="Note de ${escapeHtml(player.name)} sur 10" style="--match-rating-pct:${form.ratings[player.id]?((Number(form.ratings[player.id])-1)/9)*100:44.44}%;--match-rating-color:${ratingColor(Number(form.ratings[player.id] || 5))}"><output data-match-rating-output="${player.id}" style="--match-rating-color:${ratingColor(Number(form.ratings[player.id] || 5))}">${escapeHtml(form.ratings[player.id] || "—")}</output><input type="hidden" name="rating-${player.id}" value="${escapeHtml(form.ratings[player.id] ?? "")}"></div></label>` : `<span class="match-rating-state">${player.ratingLocked?"Note déjà envoyée":player.played?"Votre propre fiche":"Non noté"}</span>`}
       </article>`;
     }).join("");
+  }
+
+  function mvpSelector(match, form) {
+    const players = match.players.filter(player => player.mvpEligible);
+    if (!players.length) return `<p class="match-rating-state">Aucun joueur éligible pour ce vote.</p>`;
+    return `<div class="match-mvp" role="radiogroup" aria-label="Homme du match">${players.map(player => {
+      const selected = String(form.mvpProfileId) === String(player.id);
+      const avatar = player.avatar ? `<img src="${escapeHtml(player.avatar)}" alt="">` : `<span>${escapeHtml((player.firstName || player.name || "?").slice(0,1).toUpperCase())}</span>`;
+      return `<button type="button" data-match-mvp="${player.id}" role="radio" aria-checked="${selected}" class="${selected?"is-selected":""}">${avatar}<b>${escapeHtml(player.name)}</b><i aria-hidden="true">✓</i></button>`;
+    }).join("")}</div>${form.mvpProfileId?`<button type="button" class="match-mvp-clear" data-match-mvp-clear>Ne pas désigner d’homme du match</button>`:""}`;
   }
 
   function warnings() {
@@ -111,21 +131,21 @@
     const eligible = match.players.filter(player => player.ratingEligible);
     return `<main class="company-main match-entry-main">
       <section class="company-title match-title">
-        <div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1><span>Transformez la feuille du banc en statistiques SportEasy contrôlées.</span></div>
+        <div><h1>Saisie match</h1><span>Transformez la feuille du banc en statistiques SportEasy contrôlées.</span></div>
         <span class="match-safety"><i></i><b>Validation humaine</b>Aucune publication automatique</span>
       </section>
-      <nav class="match-progress" aria-label="Parcours de saisie"><span><b>1</b>Rencontre</span><span><b>2</b>Photo</span><span><b>3</b>Statistiques</span><span><b>4</b>Note</span><span><b>5</b>Envoi</span></nav>
+      <nav class="match-progress" aria-label="Parcours de saisie"><button type="button" data-match-step-target="match-step-context"><b>1</b>Rencontre</button><button type="button" data-match-step-target="match-step-photo"><b>2</b>Photo</button><button type="button" data-match-step-target="match-step-stats"><b>3</b>Statistiques</button><button type="button" data-match-step-target="match-step-rating"><b>4</b>Note</button><button type="button" data-match-step-target="match-step-submit"><b>5</b>Envoi</button></nav>
       <form data-match-form class="match-workflow">
-        <section class="match-card match-context">
-          <header><span>1</span><div><small>Match SportEasy</small><h2>La rencontre</h2></div></header>
+        <section class="match-card match-context" id="match-step-context">
+          <header><span>1</span><div><h2>La rencontre</h2></div></header>
           <label class="match-select"><span>Rencontre à compléter</span><select data-match-select>${state.data.candidates.map(candidate => `<option value="${candidate.id}" ${candidate.id===match.id?"selected":""}>${escapeHtml(candidate.opponent)} · ${escapeHtml(formatDate(candidate.startAt))}</option>`).join("")}</select></label>
-          <div class="match-selected"><span class="match-club">LYKOS FC</span><i>VS</i><span class="match-opponent">${escapeHtml(match.opponent)}</span><time>${escapeHtml(formatDate(match.startAt))}</time><a href="https://app.sporteasy.net/event/${encodeURIComponent(match.id)}/" target="_blank" rel="noopener noreferrer">Voir dans SportEasy ↗</a></div>
+          <div class="match-selected"><span class="match-club">LYKOS FC</span><i>VS</i><span class="match-opponent">${escapeHtml(match.opponent)}</span><time>${escapeHtml(formatDate(match.startAt))}</time></div>
         </section>
 
-        <section class="match-card match-photo">
-          <header><span>2</span><div><small>Feuille de bord terrain</small><h2>Photographier ou importer</h2></div></header>
+        <section class="match-card match-photo" id="match-step-photo">
+          <header><span>2</span><div><h2>Photographier ou importer</h2></div></header>
           <label class="match-drop ${state.preview?"has-preview":""}">
-            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<b class="match-camera" aria-hidden="true"></b><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Prendre une photo ou parcourir</em>`}
+            ${state.preview?`<img src="${state.preview}" alt="Aperçu de la feuille de match">`:`<span class="match-camera-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M8 20.5h10l4.8-7h18.4l4.8 7h10a4 4 0 0 1 4 4v25a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-25a4 4 0 0 1 4-4Z"/><circle cx="32" cy="37" r="11"/><path d="M50 15.5h6M53 12.5v6"/></svg></span><strong>Ajouter la feuille de match</strong><small>Photo nette, cadrée à plat, avec les noms et les buts visibles.</small><em>Prendre une photo ou parcourir</em>`}
             <input type="file" data-match-photo accept="image/jpeg,image/png,image/webp" capture="environment">
           </label>
           <p class="match-privacy">🔒 La photo est transmise de façon temporaire pour être lue, puis n’est pas conservée. Vous pouvez aussi tout saisir à la main.</p>
@@ -134,8 +154,8 @@
           ${warnings()}
         </section>
 
-        <section class="match-card match-score-card">
-          <header><span>3</span><div><small>Transcription à contrôler</small><h2>Score et buteurs</h2></div></header>
+        <section class="match-card match-score-card" id="match-step-stats">
+          <header><span>3</span><div><h2>Score, buteurs et notes</h2></div></header>
           <div class="match-score">
             <label><span>Lykos FC</span><input type="number" min="0" max="99" inputmode="numeric" name="scoreLykos" value="${escapeHtml(form.scoreLykos)}" required></label>
             <b>–</b>
@@ -145,17 +165,21 @@
           <div class="match-player-list">${playerRows(match,form)}</div>
         </section>
 
-        <section class="match-card match-rating-card">
-          <header><span>4</span><div><small>Appréciation manuelle</small><h2>Noter le match sur 6</h2></div></header>
+        <section class="match-card match-rating-card" id="match-step-rating">
+          <header><span>4</span><div><h2>Appréciation du match</h2></div></header>
+          <h3>Note du match</h3>
           ${match.matchRatingLocked?`<p class="match-warning">La note du match a déjà été envoyée depuis ce compte SportEasy.</p>`:stars(form.matchRating)}
-          <p>Les notes joueurs sur 10 sont saisies dans la liste ci-dessus. Elles alimentent la moyenne SportEasy et deviennent définitives après l’envoi.</p>
+          <div class="match-rating-divider"></div>
+          <h3>Homme du match <span>Facultatif</span></h3>
+          ${match.mvpVoteLocked?`<p class="match-warning">Le vote Homme du match n’est plus ouvert dans SportEasy.</p>`:mvpSelector(match,form)}
+          <p>Les notes joueurs sur 10, la note du match et votre éventuel vote deviennent définitifs après l’envoi.</p>
         </section>
 
-        <section class="match-card match-approval">
-          <header><span>5</span><div><small>Dernier contrôle</small><h2>Approuver et envoyer</h2></div></header>
-          <label class="match-confirm"><input type="checkbox" name="confirmed" ${form.confirmed?"checked":""} required><span>J’ai contrôlé le match, le score, tous les buteurs et toutes les notes. J’autorise leur mise à jour immédiate dans SportEasy.</span></label>
+        <section class="match-card match-approval" id="match-step-submit">
+          <header><span>5</span><div><h2>Approuver et envoyer</h2></div></header>
+          <label class="match-confirm"><input type="checkbox" name="confirmed" ${form.confirmed?"checked":""} required><span>J’ai contrôlé le match, le score, tous les buteurs, toutes les notes et le choix de l’homme du match. J’autorise leur mise à jour immédiate dans SportEasy.</span></label>
           ${state.error?`<p class="match-error" role="alert">${escapeHtml(state.error)}</p>`:""}
-          ${state.result?`<div class="match-success"><strong>✓ SportEasy est à jour</strong><span>Score, buts et notes ont été enregistrés.</span></div>`:""}
+          ${state.result?`<div class="match-success"><strong>✓ SportEasy est à jour</strong><span>Score, buts, notes et vote ont été enregistrés.</span></div>`:""}
           <button type="submit" class="company-primary match-submit" ${state.submitting||match.matchRatingLocked||!eligible.length?"disabled":""}>${state.submitting?"Synchronisation en cours…":"Approuver et mettre à jour SportEasy"}</button>
         </section>
       </form>
@@ -164,8 +188,8 @@
 
   function view() {
     ensureLoaded();
-    if (state.loading && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1></div></section><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
-    if (state.error && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><p>Performance Hub · Compte-rendu terrain</p><h1>Saisie match</h1></div></section><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
+    if (state.loading && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><h1>Saisie match</h1></div></section><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
+    if (state.error && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><h1>Saisie match</h1></div></section><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
     return state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
   }
 
@@ -242,6 +266,7 @@
       confirmed:data.get("confirmed") === "on", eventId:match.id, revision:match.revision,
       score:{lykos:integer(data,"scoreLykos"),opponent:integer(data,"scoreOpponent")},
       ownGoals:integer(data,"ownGoals"), goals, playerRatings, matchRating:state.form.matchRating,
+      mvpProfileId:state.form.mvpProfileId || null,
     };
     const goalTotal = goals.reduce((total,item) => total + (Number.isFinite(item.count)?item.count:0),0) + payload.ownGoals;
     if (goalTotal !== payload.score.lykos) {
@@ -267,6 +292,21 @@
     if (retry) {state.error="";state.data=null;load();return;}
     const star = event.target.closest?.("[data-match-star]");
     if (star && state.form) {state.form.matchRating=Number(star.dataset.matchStar);notify();}
+    const step = event.target.closest?.("[data-match-step-target]");
+    if (step) {document.getElementById(step.dataset.matchStepTarget)?.scrollIntoView({behavior:"smooth",block:"start"});return;}
+    const mvp = event.target.closest?.("[data-match-mvp]");
+    if (mvp && state.form) {state.form.mvpProfileId=mvp.dataset.matchMvp;notify();return;}
+    if (event.target.closest?.("[data-match-mvp-clear]") && state.form) {state.form.mvpProfileId="";notify();}
+  });
+  document.addEventListener("pointerover", event => {
+    const star = event.target.closest?.("[data-match-star]");
+    if (!star) return;
+    const root = star.closest(".match-stars");
+    root?.querySelectorAll("[data-match-star]").forEach(button => button.classList.toggle("is-preview",Number(button.dataset.matchStar)<=Number(star.dataset.matchStar)));
+  });
+  document.addEventListener("pointerout", event => {
+    const root = event.target.closest?.(".match-stars");
+    if (root && !root.contains(event.relatedTarget)) root.querySelectorAll(".is-preview").forEach(button => button.classList.remove("is-preview"));
   });
   document.addEventListener("change", event => {
     if (event.target.matches?.("[data-match-select]")) {state.selectedId=event.target.value;state.preview="";state.proposal=null;load(state.selectedId);return;}
@@ -280,7 +320,18 @@
     else if (name === "ownGoals") state.form.ownGoals = event.target.value;
     else if (name === "confirmed") state.form.confirmed = event.target.checked;
     else if (name.startsWith("goal-")) state.form.goals[name.slice(5)] = event.target.value;
-    else if (name.startsWith("rating-")) state.form.ratings[name.slice(7)] = event.target.value;
+    else if (event.target.matches?.("[data-match-rating]")) {
+      const playerId = event.target.dataset.matchRating;
+      const value = Number(event.target.value);
+      state.form.ratings[playerId] = value;
+      event.target.style.setProperty("--match-rating-pct",`${((value-1)/9)*100}%`);
+      event.target.style.setProperty("--match-rating-color",ratingColor(value));
+      const row = event.target.closest(".match-player-rating");
+      const output = row?.querySelector(`[data-match-rating-output="${playerId}"]`);
+      const hidden = row?.querySelector(`input[name="rating-${playerId}"]`);
+      if (output) {output.value=String(value);output.textContent=String(value);output.style.setProperty("--match-rating-color",ratingColor(value));}
+      if (hidden) hidden.value=String(value);
+    }
   });
   document.addEventListener("submit", event => {
     if (!event.target.matches?.("[data-match-form]")) return;

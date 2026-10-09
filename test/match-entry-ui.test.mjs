@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v3/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v3/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v4/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v4/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -25,15 +25,21 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(hubStyle,/\.lykos-match-page/);
   assert.match(hubStyle,/grid-template-areas: "context context" "photo rating" "score score" "approval approval"/);
   assert.match(client,/class="match-progress"/);
-  assert.match(client,/class="match-camera"/);
+  assert.match(client,/class="match-camera-icon"/);
   assert.match(client,/capture="environment"/);
   assert.match(client,/accept="image\/jpeg,image\/png,image\/webp"/);
   assert.match(client,/Aucune publication automatique/);
-  assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs et toutes les notes/);
+  assert.match(client,/J’ai contrôlé le match, le score, tous les buteurs, toutes les notes et le choix de l’homme du match/);
   assert.match(client,/match-entry\/scan/);
   assert.match(client,/match-entry\/approve/);
-  assert.match(client,/Note \/10/);
+  assert.match(client,/Note sur 10/);
   assert.match(client,/\[1,2,3,4,5,6\]/);
+  assert.match(client,/type="range"/);
+  assert.match(client,/data-match-step-target/);
+  assert.match(client,/data-match-mvp/);
+  assert.match(client,/mvpProfileId/);
+  assert.doesNotMatch(client,/Voir dans SportEasy/);
+  assert.doesNotMatch(client,/<small>Match SportEasy<\/small>/);
   assert.match(client,/goalTotal !== payload\.score\.lykos/);
   assert.match(client,/lykos:hub-session/);
   assert.match(style,/\.match-workflow/);

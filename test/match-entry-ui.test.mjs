@@ -13,8 +13,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v4/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v4/);
+  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v5/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v5/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -24,6 +24,7 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.doesNotMatch(home,/\["match","Match","Match"\]/);
   assert.match(hubStyle,/\.lykos-match-page/);
   assert.match(hubStyle,/grid-template-areas: "context context" "photo rating" "score score" "approval approval"/);
+  assert.match(hubStyle,/grid-auto-columns: 96px/);
   assert.match(client,/class="match-progress"/);
   assert.match(client,/class="match-camera-icon"/);
   assert.match(client,/capture="environment"/);

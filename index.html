@@ -128,8 +128,13 @@
     #lykos-dashboard-preview .lykos-nav button { border: 0; color: inherit; background: transparent; text-align: left; padding: 10px 12px; border-radius: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; }
     #lykos-dashboard-preview .lykos-nav button:hover { background: rgba(255,255,255,.07); }
     #lykos-dashboard-preview .lykos-nav button[aria-current="page"] { color: white; background: rgba(255,255,255,.12); box-shadow: inset 3px 0 0 var(--lykos-yellow); }
+    #lykos-dashboard-preview .lykos-nav button[data-current="true"] { color:#fff; }
     #lykos-dashboard-preview .lykos-nav button[data-current="true"] span { font-weight:700; }
+    #lykos-dashboard-preview .lykos-nav button[data-current="false"] { color:#8797aa; opacity:.56; filter:saturate(.22); }
     #lykos-dashboard-preview .lykos-nav button[data-current="false"] span { font-weight:400; }
+    #lykos-dashboard-preview .lykos-nav button[data-current="false"]:hover,
+    #lykos-dashboard-preview .lykos-nav button[data-current="false"]:focus-visible { color:#c4cfda; opacity:.86; }
+    #lykos-dashboard-preview .lykos-nav button[data-current="false"][aria-current="page"] { color:var(--lykos-navy); opacity:1; filter:none; }
     #lykos-dashboard-preview .lykos-nav .lykos-nav-first { font-weight:inherit; }
     #lykos-dashboard-preview .lykos-nav .lykos-nav-last { font-weight:800; }
     #lykos-dashboard-preview .lykos-nav svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.8; }
@@ -138,9 +143,12 @@
     #lykos-dashboard-preview .lykos-player-search::placeholder { color:#89a8c6; }
     #lykos-dashboard-preview .lykos-nav button[hidden] { display:none; }
     #lykos-dashboard-preview .lykos-sidebar-meta { padding:0 10px 10px; color:#a9bfd5; font-size:9px; line-height:1.4; }
-    #lykos-dashboard-preview .lykos-status-key { display:flex; gap:10px; padding:0 10px 12px; color:#fff; font-size:9px; }
-    #lykos-dashboard-preview .lykos-status-key .current { font-weight:700; }
-    #lykos-dashboard-preview .lykos-status-key .former { font-weight:400; }
+    #lykos-dashboard-preview .lykos-status-key { display:flex; gap:5px; padding:0 10px 12px; }
+    #lykos-dashboard-preview .lykos-status-key button { min-height:30px; padding:6px 8px; border:1px solid rgba(255,255,255,.14); border-radius:999px; background:rgba(255,255,255,.05); color:#93a8bd; font-size:9px; font-weight:700; cursor:pointer; }
+    #lykos-dashboard-preview .lykos-status-key button:hover { color:#fff; background:rgba(255,255,255,.1); }
+    #lykos-dashboard-preview .lykos-status-key button[aria-pressed="true"] { border-color:var(--lykos-yellow); background:var(--lykos-yellow); color:var(--lykos-navy); }
+    #lykos-dashboard-preview .lykos-player-list-empty { margin:2px 10px 0; color:#9db3ca; font-size:10px; line-height:1.45; }
+    #lykos-dashboard-preview .lykos-player-list-empty[hidden] { display:none; }
     #lykos-dashboard-preview .lykos-main { min-width: 0; }
     #lykos-dashboard-preview .lykos-content { padding: 26px 28px 32px; }
     #lykos-dashboard-preview .lykos-heading { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; margin-bottom:22px; }
@@ -423,16 +431,22 @@
     #lykos-dashboard-preview .lykos-player-picker h1 { margin:0; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:clamp(34px,5vw,62px); line-height:.9; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-player-picker-intro p { max-width:600px; margin:16px 0 0; color:#9db3ca; font-size:12px; line-height:1.6; }
     #lykos-dashboard-preview .lykos-player-picker-tools { display:grid; grid-template-columns:minmax(0,540px) auto; gap:18px; align-items:center; margin-top:30px; }
+    #lykos-dashboard-preview .lykos-player-picker-tools-side { display:grid; gap:9px; justify-items:start; }
     #lykos-dashboard-preview .lykos-player-picker-search { width:100%; min-height:50px; padding:13px 17px; border:1px solid rgba(255,255,255,.19); border-radius:15px; outline:none; background:rgba(255,255,255,.08); color:#fff; font-size:14px; }
     #lykos-dashboard-preview .lykos-player-picker-search:focus { border-color:rgba(208,182,49,.72); box-shadow:0 0 0 3px rgba(208,182,49,.1); }
     #lykos-dashboard-preview .lykos-player-picker-search::placeholder { color:#89a8c6; }
     #lykos-dashboard-preview .lykos-player-picker-meta { color:#8fa8c1; font-size:10px; white-space:nowrap; }
+    #lykos-dashboard-preview .lykos-player-picker-status { padding:0; }
     #lykos-dashboard-preview .lykos-player-picker-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:24px; }
     #lykos-dashboard-preview .lykos-player-choice { min-height:84px; padding:15px 16px; border:1px solid rgba(153,187,223,.18); border-radius:16px; background:linear-gradient(145deg,rgba(16,51,101,.8),rgba(7,29,68,.88)); color:#fff; cursor:pointer; text-align:left; transition:border-color .18s ease,transform .18s ease,background .18s ease; }
     #lykos-dashboard-preview .lykos-player-choice:hover, #lykos-dashboard-preview .lykos-player-choice:focus-visible { transform:translateY(-2px); border-color:rgba(208,182,49,.58); background:linear-gradient(145deg,rgba(28,69,126,.88),rgba(8,34,77,.94)); outline:none; }
     #lykos-dashboard-preview .lykos-player-choice strong { display:block; color:#fff; font-family:"OMMarseille",Georgia,serif; font-size:17px; line-height:1.04; }
     #lykos-dashboard-preview .lykos-player-choice span { display:block; margin-top:8px; color:#88a4c0; font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-player-choice[data-current="true"] span { color:var(--lykos-yellow); }
+    #lykos-dashboard-preview .lykos-player-choice[data-current="false"] { border-color:rgba(167,177,189,.12); background:linear-gradient(145deg,rgba(62,74,89,.44),rgba(23,32,44,.7)); opacity:.58; filter:saturate(.22); }
+    #lykos-dashboard-preview .lykos-player-choice[data-current="false"] strong { color:#c0c8d1; }
+    #lykos-dashboard-preview .lykos-player-choice[data-current="false"]:hover,
+    #lykos-dashboard-preview .lykos-player-choice[data-current="false"]:focus-visible { opacity:.88; filter:saturate(.45); }
     #lykos-dashboard-preview .lykos-player-picker-empty { grid-column:1/-1; padding:28px; border:1px dashed rgba(255,255,255,.16); border-radius:16px; color:#9db3ca; text-align:center; }
     #lykos-dashboard-preview .lykos-player-profile { min-height:576px; padding:30px 28px 42px; }
     #lykos-dashboard-preview .lykos-player-profile-top { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:start; }
@@ -726,7 +740,9 @@
       #lykos-dashboard-preview .lykos-sidebar-title { padding:0 2px 8px; }
       #lykos-dashboard-preview .lykos-player-search { min-height:44px; margin-bottom:9px; padding:11px 13px; font-size:14px; }
       #lykos-dashboard-preview .lykos-sidebar-meta { padding:0 2px 8px; font-size:10px; }
-      #lykos-dashboard-preview .lykos-status-key { display:none; }
+      #lykos-dashboard-preview .lykos-status-key { display:flex; padding:0 2px 10px; overflow-x:auto; scrollbar-width:none; }
+      #lykos-dashboard-preview .lykos-status-key::-webkit-scrollbar { display:none; }
+      #lykos-dashboard-preview .lykos-status-key button { min-height:38px; padding:8px 12px; font-size:10px; }
       #lykos-dashboard-preview .lykos-shell.player-mode .lykos-nav {
         display:flex; gap:8px; margin:0 -14px; padding:2px 14px 6px; overflow-x:auto; overflow-y:hidden;
         scroll-snap-type:x proximity; scrollbar-width:none; -webkit-overflow-scrolling:touch;
@@ -802,6 +818,7 @@
       #lykos-dashboard-preview .lykos-player-picker h1 { font-size:clamp(31px,10vw,44px); }
       #lykos-dashboard-preview .lykos-player-picker-intro p { margin-top:12px; font-size:11px; }
       #lykos-dashboard-preview .lykos-player-picker-tools { grid-template-columns:1fr; gap:9px; margin-top:22px; }
+      #lykos-dashboard-preview .lykos-player-picker-tools-side { gap:7px; }
       #lykos-dashboard-preview .lykos-player-picker-search { min-height:48px; font-size:14px; }
       #lykos-dashboard-preview .lykos-player-picker-meta { font-size:9px; white-space:normal; }
       #lykos-dashboard-preview .lykos-player-picker-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:17px; }
@@ -979,7 +996,11 @@
       <div class="lykos-sidebar-title">Choisir un joueur</div>
       <input class="lykos-player-search" data-player-search type="search" placeholder="Rechercher…" aria-label="Rechercher un joueur">
       <div class="lykos-sidebar-meta">50 joueurs · 19 actuels · 31 anciens</div>
-      <div class="lykos-status-key" aria-label="Légende des statuts"><span class="current">Actuel</span><span class="former">Ancien</span></div>
+      <div class="lykos-status-key" role="group" aria-label="Filtrer les joueurs par statut">
+        <button type="button" data-player-status-filter="all" aria-pressed="true">Tous</button>
+        <button type="button" data-player-status-filter="current" aria-pressed="false">Actuels</button>
+        <button type="button" data-player-status-filter="former" aria-pressed="false">Anciens</button>
+      </div>
       <nav class="lykos-nav" aria-label="Liste des joueurs">
         <button data-player-id="joueur-adrien-zammut" data-player="Adrien Zammut" data-current="true"><span>Adrien Zammut</span></button>
         <button data-player-id="joueur-alexandre-dato" data-player="Alexandre Dato" data-current="true"><span>Alexandre Dato</span></button>
@@ -1032,6 +1053,7 @@
         <button data-player-id="joueur-thomas-nicolle" data-player="Thomas Nicolle" data-current="false"><span>Thomas Nicolle</span></button>
         <button data-player-id="joueur-tony-machado" data-player="Tony Machado" data-current="false"><span>Tony Machado</span></button>
       </nav>
+      <p class="lykos-player-list-empty" data-player-list-empty role="status" hidden>Aucun joueur ne correspond à ces critères.</p>
     </aside>
     <main class="lykos-main">
       <section class="lykos-content" data-view-panel="team">
@@ -1168,7 +1190,14 @@
           </div>
           <div class="lykos-player-picker-tools">
             <input class="lykos-player-picker-search" data-player-picker-search type="search" placeholder="Rechercher un joueur…" aria-label="Rechercher un joueur à observer">
-            <span class="lykos-player-picker-meta">50 joueurs · 19 actuels · 31 anciens</span>
+            <div class="lykos-player-picker-tools-side">
+              <span class="lykos-player-picker-meta">50 joueurs · 19 actuels · 31 anciens</span>
+              <div class="lykos-status-key lykos-player-picker-status" role="group" aria-label="Filtrer les joueurs à observer par statut">
+                <button type="button" data-player-status-filter="all" aria-pressed="true">Tous</button>
+                <button type="button" data-player-status-filter="current" aria-pressed="false">Actuels</button>
+                <button type="button" data-player-status-filter="former" aria-pressed="false">Anciens</button>
+              </div>
+            </div>
           </div>
           <div class="lykos-player-picker-grid" data-player-picker-grid aria-label="Joueurs disponibles"></div>
         </div>
@@ -1561,6 +1590,7 @@
       });
       let selectedPlayer = players.find(player => player.id === 'joueur-fabien-perals') || players[0];
       let selectedPlayerPeriod = selectedPlayer.current ? 'current' : 'alltime';
+      let playerStatusFilter = 'all';
       const formatValue = value => value === null ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(value);
       const secondaryPeriodKeys = { current:'current', previous:'previous', alltime:'allTime' };
       const secondaryData = window.LYKOS_SECONDARY_STATS?.periods ?? {};
@@ -2476,10 +2506,25 @@
       });
       const pickerGrid = root.querySelector('[data-player-picker-grid]');
       const pickerPlayers = [...players].sort((a,b) => Number(b.current) - Number(a.current) || a.name.localeCompare(b.name,'fr',{sensitivity:'base'}));
+      const normalizePlayerSearch = value => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase('fr').trim();
+      const matchesPlayerStatus = player => playerStatusFilter === 'all' || (playerStatusFilter === 'current' ? player.current : !player.current);
+      const updatePlayerStatusControls = () => {
+        root.querySelectorAll('[data-player-status-filter]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.playerStatusFilter === playerStatusFilter)));
+      };
+      const applyPlayerSidebarFilters = () => {
+        const search = normalizePlayerSearch(root.querySelector('[data-player-search]').value);
+        let visibleCount = 0;
+        root.querySelectorAll('.lykos-nav [data-player]').forEach(button => {
+          const player = players.find(candidate => candidate.id === button.dataset.playerId);
+          const visible = Boolean(player) && matchesPlayerStatus(player) && normalizePlayerSearch(button.dataset.player).includes(search);
+          button.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+        root.querySelector('[data-player-list-empty]').hidden = visibleCount > 0;
+      };
       const renderPlayerPicker = searchValue => {
-        const normalize = value => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase('fr').trim();
-        const search = normalize(searchValue ?? '');
-        const visiblePlayers = pickerPlayers.filter(player => normalize(player.name).includes(search));
+        const search = normalizePlayerSearch(searchValue ?? '');
+        const visiblePlayers = pickerPlayers.filter(player => matchesPlayerStatus(player) && normalizePlayerSearch(player.name).includes(search));
         pickerGrid.replaceChildren();
         visiblePlayers.forEach(player => {
           const button = document.createElement('button');
@@ -2498,6 +2543,14 @@
         }
       };
       root.querySelector('[data-player-picker-search]').addEventListener('input',event => renderPlayerPicker(event.target.value));
+      root.querySelectorAll('[data-player-status-filter]').forEach(button => button.addEventListener('click',() => {
+        playerStatusFilter = button.dataset.playerStatusFilter;
+        updatePlayerStatusControls();
+        applyPlayerSidebarFilters();
+        renderPlayerPicker(root.querySelector('[data-player-picker-search]').value);
+      }));
+      updatePlayerStatusControls();
+      applyPlayerSidebarFilters();
       renderPlayerPicker('');
       root.querySelector('[data-player-period]').querySelectorAll('[data-period]').forEach(button => button.addEventListener('click', () => {
         selectedPlayerPeriod = button.dataset.period;
@@ -2509,9 +2562,7 @@
         button.setAttribute('aria-current', 'page');
       }));
       root.querySelector('[data-player-search]').addEventListener('input', event => {
-        const normalize = value => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase('fr').trim();
-        const search = normalize(event.target.value);
-        root.querySelectorAll('[data-player]').forEach(button => button.hidden = !normalize(button.dataset.player).includes(search));
+        applyPlayerSidebarFilters();
       });
       const pantheonMetrics = [
         {key:'goals',label:'Meilleur buteur',icon:'⚽'},

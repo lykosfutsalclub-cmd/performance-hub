@@ -51,3 +51,15 @@ test("le détail des matchs reste sous le graphique et toutes ses lignes restent
   assert.match(page, /bin\.setAttribute\('aria-controls','lykos-score-details'\)/);
   assert.doesNotMatch(page, /cardBox = anchor\.closest\('\.lykos-team-score-card'\)/);
 });
+
+test("les joueurs actuels et anciens sont différenciés et filtrables sans perdre la recherche", async () => {
+  const page = await readFile(new URL("index.html", root), "utf8");
+  assert.match(page, /data-player-status-filter="all" aria-pressed="true">Tous<\/button>/);
+  assert.match(page, /data-player-status-filter="current" aria-pressed="false">Actuels<\/button>/);
+  assert.match(page, /data-player-status-filter="former" aria-pressed="false">Anciens<\/button>/);
+  assert.match(page, /\.lykos-nav button\[data-current="false"\] \{[^}]*opacity:\.56;[^}]*filter:saturate\(\.22\);/);
+  assert.match(page, /\.lykos-player-choice\[data-current="false"\] \{[^}]*opacity:\.58;[^}]*filter:saturate\(\.22\);/);
+  assert.match(page, /const matchesPlayerStatus = player => playerStatusFilter === 'all'/);
+  assert.match(page, /matchesPlayerStatus\(player\) && normalizePlayerSearch\(player\.name\)\.includes\(search\)/);
+  assert.match(page, /data-player-list-empty role="status" hidden/);
+});

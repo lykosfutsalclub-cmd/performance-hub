@@ -13,12 +13,12 @@ test("le Performance Hub propose une actualisation par glissement sur écran tac
     readFile(new URL("pull-refresh.css",root),"utf8"),
   ]);
 
-  assert.match(page,/pull-refresh\.css\?v=20261012-pull-refresh-v1/);
-  assert.match(page,/pull-refresh\.js\?v=20261012-pull-refresh-v1/);
-  assert.match(estaffPage,/\.\.\/pull-refresh\.css\?v=20261012-pull-refresh-v1/);
-  assert.match(estaffPage,/\.\.\/pull-refresh\.js\?v=20261012-pull-refresh-v1/);
-  assert.match(fiveManagerPage,/\.\.\/pull-refresh\.css\?v=20261012-pull-refresh-v1/);
-  assert.match(fiveManagerPage,/\.\.\/pull-refresh\.js\?v=20261012-pull-refresh-v1/);
+  assert.match(page,/pull-refresh\.css\?v=20261012-pull-refresh-v2/);
+  assert.match(page,/pull-refresh\.js\?v=20261012-pull-refresh-v2/);
+  assert.match(estaffPage,/\.\.\/pull-refresh\.css\?v=20261012-pull-refresh-v2/);
+  assert.match(estaffPage,/\.\.\/pull-refresh\.js\?v=20261012-pull-refresh-v2/);
+  assert.match(fiveManagerPage,/\.\.\/pull-refresh\.css\?v=20261012-pull-refresh-v2/);
+  assert.match(fiveManagerPage,/\.\.\/pull-refresh\.js\?v=20261012-pull-refresh-v2/);
   assert.match(script,/const THRESHOLD = 78/);
   assert.match(script,/const pageIsAtTop/);
   assert.match(script,/lykos-access-locked/);
@@ -26,7 +26,12 @@ test("le Performance Hub propose une actualisation par glissement sur écran tac
   assert.match(script,/\{passive:false\}/);
   assert.match(script,/window\.location\.reload\(\)/);
   assert.match(script,/Aaaooouuuuuuuu 🐺\(ça charge, sois patient…\)/);
+  assert.match(script,/className = "lykos-refresh-button"/);
+  assert.match(script,/Actualiser les informations et les données/);
+  assert.match(script,/refreshButton\.addEventListener\("click"/);
   assert.match(style,/\.lykos-pull-refresh\.is-refreshing/);
+  assert.match(style,/\.lykos-refresh-button/);
+  assert.match(style,/@media \(pointer: coarse\), \(max-width: 900px\)/);
   assert.match(style,/env\(safe-area-inset-top\)/);
   assert.match(style,/@media \(prefers-reduced-motion: reduce\)/);
 });

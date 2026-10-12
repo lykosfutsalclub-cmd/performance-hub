@@ -6,7 +6,6 @@
   const LOADING_MESSAGE = "Aaaooouuuuuuuu 🐺(ça charge, sois patient…)";
   const excludedTargets = "input, textarea, select, [role='dialog'], .lykos-score-match-list, .match-progress, [data-no-pull-refresh]";
   const touchDevice = navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches;
-  if (!touchDevice) return;
 
   const indicator = document.createElement("div");
   indicator.className = "lykos-pull-refresh";
@@ -15,6 +14,14 @@
   indicator.setAttribute("aria-hidden", "true");
   indicator.textContent = "Tire vers le bas pour actualiser";
   document.body.append(indicator);
+
+  const refreshButton = document.createElement("button");
+  refreshButton.type = "button";
+  refreshButton.className = "lykos-refresh-button";
+  refreshButton.setAttribute("aria-label", "Actualiser les informations et les données");
+  refreshButton.title = "Actualiser les informations et les données";
+  refreshButton.textContent = "🔄";
+  document.body.append(refreshButton);
 
   let startX = 0;
   let startY = 0;
@@ -44,12 +51,19 @@
     indicator.classList.add("is-visible", "is-refreshing");
     indicator.removeAttribute("aria-hidden");
     indicator.textContent = LOADING_MESSAGE;
+    refreshButton.disabled = true;
+    refreshButton.classList.add("is-refreshing");
     document.documentElement.classList.add("lykos-pull-active");
     window.dispatchEvent(new CustomEvent("lykos:pull-refresh"));
     window.setTimeout(() => window.location.reload(), 650);
   }
 
-  document.addEventListener("touchstart", event => {
+  refreshButton.addEventListener("click", () => {
+    if (document.documentElement.classList.contains("lykos-access-locked")) return;
+    beginRefresh();
+  });
+
+  if (touchDevice) document.addEventListener("touchstart", event => {
     if (
       refreshing
       || document.documentElement.classList.contains("lykos-access-locked")
@@ -64,7 +78,7 @@
     armed = false;
   }, {passive:true});
 
-  document.addEventListener("touchmove", event => {
+  if (touchDevice) document.addEventListener("touchmove", event => {
     if (!tracking || refreshing || event.touches.length !== 1) return;
     const deltaX = event.touches[0].clientX - startX;
     const deltaY = event.touches[0].clientY - startY;
@@ -81,15 +95,17 @@
     document.documentElement.classList.add("lykos-pull-active");
   }, {passive:false});
 
-  document.addEventListener("touchend", () => {
+  if (touchDevice) document.addEventListener("touchend", () => {
     if (!tracking || refreshing) return;
     if (armed) beginRefresh();
     else reset();
   }, {passive:true});
 
-  document.addEventListener("touchcancel", reset, {passive:true});
+  if (touchDevice) document.addEventListener("touchcancel", reset, {passive:true});
   window.addEventListener("pageshow", () => {
     refreshing = false;
+    refreshButton.disabled = false;
+    refreshButton.classList.remove("is-refreshing");
     indicator.classList.remove("is-refreshing");
     reset();
   });

@@ -53,9 +53,40 @@
 }
 html.lykos-pull-active,
 html.lykos-pull-active body { overscroll-behavior-y: none; }
+.lykos-refresh-button {
+  position: fixed;
+  z-index: 10015;
+  top: calc(18px + env(safe-area-inset-top));
+  right: 22px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(224, 195, 46, .58);
+  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(8, 34, 88, .96), rgba(0, 70, 150, .96));
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .28);
+  font-size: 1.32rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.lykos-refresh-button:hover {
+  transform: translateY(-2px);
+  border-color: #e0c32e;
+  box-shadow: 0 13px 30px rgba(0, 0, 0, .34);
+}
+.lykos-refresh-button:focus-visible { outline: 3px solid rgba(224, 195, 46, .7); outline-offset: 3px; }
+.lykos-refresh-button.is-refreshing { animation: lykos-refresh-button-spin .78s linear infinite; }
+.lykos-refresh-button:disabled { cursor: wait; }
+html.lykos-access-locked .lykos-refresh-button { display: none; }
 @keyframes lykos-pull-spin { to { transform: rotate(360deg); } }
-@media (min-width: 901px) and (pointer: fine) { .lykos-pull-refresh { display: none; } }
+@keyframes lykos-refresh-button-spin { to { transform: rotate(360deg); } }
+@media (pointer: coarse), (max-width: 900px) { .lykos-refresh-button { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .lykos-pull-refresh { transition: none; }
   .lykos-pull-refresh.is-refreshing::before { animation-duration: 1.4s; }
+  .lykos-refresh-button.is-refreshing { animation-duration: 1.4s; }
 }

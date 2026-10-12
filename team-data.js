@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-10-12T13:42:49.207Z",
+  "generatedAt": "2026-10-12T20:01:21.118Z",
   "periods": {
     "current": {
-      "matchesPlayed": 5,
-      "wins": 4,
+      "matchesPlayed": 6,
+      "wins": 5,
       "draws": 0,
       "losses": 1,
-      "goalsFor": 89,
-      "goalsAgainst": 56,
-      "goalsForPerMatch": 17.8,
-      "goalsAgainstPerMatch": 11.2,
-      "winRate": 80,
-      "goalDifference": 33,
-      "averageGoalDifference": 6.6,
-      "recentFormScore": 80,
+      "goalsFor": 116,
+      "goalsAgainst": 59,
+      "goalsForPerMatch": 19.33,
+      "goalsAgainstPerMatch": 9.83,
+      "winRate": 83.3,
+      "goalDifference": 57,
+      "averageGoalDifference": 9.5,
+      "recentFormScore": 83.3,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -197,8 +197,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 24,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-12-pelissanne-loisir",
+              "date": "2026-10-12",
+              "opponent": "Pélissanne Loisir",
+              "scoreFor": 27,
+              "scoreAgainst": 3,
+              "difference": 24
+            }
+          ]
         },
         {
           "difference": 25,
@@ -259,19 +268,20 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
+        "victory",
         "defeat",
         "victory"
       ],
       "streaks": {
         "wins": {
-          "count": 3,
+          "count": 4,
           "startAt": "2026-09-16",
-          "endAt": "2026-10-07"
+          "endAt": "2026-10-12"
         },
         "unbeaten": {
-          "count": 3,
+          "count": 4,
           "startAt": "2026-09-16",
-          "endAt": "2026-10-07"
+          "endAt": "2026-10-12"
         },
         "losses": {
           "count": 1,
@@ -285,9 +295,9 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 76.1,
+        "value": 76.6,
         "label": "BONNE",
-        "matchCount": 5,
+        "matchCount": 6,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }
@@ -959,18 +969,18 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 159,
-      "wins": 76,
+      "matchesPlayed": 160,
+      "wins": 77,
       "draws": 7,
       "losses": 76,
-      "goalsFor": 1818,
-      "goalsAgainst": 1635,
-      "goalsForPerMatch": 11.43,
-      "goalsAgainstPerMatch": 10.28,
-      "winRate": 47.8,
-      "goalDifference": 183,
-      "averageGoalDifference": 1.15,
-      "recentFormScore": 50,
+      "goalsFor": 1845,
+      "goalsAgainst": 1638,
+      "goalsForPerMatch": 11.53,
+      "goalsAgainstPerMatch": 10.24,
+      "winRate": 48.1,
+      "goalDifference": 207,
+      "averageGoalDifference": 1.29,
+      "recentFormScore": 60,
       "scoreDistribution": [
         {
           "difference": -14,
@@ -2465,8 +2475,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 24,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-12-pelissanne-loisir",
+              "date": "2026-10-12",
+              "opponent": "Pélissanne Loisir",
+              "scoreFor": 27,
+              "scoreAgainst": 3,
+              "difference": 24
+            }
+          ]
         },
         {
           "difference": 25,
@@ -2527,13 +2546,13 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
+        "victory",
         "defeat",
         "victory",
         "defeat",
         "defeat",
         "defeat",
-        "victory",
-        "defeat"
+        "victory"
       ],
       "streaks": {
         "wins": {
@@ -2558,10 +2577,10 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 55.9,
+        "value": 60.9,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 80,
+        "eventRatingCoverage": 90,
         "gradeCoverage": 90
       }
     }
@@ -2571,7 +2590,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 5,
+      "matchCount": 6,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2707,12 +2726,39 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "match-2026-10-12-pelissanne-loisir",
+          "index": 6,
+          "date": "2026-10-12",
+          "opponent": "Pélissanne Loisir",
+          "score": "27–3",
+          "winRate": 83.3,
+          "goalsForPerMatch": 19.33,
+          "goalsAgainstPerMatch": 9.83,
+          "goalDifferencePerMatch": 9.5,
+          "teamForm": 78.8,
+          "formTrace": {
+            "value": 78.8,
+            "playerGradeAverage": 8.83,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 6,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 60,
+            "opponentDifficulty": {
+              "value": 0,
+              "sampleSize": 1,
+              "policy": "previous-head-to-head"
+            },
+            "importance": 1,
+            "availableWeight": 1
+          }
         }
       ],
       "form": {
-        "value": 76.1,
+        "value": 76.6,
         "label": "BONNE",
-        "matchCount": 5,
+        "matchCount": 6,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }

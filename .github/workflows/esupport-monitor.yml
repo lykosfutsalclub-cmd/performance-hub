@@ -55,6 +55,88 @@ jobs:
             else if (result.status === "complete") core.notice("Le brief de Léonard existe déjà pour cet événement.");
             else core.notice("Léonard reste silencieux : le dossier complet n’est pas encore réuni.");
 
+  analyse-video-nadir:
+    name: Vincenzo → Samir → Nadir
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      id-token: write
+    steps:
+      - name: Samir contrôle la prochaine vidéo candidate
+        id: candidate
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          VIDEO_NEXT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/video-analysis/next
+        with:
+          script: |
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.VIDEO_NEXT_URL, {
+              headers: {Authorization: `Bearer ${identity}`},
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              core.setFailed(`La file vidéo a refusé le contrôle (${response.status}).`);
+              return;
+            }
+            const active = Boolean(result.job?.id && result.job?.videoUrl);
+            core.setOutput("active", String(active));
+            if (!active) {
+              core.notice("Aucune vidéo unique validable : la chaîne reste silencieuse et ne télécharge rien.");
+              return;
+            }
+            core.setSecret(result.job.videoUrl);
+            core.setOutput("job_id", result.job.id);
+            core.setOutput("video_url", result.job.videoUrl);
+            core.notice("Samir a validé une correspondance unique ; Nadir peut travailler sur une copie temporaire.");
+
+      - name: Extraire douze repères répartis dans le match
+        if: steps.candidate.outputs.active == 'true'
+        env:
+          VIDEO_URL: ${{ steps.candidate.outputs.video_url }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nadir-frames"
+          curl --fail --silent --show-error --location --max-time 600 "$VIDEO_URL" -o "$RUNNER_TEMP/nadir-match.mp4"
+          duration="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$RUNNER_TEMP/nadir-match.mp4")"
+          fps="$(awk -v duration="$duration" 'BEGIN { if (duration <= 0) exit 1; print 12 / duration }')"
+          ffmpeg -hide_banner -loglevel error -i "$RUNNER_TEMP/nadir-match.mp4" \
+            -vf "fps=$fps,scale=640:-2" -frames:v 12 -q:v 6 \
+            "$RUNNER_TEMP/nadir-frames/frame-%02d.jpg"
+          test "$(find "$RUNNER_TEMP/nadir-frames" -type f -name 'frame-*.jpg' | wc -l)" -ge 4
+          printf '%s' "$duration" > "$RUNNER_TEMP/nadir-duration.txt"
+          rm -f "$RUNNER_TEMP/nadir-match.mp4"
+
+      - name: Nadir analyse les repères et transmet sa preuve
+        if: steps.candidate.outputs.active == 'true'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          VIDEO_ANALYZE_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/video-analysis/analyze
+          VIDEO_JOB_ID: ${{ steps.candidate.outputs.job_id }}
+        with:
+          script: |
+            const fs = require("fs");
+            const path = require("path");
+            const directory = path.join(process.env.RUNNER_TEMP, "nadir-frames");
+            const files = fs.readdirSync(directory).filter(name => /^frame-\d+\.jpg$/.test(name)).sort();
+            const duration = Number(fs.readFileSync(path.join(process.env.RUNNER_TEMP, "nadir-duration.txt"), "utf8"));
+            const frames = files.map((name, index) => ({
+              second: Math.round(((index + 0.5) * duration) / files.length),
+              dataUrl: `data:image/jpeg;base64,${fs.readFileSync(path.join(directory, name)).toString("base64")}`,
+            }));
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.VIDEO_ANALYZE_URL, {
+              method: "POST",
+              headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
+              body: JSON.stringify({id: process.env.VIDEO_JOB_ID, frames}),
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              core.setFailed(`L’analyse vidéo de Nadir a échoué (${response.status}, ${result.error || "erreur inconnue"}).`);
+              return;
+            }
+            core.notice(`Analyse Nadir enregistrée avec une consommation de ${result.usageCents || 0} centime(s).`);
+
   chaine-esupport:
     name: Patricia → Gaston → Véronique → Oscar
     runs-on: ubuntu-latest

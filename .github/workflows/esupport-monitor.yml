@@ -59,7 +59,7 @@ jobs:
     name: Vincenzo → Samir → Nadir
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 90
     permissions:
       id-token: write
     steps:
@@ -90,7 +90,7 @@ jobs:
             core.setOutput("video_url", result.job.videoUrl);
             core.notice("Samir a validé une correspondance unique ; Nadir peut travailler sur une copie temporaire.");
 
-      - name: Extraire douze repères répartis dans le match
+      - name: Parcourir toute la vidéo à deux images par seconde
         if: steps.candidate.outputs.active == 'true'
         env:
           VIDEO_URL: ${{ steps.candidate.outputs.video_url }}
@@ -99,15 +99,20 @@ jobs:
           mkdir -p "$RUNNER_TEMP/nadir-frames"
           curl --fail --silent --show-error --location --max-time 600 "$VIDEO_URL" -o "$RUNNER_TEMP/nadir-match.mp4"
           duration="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$RUNNER_TEMP/nadir-match.mp4")"
-          fps="$(awk -v duration="$duration" 'BEGIN { if (duration <= 0) exit 1; print 12 / duration }')"
+          awk -v duration="$duration" 'BEGIN { if (duration < 30 || duration > 10800) exit 1 }'
           ffmpeg -hide_banner -loglevel error -i "$RUNNER_TEMP/nadir-match.mp4" \
-            -vf "fps=$fps,scale=640:-2" -frames:v 12 -q:v 6 \
-            "$RUNNER_TEMP/nadir-frames/frame-%02d.jpg"
-          test "$(find "$RUNNER_TEMP/nadir-frames" -type f -name 'frame-*.jpg' | wc -l)" -ge 4
+            -vf "fps=2,scale=512:-2" -q:v 12 \
+            "$RUNNER_TEMP/nadir-frames/frame-%06d.jpg"
+          final_second="$(awk -v duration="$duration" 'BEGIN { value=duration-0.01; if (value < 0) value=0; printf "%.3f", value }')"
+          ffmpeg -hide_banner -loglevel error -ss "$final_second" -i "$RUNNER_TEMP/nadir-match.mp4" \
+            -frames:v 1 -vf "scale=512:-2" -q:v 12 "$RUNNER_TEMP/nadir-frames/final.jpg"
+          frame_count="$(find "$RUNNER_TEMP/nadir-frames" -type f -name 'frame-*.jpg' | wc -l)"
+          minimum_frames="$(awk -v duration="$duration" 'BEGIN { print int(duration * 2) - 2 }')"
+          test "$frame_count" -ge "$minimum_frames"
           printf '%s' "$duration" > "$RUNNER_TEMP/nadir-duration.txt"
           rm -f "$RUNNER_TEMP/nadir-match.mp4"
 
-      - name: Nadir analyse les repères et transmet sa preuve
+      - name: Nadir traite chaque minute puis produit le rapport complet
         if: steps.candidate.outputs.active == 'true'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
@@ -120,22 +125,58 @@ jobs:
             const directory = path.join(process.env.RUNNER_TEMP, "nadir-frames");
             const files = fs.readdirSync(directory).filter(name => /^frame-\d+\.jpg$/.test(name)).sort();
             const duration = Number(fs.readFileSync(path.join(process.env.RUNNER_TEMP, "nadir-duration.txt"), "utf8"));
-            const frames = files.map((name, index) => ({
-              second: Math.round(((index + 0.5) * duration) / files.length),
-              dataUrl: `data:image/jpeg;base64,${fs.readFileSync(path.join(directory, name)).toString("base64")}`,
-            }));
-            const identity = await core.getIDToken("lykos-estaff-esupport");
-            const response = await fetch(process.env.VIDEO_ANALYZE_URL, {
-              method: "POST",
-              headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
-              body: JSON.stringify({id: process.env.VIDEO_JOB_ID, frames}),
-            });
-            const result = await response.json().catch(() => ({}));
-            if (!response.ok) {
-              core.setFailed(`L’analyse vidéo de Nadir a échoué (${response.status}, ${result.error || "erreur inconnue"}).`);
+            if (!Number.isFinite(duration) || duration < 30 || files.length < Math.floor(duration * 2) - 2) {
+              core.setFailed("La vidéo complète n’a pas pu être décodée ; aucun rapport ne sera produit.");
               return;
             }
-            core.notice(`Analyse Nadir enregistrée avec une consommation de ${result.usageCents || 0} centime(s).`);
+            const allFrames = files.map((name, index) => ({
+              second: index / 2,
+              dataUrl: `data:image/jpeg;base64,${fs.readFileSync(path.join(directory, name)).toString("base64")}`,
+            }));
+            const finalPath = path.join(directory, "final.jpg");
+            const finalSecond = Math.max(0, duration - 0.01);
+            if (fs.existsSync(finalPath) && (!allFrames.length || finalSecond - allFrames.at(-1).second > 0.01)) {
+              allFrames.push({second: finalSecond, dataUrl: `data:image/jpeg;base64,${fs.readFileSync(finalPath).toString("base64")}`});
+            }
+            const totalChapters = Math.ceil(duration / 60);
+            const chapterSpan = duration / totalChapters;
+            let finalResult = null;
+            for (let chapterIndex = 0; chapterIndex < totalChapters; chapterIndex += 1) {
+              const start = chapterIndex * chapterSpan;
+              const end = chapterIndex === totalChapters - 1 ? duration : (chapterIndex + 1) * chapterSpan;
+              const frames = allFrames.filter(frame => frame.second >= start && frame.second < end + (chapterIndex === totalChapters - 1 ? 0.02 : 0));
+              const payload = {id: process.env.VIDEO_JOB_ID, durationSeconds: duration, framesPerSecond: 2, chapterIndex, totalChapters, frames};
+              let response;
+              let result;
+              for (let attempt = 1; attempt <= 3; attempt += 1) {
+                const identity = await core.getIDToken("lykos-estaff-esupport");
+                response = await fetch(process.env.VIDEO_ANALYZE_URL, {
+                  method: "POST",
+                  headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
+                  body: JSON.stringify(payload),
+                });
+                result = await response.json().catch(() => ({}));
+                if (response.ok) break;
+                if (attempt < 3 && (response.status === 429 || response.status >= 500)) await new Promise(resolve => setTimeout(resolve, attempt * 5000));
+              }
+              if (!response.ok) {
+                core.setFailed(`La minute ${chapterIndex + 1}/${totalChapters} a échoué (${response.status}, ${result.error || "erreur inconnue"}). Aucun rapport complet n’est publié.`);
+                return;
+              }
+              finalResult = result;
+              if ((chapterIndex + 1) % 10 === 0 || chapterIndex + 1 === totalChapters) {
+                core.notice(`${chapterIndex + 1}/${totalChapters} minute(s) traitée(s).`);
+              }
+            }
+            if (finalResult?.status !== "complete" || finalResult?.coverage?.complete !== true) {
+              core.setFailed("Toutes les minutes n’ont pas été certifiées ; aucun rapport complet n’est publié.");
+              return;
+            }
+            core.notice(`Match complet analysé à deux images par seconde pour ${finalResult.usageCents || 0} centime(s).`);
+
+      - name: Supprimer tous les fichiers vidéo temporaires
+        if: always() && steps.candidate.outputs.active == 'true'
+        run: rm -rf "$RUNNER_TEMP/nadir-frames" "$RUNNER_TEMP/nadir-match.mp4" "$RUNNER_TEMP/nadir-duration.txt"
 
   chaine-esupport:
     name: Patricia → Gaston → Véronique → Oscar

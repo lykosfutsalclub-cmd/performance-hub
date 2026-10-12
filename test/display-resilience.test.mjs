@@ -41,3 +41,13 @@ test("les fenêtres eStaff reprennent le focus et gardent des actions tactiles",
   assert.match(styles, /\.profile-close \{[^}]*width:44px;height:44px;/);
   assert.match(styles, /:focus-visible \{outline:3px solid #f3d52b;/);
 });
+
+test("le détail des matchs reste sous le graphique et toutes ses lignes restent accessibles", async () => {
+  const page = await readFile(new URL("index.html", root), "utf8");
+  assert.match(page, /\.lykos-team-score-card \{[^}]*overflow:hidden;/);
+  assert.match(page, /\.lykos-score-popover \{[^}]*position:relative;[^}]*width:100%;[^}]*overflow:hidden;/);
+  assert.match(page, /\.lykos-score-match-list \{[^}]*max-height:min\(240px,38dvh\);[^}]*overflow-y:auto;/);
+  assert.match(page, /data-score-popover id="lykos-score-details" role="region" aria-labelledby="lykos-score-details-title"/);
+  assert.match(page, /bin\.setAttribute\('aria-controls','lykos-score-details'\)/);
+  assert.doesNotMatch(page, /cardBox = anchor\.closest\('\.lykos-team-score-card'\)/);
+});

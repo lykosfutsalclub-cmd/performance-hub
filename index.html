@@ -211,7 +211,7 @@
     #lykos-dashboard-preview .lykos-team-signal small { position:relative; z-index:1; display:block; margin-top:6px; color:var(--signal-color); font-size:8px; }
     #lykos-dashboard-preview .lykos-team-layout { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(270px,.75fr); gap:16px; }
     #lykos-dashboard-preview .lykos-team-card { position:relative; padding:20px; overflow:hidden; background:radial-gradient(circle at 100% 0,rgba(42,111,181,.12),transparent 32%),var(--lykos-surface); }
-    #lykos-dashboard-preview .lykos-team-score-card { z-index:10; overflow:visible; }
+    #lykos-dashboard-preview .lykos-team-score-card { z-index:10; overflow:hidden; }
     #lykos-dashboard-preview .lykos-team-card::before { content:""; position:absolute; top:0; left:24px; right:24px; height:1px; background:linear-gradient(90deg,transparent,rgba(77,163,255,.46),transparent); }
     #lykos-dashboard-preview .lykos-team-card h2 { margin:0; font-family:"OMMarseille",Georgia,serif; font-size:19px; letter-spacing:.04em; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-team-card-subtitle { display:block; margin-top:4px; color:var(--lykos-muted); font-size:10px; }
@@ -279,13 +279,13 @@
     #lykos-dashboard-preview .lykos-score-bin.draw i { background:var(--metron-neutral); }
     #lykos-dashboard-preview .lykos-score-bin.draw:hover i, #lykos-dashboard-preview .lykos-score-bin.draw[data-open="true"] i { box-shadow:0 0 14px color-mix(in srgb,var(--metron-neutral) 62%,transparent); }
     #lykos-dashboard-preview .lykos-score-bin span { position:absolute; left:50%; bottom:-20px; transform:translateX(-50%) rotate(-45deg); transform-origin:center; color:#8fa8c1; font-size:8px; }
-    #lykos-dashboard-preview .lykos-score-popover { position:absolute; z-index:150; width:min(310px,calc(100vw - 28px)); max-height:min(390px,calc(100dvh - 120px)); padding:15px; overflow:auto; border:1px solid rgba(164,196,229,.28); border-radius:15px; background:rgba(4,22,55,.98); box-shadow:0 20px 52px rgba(0,5,24,.58); color:#fff; }
+    #lykos-dashboard-preview .lykos-score-popover { position:relative; z-index:1; width:100%; margin-top:12px; padding:0; overflow:hidden; border:1px solid rgba(164,196,229,.28); border-radius:15px; background:rgba(4,22,55,.98); box-shadow:0 14px 34px rgba(0,5,24,.38); color:#fff; }
     #lykos-dashboard-preview .lykos-score-popover[hidden] { display:none; }
-    #lykos-dashboard-preview .lykos-score-popover-head { position:sticky; top:-15px; z-index:1; display:flex; justify-content:space-between; gap:12px; align-items:start; margin:-15px -15px 10px; padding:14px 15px 11px; background:#071d49; border-bottom:1px solid rgba(255,255,255,.1); }
+    #lykos-dashboard-preview .lykos-score-popover-head { display:flex; justify-content:space-between; gap:12px; align-items:start; padding:14px 15px 11px; background:#071d49; border-bottom:1px solid rgba(255,255,255,.1); }
     #lykos-dashboard-preview .lykos-score-popover-head strong { display:block; font-family:"OMMarseille",Georgia,serif; font-size:15px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-score-popover-head small { display:block; margin-top:3px; color:#8fa8c1; font-size:8px; }
     #lykos-dashboard-preview .lykos-score-popover-close { width:28px; height:28px; flex:0 0 28px; padding:0; border:1px solid rgba(255,255,255,.18); border-radius:8px; background:rgba(255,255,255,.07); color:#fff; cursor:pointer; font-size:18px; line-height:1; }
-    #lykos-dashboard-preview .lykos-score-match-list { display:grid; gap:7px; }
+    #lykos-dashboard-preview .lykos-score-match-list { display:grid; gap:7px; max-height:min(240px,38dvh); padding:12px; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.3) transparent; }
     #lykos-dashboard-preview .lykos-score-match { display:grid; grid-template-columns:76px minmax(0,1fr) auto; gap:9px; align-items:center; padding:9px; border:1px solid rgba(255,255,255,.08); border-radius:10px; background:rgba(255,255,255,.04); }
     #lykos-dashboard-preview .lykos-score-match time { color:var(--lykos-yellow); font-size:9px; font-weight:700; }
     #lykos-dashboard-preview .lykos-score-match span { min-width:0; overflow:hidden; color:#d9e6f3; font-size:9px; text-overflow:ellipsis; white-space:nowrap; }
@@ -779,7 +779,8 @@
       #lykos-dashboard-preview .lykos-team-charts { margin-top:12px; }
       #lykos-dashboard-preview .lykos-score-distribution-wrap { margin-left:-16px; margin-right:-16px; padding-left:16px; padding-right:16px; }
       #lykos-dashboard-preview .lykos-score-distribution { min-width:600px; height:180px; }
-      #lykos-dashboard-preview .lykos-score-popover { left:12px !important; right:12px !important; top:56px !important; bottom:auto !important; width:auto; max-height:min(330px,52dvh); border-radius:18px; }
+      #lykos-dashboard-preview .lykos-score-popover { position:relative; left:auto !important; right:auto !important; top:auto !important; bottom:auto !important; width:100%; border-radius:18px; }
+      #lykos-dashboard-preview .lykos-score-match-list { max-height:min(260px,40dvh); }
       #lykos-dashboard-preview .lykos-team-average-bars { min-height:180px; }
       #lykos-dashboard-preview .lykos-team-form { margin-top:12px; }
       #lykos-dashboard-preview .lykos-team-form-body { grid-template-columns:90px minmax(0,1fr); gap:13px; }
@@ -1096,8 +1097,8 @@
             <h2>Matchs selon l’écart de score <button class="lykos-team-help" type="button" data-team-help-title="Écart de score" data-team-help="Chaque barre regroupe les matchs ayant la même différence entre buts marqués et encaissés. Une barre positive correspond à une victoire, zéro à un nul et une barre négative à une défaite." aria-label="Comprendre l’écart de score">i</button></h2>
             <span class="lykos-team-card-subtitle">Survole ou touche une barre pour voir les matchs et leurs dates</span>
             <div class="lykos-score-distribution-wrap" data-score-distribution></div>
-            <aside class="lykos-score-popover" data-score-popover role="dialog" aria-modal="false" aria-label="Matchs correspondant à l’écart sélectionné" hidden>
-              <div class="lykos-score-popover-head"><div><strong data-score-popover-title>Matchs</strong><small data-score-popover-count></small></div><button class="lykos-score-popover-close" data-score-popover-close type="button" aria-label="Fermer">×</button></div>
+            <aside class="lykos-score-popover" data-score-popover id="lykos-score-details" role="region" aria-labelledby="lykos-score-details-title" hidden>
+              <div class="lykos-score-popover-head"><div><strong data-score-popover-title id="lykos-score-details-title">Matchs</strong><small data-score-popover-count></small></div><button class="lykos-score-popover-close" data-score-popover-close type="button" aria-label="Fermer le détail des matchs">×</button></div>
               <div class="lykos-score-match-list" data-score-match-list></div>
             </aside>
           </article>
@@ -1753,15 +1754,6 @@
           });
         }
         popover.hidden = false;
-        if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-          const anchorBox = anchor.getBoundingClientRect();
-          const cardBox = anchor.closest('.lykos-team-score-card').getBoundingClientRect();
-          const popoverBox = popover.getBoundingClientRect();
-          const left = Math.max(12,Math.min(cardBox.width - popoverBox.width - 12,anchorBox.left - cardBox.left + anchorBox.width / 2 - popoverBox.width / 2));
-          const top = 52;
-          popover.style.left = `${left}px`;
-          popover.style.top = `${top}px`;
-        }
       };
       const renderScoreDistribution = (container,distribution) => {
         closeScorePopover();
@@ -1779,6 +1771,7 @@
           bin.type = 'button';
           bin.className = `lykos-score-bin${item.difference < 0 ? ' loss' : item.difference === 0 ? ' draw' : ''}`;
           bin.setAttribute('aria-expanded','false');
+          bin.setAttribute('aria-controls','lykos-score-details');
           bin.setAttribute('aria-label',`${item.matches} match${item.matches > 1 ? 's' : ''} avec un écart de ${item.difference > 0 ? '+' : ''}${item.difference}. Afficher le détail.`);
           const bar = document.createElement('i');
           bar.style.height = `${Math.max(item.matches === 0 ? 1 : 5,(item.matches / maximum) * 100)}%`;

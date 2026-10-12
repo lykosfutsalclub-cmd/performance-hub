@@ -14,7 +14,7 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261009-match-ui-v11/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v11/);
+  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v12/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);

@@ -1,5 +1,5 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-10-09T09:37:06.561Z",
+  "generatedAt": "2026-10-12T11:53:05.361Z",
   "periods": {
     "current": {
       "matchesPlayed": 5,
@@ -285,11 +285,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 78.8,
+        "value": 76.1,
         "label": "BONNE",
         "matchCount": 5,
-        "eventRatingCoverage": 80,
-        "gradeCoverage": 80
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 100
       }
     },
     "previous": {
@@ -2558,11 +2558,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 57.2,
+        "value": 55.9,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 70,
-        "gradeCoverage": 80
+        "eventRatingCoverage": 80,
+        "gradeCoverage": 90
       }
     }
   },
@@ -2691,13 +2691,13 @@ window.LYKOS_TEAM_STATS = {
           "goalsForPerMatch": 17.8,
           "goalsAgainstPerMatch": 11.2,
           "goalDifferencePerMatch": 6.6,
-          "teamForm": 100,
+          "teamForm": 86.6,
           "formTrace": {
-            "value": 100,
-            "playerGradeAverage": null,
-            "playerGradeCount": 0,
-            "eventRatingAverage": null,
-            "eventRatingVoteCount": null,
+            "value": 86.6,
+            "playerGradeAverage": 7.57,
+            "playerGradeCount": 7,
+            "eventRatingAverage": 5,
+            "eventRatingVoteCount": 1,
             "contextualResult": 100,
             "opponentDifficulty": {
               "value": 100,
@@ -2705,16 +2705,16 @@ window.LYKOS_TEAM_STATS = {
               "policy": "previous-head-to-head"
             },
             "importance": 1,
-            "availableWeight": 0.4
+            "availableWeight": 1
           }
         }
       ],
       "form": {
-        "value": 78.8,
+        "value": 76.1,
         "label": "BONNE",
         "matchCount": 5,
-        "eventRatingCoverage": 80,
-        "gradeCoverage": 80
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 100
       }
     },
     {

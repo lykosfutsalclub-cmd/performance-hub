@@ -264,7 +264,8 @@
     #lykos-dashboard-preview .lykos-comparison-point { stroke:#071d49; stroke-width:2; cursor:pointer; transition:r .15s ease,filter .15s ease; }
     #lykos-dashboard-preview .lykos-comparison-point:hover, #lykos-dashboard-preview .lykos-comparison-point:focus, #lykos-dashboard-preview .lykos-comparison-point[data-open="true"] { r:7px; filter:drop-shadow(0 0 5px currentColor); outline:none; }
     #lykos-dashboard-preview .lykos-comparison-empty { min-height:230px; display:grid; place-items:center; color:#8fa8c1; font-size:11px; }
-    #lykos-dashboard-preview .lykos-comparison-popover, #lykos-dashboard-preview .lykos-team-help-popover { position:fixed; z-index:260; width:min(330px,calc(100vw - 28px)); padding:14px; border:1px solid rgba(164,196,229,.3); border-radius:15px; background:rgba(4,22,55,.985); color:#fff; box-shadow:0 22px 56px rgba(0,5,24,.62); }
+    #lykos-dashboard-preview .lykos-comparison-popover { position:relative; z-index:2; width:100%; margin-top:12px; padding:14px; border:1px solid rgba(164,196,229,.3); border-radius:15px; background:rgba(4,22,55,.985); color:#fff; box-shadow:0 14px 34px rgba(0,5,24,.4); }
+    #lykos-dashboard-preview .lykos-team-help-popover { position:fixed; z-index:260; width:min(330px,calc(100vw - 28px)); padding:14px; border:1px solid rgba(164,196,229,.3); border-radius:15px; background:rgba(4,22,55,.985); color:#fff; box-shadow:0 22px 56px rgba(0,5,24,.62); }
     #lykos-dashboard-preview .lykos-comparison-popover[hidden], #lykos-dashboard-preview .lykos-team-help-popover[hidden] { display:none; }
     #lykos-dashboard-preview .lykos-comparison-popover-head, #lykos-dashboard-preview .lykos-team-help-popover-head { display:flex; justify-content:space-between; gap:12px; align-items:start; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.1); }
     #lykos-dashboard-preview .lykos-comparison-popover-head strong, #lykos-dashboard-preview .lykos-team-help-popover-head strong { display:block; font-family:"OMMarseille",Georgia,serif; font-size:14px; line-height:1.15; text-transform:uppercase; }
@@ -312,10 +313,21 @@
     #lykos-dashboard-preview .lykos-form-score small { display:block; margin-top:2px; color:#8fa8c1; font-family:Arial,sans-serif; font-size:7px; text-transform:uppercase; }
     #lykos-dashboard-preview .lykos-team-form-list { position:relative; display:flex; justify-content:flex-start; gap:13px; min-height:72px; align-items:center; }
     #lykos-dashboard-preview .lykos-team-form-list::before { content:""; position:absolute; left:20px; right:20px; top:50%; height:2px; background:rgba(255,255,255,.1); }
-    #lykos-dashboard-preview .lykos-team-form-result { width:42px; height:42px; border-radius:50%; display:grid; place-items:center; background:var(--metron-negative); color:#fff; font-weight:800; box-shadow:0 8px 18px rgba(0,0,0,.18); }
+    #lykos-dashboard-preview .lykos-team-form-result { width:42px; height:42px; padding:0; border:0; border-radius:50%; display:grid; place-items:center; background:var(--metron-negative); color:#fff; font-weight:800; cursor:pointer; box-shadow:0 8px 18px rgba(0,0,0,.18); }
     #lykos-dashboard-preview .lykos-team-form-result { position:relative; z-index:1; }
     #lykos-dashboard-preview .lykos-team-form-result.victory { background:var(--metron-positive); color:#fff; }
     #lykos-dashboard-preview .lykos-team-form-result.tie { background:var(--metron-neutral); color:var(--lykos-navy); }
+    #lykos-dashboard-preview .lykos-team-form-result:hover,
+    #lykos-dashboard-preview .lykos-team-form-result:focus-visible,
+    #lykos-dashboard-preview .lykos-team-form-result[data-open="true"] { outline:3px solid #fff; outline-offset:3px; transform:translateY(-2px); }
+    #lykos-dashboard-preview .lykos-team-form-popover { width:100%; margin-top:14px; padding:0; overflow:hidden; border:1px solid rgba(164,196,229,.28); border-radius:14px; background:rgba(4,22,55,.96); color:#fff; box-shadow:0 12px 30px rgba(0,5,24,.34); }
+    #lykos-dashboard-preview .lykos-team-form-popover[hidden] { display:none; }
+    #lykos-dashboard-preview .lykos-team-form-popover-head { display:flex; justify-content:space-between; gap:12px; align-items:start; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.1); }
+    #lykos-dashboard-preview .lykos-team-form-popover-head strong { display:block; font-family:"OMMarseille",Georgia,serif; font-size:14px; text-transform:uppercase; }
+    #lykos-dashboard-preview .lykos-team-form-popover-head small { display:block; margin-top:4px; color:#8fa8c1; font-size:8px; }
+    #lykos-dashboard-preview .lykos-team-form-popover-close { width:32px; height:32px; flex:0 0 32px; padding:0; border:1px solid rgba(255,255,255,.18); border-radius:8px; background:rgba(255,255,255,.07); color:#fff; cursor:pointer; font-size:18px; line-height:1; }
+    #lykos-dashboard-preview .lykos-team-form-popover-meta { display:flex; flex-wrap:wrap; gap:8px 18px; padding:12px 14px 14px; color:#c9d9e9; font-size:10px; line-height:1.4; }
+    #lykos-dashboard-preview .lykos-team-form-popover-meta b { color:#fff; }
     #lykos-dashboard-preview .lykos-team-streak-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
     #lykos-dashboard-preview .lykos-team-streak-list { display:grid; gap:20px; margin-top:20px; }
     #lykos-dashboard-preview .lykos-team-streak-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:end; }
@@ -774,7 +786,7 @@
       #lykos-dashboard-preview .lykos-comparison-filter select { width:100%; min-width:0; }
       #lykos-dashboard-preview .lykos-comparison-chart { margin-left:-8px; margin-right:-8px; width:calc(100% + 16px); }
       #lykos-dashboard-preview .lykos-comparison-axis-guide { display:grid; gap:5px; }
-      #lykos-dashboard-preview .lykos-comparison-popover,
+      #lykos-dashboard-preview .lykos-comparison-popover { left:auto !important; right:auto !important; top:auto !important; bottom:auto !important; width:100%; max-height:none; overflow:visible; border-radius:18px; }
       #lykos-dashboard-preview .lykos-team-help-popover {
         left:max(10px,env(safe-area-inset-left)) !important; right:max(10px,env(safe-area-inset-right)) !important;
         top:auto !important; bottom:calc(96px + env(safe-area-inset-bottom)); width:auto;
@@ -1140,6 +1152,10 @@
             <div class="lykos-form-score" data-team-form-score><span><b data-team-percent="recentFormScore">—</b><small>forme</small></span></div>
             <div class="lykos-team-form-list" data-team-form></div>
           </div>
+          <aside class="lykos-team-form-popover" data-team-form-popover id="lykos-team-form-details" role="region" aria-labelledby="lykos-team-form-details-title" hidden>
+            <div class="lykos-team-form-popover-head"><div><strong data-team-form-popover-title id="lykos-team-form-details-title">Détail du match</strong><small data-team-form-popover-date></small></div><button class="lykos-team-form-popover-close" data-team-form-popover-close type="button" aria-label="Fermer le détail du match">×</button></div>
+            <div class="lykos-team-form-popover-meta"><span><b>Adversaire :</b> <span data-team-form-popover-opponent>—</span></span><span><b>Score :</b> <span data-team-form-popover-score>—</span></span></div>
+          </aside>
         </article>
         <div class="lykos-team-streak-grid">
           <article class="lykos-panel lykos-team-card">
@@ -1169,8 +1185,8 @@
           <div class="lykos-comparison-legend"><span><i></i><b data-comparison-label-a>Saison A</b></span><span><i></i><b data-comparison-label-b>Saison B</b></span></div>
           <div class="lykos-comparison-axis-guide"><span><strong>Ordonnée (verticale) :</strong> <b data-comparison-axis-y>valeur de la statistique</b></span><span><strong>Abscisse (horizontale) :</strong> matchs de la saison dans l’ordre chronologique</span></div>
           <div class="lykos-comparison-chart" data-comparison-chart role="img" aria-label="Comparaison statistique de deux saisons"></div>
-          <aside class="lykos-comparison-popover" data-comparison-popover role="dialog" aria-modal="false" aria-label="Détail du point sélectionné" hidden>
-            <div class="lykos-comparison-popover-head"><div><strong data-comparison-popover-title>Détail du match</strong><small data-comparison-popover-season></small></div><button class="lykos-comparison-popover-close" data-comparison-popover-close type="button" aria-label="Fermer">×</button></div>
+          <aside class="lykos-comparison-popover" data-comparison-popover id="lykos-comparison-details" role="region" aria-labelledby="lykos-comparison-details-title" hidden>
+            <div class="lykos-comparison-popover-head"><div><strong data-comparison-popover-title id="lykos-comparison-details-title">Détail du match</strong><small data-comparison-popover-season></small></div><button class="lykos-comparison-popover-close" data-comparison-popover-close type="button" aria-label="Fermer le détail du point">×</button></div>
             <strong class="lykos-comparison-popover-value" data-comparison-popover-value>—</strong>
             <div class="lykos-comparison-popover-meta"><span><b>Adversaire :</b> <span data-comparison-popover-opponent>—</span></span><span><b>Score :</b> <span data-comparison-popover-score>—</span></span><span data-comparison-popover-explanation></span></div>
           </aside>
@@ -1837,18 +1853,80 @@
       document.addEventListener('keydown',event => {
         if (event.key === 'Escape') closeScorePopover();
       });
-      const renderTeamForm = (container,results) => {
+      const teamFormPopover = root.querySelector('[data-team-form-popover]');
+      let activeTeamFormResult = null, teamFormCloseTimer = null;
+      const closeTeamFormPopover = (restoreFocus = false) => {
+        if (!teamFormPopover) return;
+        const previousResult = activeTeamFormResult;
+        teamFormPopover.hidden = true;
+        previousResult?.setAttribute('aria-expanded','false');
+        if (previousResult) delete previousResult.dataset.open;
+        activeTeamFormResult = null;
+        if (restoreFocus) previousResult?.focus();
+      };
+      const openTeamFormPopover = (anchor,result,fixture) => {
+        if (!teamFormPopover) return;
+        clearTimeout(teamFormCloseTimer);
+        if (activeTeamFormResult && activeTeamFormResult !== anchor) {
+          activeTeamFormResult.setAttribute('aria-expanded','false');
+          delete activeTeamFormResult.dataset.open;
+        }
+        activeTeamFormResult = anchor;
+        anchor.setAttribute('aria-expanded','true');
+        anchor.dataset.open = 'true';
+        const resultLabel = result === 'victory' ? 'Victoire' : result === 'tie' ? 'Match nul' : 'Défaite';
+        teamFormPopover.querySelector('[data-team-form-popover-title]').textContent = resultLabel;
+        teamFormPopover.querySelector('[data-team-form-popover-date]').textContent = formatTeamDate(fixture?.date) ?? 'Date non renseignée';
+        teamFormPopover.querySelector('[data-team-form-popover-opponent]').textContent = fixture?.opponent ?? 'Non renseigné';
+        teamFormPopover.querySelector('[data-team-form-popover-score]').textContent = Number.isFinite(fixture?.scoreFor) && Number.isFinite(fixture?.scoreAgainst) ? `${fixture.scoreFor}–${fixture.scoreAgainst}` : 'Non renseigné';
+        teamFormPopover.hidden = false;
+      };
+      teamFormPopover?.addEventListener('mouseenter',() => clearTimeout(teamFormCloseTimer));
+      teamFormPopover?.addEventListener('mouseleave',() => {
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches) teamFormCloseTimer = setTimeout(() => closeTeamFormPopover(),180);
+      });
+      teamFormPopover?.querySelector('[data-team-form-popover-close]')?.addEventListener('click',() => closeTeamFormPopover(true));
+      document.addEventListener('click',event => {
+        if (teamFormPopover && !teamFormPopover.hidden && !teamFormPopover.contains(event.target) && !event.target.closest('.lykos-team-form-result')) closeTeamFormPopover();
+      });
+      document.addEventListener('keydown',event => {
+        if (event.key === 'Escape' && teamFormPopover && !teamFormPopover.hidden) closeTeamFormPopover(true);
+      });
+      const renderTeamForm = (container,results,scoreDistribution = []) => {
+        closeTeamFormPopover();
         if (!Array.isArray(results) || results.length === 0) {
           renderTeamEmpty(container,'Aucun résultat récent pour cette période.');
           return;
         }
         container.replaceChildren();
         const labels = {victory:'V',tie:'N',defeat:'D'};
-        [...results].reverse().forEach(result => {
-          const item = document.createElement('span');
+        const resultLabels = {victory:'Victoire',tie:'Match nul',defeat:'Défaite'};
+        const recentFixtures = scoreDistribution.flatMap(entry => Array.isArray(entry?.fixtures) ? entry.fixtures : [])
+          .sort((left,right) => String(right?.date ?? '').localeCompare(String(left?.date ?? '')))
+          .slice(0,10)
+          .reverse();
+        [...results].reverse().forEach((result,index) => {
+          const fixture = recentFixtures[index] ?? null;
+          const item = document.createElement('button');
+          item.type = 'button';
           item.className = `lykos-team-form-result ${result}`;
           item.textContent = labels[result];
-          item.title = result === 'victory' ? 'Victoire' : result === 'tie' ? 'Match nul' : 'Défaite';
+          item.title = fixture ? `${resultLabels[result]} contre ${fixture.opponent ?? 'adversaire non renseigné'} · ${formatTeamDate(fixture.date) ?? 'date inconnue'}` : resultLabels[result];
+          item.setAttribute('aria-label',item.title);
+          item.setAttribute('aria-expanded','false');
+          item.setAttribute('aria-controls','lykos-team-form-details');
+          item.addEventListener('mouseenter',() => {
+            if (matchMedia('(hover: hover) and (pointer: fine)').matches) openTeamFormPopover(item,result,fixture);
+          });
+          item.addEventListener('mouseleave',() => {
+            if (matchMedia('(hover: hover) and (pointer: fine)').matches) teamFormCloseTimer = setTimeout(() => closeTeamFormPopover(),180);
+          });
+          item.addEventListener('click',event => {
+            event.stopPropagation();
+            const touchMode = !matchMedia('(hover: hover) and (pointer: fine)').matches;
+            if (touchMode && activeTeamFormResult === item && !teamFormPopover.hidden) closeTeamFormPopover(true);
+            else openTeamFormPopover(item,result,fixture);
+          });
           container.append(item);
         });
       };
@@ -1876,7 +1954,7 @@
         comparisonPopover.querySelector('[data-comparison-popover-opponent]').textContent = point.opponent ?? 'Non renseigné';
         comparisonPopover.querySelector('[data-comparison-popover-score]').textContent = point.score ?? 'Non renseigné';
         comparisonPopover.querySelector('[data-comparison-popover-explanation]').textContent = definition.explanation;
-        comparisonPopover.hidden = false; placeFixedPopover(comparisonPopover,anchor);
+        comparisonPopover.hidden = false;
       };
       comparisonPopover?.addEventListener('mouseenter',() => clearTimeout(comparisonCloseTimer));
       comparisonPopover?.addEventListener('mouseleave',() => { if (matchMedia('(hover: hover) and (pointer: fine)').matches) comparisonCloseTimer = setTimeout(closeComparisonPopover,180); });
@@ -1973,7 +2051,7 @@
           series.forEach((point,index) => {
             const matchNumber = point.index ?? index + 1;
             const accessibleLabel = `${seriesIndex === 0 ? seasonA?.label : seasonB?.label} · match ${matchNumber} · ${formatTeamDate(point.date) ?? 'date inconnue'} · ${point.opponent ?? 'adversaire non renseigné'} · score ${point.score ?? 'non renseigné'} · ${definition.label} ${metricDisplay(point[comparisonMetricSelect.value],definition)}`;
-            const circle = createSvgNode('circle',{cx:x(index),cy:y(point[comparisonMetricSelect.value]),r:4,fill:colors[seriesIndex],class:'lykos-comparison-point',tabindex:'0',role:'button','aria-label':accessibleLabel,'aria-expanded':'false'});
+            const circle = createSvgNode('circle',{cx:x(index),cy:y(point[comparisonMetricSelect.value]),r:4,fill:colors[seriesIndex],class:'lykos-comparison-point',tabindex:'0',role:'button','aria-label':accessibleLabel,'aria-expanded':'false','aria-controls':'lykos-comparison-details'});
             const title = createSvgNode('title');
             title.textContent = accessibleLabel; circle.append(title);
             const pointSeason = seriesIndex === 0 ? seasonA : seasonB;
@@ -2030,7 +2108,7 @@
           item.querySelector('strong').textContent = formatValue(value);
           item.querySelector('i').style.height = `${value === null ? 1 : Math.max(5,(value / averageMaximum) * 160)}px`;
         });
-        renderTeamForm(panel.querySelector('[data-team-form]'),values.recentResults);
+        renderTeamForm(panel.querySelector('[data-team-form]'),values.recentResults,values.scoreDistribution);
         const formScore = panel.querySelector('[data-team-form-score]');
         formScore.style.setProperty('--form-angle',`${Math.max(0,Math.min(100,values.recentFormScore ?? 0)) * 3.6}deg`);
         panel.querySelectorAll('[data-team-streak]').forEach(row => {

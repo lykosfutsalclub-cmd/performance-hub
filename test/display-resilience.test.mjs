@@ -63,3 +63,21 @@ test("les joueurs actuels et anciens sont différenciés et filtrables sans perd
   assert.match(page, /matchesPlayerStatus\(player\) && normalizePlayerSearch\(player\.name\)\.includes\(search\)/);
   assert.match(page, /data-player-list-empty role="status" hidden/);
 });
+
+test("les détails de comparaison restent dans la page au-dessus de la navigation fixe", async () => {
+  const page = await readFile(new URL("index.html", root), "utf8");
+  assert.match(page, /\.lykos-comparison-popover \{[^}]*position:relative;[^}]*width:100%;[^}]*margin-top:12px;/);
+  assert.match(page, /data-comparison-popover id="lykos-comparison-details" role="region" aria-labelledby="lykos-comparison-details-title"/);
+  assert.match(page, /'aria-controls':'lykos-comparison-details'/);
+  assert.doesNotMatch(page, /comparisonPopover\.hidden = false; placeFixedPopover\(comparisonPopover,anchor\)/);
+});
+
+test("chaque rond de forme récente expose le match au survol, au toucher et au clavier", async () => {
+  const page = await readFile(new URL("index.html", root), "utf8");
+  assert.match(page, /data-team-form-popover id="lykos-team-form-details" role="region" aria-labelledby="lykos-team-form-details-title"/);
+  assert.match(page, /const item = document\.createElement\('button'\);/);
+  assert.match(page, /item\.setAttribute\('aria-controls','lykos-team-form-details'\)/);
+  assert.match(page, /item\.addEventListener\('mouseenter'/);
+  assert.match(page, /scoreDistribution\.flatMap\(entry => Array\.isArray\(entry\?\.fixtures\)/);
+  assert.match(page, /renderTeamForm\(panel\.querySelector\('\[data-team-form\]'\),values\.recentResults,values\.scoreDistribution\)/);
+});

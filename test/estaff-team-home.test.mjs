@@ -57,8 +57,8 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
-  assert.match(page,/team-home\.css\?v=20261012-collaboration-v1/);
-  assert.match(page,/team-home\.js\?v=20261012-collaboration-v1/);
+  assert.match(page,/team-home\.css\?v=20261012-home-link-v1/);
+  assert.match(page,/team-home\.js\?v=20261012-home-link-v1/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -72,6 +72,18 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   assert.match(style,/font-family:"OMMarseille",Georgia,serif/);
   assert.match(style,/body\.lykos-team-home-active #estaff-root>main \{[\s\S]*position:static!important;[\s\S]*overflow:visible!important;/);
   assert.match(style,/body\.lykos-team-home-active \{[\s\S]*overflow-y:auto!important;/);
+});
+
+test("le logo du header ramène toujours à l’accueil du Performance Hub", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+  const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
+
+  assert.match(script,/const PERFORMANCE_HUB_HOME = "\/performance-hub\/"/);
+  assert.match(script,/class="company-brand" href="\$\{PERFORMANCE_HUB_HOME\}" data-hub-home/);
+  assert.match(script,/function prepareLegacyHeaderHomeLink\(\)/);
+  assert.match(script,/window\.location\.assign\(PERFORMANCE_HUB_HOME\)/);
+  assert.match(script,/event\.key==="Enter"\|\|event\.key===" "/);
+  assert.match(style,/\.company-brand,\[data-hub-home\] \{cursor:pointer\}/);
 });
 
 test("les identifiants techniques des personnes sont affichés avec leur prénom officiel", async () => {

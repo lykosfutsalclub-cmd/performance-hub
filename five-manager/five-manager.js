@@ -442,7 +442,7 @@
     ['eSportif', 'giannis', 'Giannis', 'Analyste performance', 'Interprète les statistiques et les notes Metron avec leur contexte.'],
     ['eSportif', 'nadir', 'Nadir', 'Analyste vidéo', 'Étudie les matchs filmés et documente ses observations avec des séquences précises.'],
     ['eSportif', 'bastien', 'Bastien', 'Planification SportEasy', 'Prépare les calendriers, les résultats et les classements à valider.'],
-    ['eOpérations', 'sophie', 'Sophie', 'Gestion administrative', 'Suit les dossiers du club et prépare les éléments administratifs à vérifier.'],
+    ['eAdministration', 'sophie', 'Sophie', 'Gestion administrative', 'Suit les dossiers du club et prépare les éléments administratifs à vérifier.'],
     ['eSupport', 'veronique', 'Véronique', 'Contrôle qualité', 'Contrôle les résultats et les corrections avant leur mise en service.'],
   ];
   function renderStaff() {

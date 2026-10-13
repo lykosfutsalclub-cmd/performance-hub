@@ -25,7 +25,7 @@
   const manuallyCollapsedAgentFeeds = new Set();
   const COLLAPSE_THRESHOLD = 420;
   const femaleAgents = new Set(["Sophie", "Véronique", "Patricia", "Alice", "Sandrine", "Sonia", "Amara", "Elena", "Joyce", "Élise", "Camélia", "Tamara", "Inès", "Angela", "Alba", "Lola", "Nora", "Salomé", "Ella", "Salma", "Priya"]);
-  const serviceLabels = {coordination:"eGeneral Director", operations:"eOpérations", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
+  const serviceLabels = {coordination:"eGeneral Director", operations:"eAdministration", sport:"eSportif", data:"eDatas", academy:"eAcademie", support:"eSupport", brand:"eBrand", security:"eSécurité", finance:"eFinance", equipment:"eÉquipements", partnerships:"ePartenariats", memory:"eMémoire", hr:"eRH"};
   const serviceDescriptions = {
     hr:"eRH agit sous l’autorité d’Oscar, Directeur général. Le service cadre le travail de l’équipe, mesure le temps consacré aux missions, organise les priorités, évalue les besoins et propose les adaptations qui maintiennent le eStaff efficace.",
   };

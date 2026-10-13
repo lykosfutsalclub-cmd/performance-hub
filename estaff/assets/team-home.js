@@ -3,7 +3,7 @@
   "use strict";
 
   const SERVICES = {
-    direction:{label:"Direction générale",short:"Direction"}, operations:{label:"eOpérations",short:"Opérations"},
+    direction:{label:"Direction générale",short:"Direction"}, operations:{label:"eAdministration",short:"Administration"},
     sport:{label:"eSportif",short:"Sport"}, data:{label:"eDatas",short:"Data"}, academy:{label:"eAcadémie",short:"Académie"},
     support:{label:"eSupport",short:"Support"}, brand:{label:"eBrand",short:"Marque"}, security:{label:"eSécurité",short:"Sécurité"},
     finance:{label:"eFinance",short:"Finance"}, equipment:{label:"eÉquipements",short:"Équipements"},

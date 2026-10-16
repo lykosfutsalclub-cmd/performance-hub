@@ -31,6 +31,7 @@ jobs:
   preuve-activite-erh:
     name: Contrôle privé de l’activité eRH
     if: >-
+      github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       github.event.schedule == '7 8 * * *' ||
       github.event.schedule == '7 9 * * *'

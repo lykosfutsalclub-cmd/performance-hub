@@ -28,6 +28,46 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  preuve-activite-erh:
+    name: Contrôle privé de l’activité eRH
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.schedule == '7 8 * * *' ||
+      github.event.schedule == '7 9 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+    steps:
+      - name: Relever les résultats et conditions de travail des 45 agents
+        id: audit
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          ERH_AUDIT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/erh-activity-audit
+        with:
+          script: |
+            if (context.eventName === "schedule") {
+              const hour = Number(new Intl.DateTimeFormat("fr-FR", {
+                timeZone:"Europe/Paris", hour:"2-digit", hour12:false,
+              }).format(new Date()));
+              if (hour !== 10) {
+                core.setOutput("active", "false");
+                core.notice("Le second créneau heure d’été/heure d’hiver reste silencieux.");
+                return;
+              }
+            }
+            const identity = await core.getIDToken("lykos-estaff-esupport");
+            const response = await fetch(process.env.ERH_AUDIT_URL, {
+              headers:{Authorization:`Bearer ${identity}`},
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok || result?.totals?.agents !== 45) {
+              core.setFailed(`Le relevé eRH est incomplet ou refusé (${response.status}).`);
+              return;
+            }
+            core.setOutput("active", "true");
+            core.notice(`${result.totals.agents} agents couverts ; ${result.totals.concreteResults48h} résultat(s) concret(s) sur 48 h.`);
+
   porte-leonard:
     name: Porte de complétude de Léonard
     runs-on: ubuntu-latest

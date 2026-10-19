@@ -195,19 +195,27 @@ jobs:
               const payload = {id: process.env.VIDEO_JOB_ID, durationSeconds: duration, framesPerSecond: 2, chapterIndex, totalChapters, frames};
               let response;
               let result;
-              for (let attempt = 1; attempt <= 3; attempt += 1) {
-                const identity = await core.getIDToken("lykos-estaff-esupport");
-                response = await fetch(process.env.VIDEO_ANALYZE_URL, {
-                  method: "POST",
-                  headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
-                  body: JSON.stringify(payload),
-                });
-                result = await response.json().catch(() => ({}));
-                if (response.ok) break;
-                if (attempt < 3 && (response.status === 429 || response.status >= 500)) await new Promise(resolve => setTimeout(resolve, attempt * 5000));
+              let networkError;
+              for (let attempt = 1; attempt <= 5; attempt += 1) {
+                try {
+                  const identity = await core.getIDToken("lykos-estaff-esupport");
+                  response = await fetch(process.env.VIDEO_ANALYZE_URL, {
+                    method: "POST",
+                    headers: {Authorization: `Bearer ${identity}`, "Content-Type": "application/json"},
+                    body: JSON.stringify(payload),
+                  });
+                  result = await response.json().catch(() => ({}));
+                  networkError = null;
+                  if (response.ok) break;
+                  if (response.status !== 429 && response.status < 500) break;
+                } catch (error) {
+                  networkError = error;
+                }
+                if (attempt < 5) await new Promise(resolve => setTimeout(resolve, Math.min(30000, attempt * 5000)));
               }
-              if (!response.ok) {
-                core.setFailed(`La minute ${chapterIndex + 1}/${totalChapters} a échoué (${response.status}, ${result.error || "erreur inconnue"}). Aucun rapport complet n’est publié.`);
+              if (!response?.ok) {
+                const reason = networkError ? "coupure réseau persistante" : `${response?.status || "sans réponse"}, ${result?.error || "erreur inconnue"}`;
+                core.setFailed(`La minute ${chapterIndex + 1}/${totalChapters} a échoué (${reason}). Aucun rapport complet n’est publié.`);
                 return;
               }
               finalResult = result;

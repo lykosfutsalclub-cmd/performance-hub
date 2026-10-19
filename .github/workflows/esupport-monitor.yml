@@ -131,6 +131,12 @@ jobs:
             core.setOutput("video_url", result.job.videoUrl);
             core.notice("Samir a validé une correspondance unique ; Nadir peut travailler sur une copie temporaire.");
 
+      - name: Préparer le lecteur vidéo de Nadir
+        if: steps.candidate.outputs.active == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+
       - name: Parcourir toute la vidéo à deux images par seconde
         if: steps.candidate.outputs.active == 'true'
         env:

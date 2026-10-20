@@ -122,8 +122,8 @@
     Konstantinos: {
       title:"Marque, contenus et partenariats",
       summary:"Développer eBrand en restant fidèle à l’identité du Lykos FC.",
-      purpose:"Konstantinos analyse l’image du club, la cohérence des contenus, les opportunités de partenariat et les idées de produits. Il transforme ses observations en recommandations concrètes pour Oscar et les dirigeants.",
-      when:"Pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit aux couleurs du club.",
+      purpose:"Konstantinos dirige la revue eBrand, analyse l’image du club, la cohérence des contenus, les opportunités de partenariat et les idées de produits, puis transmet lui-même les conclusions utiles du service.",
+      when:"Le lundi et le jeudi à 11 h, ainsi qu’après tout changement public significatif, pour préparer une campagne, évaluer un contenu, cadrer un partenariat ou étudier un produit.",
       output:"Un Brand Opportunity Brief : constat, public visé, proposition, bénéfices, risques, effort estimé et prochaine décision attendue.",
     },
     Léonard: {
@@ -143,7 +143,7 @@
     Francisco: {title:"Contrôle des données",summary:"Vérifier la qualité des données pour Giannis.",purpose:"Francisco contrôle les sources, périodes, doublons, unités, valeurs manquantes et la version Metron.",when:"Avant chaque interprétation de Giannis.",output:"Un contrôle de qualité et de reproductibilité des calculs."},
     Tamara: {title:"Tests de régression",summary:"Exécuter les contrôles techniques pour Véronique.",purpose:"Tamara vérifie qu’une correction ne réintroduit pas une ancienne panne et consigne les tests non exécutés.",when:"Après chaque correction et avant une validation technique.",output:"Des résultats reproductibles avec versions, scénarios et preuves."},
     Inès: {title:"Compréhension Data/UX",summary:"Vérifier la clarté des données pour Sandrine.",purpose:"Inès contrôle que les statistiques et interfaces sont compréhensibles, fidèles et utilisables sur ordinateur comme sur mobile.",when:"Lorsqu’une donnée ou une interface doit être rendue plus claire.",output:"Un audit de compréhension avec difficultés et corrections proposées."},
-    Giorgios: {title:"Observation des canaux publics",summary:"Observer les canaux officiels pour Kostantinos.",purpose:"Giorgios relève les changements et mesures publiques agrégées sans connexion, publication ni collecte d’identités.",when:"Pendant la veille des contenus, partenaires et produits publics.",output:"Un relevé sourcé avec URL, date, valeur observée et niveau de preuve."},
+    Giorgios: {title:"Observation des canaux publics",summary:"Comparer les canaux officiels pour Konstantinos.",purpose:"Giorgios compare Instagram, Facebook, le site, la boutique et le Performance Hub sans connexion, publication ni collecte d’identités.",when:"Chaque jour à 10 h 20 et dès qu’un contenu, un partenaire ou un produit public change.",output:"Un relevé des seuls changements utiles avec URL, date, valeur observée, limite et niveau de preuve."},
     Vincenzo: {title:"Veille et récupération vidéo",summary:"Détecter les vidéos correspondant aux matchs SportEasy validés.",purpose:"Vincenzo recherche dans la vidéothèque du Complexe par date et terrain, compare le score, puis attend la validation de Samir et le rattachement d’Oscar avant tout téléchargement.",when:"Le jeudi à 7 h 30, le vendredi à 7 h 30 et le dimanche à 7 h 30, jusqu’à la découverte d’un candidat.",output:"Un candidat traçable ou la confirmation qu’aucun match n’est candidat à une analyse de nos agents."},
     Amara: {
       title:"Responsable eSécurité",

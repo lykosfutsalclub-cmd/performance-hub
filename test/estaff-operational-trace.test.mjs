@@ -5,6 +5,7 @@ import {readFileSync} from "node:fs";
 const source = readFileSync(new URL("../estaff/assets/esupport-report.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("../estaff/assets/esupport-report.css", import.meta.url), "utf8");
 const workflow = readFileSync(new URL("../.github/workflows/esupport-monitor.yml", import.meta.url), "utf8");
+const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
 const agents = [
   "Oscar", "Sophie", "Nadir", "Alice", "Victor", "Giannis", "Patricia", "Gaston", "Véronique", "Sandrine", "Léonard", "Konstantinos",
@@ -30,6 +31,13 @@ test("les 45 agents possèdent un contrat opérationnel visible", () => {
   }
   assert.match(source, /eRH agit sous l’autorité d’Oscar, Directeur général/);
   assert.match(source, /mission complémentaire/);
+});
+
+test("eBrand présente ses quatre agents avec le prénom Konstantinos correctement écrit", () => {
+  for (const agent of ["Konstantinos","Giorgios","Lola","Nathan"]) assert.match(home,new RegExp(`<strong>${agent}</strong>`));
+  assert.doesNotMatch(home,/Kostantinos/);
+  assert.doesNotMatch(source,/Kostantinos/);
+  assert.match(source,/Instagram, Facebook, le site, la boutique et le Performance Hub/);
 });
 
 test("les cartes agent distinguent la connexion métier de la simple exécution", () => {

@@ -160,7 +160,7 @@
     ]);
     const result = Math.max(1,Math.min(99,value));
     const label = result >= 70 ? "Contexte favorable" : result >= 55 ? "Léger avantage Lykos" : result >= 45 ? "Match équilibré" : "Match exigeant";
-    const confirmed = context?.roster?.confirmation === "confirmed";
+    const confirmed = ["confirmed","manual"].includes(context?.roster?.confirmation);
     const complete = squad.coverage.available === squad.coverage.total;
     return {
       available:true,value:result,label,squad,form,headToHead,evidence,

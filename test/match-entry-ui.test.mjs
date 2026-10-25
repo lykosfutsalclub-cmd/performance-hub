@@ -14,10 +14,10 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/match-hub\.css\?v=20261025-prematch-v2/);
-  assert.match(page,/prematch-insights\.js\?v=20261025-prematch-v2/);
-  assert.match(page,/match-entry\.js\?v=20261025-prematch-v2/);
-  assert.match(page,/pantheon-data\.js\?v=20261025-prematch-v2/);
+  assert.match(page,/match-hub\.css\?v=20261025-prematch-v3/);
+  assert.match(page,/prematch-insights\.js\?v=20261025-prematch-v3/);
+  assert.match(page,/match-entry\.js\?v=20261025-prematch-v3/);
+  assert.match(page,/pantheon-data\.js\?v=20261025-prematch-v3/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -33,6 +33,11 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/data-match-mode="post"/);
   assert.match(client,/prematch\/context/);
   assert.match(client,/Groupe confirmé par la convocation Messenger/);
+  assert.match(client,/Groupe validé dans le Performance Hub/);
+  assert.match(client,/data-prematch-roster-form/);
+  assert.match(client,/name="playerIds"/);
+  assert.match(client,/prematch\/roster/);
+  assert.match(client,/Valider le groupe convoqué/);
   assert.match(client,/Pronostic Metron/);
   assert.match(client,/Dernier match du Lykos/);
   assert.match(client,/5 derniers face-à-face/);

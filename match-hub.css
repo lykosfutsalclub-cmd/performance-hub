@@ -112,6 +112,22 @@
 .lykos-match-page .prematch-squad header > strong { color: #fff; font-size: 24px; line-height: .9; text-align: right; }
 .lykos-match-page .prematch-squad header > strong small { color: #8fa8c1; font-size: 10px; }
 .lykos-match-page .prematch-squad header > strong span { display: block; margin-top: 5px; color: #8fa8c1; font-size: 8px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.lykos-match-page .prematch-roster-editor { display: grid; gap: 11px; margin-bottom: 14px; padding: 13px; border: 1px solid rgba(208, 182, 49, .23); border-radius: 12px; background: linear-gradient(145deg, rgba(208, 182, 49, .08), rgba(0, 14, 36, .3)); }
+.lykos-match-page .prematch-roster-editor-title { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+.lykos-match-page .prematch-roster-editor-title > div { display: grid; gap: 4px; }
+.lykos-match-page .prematch-roster-editor-title strong { color: #fff; font-size: 11px; }
+.lykos-match-page .prematch-roster-editor-title span { color: #8fa8c1; font-size: 8px; line-height: 1.45; }
+.lykos-match-page .prematch-roster-editor-title > b { flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; background: rgba(208, 182, 49, .13); color: #f0da67; font-size: 8px; text-transform: uppercase; }
+.lykos-match-page .prematch-roster-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-height: 175px; overflow-y: auto; padding: 2px; scrollbar-color: rgba(208, 182, 49, .45) transparent; }
+.lykos-match-page .prematch-roster-options label { position: relative; min-width: 0; cursor: pointer; }
+.lykos-match-page .prematch-roster-options input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.lykos-match-page .prematch-roster-options span { display: flex; gap: 7px; align-items: center; min-height: 36px; padding: 7px 9px; border: 1px solid rgba(255, 255, 255, .09); border-radius: 9px; background: rgba(0, 14, 36, .42); color: #b8c8d9; font-size: 8px; font-weight: 750; line-height: 1.25; transition: border-color .16s ease, background .16s ease, color .16s ease; }
+.lykos-match-page .prematch-roster-options i { display: grid; flex: 0 0 17px; width: 17px; height: 17px; place-items: center; border: 1px solid rgba(255, 255, 255, .18); border-radius: 5px; color: transparent; font-size: 9px; font-style: normal; }
+.lykos-match-page .prematch-roster-options input:checked + span { border-color: rgba(208, 182, 49, .45); background: rgba(208, 182, 49, .12); color: #fff; }
+.lykos-match-page .prematch-roster-options input:checked + span i { border-color: var(--company-gold); background: var(--company-gold); color: #071d47; }
+.lykos-match-page .prematch-roster-options input:focus-visible + span { outline: 2px solid #fff; outline-offset: 2px; }
+.lykos-match-page .prematch-roster-submit { justify-self: end; min-width: 205px; min-height: 40px; margin: 0; border: 0; background: var(--company-gold); color: #071d47 !important; font-size: 9px; }
+.lykos-match-page .prematch-roster-saved { margin: 0; color: var(--company-green); font-size: 9px; font-weight: 800; }
 .lykos-match-page .prematch-player-list { display: grid; gap: 7px; }
 .lykos-match-page .prematch-player { display: grid; grid-template-columns: minmax(135px, .72fr) repeat(2, minmax(170px, 1fr)); gap: 10px; min-height: 66px; padding: 10px 11px; border: 1px solid rgba(255, 255, 255, .08); border-radius: 10px; background: rgba(0, 14, 36, .34); }
 .lykos-match-page .prematch-player > header { display: grid; align-content: center; gap: 6px; min-width: 0; }
@@ -188,12 +204,17 @@
   .lykos-match-page .prematch-squad { order: 2; }
   .lykos-match-page .prematch-history { order: 3; }
   .lykos-match-page .prematch-player { grid-template-columns: 1fr; }
+  .lykos-match-page .prematch-roster-options { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 220px; }
+  .lykos-match-page .prematch-roster-submit { width: 100%; min-width: 0; }
   .lykos-match-page .prematch-player > header { grid-template-columns: 1fr auto; align-items: center; }
   .lykos-match-page .prematch-player > div { padding: 8px 0 0; border-top: 1px solid rgba(255, 255, 255, .08); border-left: 0; }
   .lykos-match-page .prematch-series > div { grid-template-columns: 92px minmax(0, 1fr) auto; }
 }
 
 @media (max-width: 420px) {
+  .lykos-match-page .prematch-roster-editor-title { align-items: stretch; flex-direction: column; gap: 8px; }
+  .lykos-match-page .prematch-roster-editor-title > b { align-self: start; }
+  .lykos-match-page .prematch-roster-options { grid-template-columns: 1fr; }
   .lykos-match-page .match-progress { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 68px; column-gap: 3px; justify-content: center; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; scrollbar-width: none; }
   .lykos-match-page .match-progress::-webkit-scrollbar { display: none; }
   .lykos-match-page .match-progress button { min-width: 0; flex-direction: column; gap: 1px; padding: 3px 5px; border: 1px solid rgba(255, 255, 255, .08) !important; border-radius: 9px; background: rgba(255, 255, 255, .035); font-size: 7px; line-height: 1.15; scroll-snap-align: center; }

@@ -5,7 +5,7 @@
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   let heicConverterPromise = null;
   const state = {
-    mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"",
+    mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"", prematchSaving:false, prematchSaveError:"", prematchSaved:false,
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
@@ -40,6 +40,8 @@
         : "SportEasy a refusé une étape de la mise à jour. Vos informations restent protégées et pourront reprendre sans doublon.",
       no_upcoming_match:"Aucun match à préparer n’a été trouvé dans SportEasy.",
       prematch_context_unavailable:"La préparation du prochain match est momentanément indisponible.",
+      invalid_manual_roster_players:"Sélectionnez au moins 3 joueurs du groupe Lykos FC.",
+      manual_roster_update_failed:"Le groupe n’a pas pu être enregistré. Réessayez dans un instant.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
   }
@@ -94,6 +96,7 @@
       const suffix = eventId ? `?eventId=${encodeURIComponent(eventId)}` : "";
       state.prematch = await call(`prematch/context${suffix}`);
       state.prematchSelectedId = state.prematch.match.id;
+      state.prematchSaveError = "";
     } catch (error) {
       state.prematchError = error.message;
     } finally {
@@ -156,11 +159,17 @@
     const prediction = insights.forecast(context);
     const history = insights.history(context.match);
     const roster = prediction.squad;
-    const confirmed = context.roster.confirmation === "confirmed";
-    const statusText = confirmed ? "Groupe confirmé par la convocation Messenger" : context.roster.confirmation === "sporteasy_only" ? "Groupe provisoire issu de SportEasy" : "Convocation en attente";
+    const manuallyValidated = context.roster.confirmation === "manual";
+    const confirmed = manuallyValidated || context.roster.confirmation === "confirmed";
+    const statusText = manuallyValidated ? "Groupe validé dans le Performance Hub" : confirmed ? "Groupe confirmé par la convocation Messenger" : context.roster.confirmation === "sporteasy_only" ? "Groupe provisoire issu de SportEasy" : "Groupe à valider";
     const statusDetail = confirmed
-      ? `${context.roster.author ? `Message de ${context.roster.author} · ` : ""}${formatDate(context.roster.confirmedAt)}`
+      ? `${context.roster.author ? `Message de ${context.roster.author} · ` : "Validation humaine · "}${formatDate(context.roster.confirmedAt)}`
       : "La prévision se mettra à jour automatiquement après confirmation du groupe Lykos FC.";
+    const selectablePlayers = context.availablePlayers || [];
+    const selectedIds = new Set(context.roster.players.map(player => String(player.id || "")).filter(Boolean));
+    const selectedNames = new Set(context.roster.players.map(player => normalize(player.name)).filter(Boolean));
+    const isSelectedPlayer = player => selectedIds.has(String(player.id)) || selectedNames.has(normalize(player.name));
+    const selectedCount = selectablePlayers.filter(isSelectedPlayer).length;
     const sourceRows = prediction.available ? [
       ["Metron du groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"30 %"],
       ["Forme collective",`${prediction.form} / 99`,"20 %"],
@@ -181,6 +190,13 @@
       <div class="prematch-grid">
         <section class="prematch-card prematch-squad">
           <header><div><h2>Groupe retenu</h2><p>${roster.players.length} joueur${roster.players.length > 1 ? "s" : ""} · ${roster.coverage.available}/${roster.coverage.total} Metron disponibles</p></div><strong>${roster.average === null ? "—" : roster.average}<small>/99</small><span>Moyenne</span></strong></header>
+          <form class="prematch-roster-editor" data-prematch-roster-form>
+            <div class="prematch-roster-editor-title"><div><strong>Valider le groupe convoqué</strong><span>Sélectionnez les joueurs retenus. Votre choix remplace automatiquement le groupe provisoire.</span></div><b data-prematch-roster-count>${selectedCount} sélectionné${selectedCount > 1 ? "s" : ""}</b></div>
+            <div class="prematch-roster-options">${selectablePlayers.map(player => `<label><input type="checkbox" name="playerIds" value="${escapeHtml(player.id)}" ${isSelectedPlayer(player) ? "checked" : ""}><span><i aria-hidden="true">✓</i>${escapeHtml(player.name)}</span></label>`).join("")}</div>
+            ${state.prematchSaveError ? `<p class="match-error" role="alert">${escapeHtml(state.prematchSaveError)}</p>` : ""}
+            ${state.prematchSaved ? `<p class="prematch-roster-saved" role="status">✓ Groupe convoqué validé et pronostic recalculé.</p>` : ""}
+            <button type="submit" class="company-primary prematch-roster-submit" ${state.prematchSaving || selectablePlayers.length < 3 ? "disabled" : ""}>${state.prematchSaving ? "Validation en cours…" : manuallyValidated ? "Mettre à jour le groupe" : "Valider le groupe convoqué"}</button>
+          </form>
           ${roster.players.length ? `<div class="prematch-player-list">${roster.players.map(player => `<article class="prematch-player"><header><strong>${escapeHtml(player.name)}</strong><b>${player.metron === null ? "Metron non calculable" : `Metron ${player.metron} / 99`}</b></header><div><small>5 derniers matchs</small>${playerWindow(player.recent)}</div><div><small>5 derniers face-à-face</small>${playerWindow(player.opponent,true)}</div></article>`).join("")}</div>` : `<div class="prematch-history-empty"><strong>Groupe non disponible</strong><span>SportEasy et la convocation Messenger sont surveillés automatiquement.</span></div>`}
         </section>
         <section class="prematch-card prematch-forecast">
@@ -481,6 +497,24 @@
     }
   }
 
+  async function submitPrematchRoster(formElement) {
+    if (!state.prematch || state.prematchSaving) return;
+    const playerIds = new FormData(formElement).getAll("playerIds").map(String);
+    if (playerIds.length < 3) {state.prematchSaveError=message("invalid_manual_roster_players");state.prematchSaved=false;notify();return;}
+    const eventId = state.prematch.match.id;
+    state.prematchSaving = true; state.prematchSaveError = ""; state.prematchSaved = false; notify();
+    try {
+      await call("prematch/roster", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({eventId,playerIds})});
+      state.prematch = null;
+      await loadPrematch(eventId);
+      state.prematchSaved = true;
+    } catch (error) {
+      state.prematchSaveError = error.message;
+    } finally {
+      state.prematchSaving = false; notify();
+    }
+  }
+
   document.addEventListener("click", event => {
     const mode = event.target.closest?.("[data-match-mode]");
     if (mode) {
@@ -514,6 +548,13 @@
   });
   document.addEventListener("change", event => {
     if (event.target.matches?.("[data-prematch-select]")) {state.prematchSelectedId=event.target.value;state.prematch=null;loadPrematch(state.prematchSelectedId);return;}
+    if (event.target.matches?.('[data-prematch-roster-form] input[name="playerIds"]')) {
+      const form = event.target.closest("[data-prematch-roster-form]");
+      const count = form?.querySelectorAll('input[name="playerIds"]:checked').length || 0;
+      const output = form?.querySelector("[data-prematch-roster-count]");
+      if (output) output.textContent = `${count} sélectionné${count > 1 ? "s" : ""}`;
+      return;
+    }
     if (event.target.matches?.("[data-match-select]")) {state.selectedId=event.target.value;state.preview="";state.proposal=null;load(state.selectedId);return;}
     if (event.target.matches?.("[data-match-photo]")) scan(event.target.files?.[0]);
   });
@@ -540,6 +581,9 @@
     }
   });
   document.addEventListener("submit", event => {
+    if (event.target.matches?.("[data-prematch-roster-form]")) {
+      event.preventDefault(); submitPrematchRoster(event.target); return;
+    }
     if (!event.target.matches?.("[data-match-form]")) return;
     event.preventDefault(); submit(event.target);
   });
@@ -556,7 +600,7 @@
   });
   const receiveSession = event => {
     state.token = typeof event.detail?.token === "string" ? event.detail.token : "";
-    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
+    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",prematchSaving:false,prematchSaveError:"",prematchSaved:false,loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
     notify();
   };
   window.addEventListener("lykos:hub-session",receiveSession);

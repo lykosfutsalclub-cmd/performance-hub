@@ -40,7 +40,7 @@
         : "SportEasy a refusé une étape de la mise à jour. Vos informations restent protégées et pourront reprendre sans doublon.",
       no_upcoming_match:"Aucun match à préparer n’a été trouvé dans SportEasy.",
       prematch_context_unavailable:"La préparation du prochain match est momentanément indisponible.",
-      invalid_manual_roster_players:"Sélectionnez au moins 3 joueurs du groupe Lykos FC.",
+      invalid_manual_roster_players:"Sélectionnez au moins 5 joueurs du groupe Lykos FC.",
       manual_roster_update_failed:"Le groupe n’a pas pu être enregistré. Réessayez dans un instant.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
@@ -195,7 +195,7 @@
             <div class="prematch-roster-options">${selectablePlayers.map(player => `<label><input type="checkbox" name="playerIds" value="${escapeHtml(player.id)}" ${isSelectedPlayer(player) ? "checked" : ""}><span><i aria-hidden="true">✓</i>${escapeHtml(player.name)}</span></label>`).join("")}</div>
             ${state.prematchSaveError ? `<p class="match-error" role="alert">${escapeHtml(state.prematchSaveError)}</p>` : ""}
             ${state.prematchSaved ? `<p class="prematch-roster-saved" role="status">✓ Groupe convoqué validé et pronostic recalculé.</p>` : ""}
-            <button type="submit" class="company-primary prematch-roster-submit" ${state.prematchSaving || selectablePlayers.length < 3 ? "disabled" : ""}>${state.prematchSaving ? "Validation en cours…" : manuallyValidated ? "Mettre à jour le groupe" : "Valider le groupe convoqué"}</button>
+            <button type="submit" class="company-primary prematch-roster-submit" ${state.prematchSaving || selectablePlayers.length < 5 ? "disabled" : ""}>${state.prematchSaving ? "Validation en cours…" : manuallyValidated ? "Mettre à jour le groupe" : "Valider le groupe convoqué"}</button>
           </form>
           ${roster.players.length ? `<div class="prematch-player-list">${roster.players.map(player => `<article class="prematch-player"><header><strong>${escapeHtml(player.name)}</strong><b>${player.metron === null ? "Metron non calculable" : `Metron ${player.metron} / 99`}</b></header><div><small>5 derniers matchs</small>${playerWindow(player.recent)}</div><div><small>5 derniers face-à-face</small>${playerWindow(player.opponent,true)}</div></article>`).join("")}</div>` : `<div class="prematch-history-empty"><strong>Groupe non disponible</strong><span>SportEasy et la convocation Messenger sont surveillés automatiquement.</span></div>`}
         </section>
@@ -500,7 +500,7 @@
   async function submitPrematchRoster(formElement) {
     if (!state.prematch || state.prematchSaving) return;
     const playerIds = new FormData(formElement).getAll("playerIds").map(String);
-    if (playerIds.length < 3) {state.prematchSaveError=message("invalid_manual_roster_players");state.prematchSaved=false;notify();return;}
+    if (playerIds.length < 5) {state.prematchSaveError=message("invalid_manual_roster_players");state.prematchSaved=false;notify();return;}
     const eventId = state.prematch.match.id;
     state.prematchSaving = true; state.prematchSaveError = ""; state.prematchSaved = false; notify();
     try {

@@ -5,6 +5,7 @@
   const API = "https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff";
   let heicConverterPromise = null;
   const state = {
+    mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"",
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
@@ -37,6 +38,8 @@
       sporteasy_update_failed:stepLabels[step]
         ? `SportEasy a refusé la mise à jour ${stepLabels[step]}. Vos autres informations restent protégées et pourront reprendre sans doublon.`
         : "SportEasy a refusé une étape de la mise à jour. Vos informations restent protégées et pourront reprendre sans doublon.",
+      no_upcoming_match:"Aucun match à préparer n’a été trouvé dans SportEasy.",
+      prematch_context_unavailable:"La préparation du prochain match est momentanément indisponible.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
   }
@@ -84,17 +87,102 @@
     }
   }
 
+  async function loadPrematch(eventId = "") {
+    if (!state.token || state.prematchLoading) return;
+    state.prematchLoading = true; state.prematchError = ""; notify();
+    try {
+      const suffix = eventId ? `?eventId=${encodeURIComponent(eventId)}` : "";
+      state.prematch = await call(`prematch/context${suffix}`);
+      state.prematchSelectedId = state.prematch.match.id;
+    } catch (error) {
+      state.prematchError = error.message;
+    } finally {
+      state.prematchLoading = false; notify();
+    }
+  }
+
   function ensureLoaded() {
     if (!state.token) {
       const sharedSession = window.LYKOS_HUB_ACCESS?.getSession?.();
       if (typeof sharedSession?.token === "string") state.token = sharedSession.token;
     }
-    if (state.token && !state.loading && !state.data && !state.error) load();
+    if (state.mode === "pre" && state.token && !state.prematchLoading && !state.prematch && !state.prematchError) loadPrematch();
+    if (state.mode === "post" && state.token && !state.loading && !state.data && !state.error) load();
   }
 
   function formatDate(value) {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? "Date inconnue" : new Intl.DateTimeFormat("fr-FR", {dateStyle:"full", timeStyle:"short", timeZone:"Europe/Paris"}).format(date);
+  }
+
+  function formatDay(value) {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "Date inconnue" : new Intl.DateTimeFormat("fr-FR", {day:"2-digit",month:"long",year:"numeric",timeZone:"Europe/Paris"}).format(date);
+  }
+
+  function workspaceTabs() {
+    return `<div class="match-workspace-tabs" role="tablist" aria-label="Préparation et compte rendu du match">
+      <button type="button" id="match-tab-pre" role="tab" aria-controls="match-panel-pre" aria-selected="${state.mode === "pre"}" tabindex="${state.mode === "pre" ? "0" : "-1"}" data-match-mode="pre">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V7l-8-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg><span>Pré-match</span><small>Préparer la rencontre</small>
+      </button>
+      <button type="button" id="match-tab-post" role="tab" aria-controls="match-panel-post" aria-selected="${state.mode === "post"}" tabindex="${state.mode === "post" ? "0" : "-1"}" data-match-mode="post">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Post-match</span><small>Saisir le compte rendu</small>
+      </button>
+    </div>`;
+  }
+
+  function fixtureSummary(match, emptyText) {
+    if (!match) return `<div class="prematch-history-empty"><strong>${escapeHtml(emptyText)}</strong><span>Le bloc se complètera dès qu’une rencontre correspondante sera disponible.</span></div>`;
+    const result = window.LykosPrematchInsights?.resultLabel(match) || "Résultat";
+    return `<div class="prematch-history-result"><div><strong>${escapeHtml(result)}</strong><span>${escapeHtml(formatDay(match.date))}</span></div><b>${escapeHtml(match.score || "—")}</b><p>Lykos FC — ${escapeHtml(match.opponent)}</p></div>`;
+  }
+
+  function preMatchView() {
+    const context = state.prematch;
+    const insights = window.LykosPrematchInsights;
+    if (!context || !insights) return "";
+    const prediction = insights.forecast(context);
+    const history = insights.history(context.match);
+    const roster = prediction.squad;
+    const confirmed = context.roster.confirmation === "confirmed";
+    const statusText = confirmed ? "Groupe confirmé par la convocation Messenger" : context.roster.confirmation === "sporteasy_only" ? "Groupe provisoire issu de SportEasy" : "Convocation en attente";
+    const statusDetail = confirmed
+      ? `${context.roster.author ? `Message de ${context.roster.author} · ` : ""}${formatDate(context.roster.confirmedAt)}`
+      : "La prévision se mettra à jour automatiquement après confirmation du groupe Lykos FC.";
+    const sourceRows = prediction.available ? [
+      ["Groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"50 %"],
+      ["Forme",`${prediction.form} / 99`,"30 %"],
+      ["Face-à-face",prediction.headToHead.value === null ? "Sans historique" : `${prediction.headToHead.value} / 99`,prediction.headToHead.value === null ? "Redistribué" : "20 %"],
+    ] : [];
+    return `<main class="company-main match-entry-main prematch-main">
+      <section class="company-title prematch-title">
+        <div><h1>Préparer le match</h1><span>Le prochain rendez-vous, le groupe retenu et les repères Metron réunis automatiquement.</span></div>
+        <span class="prematch-auto"><i></i><b>Mise à jour automatique</b>SportEasy, Metron et convocation</span>
+      </section>
+      ${context.candidates?.length > 1 ? `<label class="prematch-select"><span>Rencontre préparée</span><select data-prematch-select>${context.candidates.map(candidate => `<option value="${candidate.id}" ${candidate.id===context.match.id?"selected":""}>${escapeHtml(candidate.opponent)} · ${escapeHtml(formatDate(candidate.startAt))}</option>`).join("")}</select></label>` : ""}
+      <section class="prematch-opponent">
+        <div><span>Prochaine rencontre</span><h2>Lykos FC <i>vs</i> ${escapeHtml(context.match.opponent)}</h2><p>${escapeHtml(formatDate(context.match.startAt))}${context.match.venue ? ` · ${escapeHtml(context.match.venue)}` : ""}</p></div>
+        <div class="prematch-roster-status ${confirmed ? "is-confirmed" : "is-pending"}"><i aria-hidden="true"></i><div><strong>${escapeHtml(statusText)}</strong><span>${escapeHtml(statusDetail)}</span></div></div>
+      </section>
+      <div class="prematch-grid">
+        <section class="prematch-card prematch-squad">
+          <header><div><h2>Groupe retenu</h2><p>${roster.players.length} joueur${roster.players.length > 1 ? "s" : ""} · ${roster.coverage.available}/${roster.coverage.total} Metron disponibles</p></div><strong>${roster.average === null ? "—" : roster.average}<small>/99</small><span>Moyenne</span></strong></header>
+          ${roster.players.length ? `<div class="prematch-player-list">${roster.players.map(player => `<div class="prematch-player"><span>${escapeHtml(player.name)}</span><b>${player.metron === null ? "Non calculable" : `${player.metron} / 99`}</b></div>`).join("")}</div>` : `<div class="prematch-history-empty"><strong>Groupe non disponible</strong><span>SportEasy et la convocation Messenger sont surveillés automatiquement.</span></div>`}
+        </section>
+        <section class="prematch-card prematch-forecast">
+          <header><div><h2>Pronostic Metron</h2><p>Une tendance, pas une promesse de résultat.</p></div></header>
+          ${prediction.available ? `<div class="prematch-gauge" style="--prematch-score:${prediction.value}%"><strong>${prediction.value}<small>/99</small></strong><span>${escapeHtml(prediction.label)}</span></div><div class="prematch-components">${sourceRows.map(([label,value,weight]) => `<div><span>${label}</span><b>${value}</b><small>${weight}</small></div>`).join("")}</div><p class="prematch-confidence">Confiance ${prediction.confidence}${prediction.provisional ? " · groupe encore provisoire" : " · groupe confirmé"}</p>` : `<div class="prematch-history-empty"><strong>Pronostic en attente</strong><span>${escapeHtml(prediction.reason)}</span></div>`}
+        </section>
+        <section class="prematch-card prematch-history">
+          <header><div><h2>Dernier match du Lykos</h2><p>Le repère de forme le plus récent.</p></div></header>
+          ${fixtureSummary(history.lastMatch,"Aucun match précédent disponible")}
+        </section>
+        <section class="prematch-card prematch-history">
+          <header><div><h2>Dernier match contre ${escapeHtml(context.match.opponent)}</h2><p>Le dernier face-à-face enregistré.</p></div></header>
+          ${fixtureSummary(history.lastAgainst,"Aucun face-à-face retrouvé")}
+        </section>
+      </div>
+    </main>`;
   }
 
   function stars(value) {
@@ -224,9 +312,18 @@
 
   function view() {
     ensureLoaded();
-    if (state.loading && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><h1>Saisie match</h1></div></section><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
-    if (state.error && !state.data) return `<main class="company-main match-entry-main"><section class="company-title"><div><h1>Saisie match</h1></div></section><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
-    return state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
+    let content = "";
+    if (state.mode === "pre") {
+      if (state.prematchLoading && !state.prematch) content = `<main class="company-main match-entry-main"><div class="match-loading"><i></i><strong>Préparation du prochain match…</strong></div></main>`;
+      else if (state.prematchError && !state.prematch) content = `<main class="company-main match-entry-main"><div class="match-empty"><strong>${escapeHtml(state.prematchError)}</strong><button type="button" class="company-primary" data-prematch-retry>Réessayer</button></div></main>`;
+      else content = state.prematch ? preMatchView() : `<main class="company-main match-entry-main"></main>`;
+    } else {
+      if (state.loading && !state.data) content = `<main class="company-main match-entry-main"><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
+      else if (state.error && !state.data) content = `<main class="company-main match-entry-main"><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
+      else content = state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
+    }
+    const panelId = state.mode === "pre" ? "match-panel-pre" : "match-panel-post";
+    return `${workspaceTabs()}<section id="${panelId}" role="tabpanel" aria-labelledby="match-tab-${state.mode}">${content}</section>`;
   }
 
   function loadHeicConverter() {
@@ -371,6 +468,15 @@
   }
 
   document.addEventListener("click", event => {
+    const mode = event.target.closest?.("[data-match-mode]");
+    if (mode) {
+      state.mode = mode.dataset.matchMode;
+      notify();
+      if (state.mode === "pre" && !state.prematch && !state.prematchLoading) loadPrematch();
+      if (state.mode === "post" && !state.data && !state.loading) load();
+      return;
+    }
+    if (event.target.closest?.("[data-prematch-retry]")) {state.prematchError="";state.prematch=null;loadPrematch();return;}
     const retry = event.target.closest?.("[data-match-retry]");
     if (retry) {state.error="";state.data=null;load();return;}
     if (event.target.closest?.("[data-match-scan-retry]") && state.lastFile) {scan(state.lastFile);return;}
@@ -393,6 +499,7 @@
     if (root && !root.contains(event.relatedTarget)) root.querySelectorAll(".is-preview").forEach(button => button.classList.remove("is-preview"));
   });
   document.addEventListener("change", event => {
+    if (event.target.matches?.("[data-prematch-select]")) {state.prematchSelectedId=event.target.value;state.prematch=null;loadPrematch(state.prematchSelectedId);return;}
     if (event.target.matches?.("[data-match-select]")) {state.selectedId=event.target.value;state.preview="";state.proposal=null;load(state.selectedId);return;}
     if (event.target.matches?.("[data-match-photo]")) scan(event.target.files?.[0]);
   });
@@ -422,9 +529,20 @@
     if (!event.target.matches?.("[data-match-form]")) return;
     event.preventDefault(); submit(event.target);
   });
+  document.addEventListener("keydown", event => {
+    const tab = event.target.closest?.("[data-match-mode]");
+    if (!tab || !["ArrowLeft","ArrowRight","Home","End"].includes(event.key)) return;
+    event.preventDefault();
+    const tabs = [...tab.closest('[role="tablist"]')?.querySelectorAll('[role="tab"]') || []];
+    if (!tabs.length) return;
+    const current = tabs.indexOf(tab);
+    const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length-1 : event.key === "ArrowRight" ? (current+1)%tabs.length : (current-1+tabs.length)%tabs.length;
+    tabs[next].click();
+    requestAnimationFrame(() => document.querySelector(`[data-match-mode="${state.mode}"]`)?.focus());
+  });
   const receiveSession = event => {
     state.token = typeof event.detail?.token === "string" ? event.detail.token : "";
-    if (!state.token) Object.assign(state,{loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
+    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
     notify();
   };
   window.addEventListener("lykos:hub-session",receiveSession);

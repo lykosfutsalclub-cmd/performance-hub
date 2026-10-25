@@ -13,8 +13,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("estaff/assets/match-entry.css",root),"utf8"),
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
-  assert.match(page,/match-entry\.css\?v=20261009-match-ui-v11/);
-  assert.match(page,/match-entry\.js\?v=20261009-match-ui-v12/);
+  assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
+  assert.match(page,/prematch-insights\.js\?v=20261025-prematch-v1/);
+  assert.match(page,/match-entry\.js\?v=20261025-prematch-v1/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -26,6 +27,12 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(hubStyle,/grid-template-areas: "context context" "photo rating" "score score" "approval approval"/);
   assert.match(hubStyle,/grid-auto-columns: 68px/);
   assert.match(client,/class="match-progress"/);
+  assert.match(client,/data-match-mode="pre"/);
+  assert.match(client,/data-match-mode="post"/);
+  assert.match(client,/prematch\/context/);
+  assert.match(client,/Groupe confirmé par la convocation Messenger/);
+  assert.match(client,/Pronostic Metron/);
+  assert.match(client,/Dernier match du Lykos/);
   assert.match(client,/class="match-camera-icon"/);
   assert.match(client,/accept="image\/\*,\.heic,\.heif"/);
   assert.doesNotMatch(client,/capture="environment"/);

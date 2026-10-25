@@ -14,9 +14,10 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/match-hub\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/prematch-insights\.js\?v=20261025-prematch-v1/);
-  assert.match(page,/match-entry\.js\?v=20261025-prematch-v1/);
+  assert.match(page,/match-hub\.css\?v=20261025-prematch-v2/);
+  assert.match(page,/prematch-insights\.js\?v=20261025-prematch-v2/);
+  assert.match(page,/match-entry\.js\?v=20261025-prematch-v2/);
+  assert.match(page,/pantheon-data\.js\?v=20261025-prematch-v2/);
   assert.match(page,/data-view="match" data-mobile-label="MATCH"/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
@@ -34,6 +35,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/Groupe confirmé par la convocation Messenger/);
   assert.match(client,/Pronostic Metron/);
   assert.match(client,/Dernier match du Lykos/);
+  assert.match(client,/5 derniers face-à-face/);
+  assert.match(client,/5 derniers matchs contre/);
   assert.match(client,/class="match-camera-icon"/);
   assert.match(client,/accept="image\/\*,\.heic,\.heif"/);
   assert.doesNotMatch(client,/capture="environment"/);

@@ -137,6 +137,18 @@
     return `<div class="prematch-history-result"><div><strong>${escapeHtml(result)}</strong><span>${escapeHtml(formatDay(match.date))}</span></div><b>${escapeHtml(match.score || "—")}</b><p>Lykos FC — ${escapeHtml(match.opponent)}</p></div>`;
   }
 
+  function fixtureSeries(matches, emptyText) {
+    if (!matches?.length) return `<div class="prematch-history-empty"><strong>${escapeHtml(emptyText)}</strong><span>Le bloc se complètera dès qu’une rencontre correspondante sera disponible.</span></div>`;
+    return `<div class="prematch-series">${matches.map(match => `<div><time>${escapeHtml(formatDay(match.date))}</time><span>${escapeHtml(match.opponent)}</span><b>${escapeHtml(match.score || "—")}</b></div>`).join("")}</div>`;
+  }
+
+  function playerWindow(window, opponent = false) {
+    if (!window?.windowMatches) return `<span class="prematch-player-empty">Aucun match de référence</span>`;
+    if (!window.matches) return `<span class="prematch-player-empty">${opponent ? "Jamais aligné contre cet adversaire" : "Absent des cinq derniers matchs"}</span>`;
+    const rating = window.averageRating === null ? "Note —" : `Note ${window.averageRating}/10`;
+    return `<span>${rating}</span><span>${window.goals} B · ${window.assists} PD</span><span>${window.contributionsPerMatch} déc./match · ${window.matches}/${window.windowMatches} prés.</span>`;
+  }
+
   function preMatchView() {
     const context = state.prematch;
     const insights = window.LykosPrematchInsights;
@@ -150,9 +162,11 @@
       ? `${context.roster.author ? `Message de ${context.roster.author} · ` : ""}${formatDate(context.roster.confirmedAt)}`
       : "La prévision se mettra à jour automatiquement après confirmation du groupe Lykos FC.";
     const sourceRows = prediction.available ? [
-      ["Groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"50 %"],
-      ["Forme",`${prediction.form} / 99`,"30 %"],
-      ["Face-à-face",prediction.headToHead.value === null ? "Sans historique" : `${prediction.headToHead.value} / 99`,prediction.headToHead.value === null ? "Redistribué" : "20 %"],
+      ["Metron du groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"30 %"],
+      ["Forme collective",`${prediction.form} / 99`,"20 %"],
+      ["5 face-à-face",prediction.headToHead.value === null ? "Sans historique" : `${prediction.headToHead.value} / 99`,prediction.headToHead.value === null ? "Redistribué" : "20 %"],
+      ["Joueurs · forme récente",prediction.evidence.recentAverage === null ? "Sans données" : `${prediction.evidence.recentAverage} / 99`,prediction.evidence.recentAverage === null ? "Redistribué" : "20 %"],
+      ["Joueurs · vs adversaire",prediction.evidence.opponentAverage === null ? "Sans données" : `${prediction.evidence.opponentAverage} / 99`,prediction.evidence.opponentAverage === null ? "Redistribué" : "10 %"],
     ] : [];
     return `<main class="company-main match-entry-main prematch-main">
       <section class="company-title prematch-title">
@@ -167,7 +181,7 @@
       <div class="prematch-grid">
         <section class="prematch-card prematch-squad">
           <header><div><h2>Groupe retenu</h2><p>${roster.players.length} joueur${roster.players.length > 1 ? "s" : ""} · ${roster.coverage.available}/${roster.coverage.total} Metron disponibles</p></div><strong>${roster.average === null ? "—" : roster.average}<small>/99</small><span>Moyenne</span></strong></header>
-          ${roster.players.length ? `<div class="prematch-player-list">${roster.players.map(player => `<div class="prematch-player"><span>${escapeHtml(player.name)}</span><b>${player.metron === null ? "Non calculable" : `${player.metron} / 99`}</b></div>`).join("")}</div>` : `<div class="prematch-history-empty"><strong>Groupe non disponible</strong><span>SportEasy et la convocation Messenger sont surveillés automatiquement.</span></div>`}
+          ${roster.players.length ? `<div class="prematch-player-list">${roster.players.map(player => `<article class="prematch-player"><header><strong>${escapeHtml(player.name)}</strong><b>${player.metron === null ? "Metron non calculable" : `Metron ${player.metron} / 99`}</b></header><div><small>5 derniers matchs</small>${playerWindow(player.recent)}</div><div><small>5 derniers face-à-face</small>${playerWindow(player.opponent,true)}</div></article>`).join("")}</div>` : `<div class="prematch-history-empty"><strong>Groupe non disponible</strong><span>SportEasy et la convocation Messenger sont surveillés automatiquement.</span></div>`}
         </section>
         <section class="prematch-card prematch-forecast">
           <header><div><h2>Pronostic Metron</h2><p>Une tendance, pas une promesse de résultat.</p></div></header>
@@ -178,8 +192,8 @@
           ${fixtureSummary(history.lastMatch,"Aucun match précédent disponible")}
         </section>
         <section class="prematch-card prematch-history">
-          <header><div><h2>Dernier match contre ${escapeHtml(context.match.opponent)}</h2><p>Le dernier face-à-face enregistré.</p></div></header>
-          ${fixtureSummary(history.lastAgainst,"Aucun face-à-face retrouvé")}
+          <header><div><h2>5 derniers matchs contre ${escapeHtml(context.match.opponent)}</h2><p>Les variantes connues du nom adverse sont regroupées.</p></div></header>
+          ${fixtureSeries(history.againstMatches,"Aucun face-à-face retrouvé")}
         </section>
       </div>
     </main>`;

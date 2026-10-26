@@ -8,8 +8,17 @@
   const number = value => value === null || value === undefined || value === "" ? null : Number.isFinite(Number(value)) ? Number(value) : null;
   const rounded = value => Math.round(value*10)/10;
 
+  function opponentDisplayName(value) {
+    const raw = String(value || "").trim();
+    if (!raw) return "Adversaire";
+    const club = "(?:lykos(?:\\s+f(?:\\.?\\s*c\\.?)?)?|lykos\\s+futsal\\s+club)";
+    const withoutSuffix = raw.replace(new RegExp(`\\s+(?:-|–|—|vs\\.?)\\s+${club}\\s*$`,"i"),"");
+    const withoutPrefix = withoutSuffix.replace(new RegExp(`^${club}\\s+(?:-|–|—|vs\\.?)\\s+`,"i"),"");
+    return withoutPrefix.trim() || raw;
+  }
+
   function opponentIdentity(value) {
-    const name = normalize(value);
+    const name = normalize(opponentDisplayName(value));
     if (/^ase(?: foot)?(?: cinq| 5| 1)?$/.test(name)) return "ase";
     if (/^saba(?: foot 5| futsal)?$/.test(name)) return "saba";
     return name;
@@ -40,9 +49,22 @@
     const againstMatches = opponent ? played.filter(match => opponentIdentity(match.opponent) === opponent).slice(0,5) : [];
     return {
       lastMatch:played[0] || null,
+      recentMatches:played.slice(0,5),
       lastAgainst:againstMatches[0] || null,
       againstMatches,
     };
+  }
+
+  function resultBreakdown(matches = []) {
+    return matches.reduce((result,match) => {
+      const score = scoreParts(match?.score);
+      if (!score) return result;
+      result.matches += 1;
+      if (score.for > score.against) result.wins += 1;
+      else if (score.for < score.against) result.losses += 1;
+      else result.draws += 1;
+      return result;
+    },{matches:0,wins:0,draws:0,losses:0});
   }
 
   function playerDirectory(doc = document) {
@@ -87,8 +109,6 @@
       .slice(0,5);
     if (!matches.length) return {value:null,matches:[]};
     const values = matches.map(match => {
-      const direct = number(match.teamForm);
-      if (direct !== null) return direct;
       const score = scoreParts(match.score);
       return !score ? 50 : score.for > score.against ? 99 : score.for < score.against ? 1 : 50;
     });
@@ -152,11 +172,11 @@
       return {available:false,squad,form,headToHead,evidence,reason:"Le groupe ou ses données Metron ne sont pas encore assez complets."};
     }
     const value = weightedScore([
-      {value:squad.average,weight:30},
-      {value:form,weight:20},
-      {value:headToHead.value,weight:20},
-      {value:evidence.recentAverage,weight:20},
-      {value:evidence.opponentAverage,weight:10},
+      {value:squad.average,weight:25},
+      {value:form,weight:15},
+      {value:headToHead.value,weight:25},
+      {value:evidence.recentAverage,weight:15},
+      {value:evidence.opponentAverage,weight:20},
     ]);
     const result = Math.max(1,Math.min(99,value));
     const label = result >= 70 ? "Contexte favorable" : result >= 55 ? "Léger avantage Lykos" : result >= 45 ? "Match équilibré" : "Match exigeant";
@@ -169,5 +189,5 @@
     };
   }
 
-  window.LykosPrematchInsights = {normalize,opponentIdentity,fixtures,scoreParts,resultLabel,history,playerDirectory,rosterMetron,h2hScore,pantheonMatches,summarizePlayerWindow,playerEvidence,forecast};
+  window.LykosPrematchInsights = {normalize,opponentDisplayName,opponentIdentity,fixtures,scoreParts,resultLabel,resultBreakdown,history,playerDirectory,rosterMetron,h2hScore,pantheonMatches,summarizePlayerWindow,playerEvidence,forecast};
 })();

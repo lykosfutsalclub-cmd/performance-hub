@@ -57,7 +57,7 @@ test("le pronostic Metron combine groupe, forme et face-à-face avec une formule
   const insights = api();
   const context = {match:{opponent:"ASE"},roster:{confirmation:"confirmed",players:[{name:"Joueur A"},{name:"Joueur B"}]}};
   const result = insights.forecast(context,teamStats,secondary,directory,pantheon,new Date("2026-10-25T12:00:00Z"));
-  assert.equal(result.value,69.5);
+  assert.equal(result.value,67.4);
   assert.equal(result.confidence,"élevée");
   assert.equal(result.provisional,false);
   assert.equal(result.headToHead.value,50);
@@ -73,13 +73,28 @@ test("le dernier match et le dernier face-à-face sont distingués", () => {
   assert.equal(result.lastMatch.opponent,"Pélissanne Loisir");
   assert.equal(result.lastAgainst.date,"2026-09-08");
   assert.equal(result.againstMatches.length,5);
+  assert.equal(result.recentMatches.length,5);
 });
 
 test("les variantes ASE sont un seul adversaire et SABA reste un adversaire distinct", () => {
   const insights = api();
-  for (const name of ["ASE Foot Cinq","ASE Foot 5","ASE Foot 1","ASE 1","ASE"]) assert.equal(insights.opponentIdentity(name),"ase");
+  for (const name of ["ASE Foot Cinq","ASE Foot 5","ASE Foot 1","ASE 1","ASE","ASE Foot 5 - Lykos F.C"]) assert.equal(insights.opponentIdentity(name),"ase");
   for (const name of ["SABA Foot 5","SABA Futsal","SABA"]) assert.equal(insights.opponentIdentity(name),"saba");
   assert.notEqual(insights.opponentIdentity("ASE Foot 5"),insights.opponentIdentity("SABA Foot 5"));
+});
+
+test("le titre SportEasy est nettoyé avant affichage et rapprochement", () => {
+  const insights = api();
+  assert.equal(insights.opponentDisplayName("ASE Foot 5 - Lykos F.C"),"ASE Foot 5");
+  assert.equal(insights.opponentDisplayName("Lykos FC vs ALL STARS"),"ALL STARS");
+  const result = insights.history({opponent:"ASE Foot 5 - Lykos F.C"},teamStats,new Date("2026-10-25T12:00:00Z"));
+  assert.equal(result.againstMatches.length,5);
+});
+
+test("le ratio des cinq face-à-face reflète les résultats réels", () => {
+  const insights = api();
+  const matches = insights.history({opponent:"ASE"},teamStats,new Date("2026-10-25T12:00:00Z")).againstMatches;
+  assert.equal(JSON.stringify(insights.resultBreakdown(matches)),JSON.stringify({matches:5,wins:2,draws:1,losses:2}));
 });
 
 test("les notes SportEasy nécessaires au pronostic sont présentes dans les données publiques", () => {
@@ -88,4 +103,19 @@ test("les notes SportEasy nécessaires au pronostic sont présentes dans les don
   const matches = context.window.LYKOS_PANTHEON_STATS.recordScopes.match;
   assert.ok(matches.length >= 150,"l'historique public existant doit être conservé");
   assert.ok(matches.some((match) => Object.values(match.players ?? {}).some((player) => Number.isFinite(player.averageRating))));
+});
+
+test("le cas public ASE retrouve bien l'historique collectif et individuel", async () => {
+  const insights = api();
+  const teamContext = {window:{}};
+  vm.runInNewContext(await readFile(new URL("../team-data.js",import.meta.url),"utf8"),teamContext);
+  const pantheonContext = {window:{}};
+  vm.runInNewContext(publicPantheonSource,pantheonContext);
+  const history = insights.history({opponent:"ASE Foot 5 - Lykos F.C"},teamContext.window.LYKOS_TEAM_STATS,new Date("2026-10-26T12:00:00Z"));
+  assert.equal(history.againstMatches.length,5);
+  assert.ok(history.againstMatches.every((match) => insights.opponentIdentity(match.opponent) === "ase"));
+  const evidence = insights.playerEvidence({players:[{id:"joueur-guillaume-dato",name:"Guillaume Dato"}]},"ASE Foot 5 - Lykos F.C",pantheonContext.window.LYKOS_PANTHEON_STATS,new Date("2026-10-26T12:00:00Z"));
+  assert.equal(evidence.opponentMatches.length,5);
+  assert.ok(evidence.players[0].opponent.matches > 0);
+  assert.ok(Number.isFinite(evidence.players[0].opponent.score));
 });

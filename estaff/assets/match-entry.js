@@ -145,6 +145,17 @@
     return `<div class="prematch-series">${matches.map(match => `<div><time>${escapeHtml(formatDay(match.date))}</time><span>${escapeHtml(match.opponent)}</span><b>${escapeHtml(match.score || "—")}</b></div>`).join("")}</div>`;
   }
 
+  function resultRatio(matches) {
+    const result = window.LykosPrematchInsights?.resultBreakdown(matches);
+    if (!result?.matches) return "";
+    const winShare = result.wins/result.matches*100;
+    const drawShare = result.draws/result.matches*100;
+    return `<div class="prematch-ratio" aria-label="${result.wins} victoires, ${result.draws} matchs nuls et ${result.losses} défaites sur ${result.matches} matchs">
+      <div class="prematch-ratio-chart" style="--wins:${winShare}%;--draws:${winShare+drawShare}%"><strong>${result.matches}</strong><span>match${result.matches > 1 ? "s" : ""}</span></div>
+      <dl><div><dt><i class="is-win"></i>Victoires</dt><dd>${result.wins}</dd></div><div><dt><i class="is-draw"></i>Nuls</dt><dd>${result.draws}</dd></div><div><dt><i class="is-loss"></i>Défaites</dt><dd>${result.losses}</dd></div></dl>
+    </div>`;
+  }
+
   function playerWindow(window, opponent = false) {
     if (!window?.windowMatches) return `<span class="prematch-player-empty">Aucun match de référence</span>`;
     if (!window.matches) return `<span class="prematch-player-empty">${opponent ? "Jamais aligné contre cet adversaire" : "Absent des cinq derniers matchs"}</span>`;
@@ -158,6 +169,7 @@
     if (!context || !insights) return "";
     const prediction = insights.forecast(context);
     const history = insights.history(context.match);
+    const opponent = insights.opponentDisplayName(context.match.opponent);
     const roster = prediction.squad;
     const manuallyValidated = context.roster.confirmation === "manual";
     const confirmed = manuallyValidated || context.roster.confirmation === "confirmed";
@@ -171,20 +183,20 @@
     const isSelectedPlayer = player => selectedIds.has(String(player.id)) || selectedNames.has(normalize(player.name));
     const selectedCount = selectablePlayers.filter(isSelectedPlayer).length;
     const sourceRows = prediction.available ? [
-      ["Metron du groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"30 %"],
-      ["Forme collective",`${prediction.form} / 99`,"20 %"],
-      ["5 face-à-face",prediction.headToHead.value === null ? "Sans historique" : `${prediction.headToHead.value} / 99`,prediction.headToHead.value === null ? "Redistribué" : "20 %"],
-      ["Joueurs · forme récente",prediction.evidence.recentAverage === null ? "Sans données" : `${prediction.evidence.recentAverage} / 99`,prediction.evidence.recentAverage === null ? "Redistribué" : "20 %"],
-      ["Joueurs · vs adversaire",prediction.evidence.opponentAverage === null ? "Sans données" : `${prediction.evidence.opponentAverage} / 99`,prediction.evidence.opponentAverage === null ? "Redistribué" : "10 %"],
+      ["Metron du groupe",prediction.squad.average === null ? "—" : `${prediction.squad.average} / 99`,"25 %"],
+      ["Forme collective",`${prediction.form} / 99`,"15 %"],
+      ["5 face-à-face",prediction.headToHead.value === null ? "Sans historique" : `${prediction.headToHead.value} / 99`,prediction.headToHead.value === null ? "Redistribué" : "25 %"],
+      ["Joueurs · forme récente",prediction.evidence.recentAverage === null ? "Sans données" : `${prediction.evidence.recentAverage} / 99`,prediction.evidence.recentAverage === null ? "Redistribué" : "15 %"],
+      ["Joueurs · vs adversaire",prediction.evidence.opponentAverage === null ? "Sans données" : `${prediction.evidence.opponentAverage} / 99`,prediction.evidence.opponentAverage === null ? "Redistribué" : "20 %"],
     ] : [];
     return `<main class="company-main match-entry-main prematch-main">
       <section class="company-title prematch-title">
         <div><h1>Préparer le match</h1><span>Le prochain rendez-vous, le groupe retenu et les repères Metron réunis automatiquement.</span></div>
         <span class="prematch-auto"><i></i><b>Mise à jour automatique</b>SportEasy, Metron et convocation</span>
       </section>
-      ${context.candidates?.length > 1 ? `<label class="prematch-select"><span>Rencontre préparée</span><select data-prematch-select>${context.candidates.map(candidate => `<option value="${candidate.id}" ${candidate.id===context.match.id?"selected":""}>${escapeHtml(candidate.opponent)} · ${escapeHtml(formatDate(candidate.startAt))}</option>`).join("")}</select></label>` : ""}
+      ${context.candidates?.length > 1 ? `<label class="prematch-select"><span>Rencontre préparée</span><select data-prematch-select>${context.candidates.map(candidate => `<option value="${candidate.id}" ${candidate.id===context.match.id?"selected":""}>${escapeHtml(insights.opponentDisplayName(candidate.opponent))} · ${escapeHtml(formatDate(candidate.startAt))}</option>`).join("")}</select></label>` : ""}
       <section class="prematch-opponent">
-        <div><span>Prochaine rencontre</span><h2>Lykos FC <i>vs</i> ${escapeHtml(context.match.opponent)}</h2><p>${escapeHtml(formatDate(context.match.startAt))}${context.match.venue ? ` · ${escapeHtml(context.match.venue)}` : ""}</p></div>
+        <div><span>Prochaine rencontre</span><h2>Lykos FC <i>vs</i> ${escapeHtml(opponent)}</h2><p>${escapeHtml(formatDate(context.match.startAt))}${context.match.venue ? ` · ${escapeHtml(context.match.venue)}` : ""}</p></div>
         <div class="prematch-roster-status ${confirmed ? "is-confirmed" : "is-pending"}"><i aria-hidden="true"></i><div><strong>${escapeHtml(statusText)}</strong><span>${escapeHtml(statusDetail)}</span></div></div>
       </section>
       <div class="prematch-grid">
@@ -206,9 +218,11 @@
         <section class="prematch-card prematch-history">
           <header><div><h2>Dernier match du Lykos</h2><p>Le repère de forme le plus récent.</p></div></header>
           ${fixtureSummary(history.lastMatch,"Aucun match précédent disponible")}
+          ${resultRatio(history.recentMatches)}
         </section>
         <section class="prematch-card prematch-history">
-          <header><div><h2>5 derniers matchs contre ${escapeHtml(context.match.opponent)}</h2><p>Les variantes connues du nom adverse sont regroupées.</p></div></header>
+          <header><div><h2>5 derniers matchs contre ${escapeHtml(opponent)}</h2><p>Les variantes connues du nom adverse sont regroupées.</p></div></header>
+          ${resultRatio(history.againstMatches)}
           ${fixtureSeries(history.againstMatches,"Aucun face-à-face retrouvé")}
         </section>
       </div>

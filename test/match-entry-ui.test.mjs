@@ -14,9 +14,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/match-hub\.css\?v=20261026-jeu-v2/);
+  assert.match(page,/match-hub\.css\?v=20261026-jeu-v3/);
   assert.match(page,/prematch-insights\.js\?v=20261026-prematch-v5/);
-  assert.match(page,/match-entry\.js\?v=20261026-jeu-v2/);
+  assert.match(page,/match-entry\.js\?v=20261026-jeu-v3/);
   assert.match(page,/pantheon-data\.js\?v=20261026-prematch-v5/);
   assert.match(page,/data-view="match" data-mobile-label="JEU"/);
   assert.match(client,/Avant Match/);
@@ -27,6 +27,10 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/Zone de finition : dernier quart de terrain/);
   assert.match(client,/Si nous menons : passer à deux défenseurs en 2-2/);
   assert.match(client,/coaching\/observation/);
+  assert.match(client,/coaching\/objective/);
+  assert.match(client,/coaching\/objective-assessment/);
+  assert.match(client,/Acquis à partir de 4\/5/);
+  assert.match(client,/Il reste automatiquement dans les priorités/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
   assert.match(page,/\.lykos-headnav \{\s*position:fixed;/);

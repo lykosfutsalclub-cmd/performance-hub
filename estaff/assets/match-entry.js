@@ -6,7 +6,7 @@
   let heicConverterPromise = null;
   const state = {
     mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"", prematchSaving:false, prematchSaveError:"", prematchSaved:false,
-    coaching:null, coachingLoading:false, coachingError:"", coachingSaving:false, coachingSaved:false, planFilter:"all", trainingSelectedId:"",
+    coaching:null, coachingLoading:false, coachingError:"", coachingSaving:false, coachingSaved:false, objectiveSaving:"", objectiveError:"", objectiveSaved:"", planFilter:"all", trainingSelectedId:"",
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
@@ -45,6 +45,9 @@
       manual_roster_update_failed:"Le groupe n’a pas pu être enregistré. Réessayez dans un instant.",
       coaching_context_unavailable:"L’espace coaching est momentanément indisponible.",
       invalid_coaching_observation:"Complétez le constat, sa catégorie et son niveau d’importance.",
+      invalid_training_objective:"Complétez l’objectif d’entraînement et son thème.",
+      invalid_training_objective_assessment:"Choisissez une note de réalisation entre 1 et 5.",
+      training_objective_not_found:"Cet objectif n’est plus disponible. Rechargez l’espace Entraînement.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
   }
@@ -233,6 +236,51 @@
     const observations=(state.coaching?.observations || []).filter(item => item.scope === scope && (!eventId || !item.eventId || String(item.eventId) === String(eventId)));
     if (!observations.length) return `<div class="coaching-empty"><strong>Aucun constat enregistré</strong><span>Le premier point saisi créera le fil de suivi de ce rendez-vous.</span></div>`;
     return `<div class="coaching-observation-list">${observations.map(item => `<article><div><span>${escapeHtml(CATEGORY_LABELS[item.category] || item.category)}</span>${importance(item.importance)}</div><p>${escapeHtml(item.content)}</p><footer><time>${escapeHtml(formatDay(item.occurredAt || item.createdAt))}</time><b>eSportif · Léonard</b></footer></article>`).join("")}</div>`;
+  }
+
+  function objectiveForm(training) {
+    if (!training) return `<div class="coaching-empty"><strong>Aucune séance sélectionnée</strong><span>Choisissez une séance avant de fixer ses objectifs.</span></div>`;
+    return `<form class="training-objective-form" data-training-objective-form>
+      <input type="hidden" name="trainingId" value="${escapeHtml(training.id)}"><input type="hidden" name="trainingLabel" value="${escapeHtml(training.label)}"><input type="hidden" name="plannedFor" value="${escapeHtml(training.startAt)}">
+      <div class="coaching-form-head"><div><h3>Objectifs de la séance</h3><p>Définissez ce que le groupe doit réellement réussir, avant de l’évaluer après la séance.</p></div><span>Suivi eSportif</span></div>
+      <label class="coaching-text"><span>Objectif à atteindre</span><textarea name="content" maxlength="600" required placeholder="Ex. Créer deux solutions proches autour du porteur en sortie de zone basse."></textarea></label>
+      <label class="objective-theme"><span>Thème</span><select name="category">${Object.entries(CATEGORY_LABELS).map(([value,label]) => `<option value="${value}">${label}</option>`).join("")}</select></label>
+      ${state.objectiveError ? `<p class="match-error" role="alert">${escapeHtml(state.objectiveError)}</p>` : ""}${state.objectiveSaved === "created" ? `<p class="coaching-saved" role="status">✓ Objectif ajouté à la séance et transmis à eSportif.</p>` : ""}
+      <button type="submit" class="company-primary" ${state.objectiveSaving==="new"?"disabled":""}>${state.objectiveSaving==="new"?"Enregistrement…":"Ajouter l’objectif"}</button>
+    </form>`;
+  }
+
+  function objectiveOutcome(item) {
+    if (item.status === "acquired") return {label:"Atteint",className:"is-achieved",detail:"Cet objectif peut être considéré comme acquis."};
+    if (item.outcome === "partially_achieved") return {label:"Partiellement atteint",className:"is-partial",detail:"Il reste automatiquement dans les priorités."};
+    if (item.outcome === "not_achieved") return {label:"Non atteint",className:"is-missed",detail:"Il reste automatiquement dans les priorités."};
+    return {label:"À évaluer",className:"is-pending",detail:"La séance ne validera rien tant que l’objectif n’est pas évalué."};
+  }
+
+  function objectiveList(training) {
+    const all=state.coaching?.objectives || [];
+    const currentId=String(training?.id || "");
+    const current=all.filter(item => currentId && String(item.trainingId) === currentId);
+    const carried=all.filter(item => item.status !== "acquired" && (!currentId || String(item.trainingId) !== currentId));
+    const objectives=[...current,...carried];
+    if (!objectives.length) return `<div class="coaching-empty"><strong>Aucun objectif actif</strong><span>Ajoutez le premier objectif de la séance pour pouvoir mesurer son acquisition.</span></div>`;
+    return `<div class="training-objective-list">${objectives.map(item => {
+      const outcome=objectiveOutcome(item);
+      const assessments=item.assessments || [];
+      const assessment=assessments.length ? assessments[assessments.length-1] : null;
+      const carriedOver=currentId && String(item.trainingId) !== currentId;
+      return `<article class="training-objective ${outcome.className}">
+        <header><div><span>${escapeHtml(CATEGORY_LABELS[item.category] || item.category)}${carriedOver ? " · À reprendre" : ""}</span><h3>${escapeHtml(item.content)}</h3></div><b>${escapeHtml(outcome.label)}</b></header>
+        <p class="objective-status-detail">${escapeHtml(outcome.detail)}</p>
+        ${assessment ? `<div class="objective-last-score"><strong>${assessment.score}/5</strong><span>${assessment.note ? escapeHtml(assessment.note) : "Dernière évaluation enregistrée"}</span><time>${escapeHtml(formatDay(assessment.assessedAt))}</time></div>` : ""}
+        ${item.status === "acquired" ? "" : `<form data-objective-assessment-form data-objective-id="${escapeHtml(item.id)}">
+          <fieldset><legend>Objectif atteint ?</legend><div class="objective-score">${[1,2,3,4,5].map(score => `<label><input type="radio" name="score" value="${score}" ${Number(item.lastScore)===score?"checked":""} required><span>${score}</span></label>`).join("")}</div><div class="objective-scale"><span>Pas atteint</span><span>Maîtrisé</span></div></fieldset>
+          <label class="objective-note"><span>Constat après la séance <small>facultatif</small></span><input name="note" maxlength="600" placeholder="Ce qui a fonctionné ou doit être repris"></label>
+          ${state.objectiveSaved === item.id ? `<p class="coaching-saved" role="status">✓ Évaluation enregistrée. La priorité a été recalculée.</p>` : ""}
+          <button type="submit" class="company-primary" ${state.objectiveSaving===item.id?"disabled":""}>${state.objectiveSaving===item.id?"Évaluation…":"Enregistrer l’évaluation"}</button>
+        </form>`}
+      </article>`;
+    }).join("")}</div>`;
   }
 
   function playerWindow(window, opponent = false) {
@@ -444,8 +492,9 @@
     return `<main class="company-main match-entry-main coaching-main">
       <section class="company-title match-title"><div><h1>Entraînement</h1><span>Historique des séances, constats du terrain et continuité avec le projet sportif.</span></div><span class="prematch-auto"><i></i><b>Boucle eSportif</b>Constat → Training Focus → brief</span></section>
       <div class="training-layout">
-        <section class="match-card training-history"><header><div><span class="coaching-kicker">HISTORIQUE</span><h2>Séances SportEasy</h2><p>Les entraînements sont classés automatiquement par date.</p></div></header>${trainings.length ? `<div class="training-timeline">${trainings.map((item,index) => `<button type="button" class="${index===0?"is-current":""}" data-training-id="${escapeHtml(item.id)}"><time>${escapeHtml(formatDay(item.startAt))}</time><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.venue || item.pitch || "Lieu non renseigné")}</span></button>`).join("")}</div>` : `<div class="coaching-empty"><strong>Aucune séance SportEasy retrouvée</strong><span>L’historique apparaîtra automatiquement dès que la source transmettra les entraînements.</span></div>`}</section>
-        <section class="match-card coaching-notebook"><header><div><span class="coaching-kicker">RETOUR TERRAIN</span><h2>${escapeHtml(current?.label || "Suivi des séances")}</h2><p>${current ? escapeHtml(formatDate(current.startAt)) : "Sélectionnez une séance pour structurer son retour."}</p></div></header><div class="coaching-notebook-grid"><div>${observationForm("training",{eventId:current?.id,eventLabel:current?.label,occurredAt:current?.startAt})}</div><div><h3>Points de travail</h3>${observationList("training",current?.id)}</div></div></section>
+        <section class="match-card training-history"><header><div><span class="coaching-kicker">HISTORIQUE</span><h2>Séances SportEasy</h2><p>Les entraînements sont classés automatiquement par date.</p></div></header>${trainings.length ? `<div class="training-timeline">${trainings.map(item => `<button type="button" class="${String(item.id)===String(current?.id)?"is-current":""}" data-training-id="${escapeHtml(item.id)}"><time>${escapeHtml(formatDay(item.startAt))}</time><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.venue || item.pitch || "Lieu non renseigné")}</span></button>`).join("")}</div>` : `<div class="coaching-empty"><strong>Aucune séance SportEasy retrouvée</strong><span>L’historique apparaîtra automatiquement dès que la source transmettra les entraînements.</span></div>`}</section>
+        <section class="match-card training-objectives"><header><div><span class="coaching-kicker">OBJECTIFS MESURABLES</span><h2>${escapeHtml(current?.label || "Objectifs d’entraînement")}</h2><p>${current ? escapeHtml(formatDate(current.startAt)) : "Sélectionnez une séance pour fixer ses objectifs."}</p></div><strong class="objective-threshold">Acquis à partir de 4/5</strong></header><div class="training-objective-grid"><div>${objectiveForm(current)}</div><div><h3>Évaluation et priorités actives</h3>${objectiveList(current)}</div></div></section>
+        <section class="match-card coaching-notebook"><header><div><span class="coaching-kicker">RETOUR TERRAIN</span><h2>Constats complémentaires</h2><p>Les observations restent distinctes des objectifs mesurés de la séance.</p></div></header><div class="coaching-notebook-grid"><div>${observationForm("training",{eventId:current?.id,eventLabel:current?.label,occurredAt:current?.startAt})}</div><div><h3>Points de travail</h3>${observationList("training",current?.id)}</div></div></section>
         <section class="match-card training-esportif"><header><div><span class="coaching-kicker">ESPORTIF</span><h2>Analyses qui orientent les séances</h2><p>Les rapports de Nadir et les conclusions de Léonard restent visibles au même endroit.</p></div></header>${analysisCards(6)}</section>
       </div>
     </main>`;
@@ -653,6 +702,35 @@
     finally {state.coachingSaving=false;notify();}
   }
 
+  async function submitTrainingObjective(formElement) {
+    if (state.objectiveSaving) return;
+    const data=new FormData(formElement);
+    const payload={trainingId:data.get("trainingId"),trainingLabel:data.get("trainingLabel"),plannedFor:data.get("plannedFor"),content:data.get("content"),category:data.get("category")};
+    state.objectiveSaving="new";state.objectiveError="";state.objectiveSaved="";notify();
+    try {
+      await call("coaching/objective",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      state.coaching=null;
+      await loadCoaching();
+      state.objectiveSaved="created";
+    } catch (error) {state.objectiveError=error.message;}
+    finally {state.objectiveSaving="";notify();}
+  }
+
+  async function submitObjectiveAssessment(formElement) {
+    if (state.objectiveSaving) return;
+    const objectiveId=formElement.dataset.objectiveId;
+    const data=new FormData(formElement);
+    const payload={objectiveId,score:Number(data.get("score")),note:data.get("note")};
+    state.objectiveSaving=objectiveId;state.objectiveError="";state.objectiveSaved="";notify();
+    try {
+      await call("coaching/objective-assessment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      state.coaching=null;
+      await loadCoaching();
+      state.objectiveSaved=objectiveId;
+    } catch (error) {state.objectiveError=error.message;}
+    finally {state.objectiveSaving="";notify();}
+  }
+
   document.addEventListener("click", event => {
     const mode = event.target.closest?.("[data-match-mode]");
     if (mode) {
@@ -665,7 +743,7 @@
     const filter=event.target.closest?.("[data-plan-filter]");
     if (filter) {state.planFilter=filter.dataset.planFilter;notify();return;}
     const training=event.target.closest?.("[data-training-id]");
-    if (training) {state.trainingSelectedId=training.dataset.trainingId;state.coachingSaved=false;notify();return;}
+    if (training) {state.trainingSelectedId=training.dataset.trainingId;state.coachingSaved=false;state.objectiveSaved="";state.objectiveError="";notify();return;}
     if (event.target.closest?.("[data-prematch-retry]")) {state.prematchError="";state.prematch=null;loadPrematch();return;}
     const retry = event.target.closest?.("[data-match-retry]");
     if (retry) {state.error="";state.data=null;load();return;}
@@ -723,6 +801,12 @@
     }
   });
   document.addEventListener("submit", event => {
+    if (event.target.matches?.("[data-training-objective-form]")) {
+      event.preventDefault(); submitTrainingObjective(event.target); return;
+    }
+    if (event.target.matches?.("[data-objective-assessment-form]")) {
+      event.preventDefault(); submitObjectiveAssessment(event.target); return;
+    }
     if (event.target.matches?.("[data-coaching-form]")) {
       event.preventDefault(); submitCoaching(event.target); return;
     }

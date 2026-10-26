@@ -6,6 +6,7 @@
   let heicConverterPromise = null;
   const state = {
     mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"", prematchSaving:false, prematchSaveError:"", prematchSaved:false,
+    coaching:null, coachingLoading:false, coachingError:"", coachingSaving:false, coachingSaved:false, planFilter:"all", trainingSelectedId:"",
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
@@ -42,6 +43,8 @@
       prematch_context_unavailable:"La préparation du prochain match est momentanément indisponible.",
       invalid_manual_roster_players:"Sélectionnez au moins 5 joueurs du groupe Lykos FC.",
       manual_roster_update_failed:"Le groupe n’a pas pu être enregistré. Réessayez dans un instant.",
+      coaching_context_unavailable:"L’espace coaching est momentanément indisponible.",
+      invalid_coaching_observation:"Complétez le constat, sa catégorie et son niveau d’importance.",
     };
     return messages[error] || "L’opération n’a pas pu être terminée.";
   }
@@ -104,6 +107,14 @@
     }
   }
 
+  async function loadCoaching() {
+    if (!state.token || state.coachingLoading) return;
+    state.coachingLoading=true; state.coachingError=""; notify();
+    try {state.coaching=await call("coaching/context");}
+    catch (error) {state.coachingError=error.message;}
+    finally {state.coachingLoading=false;notify();}
+  }
+
   function ensureLoaded() {
     if (!state.token) {
       const sharedSession = window.LYKOS_HUB_ACCESS?.getSession?.();
@@ -111,6 +122,7 @@
     }
     if (state.mode === "pre" && state.token && !state.prematchLoading && !state.prematch && !state.prematchError) loadPrematch();
     if (state.mode === "post" && state.token && !state.loading && !state.data && !state.error) load();
+    if (state.token && !state.coachingLoading && !state.coaching && !state.coachingError) loadCoaching();
   }
 
   function formatDate(value) {
@@ -124,12 +136,18 @@
   }
 
   function workspaceTabs() {
-    return `<div class="match-workspace-tabs" role="tablist" aria-label="Préparation et compte rendu du match">
+    return `<div class="match-workspace-tabs" role="tablist" aria-label="Espace Jeu du Lykos FC">
       <button type="button" id="match-tab-pre" role="tab" aria-controls="match-panel-pre" aria-selected="${state.mode === "pre"}" tabindex="${state.mode === "pre" ? "0" : "-1"}" data-match-mode="pre">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V7l-8-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg><span>Pré-match</span><small>Préparer la rencontre</small>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V7l-8-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg><span>Avant Match</span><small>Préparer la rencontre</small>
       </button>
       <button type="button" id="match-tab-post" role="tab" aria-controls="match-panel-post" aria-selected="${state.mode === "post"}" tabindex="${state.mode === "post" ? "0" : "-1"}" data-match-mode="post">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Post-match</span><small>Saisir le compte rendu</small>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Après Match</span><small>Bilan et statistiques</small>
+      </button>
+      <button type="button" id="match-tab-training" role="tab" aria-controls="match-panel-training" aria-selected="${state.mode === "training"}" tabindex="${state.mode === "training" ? "0" : "-1"}" data-match-mode="training">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M6 3v6m12-6v6M5 11h14v10H5z"/><path d="m9 16 2 2 4-4"/></svg><span>Entraînement</span><small>Historique et suivi</small>
+      </button>
+      <button type="button" id="match-tab-gameplan" role="tab" aria-controls="match-panel-gameplan" aria-selected="${state.mode === "gameplan"}" tabindex="${state.mode === "gameplan" ? "0" : "-1"}" data-match-mode="gameplan">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 4v16M4 12h16"/><circle cx="12" cy="12" r="2.5"/></svg><span>Plan de jeu</span><small>Principes des coachs</small>
       </button>
     </div>`;
   }
@@ -154,6 +172,63 @@
       <div class="prematch-ratio-chart" style="--wins:${winShare}%;--draws:${winShare+drawShare}%"><strong>${result.matches}</strong><span>match${result.matches > 1 ? "s" : ""}</span></div>
       <dl><div><dt><i class="is-win"></i>Victoires</dt><dd>${result.wins}</dd></div><div><dt><i class="is-draw"></i>Nuls</dt><dd>${result.draws}</dd></div><div><dt><i class="is-loss"></i>Défaites</dt><dd>${result.losses}</dd></div></dl>
     </div>`;
+  }
+
+  const GAME_PLAN = [
+    {code:"AB-1",phase:"avec_ballon",title:"Sortir court et propre",summary:"Construire au sol depuis la zone basse, avec le gardien impliqué et deux solutions visibles autour du porteur.",cues:["Jouer simple avant d’être enfermé","Créer un angle de passe pendant le trajet du ballon","Revenir en soutien si la progression directe est fermée"]},
+    {code:"AB-2",phase:"avec_ballon",title:"Occuper sans se couper",summary:"Organisation 1-2-1 avec ballon : largeur, présence intérieure, joueur haut et sécurité restent reliés.",cues:["Un joueur fixe la largeur","Un soutien apparaît à l’intérieur","La sécurité reste disponible derrière le ballon"]},
+    {code:"AB-3",phase:"avec_ballon",title:"Progresser sans forcer",summary:"Chercher l’avant quand l’espace existe, conserver ou rejouer derrière quand la ligne se ferme.",cues:["Lever la tête après récupération","Créer une course complémentaire","Ne pas confondre vitesse et précipitation"]},
+    {code:"SB-1",phase:"sans_ballon",title:"Protéger l’axe en 2-2",summary:"Sans ballon, refermer l’intérieur avant de sortir et conserver une couverture vers le but.",cues:["Le premier défenseur oriente","Le deuxième ferme le relais intérieur","Les deux autres couvrent les courses et le but"]},
+    {code:"PR-1",phase:"pressing",title:"Presser sur un signal",summary:"Le pressing se déclenche collectivement sur une erreur adverse, un contrôle long ou une passe enfermante.",cues:["Ne pas sortir seul","Fermer la passe suivante","Avancer ou temporiser ensemble"]},
+    {code:"TR-1",phase:"transition",title:"Accompagner la récupération",summary:"À la récupération, proposer plusieurs hauteurs de solution tout en gardant un joueur pour l’équilibre.",cues:["Une solution proche","Une course complémentaire","Une sécurité derrière l’action"]},
+    {code:"TR-2",phase:"transition",title:"Réagir ensemble à la perte",summary:"Le plus proche ralentit la progression ; les partenaires ferment l’axe et reprennent les courses.",cues:["Gêner la première passe","Fermer l’intérieur","Se replacer avant de chasser le ballon"]},
+    {code:"GK-1",phase:"gardien",title:"Le gardien fait partie de la relance",summary:"Le gardien donne un joueur de plus à la construction et permet de changer le côté de la sortie.",cues:["S’ouvrir avant la remise en jeu","Offrir une passe retour sûre","Changer de côté si le premier couloir est fermé"]},
+    {code:"CO-1",phase:"collectif",title:"Bouger autour de l’initiative",summary:"Quand un joueur avance, presse ou reçoit sous pression, les quatre autres adaptent immédiatement leur position.",cues:["Accompagner le porteur","Protéger celui qui sort","Communiquer la prochaine action"]},
+  ];
+  const PLAN_LABELS={all:"Tout",avec_ballon:"Avec ballon",sans_ballon:"Sans ballon",pressing:"Pressing",transition:"Transitions",gardien:"Gardien",collectif:"Collectif"};
+  const CATEGORY_LABELS={avec_ballon:"Avec ballon",sans_ballon:"Sans ballon",transition:"Transition",mental:"Mental / émotions",physique:"Physique",collectif:"Collectif"};
+
+  function importance(value) {
+    const number=Math.max(1,Math.min(5,Number(value)||1));
+    return `<span class="coaching-importance is-level-${number}" aria-label="Importance ${number} sur 5">${[1,2,3,4,5].map(level => `<i class="${level<=number?"is-filled":""}"></i>`).join("")}<b>${number}/5</b></span>`;
+  }
+
+  function analysisCards(limit=3) {
+    const analyses=state.coaching?.analyses || [];
+    if (!analyses.length) return `<div class="coaching-empty"><strong>Les prochains retours eSportif apparaîtront ici.</strong><span>L’absence de vidéo n’empêche plus Léonard de produire ses conclusions lorsqu’il dispose d’autres preuves fiables.</span></div>`;
+    return `<div class="coaching-analysis-list">${analyses.slice(0,limit).map(item => `<article><span>${escapeHtml(item.agent === "leonard" ? "Léonard · eSportif" : "Nadir · Analyse")}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.summary)}</p><time>${escapeHtml(formatDay(item.occurredAt))}</time></article>`).join("")}</div>`;
+  }
+
+  function coachingAdvice(context) {
+    const opponent=window.LykosPrematchInsights?.opponentDisplayName(context?.match?.opponent) || "l’adversaire";
+    const history=window.LykosPrematchInsights?.history(context.match);
+    const ratio=window.LykosPrematchInsights?.resultBreakdown(history?.againstMatches || []);
+    const historyCue=ratio?.matches && ratio.wins < ratio.losses
+      ? `Le passif face à ${opponent} impose d’abord de sécuriser l’axe et les pertes avant de chercher à accélérer.`
+      : `Face à ${opponent}, conserver l’initiative sans déséquilibrer la sécurité derrière le ballon.`;
+    return `<section class="prematch-card coaching-brief-card">
+      <header><div><span class="coaching-kicker">COACHING</span><h2>Consignes et dynamique de jeu</h2><p>Le plan des coachs, le contexte du match et les derniers retours eSportif sont rapprochés automatiquement.</p></div></header>
+      <div class="coaching-priorities"><article><b>1</b><div><h3>Installer la sortie courte</h3><p>Gardien impliqué, deux solutions visibles et passe de soutien autorisée si l’avant est fermé.</p></div></article><article><b>2</b><div><h3>Rester reliés en 1-2-1</h3><p>Largeur, intérieur, joueur haut et sécurité bougent ensemble autour du porteur.</p></div></article><article><b>3</b><div><h3>Protéger la perte</h3><p>${escapeHtml(historyCue)} Le plus proche ralentit ; les autres reforment le 2-2 et ferment l’intérieur.</p></div></article></div>
+      <div class="coaching-esportif"><h3>Dernières orientations eSportif</h3>${analysisCards(2)}</div>
+    </section>`;
+  }
+
+  function observationForm(scope,{eventId="",eventLabel="",occurredAt=""}={}) {
+    const title=scope === "training" ? "Constat de séance" : "Constat de fin de match";
+    return `<form class="coaching-form" data-coaching-form data-coaching-scope="${scope}">
+      <input type="hidden" name="eventId" value="${escapeHtml(eventId)}"><input type="hidden" name="eventLabel" value="${escapeHtml(eventLabel)}"><input type="hidden" name="occurredAt" value="${escapeHtml(occurredAt)}">
+      <div class="coaching-form-head"><div><h3>${title}</h3><p>Chaque point alimente les prochains Training Focus et briefs de match de Léonard.</p></div><span>Relié à eSportif</span></div>
+      <label class="coaching-text"><span>Recommandation ou observation</span><textarea name="content" maxlength="600" required placeholder="Ex. Trop peu de solutions proches quand le porteur est bloqué le long de la paroi."></textarea></label>
+      <div class="coaching-form-row"><label><span>Thème</span><select name="category">${Object.entries(CATEGORY_LABELS).map(([value,label]) => `<option value="${value}">${label}</option>`).join("")}</select></label><fieldset><legend>Importance</legend><div class="coaching-levels">${[1,2,3,4,5].map(level => `<label><input type="radio" name="importance" value="${level}" ${level===3?"checked":""}><span>${level}</span></label>`).join("")}</div></fieldset></div>
+      ${state.coachingError ? `<p class="match-error" role="alert">${escapeHtml(state.coachingError)}</p>` : ""}${state.coachingSaved ? `<p class="coaching-saved" role="status">✓ Point enregistré et disponible pour eSportif.</p>` : ""}
+      <button type="submit" class="company-primary" ${state.coachingSaving?"disabled":""}>${state.coachingSaving?"Enregistrement…":"Ajouter au suivi sportif"}</button>
+    </form>`;
+  }
+
+  function observationList(scope,eventId="") {
+    const observations=(state.coaching?.observations || []).filter(item => item.scope === scope && (!eventId || !item.eventId || String(item.eventId) === String(eventId)));
+    if (!observations.length) return `<div class="coaching-empty"><strong>Aucun constat enregistré</strong><span>Le premier point saisi créera le fil de suivi de ce rendez-vous.</span></div>`;
+    return `<div class="coaching-observation-list">${observations.map(item => `<article><div><span>${escapeHtml(CATEGORY_LABELS[item.category] || item.category)}</span>${importance(item.importance)}</div><p>${escapeHtml(item.content)}</p><footer><time>${escapeHtml(formatDay(item.occurredAt || item.createdAt))}</time><b>eSportif · Léonard</b></footer></article>`).join("")}</div>`;
   }
 
   function playerWindow(window, opponent = false) {
@@ -200,6 +275,7 @@
         <div class="prematch-roster-status ${confirmed ? "is-confirmed" : "is-pending"}"><i aria-hidden="true"></i><div><strong>${escapeHtml(statusText)}</strong><span>${escapeHtml(statusDetail)}</span></div></div>
       </section>
       <div class="prematch-grid">
+        ${coachingAdvice(context)}
         <section class="prematch-card prematch-squad">
           <header><div><h2>Groupe retenu</h2><p>${roster.players.length} joueur${roster.players.length > 1 ? "s" : ""} · ${roster.coverage.available}/${roster.coverage.total} Metron disponibles</p></div><strong>${roster.average === null ? "—" : roster.average}<small>/99</small><span>Moyenne</span></strong></header>
           <form class="prematch-roster-editor" data-prematch-roster-form>
@@ -215,12 +291,12 @@
           <header><div><h2>Pronostic Metron</h2><p>Une tendance, pas une promesse de résultat.</p></div></header>
           ${prediction.available ? `<div class="prematch-gauge" style="--prematch-score:${prediction.value}%"><strong>${prediction.value}<small>/99</small></strong><span>${escapeHtml(prediction.label)}</span></div><div class="prematch-components">${sourceRows.map(([label,value,weight]) => `<div><span>${label}</span><b>${value}</b><small>${weight}</small></div>`).join("")}</div><p class="prematch-confidence">Confiance ${prediction.confidence}${prediction.provisional ? " · groupe encore provisoire" : " · groupe confirmé"}</p>` : `<div class="prematch-history-empty"><strong>Pronostic en attente</strong><span>${escapeHtml(prediction.reason)}</span></div>`}
         </section>
-        <section class="prematch-card prematch-history">
+        <section class="prematch-card prematch-history prematch-last-history">
           <header><div><h2>Dernier match du Lykos</h2><p>Le repère de forme le plus récent.</p></div></header>
           ${fixtureSummary(history.lastMatch,"Aucun match précédent disponible")}
           ${resultRatio(history.recentMatches)}
         </section>
-        <section class="prematch-card prematch-history">
+        <section class="prematch-card prematch-history prematch-opponent-history">
           <header><div><h2>5 derniers matchs contre ${escapeHtml(opponent)}</h2><p>Les variantes connues du nom adverse sont regroupées.</p></div></header>
           ${resultRatio(history.againstMatches)}
           ${fixtureSeries(history.againstMatches,"Aucun face-à-face retrouvé")}
@@ -351,6 +427,34 @@
           <button type="submit" class="company-primary match-submit" ${state.submitting||match.matchRatingLocked||!eligible.length?"disabled":""}>${state.submitting?"Synchronisation en cours…":"Approuver et mettre à jour SportEasy"}</button>
         </section>
       </form>
+      <section class="match-card coaching-notebook">
+        <header><div><span class="coaching-kicker">COACHING</span><h2>Constats et recommandations</h2><p>Hiérarchisez les enseignements du match pour orienter les entraînements et les prochains briefs.</p></div></header>
+        <div class="coaching-notebook-grid"><div>${observationForm("post_match",{eventId:match.id,eventLabel:`Lykos FC — ${match.opponent}`,occurredAt:match.startAt})}</div><div><h3>Suivi de la rencontre</h3>${observationList("post_match",match.id)}</div></div>
+      </section>
+    </main>`;
+  }
+
+  function trainingView() {
+    const trainings=state.coaching?.trainings || [];
+    const current=trainings.find(item => String(item.id) === String(state.trainingSelectedId)) || trainings[0] || null;
+    return `<main class="company-main match-entry-main coaching-main">
+      <section class="company-title match-title"><div><h1>Entraînement</h1><span>Historique des séances, constats du terrain et continuité avec le projet sportif.</span></div><span class="prematch-auto"><i></i><b>Boucle eSportif</b>Constat → Training Focus → brief</span></section>
+      <div class="training-layout">
+        <section class="match-card training-history"><header><div><span class="coaching-kicker">HISTORIQUE</span><h2>Séances SportEasy</h2><p>Les entraînements sont classés automatiquement par date.</p></div></header>${trainings.length ? `<div class="training-timeline">${trainings.map((item,index) => `<button type="button" class="${index===0?"is-current":""}" data-training-id="${escapeHtml(item.id)}"><time>${escapeHtml(formatDay(item.startAt))}</time><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.venue || item.pitch || "Lieu non renseigné")}</span></button>`).join("")}</div>` : `<div class="coaching-empty"><strong>Aucune séance SportEasy retrouvée</strong><span>L’historique apparaîtra automatiquement dès que la source transmettra les entraînements.</span></div>`}</section>
+        <section class="match-card coaching-notebook"><header><div><span class="coaching-kicker">RETOUR TERRAIN</span><h2>${escapeHtml(current?.label || "Suivi des séances")}</h2><p>${current ? escapeHtml(formatDate(current.startAt)) : "Sélectionnez une séance pour structurer son retour."}</p></div></header><div class="coaching-notebook-grid"><div>${observationForm("training",{eventId:current?.id,eventLabel:current?.label,occurredAt:current?.startAt})}</div><div><h3>Points de travail</h3>${observationList("training",current?.id)}</div></div></section>
+        <section class="match-card training-esportif"><header><div><span class="coaching-kicker">ESPORTIF</span><h2>Analyses qui orientent les séances</h2><p>Les rapports de Nadir et les conclusions de Léonard restent visibles au même endroit.</p></div></header>${analysisCards(6)}</section>
+      </div>
+    </main>`;
+  }
+
+  function gamePlanView() {
+    const selected=state.planFilter || "all";
+    const items=GAME_PLAN.filter(item => selected === "all" || item.phase === selected);
+    return `<main class="company-main match-entry-main coaching-main game-plan-main">
+      <section class="company-title match-title"><div><h1>Plan de jeu</h1><span>Les principes des coachs, directement lisibles et utilisables sur le terrain.</span></div><span class="prematch-auto"><i></i><b>Référentiel vivant</b>Relié aux analyses eSportif</span></section>
+      <section class="game-plan-hero"><div><span>IDENTITÉ DE JEU</span><h2>Maîtriser, progresser, rester ensemble.</h2><p>Le Lykos veut construire court au sol, utiliser le gardien, s’organiser en 1-2-1 avec ballon et en 2-2 sans ballon, protéger l’axe puis presser collectivement sur une erreur adverse.</p></div><aside><strong>Notre repère</strong><p>Quand un joueur agit, les autres l’accompagnent et protègent l’équilibre.</p></aside></section>
+      <nav class="game-plan-filters" aria-label="Filtrer le plan de jeu">${Object.entries(PLAN_LABELS).map(([value,label]) => `<button type="button" data-plan-filter="${value}" class="${selected===value?"is-selected":""}" aria-pressed="${selected===value}">${label}</button>`).join("")}</nav>
+      <section class="game-plan-grid">${items.map(item => `<article><header><span>${escapeHtml(item.code)}</span><em>${escapeHtml(PLAN_LABELS[item.phase] || item.phase)}</em></header><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.summary)}</p><ul>${item.cues.map(cue => `<li>${escapeHtml(cue)}</li>`).join("")}</ul></article>`).join("")}</section>
     </main>`;
   }
 
@@ -361,12 +465,13 @@
       if (state.prematchLoading && !state.prematch) content = `<main class="company-main match-entry-main"><div class="match-loading"><i></i><strong>Préparation du prochain match…</strong></div></main>`;
       else if (state.prematchError && !state.prematch) content = `<main class="company-main match-entry-main"><div class="match-empty"><strong>${escapeHtml(state.prematchError)}</strong><button type="button" class="company-primary" data-prematch-retry>Réessayer</button></div></main>`;
       else content = state.prematch ? preMatchView() : `<main class="company-main match-entry-main"></main>`;
-    } else {
+    } else if (state.mode === "post") {
       if (state.loading && !state.data) content = `<main class="company-main match-entry-main"><div class="match-loading"><i></i><strong>Connexion à SportEasy…</strong></div></main>`;
       else if (state.error && !state.data) content = `<main class="company-main match-entry-main"><div class="match-empty"><strong>${escapeHtml(state.error)}</strong><button type="button" class="company-primary" data-match-retry>Réessayer</button></div></main>`;
       else content = state.data ? readyView() : `<main class="company-main match-entry-main"></main>`;
-    }
-    const panelId = state.mode === "pre" ? "match-panel-pre" : "match-panel-post";
+    } else if (state.mode === "training") content=trainingView();
+    else content=gamePlanView();
+    const panelId = `match-panel-${state.mode}`;
     return `${workspaceTabs()}<section id="${panelId}" role="tabpanel" aria-labelledby="match-tab-${state.mode}">${content}</section>`;
   }
 
@@ -529,6 +634,20 @@
     }
   }
 
+  async function submitCoaching(formElement) {
+    if (state.coachingSaving) return;
+    const data=new FormData(formElement);
+    const payload={scope:formElement.dataset.coachingScope,content:data.get("content"),category:data.get("category"),importance:Number(data.get("importance")),eventId:data.get("eventId"),eventLabel:data.get("eventLabel"),occurredAt:data.get("occurredAt") || new Date().toISOString()};
+    state.coachingSaving=true;state.coachingError="";state.coachingSaved=false;notify();
+    try {
+      await call("coaching/observation",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      state.coaching=null;
+      await loadCoaching();
+      state.coachingSaved=true;
+    } catch (error) {state.coachingError=error.message;}
+    finally {state.coachingSaving=false;notify();}
+  }
+
   document.addEventListener("click", event => {
     const mode = event.target.closest?.("[data-match-mode]");
     if (mode) {
@@ -538,6 +657,10 @@
       if (state.mode === "post" && !state.data && !state.loading) load();
       return;
     }
+    const filter=event.target.closest?.("[data-plan-filter]");
+    if (filter) {state.planFilter=filter.dataset.planFilter;notify();return;}
+    const training=event.target.closest?.("[data-training-id]");
+    if (training) {state.trainingSelectedId=training.dataset.trainingId;state.coachingSaved=false;notify();return;}
     if (event.target.closest?.("[data-prematch-retry]")) {state.prematchError="";state.prematch=null;loadPrematch();return;}
     const retry = event.target.closest?.("[data-match-retry]");
     if (retry) {state.error="";state.data=null;load();return;}
@@ -595,6 +718,9 @@
     }
   });
   document.addEventListener("submit", event => {
+    if (event.target.matches?.("[data-coaching-form]")) {
+      event.preventDefault(); submitCoaching(event.target); return;
+    }
     if (event.target.matches?.("[data-prematch-roster-form]")) {
       event.preventDefault(); submitPrematchRoster(event.target); return;
     }
@@ -614,7 +740,7 @@
   });
   const receiveSession = event => {
     state.token = typeof event.detail?.token === "string" ? event.detail.token : "";
-    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",prematchSaving:false,prematchSaveError:"",prematchSaved:false,loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
+    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",prematchSaving:false,prematchSaveError:"",prematchSaved:false,coaching:null,coachingLoading:false,coachingError:"",coachingSaving:false,coachingSaved:false,loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
     notify();
   };
   window.addEventListener("lykos:hub-session",receiveSession);

@@ -288,6 +288,17 @@
     return `<section class="prematch-card prematch-agent-insights"><header><div><span class="coaching-kicker">ÉCLAIRAGE ESPORTIF</span><h2>Recommandations sportives des agents</h2><p>Ces informations nourrissent votre réflexion sans écrire ni hiérarchiser votre brief à votre place.</p></div></header>${agentSuggestionList("pre_match",5)}</section>`;
   }
 
+  const BRIEF_STATUS_LABELS={achieved:"Réalisée",partially_achieved:"Partiellement réalisée",not_achieved:"Non réalisée",not_observable:"Non observable"};
+
+  function briefFollowUpPanel(eventId) {
+    const brief=(state.coaching?.briefs || []).find(item => String(item.eventId) === String(eventId));
+    if (!brief) return "";
+    const followUp=(state.coaching?.briefFollowUps || []).find(item => String(item.eventId) === String(eventId));
+    return `<section class="match-card brief-follow-up-card"><header><div><span class="coaching-kicker">BRIEF DU COACH</span><h2>Réalisation des consignes</h2><p>Le texte d’origine reste intact. Nadir et Léonard évaluent chaque point uniquement lorsqu’une preuve sportive le permet.</p></div></header>
+      ${followUp?.items?.length ? `<div class="brief-follow-up-list">${followUp.items.map(item => `<article class="is-${escapeHtml(item.status)}"><header><strong>${escapeHtml(item.directive)}</strong><span>${escapeHtml(BRIEF_STATUS_LABELS[item.status] || "À contrôler")}</span></header><p>${escapeHtml(item.interpretation)}</p>${item.evidence?.length ? `<details><summary>Voir les preuves</summary><ul>${item.evidence.map(evidence => `<li>${escapeHtml(evidence.time)} — ${escapeHtml(evidence.observation)}</li>`).join("")}</ul></details>` : ""}<small>${escapeHtml(item.limit || "")}</small></article>`).join("")}</div><footer>Les points insuffisamment réalisés peuvent nourrir les propositions d’entraînement et le prochain éclairage eSportif ; ils ne deviennent jamais automatiquement une obligation.</footer>` : `<div class="brief-follow-up-pending"><strong>Évaluation en attente</strong><span>Le rapprochement commencera après le match dès que les statistiques, les constatations humaines ou la vidéo fourniront des preuves suffisantes.</span></div>`}
+    </section>`;
+  }
+
   function observationForm(scope,{eventId="",eventLabel="",occurredAt=""}={}) {
     const title=scope === "training" ? "Constat de séance" : "Constat de fin de match";
     return `<form class="coaching-form" data-coaching-form data-coaching-scope="${scope}">
@@ -548,6 +559,7 @@
           <button type="submit" class="company-primary match-submit" ${state.submitting||match.matchRatingLocked||!eligible.length?"disabled":""}>${state.submitting?"Synchronisation en cours…":"Approuver et mettre à jour SportEasy"}</button>
         </section>
       </form>
+      ${briefFollowUpPanel(match.id)}
       <section class="match-card coaching-notebook">
         <header><div><span class="coaching-kicker">COACHING</span><h2>Constats et recommandations</h2><p>Hiérarchisez les enseignements du match pour orienter les entraînements et les prochains briefs.</p></div></header>
         <div class="coaching-notebook-grid"><div>${observationForm("post_match",{eventId:match.id,eventLabel:`Lykos FC — ${match.opponent}`,occurredAt:match.startAt})}</div><div><h3>Suivi de la rencontre</h3>${observationList("post_match",match.id)}</div></div>

@@ -194,6 +194,25 @@
 .lykos-match-page .prematch-brief-form footer>div { display:grid; gap:5px; color:#829db7; font-size:8px; }
 .lykos-match-page .prematch-brief-form footer .match-error,.lykos-match-page .prematch-brief-form footer .coaching-saved { margin:0; }
 .lykos-match-page .prematch-agent-insights { grid-area:agents; }
+.lykos-match-page .brief-follow-up-card { margin-top:13px; }
+.lykos-match-page .brief-follow-up-list { display:grid; gap:10px; }
+.lykos-match-page .brief-follow-up-list article { display:grid; gap:8px; padding:14px; border:1px solid rgba(151,185,221,.16); border-left:4px solid #6b85a0; border-radius:12px; background:rgba(0,14,36,.35); }
+.lykos-match-page .brief-follow-up-list article.is-achieved { border-left-color:#22c55e; }
+.lykos-match-page .brief-follow-up-list article.is-partially_achieved { border-left-color:#f3c623; }
+.lykos-match-page .brief-follow-up-list article.is-not_achieved { border-left-color:#ef4444; }
+.lykos-match-page .brief-follow-up-list article.is-not_observable { border-left-color:#6b85a0; }
+.lykos-match-page .brief-follow-up-list article>header { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.lykos-match-page .brief-follow-up-list strong { color:#f4f8fc; font-size:11px; line-height:1.45; }
+.lykos-match-page .brief-follow-up-list header span { padding:4px 7px; border-radius:999px; background:rgba(151,185,221,.12); color:#c8d7e6; font-size:7px; font-weight:900; white-space:nowrap; text-transform:uppercase; }
+.lykos-match-page .brief-follow-up-list p,.lykos-match-page .brief-follow-up-list li { margin:0; color:#a9bdd2; font-size:9px; line-height:1.55; }
+.lykos-match-page .brief-follow-up-list details { color:#829db7; font-size:8px; }
+.lykos-match-page .brief-follow-up-list summary { color:#e5cf62; font-weight:850; cursor:pointer; }
+.lykos-match-page .brief-follow-up-list ul { margin:7px 0 0; padding-left:18px; }
+.lykos-match-page .brief-follow-up-list small { color:#718aa5; font-size:8px; }
+.lykos-match-page .brief-follow-up-card>footer { margin-top:10px; color:#829db7; font-size:8px; line-height:1.5; }
+.lykos-match-page .brief-follow-up-pending { display:grid; gap:5px; padding:14px; border:1px dashed rgba(151,185,221,.22); border-radius:12px; background:rgba(0,14,36,.24); }
+.lykos-match-page .brief-follow-up-pending strong { color:#f4f8fc; font-size:11px; }
+.lykos-match-page .brief-follow-up-pending span { color:#8fa8c1; font-size:9px; line-height:1.55; }
 .lykos-match-page .coaching-notebook-grid>div>h3 { margin:0 0 6px; color:#fff; font-size:11px; }
 .lykos-match-page .agent-suggestion-intro { margin:-2px 0 9px; color:#829db7; font-size:8px; line-height:1.45; }
 .lykos-match-page .agent-suggestion-list { display:grid; grid-template-columns:1fr; gap:11px; }

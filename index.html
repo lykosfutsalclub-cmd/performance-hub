@@ -102,9 +102,10 @@
     #lykos-dashboard-preview .lykos-manager-return[data-visible="true"] { display:inline-flex; }
     #lykos-dashboard-preview { padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
     #lykos-dashboard-preview .lykos-headnav {
-      position:fixed; left:50%; bottom:max(0px,env(safe-area-inset-bottom)); z-index:100;
-      display:flex; width:min(1040px,calc(100vw - 28px)); height:68px; padding:5px; gap:4px;
-      justify-content:stretch; transform:translateX(-50%); overflow:visible;
+      position:fixed; left:0; right:0; bottom:0; z-index:10000;
+      position:fixed !important; top:auto !important; bottom:0 !important; left:0 !important; right:0 !important;
+      display:flex; width:min(1040px,calc(100vw - 28px)); height:calc(68px + env(safe-area-inset-bottom)); margin:0 auto; padding:5px 5px calc(5px + env(safe-area-inset-bottom)); gap:4px;
+      justify-content:stretch; transform:none !important; translate:none !important; overflow:visible;
       border:1px solid rgba(255,255,255,.16); border-bottom:0; border-radius:20px 20px 0 0;
       background:rgba(9,29,79,.97); box-shadow:0 -12px 34px rgba(0,0,0,.34);
     }
@@ -694,7 +695,8 @@
       #lykos-dashboard-preview .lykos-manager-launch { width:96px; height:34px; margin-left:auto; }
       #lykos-dashboard-preview .lykos-headnav {
         left:0; right:0; bottom:0; width:100%; height:72px; transform:none;
-        z-index:100; padding:5px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));
+        position:fixed !important; top:auto !important; bottom:0 !important; left:0 !important; right:0 !important;
+        z-index:10000; height:calc(72px + env(safe-area-inset-bottom)); margin:0; padding:5px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left)); transform:none !important; translate:none !important;
         gap:3px; align-items:stretch; justify-content:stretch; overflow:visible;
         border:1px solid rgba(255,255,255,.16); border-bottom:0; border-radius:18px 18px 0 0;
         background:rgba(9,29,79,.98); box-shadow:0 -12px 34px rgba(0,0,0,.44); backdrop-filter:blur(18px);

@@ -61,6 +61,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(page,/position:fixed !important; top:auto !important; bottom:0 !important; left:0 !important; right:0 !important/);
   assert.match(page,/transform:none !important; translate:none !important/);
   assert.match(page,/z-index:10000/);
+  assert.match(page,/#lykos-dashboard-preview \{[\s\S]*?width:100dvw; min-width:100dvw; max-width:100dvw;/);
+  assert.match(page,/#lykos-dashboard-preview \.lykos-headbar,[\s\S]*?\[data-view-panel\] \{ width:100%; max-width:none; \}/);
   assert.doesNotMatch(estaffPage,/match-entry\.(?:css|js)/);
   assert.doesNotMatch(home,/\["match","Match","Match"\]/);
   assert.match(hubStyle,/\.lykos-match-page/);

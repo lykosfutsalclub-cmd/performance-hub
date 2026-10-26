@@ -275,11 +275,11 @@
     const brief=(state.coaching?.briefs || []).find(item => String(item.eventId) === eventId);
     const opponent=window.LykosPrematchInsights?.opponentDisplayName(context?.match?.opponent) || "l’adversaire";
     return `<section class="prematch-card coaching-brief-card">
-      <header><div><span class="coaching-kicker">COACHING</span><h2>Mon brief de match</h2><p>Collez ici le brief que vous préparez dans les Notes de votre téléphone. Aucun ordre automatique ne le remplace.</p></div></header>
+      <header><div><span class="coaching-kicker">COACHING</span><h2>Mon brief de match</h2><p>Collez-le ici, même à la dernière minute. Il est conservé avec la rencontre mais n’influence aucune préparation d’avant-match : il servira uniquement à l’analyse après le match.</p></div></header>
       <form class="prematch-brief-form" data-prematch-brief-form>
         <input type="hidden" name="eventId" value="${escapeHtml(eventId)}"><input type="hidden" name="eventLabel" value="Lykos FC — ${escapeHtml(opponent)}">
         <label><span>Brief pour Lykos FC — ${escapeHtml(opponent)}</span><textarea name="content" maxlength="5000" required placeholder="Collez votre brief ici…">${escapeHtml(brief?.content || "")}</textarea></label>
-        <footer><div>${brief?.updatedAt ? `<span>Dernière sauvegarde : ${escapeHtml(formatDate(brief.updatedAt))}</span>` : `<span>Le brief sera conservé avec cette rencontre.</span>`}${state.briefError?`<b class="match-error" role="alert">${escapeHtml(state.briefError)}</b>`:""}${state.briefSaved?`<b class="coaching-saved" role="status">✓ Brief enregistré.</b>`:""}</div><button type="submit" class="company-primary" ${state.briefSaving?"disabled":""}>${state.briefSaving?"Enregistrement…":"Enregistrer le brief"}</button></footer>
+        <footer><div>${brief?.updatedAt ? `<span>Dernière sauvegarde : ${escapeHtml(formatDate(brief.updatedAt))} · Usage après-match uniquement</span>` : `<span>Le brief sera conservé avec cette rencontre pour le débriefing.</span>`}${state.briefError?`<b class="match-error" role="alert">${escapeHtml(state.briefError)}</b>`:""}${state.briefSaved?`<b class="coaching-saved" role="status">✓ Brief enregistré pour l’après-match.</b>`:""}</div><button type="submit" class="company-primary" ${state.briefSaving?"disabled":""}>${state.briefSaving?"Enregistrement…":"Enregistrer le brief"}</button></footer>
       </form>
     </section>`;
   }

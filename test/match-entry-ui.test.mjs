@@ -14,9 +14,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/match-hub\.css\?v=20261026-jeu-v8/);
+  assert.match(page,/match-hub\.css\?v=20261026-jeu-v9/);
   assert.match(page,/prematch-insights\.js\?v=20261026-prematch-v5/);
-  assert.match(page,/match-entry\.js\?v=20261026-jeu-v8/);
+  assert.match(page,/match-entry\.js\?v=20261026-jeu-v9/);
   assert.match(page,/pantheon-data\.js\?v=20261026-prematch-v5/);
   assert.match(page,/data-view="match" data-mobile-label="JEU"/);
   assert.match(client,/Avant Match/);
@@ -34,6 +34,8 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/Recommandations sportives des agents/);
   assert.match(client,/Mon brief de match/);
   assert.match(client,/Collez votre brief ici/);
+  assert.match(client,/n’influence aucune préparation d’avant-match/);
+  assert.match(client,/Usage après-match uniquement/);
   assert.match(client,/data-prematch-brief-form/);
   assert.match(client,/coaching\/brief/);
   assert.match(client,/maxlength="5000"/);

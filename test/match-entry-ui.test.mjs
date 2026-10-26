@@ -14,9 +14,9 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
     readFile(new URL("match-hub.css",root),"utf8"),
   ]);
   assert.match(page,/match-entry\.css\?v=20261025-prematch-v1/);
-  assert.match(page,/match-hub\.css\?v=20261026-jeu-v5/);
+  assert.match(page,/match-hub\.css\?v=20261026-jeu-v6/);
   assert.match(page,/prematch-insights\.js\?v=20261026-prematch-v5/);
-  assert.match(page,/match-entry\.js\?v=20261026-jeu-v5/);
+  assert.match(page,/match-entry\.js\?v=20261026-jeu-v6/);
   assert.match(page,/pantheon-data\.js\?v=20261026-prematch-v5/);
   assert.match(page,/data-view="match" data-mobile-label="JEU"/);
   assert.match(client,/Avant Match/);
@@ -34,7 +34,11 @@ test("l'onglet Match appartient à la barre principale du Performance Hub", asyn
   assert.match(client,/Recommandations sportives des agents/);
   assert.match(client,/Les contrôles techniques et comptes rendus d’activité sont volontairement masqués/);
   assert.match(client,/Dernières évaluations/);
-  assert.match(client,/Proposition pour le jeu/);
+  assert.match(client,/À retenir pour le jeu/);
+  assert.match(client,/Voir la justification et les limites/);
+  assert.match(client,/Lire le constat complet/);
+  assert.match(hubStyle,/\.agent-recommendation-points/);
+  assert.match(hubStyle,/grid-template-columns:1fr/);
   assert.match(page,/data-view-panel="match"/);
   assert.match(page,/data-match-entry-root/);
   assert.match(page,/\.lykos-headnav \{\s*position:fixed;/);

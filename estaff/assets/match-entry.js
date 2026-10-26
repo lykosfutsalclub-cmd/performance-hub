@@ -212,6 +212,38 @@
     return scores.length ? scores.map(score => `${score}/5`).join(" → ") : "Pas encore évalué";
   }
 
+  function recommendationPoints(value) {
+    const text=String(value || "").replace(/\s+/g," ").trim();
+    if (!text) return [];
+    const numbered=[...text.matchAll(/(?:^|\s)(\d+)\.\s+([\s\S]*?)(?=\s\d+\.\s+|$)/g)].map(match => match[2].trim()).filter(Boolean);
+    if (numbered.length >= 2) return numbered.slice(0,4);
+    const bullets=text.split(/\s*•\s*/).map(part => part.trim()).filter(Boolean);
+    return (bullets.length > 1 ? bullets : [text]).slice(0,4);
+  }
+
+  function recommendationMarkup(value) {
+    const points=recommendationPoints(value);
+    if (!points.length) return "";
+    return `<ol class="agent-recommendation-points">${points.map(point => {
+      const segments=point.split(/\s*•\s*/).map(part => part.trim()).filter(Boolean);
+      const rawTitle=segments.shift() || point;
+      const sentenceBreak=rawTitle.search(/[.!?]\s/);
+      const shouldSplit=!segments.length && rawTitle.length > 240 && sentenceBreak > 60;
+      const title=shouldSplit ? rawTitle.slice(0,sentenceBreak+1) : rawTitle;
+      const detail=shouldSplit ? rawTitle.slice(sentenceBreak+1).trim() : segments.join(" · ");
+      return `<li><div><strong>${escapeHtml(title)}</strong>${detail?`<details><summary>Voir la justification et les limites</summary><p>${escapeHtml(detail)}</p></details>`:""}</div></li>`;
+    }).join("")}</ol>`;
+  }
+
+  function observationMarkup(value,label="Constat sportif") {
+    const text=String(value || "").trim();
+    if (!text) return "";
+    const sentences=(text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text]).map(sentence => sentence.trim()).filter(Boolean);
+    const preview=sentences.slice(0,2).join(" ");
+    const remainder=sentences.slice(2).join(" ");
+    return `<div class="agent-observation"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(preview)}</p>${remainder?`<details><summary>Lire le constat complet</summary><p>${escapeHtml(remainder)}</p></details>`:""}</div>`;
+  }
+
   function agentSuggestionList(target,limit=6) {
     const objectives=(state.coaching?.objectives || []).filter(item => item.status !== "acquired").slice(0,4).map(item => ({
       id:`objective-${item.id}`,agent:"leonard",kind:"Historique des objectifs",title:item.content,
@@ -232,7 +264,7 @@
     if (!items.length) return `<div class="coaching-empty"><strong>Aucune recommandation sportive suffisamment précise</strong><span>Les contrôles techniques et comptes rendus d’activité sont volontairement masqués. Une carte apparaîtra seulement avec un fait de jeu, une conséquence et une proposition exploitable.</span></div>`;
     return `<div class="agent-suggestion-list">${items.map(item => `<article class="${item.priority?"is-priority":""}">
       <header><div><span>${escapeHtml(AGENT_LABELS[item.agent] || item.agent)}</span><small>${escapeHtml(item.kind)}</small></div>${item.priority?"<b>À reprendre</b>":""}</header>
-      <h3>${escapeHtml(item.title)}</h3>${item.observation?`<p><strong>${escapeHtml(item.observationLabel || "Constat sportif")}</strong>${escapeHtml(item.observation)}</p>`:""}<p><strong>Proposition pour le jeu</strong>${escapeHtml(item.suggestion)}</p>
+      <h3>${escapeHtml(item.title)}</h3>${observationMarkup(item.observation,item.observationLabel)}<section class="agent-recommendation"><h4>À retenir pour le jeu</h4>${recommendationMarkup(item.suggestion)}</section>
       <footer><span>${escapeHtml(item.source)}</span><time>${escapeHtml(formatDay(item.occurredAt))}</time></footer>
     </article>`).join("")}</div>`;
   }

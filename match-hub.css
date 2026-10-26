@@ -191,19 +191,31 @@
 .lykos-match-page .coaching-priorities p { margin:0; color:#9db3ca; font-size:9px; line-height:1.55; }
 .lykos-match-page .coaching-esportif { margin-top:13px; padding-top:13px; border-top:1px solid rgba(255,255,255,.09); }
 .lykos-match-page .agent-suggestion-intro { margin:-2px 0 9px; color:#829db7; font-size:8px; line-height:1.45; }
-.lykos-match-page .agent-suggestion-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
-.lykos-match-page .agent-suggestion-list article { display:grid; gap:7px; padding:12px; border:1px solid rgba(101,217,159,.15); border-radius:11px; background:rgba(0,14,36,.3); }
+.lykos-match-page .agent-suggestion-list { display:grid; grid-template-columns:1fr; gap:11px; }
+.lykos-match-page .agent-suggestion-list article { display:grid; gap:12px; padding:18px; border:1px solid rgba(101,217,159,.17); border-radius:14px; background:linear-gradient(145deg,rgba(2,25,58,.78),rgba(0,14,36,.48)); }
 .lykos-match-page .agent-suggestion-list article.is-priority { border-color:rgba(240,218,103,.28); background:linear-gradient(145deg,rgba(240,218,103,.08),rgba(0,14,36,.34)); }
-.lykos-match-page .agent-suggestion-list header,.lykos-match-page .agent-suggestion-list footer { display:flex; justify-content:space-between; gap:9px; align-items:flex-start; }
+.lykos-match-page .agent-suggestion-list header,.lykos-match-page .agent-suggestion-list footer { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.lykos-match-page .agent-suggestion-list header { padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.07); }
 .lykos-match-page .agent-suggestion-list header>div { display:grid; gap:3px; }
-.lykos-match-page .agent-suggestion-list header span { color:#7ce3b2; font-size:7px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; }
-.lykos-match-page .agent-suggestion-list header small { color:#718aa5; font-size:7px; }
+.lykos-match-page .agent-suggestion-list header span { color:#7ce3b2; font-size:9px; font-weight:900; letter-spacing:.055em; text-transform:uppercase; }
+.lykos-match-page .agent-suggestion-list header small { color:#829db7; font-size:8px; }
 .lykos-match-page .agent-suggestion-list header>b { padding:4px 6px; border-radius:999px; background:rgba(240,218,103,.13); color:#f0da67; font-size:7px; white-space:nowrap; }
-.lykos-match-page .agent-suggestion-list h3 { margin:0; color:#fff; font-size:10px; line-height:1.4; text-align:left; }
-.lykos-match-page .agent-suggestion-list p { display:grid; gap:3px; margin:0; color:#a8bdd2; font-size:8px; line-height:1.5; }
-.lykos-match-page .agent-suggestion-list p strong { color:#dce8f5; font-size:7px; letter-spacing:.05em; text-transform:uppercase; }
-.lykos-match-page .agent-suggestion-list footer { margin-top:2px; padding-top:7px; border-top:1px solid rgba(255,255,255,.07); color:#718aa5; font-size:7px; }
-.lykos-match-page .training-esportif .agent-suggestion-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.lykos-match-page .agent-suggestion-list h3 { margin:0; color:#fff; font-size:15px; line-height:1.35; text-align:left; }
+.lykos-match-page .agent-observation { display:grid; gap:6px; padding:11px 13px; border-left:3px solid #4c8cca; border-radius:0 10px 10px 0; background:rgba(76,140,202,.08); }
+.lykos-match-page .agent-observation>strong,.lykos-match-page .agent-recommendation h4 { color:#9fc7ee; font-size:8px; letter-spacing:.07em; text-transform:uppercase; }
+.lykos-match-page .agent-observation p { margin:0; color:#c0d0e1; font-size:10px; line-height:1.6; }
+.lykos-match-page .agent-observation details,.lykos-match-page .agent-recommendation details { color:#91a8bf; font-size:8px; }
+.lykos-match-page .agent-observation summary,.lykos-match-page .agent-recommendation summary { width:max-content; max-width:100%; color:#e5cf62; font-weight:800; cursor:pointer; }
+.lykos-match-page .agent-observation details p,.lykos-match-page .agent-recommendation details p { margin:7px 0 0; color:#91a8bf; font-size:9px; line-height:1.55; }
+.lykos-match-page .agent-recommendation { display:grid; gap:8px; }
+.lykos-match-page .agent-recommendation h4 { margin:0; color:#f0da67; }
+.lykos-match-page .agent-recommendation-points { display:grid; gap:7px; margin:0; padding:0; list-style:none; counter-reset:agent-rec; }
+.lykos-match-page .agent-recommendation-points li { display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; align-items:start; counter-increment:agent-rec; }
+.lykos-match-page .agent-recommendation-points li::before { content:counter(agent-rec); display:grid; width:28px; height:28px; place-items:center; border-radius:9px; background:var(--company-gold); color:#071d47; font-size:9px; font-weight:950; }
+.lykos-match-page .agent-recommendation-points li>div { min-height:28px; padding:7px 10px; border:1px solid rgba(255,255,255,.08); border-radius:10px; background:rgba(255,255,255,.035); }
+.lykos-match-page .agent-recommendation-points li strong { color:#eef5fc; font-size:10px; line-height:1.5; }
+.lykos-match-page .agent-suggestion-list footer { margin-top:2px; padding-top:9px; border-top:1px solid rgba(255,255,255,.07); color:#718aa5; font-size:8px; }
+.lykos-match-page .training-esportif .agent-suggestion-list { grid-template-columns:1fr; }
 .lykos-match-page .coaching-analysis-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
 .lykos-match-page .coaching-analysis-list article { display:grid; gap:5px; padding:11px; border:1px solid rgba(101,217,159,.14); border-radius:10px; background:rgba(0,14,36,.28); }
 .lykos-match-page .coaching-analysis-list article>span,.lykos-match-page .coaching-analysis-list time { color:#70d6a7; font-size:7px; font-weight:850; letter-spacing:.05em; text-transform:uppercase; }
@@ -358,6 +370,10 @@
   .lykos-match-page .training-history { grid-row:auto; }
   .lykos-match-page .training-objectives { grid-column:1; }
   .lykos-match-page .training-timeline { max-height:320px; }
+  .lykos-match-page .agent-suggestion-list article { gap:10px; padding:14px; }
+  .lykos-match-page .agent-suggestion-list h3 { font-size:13px; }
+  .lykos-match-page .agent-suggestion-list header span { font-size:8px; }
+  .lykos-match-page .agent-observation p,.lykos-match-page .agent-recommendation-points li strong { font-size:9px; }
   .lykos-match-page .game-plan-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .lykos-match-page .game-plan-hero aside { border-left:0; border-top:3px solid var(--company-gold); border-radius:0 0 12px 12px; }
 }
@@ -379,6 +395,8 @@
   .lykos-match-page .coaching-form .company-primary { width:100%; min-width:0; }
   .lykos-match-page .training-objective-form .company-primary,.lykos-match-page .training-objective form .company-primary { width:100%; min-width:0; }
   .lykos-match-page .training-objectives>header { align-items:flex-start; flex-direction:column; }
+  .lykos-match-page .agent-suggestion-list header { align-items:stretch; flex-direction:column; }
+  .lykos-match-page .agent-suggestion-list header>b { align-self:flex-start; }
   .lykos-match-page .objective-last-score { grid-template-columns:auto 1fr; }
   .lykos-match-page .objective-last-score time { grid-column:2; }
 }

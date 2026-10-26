@@ -6,7 +6,7 @@
   let heicConverterPromise = null;
   const state = {
     mode:"pre", prematch:null, prematchLoading:false, prematchError:"", prematchSelectedId:"", prematchSaving:false, prematchSaveError:"", prematchSaved:false,
-    coaching:null, coachingLoading:false, coachingError:"", coachingSaving:false, coachingSaved:false, objectiveSaving:"", objectiveError:"", objectiveSaved:"", planFilter:"all", trainingSelectedId:"",
+    coaching:null, coachingLoading:false, coachingError:"", coachingSaving:false, coachingSaved:false, briefSaving:false, briefError:"", briefSaved:false, objectiveSaving:"", objectiveError:"", objectiveSaved:"", planFilter:"all", trainingSelectedId:"",
     token:"", loading:false, error:"", data:null, selectedId:"", scanStatus:"", scanError:"",
     preview:"", proposal:null, form:null, submitting:false, result:null, lastFile:null,
   };
@@ -44,6 +44,7 @@
       invalid_manual_roster_players:"Sélectionnez au moins 5 joueurs du groupe Lykos FC.",
       manual_roster_update_failed:"Le groupe n’a pas pu être enregistré. Réessayez dans un instant.",
       coaching_context_unavailable:"L’espace coaching est momentanément indisponible.",
+      invalid_prematch_brief:"Écrivez au moins quelques mots avant d’enregistrer le brief.",
       invalid_coaching_observation:"Complétez le constat, sa catégorie et son niveau d’importance.",
       invalid_training_objective:"Complétez l’objectif d’entraînement et son thème.",
       invalid_training_objective_assessment:"Choisissez une note de réalisation entre 1 et 5.",
@@ -270,17 +271,21 @@
   }
 
   function coachingAdvice(context) {
+    const eventId=String(context?.match?.id || "");
+    const brief=(state.coaching?.briefs || []).find(item => String(item.eventId) === eventId);
     const opponent=window.LykosPrematchInsights?.opponentDisplayName(context?.match?.opponent) || "l’adversaire";
-    const history=window.LykosPrematchInsights?.history(context.match);
-    const ratio=window.LykosPrematchInsights?.resultBreakdown(history?.againstMatches || []);
-    const historyCue=ratio?.matches && ratio.wins < ratio.losses
-      ? `Le passif face à ${opponent} impose d’abord de sécuriser l’axe et les pertes avant de chercher à accélérer.`
-      : `Face à ${opponent}, conserver l’initiative sans déséquilibrer la sécurité derrière le ballon.`;
     return `<section class="prematch-card coaching-brief-card">
-      <header><div><span class="coaching-kicker">COACHING</span><h2>Consignes et dynamique de jeu</h2><p>Le plan des coachs, le contexte du match et les derniers retours eSportif sont rapprochés automatiquement.</p></div></header>
-      <div class="coaching-priorities"><article><b>1</b><div><h3>Installer la sortie courte</h3><p>Gardien impliqué, deux solutions visibles et passe de soutien autorisée si l’avant est fermé.</p></div></article><article><b>2</b><div><h3>Rester reliés en 1-2-1</h3><p>Largeur, intérieur, joueur haut et sécurité bougent ensemble autour du porteur.</p></div></article><article><b>3</b><div><h3>Protéger la perte</h3><p>${escapeHtml(historyCue)} Le plus proche ralentit ; les autres reforment le 2-2 et ferment l’intérieur.</p></div></article></div>
-      <div class="coaching-esportif"><h3>Recommandations sportives des agents</h3><p class="agent-suggestion-intro">Uniquement des constats précis qui modifient une consigne, un comportement ou une priorité de jeu. Les objectifs sous 4/5 restent visibles.</p>${agentSuggestionList("pre_match",5)}</div>
+      <header><div><span class="coaching-kicker">COACHING</span><h2>Mon brief de match</h2><p>Collez ici le brief que vous préparez dans les Notes de votre téléphone. Aucun ordre automatique ne le remplace.</p></div></header>
+      <form class="prematch-brief-form" data-prematch-brief-form>
+        <input type="hidden" name="eventId" value="${escapeHtml(eventId)}"><input type="hidden" name="eventLabel" value="Lykos FC — ${escapeHtml(opponent)}">
+        <label><span>Brief pour Lykos FC — ${escapeHtml(opponent)}</span><textarea name="content" maxlength="5000" required placeholder="Collez votre brief ici…">${escapeHtml(brief?.content || "")}</textarea></label>
+        <footer><div>${brief?.updatedAt ? `<span>Dernière sauvegarde : ${escapeHtml(formatDate(brief.updatedAt))}</span>` : `<span>Le brief sera conservé avec cette rencontre.</span>`}${state.briefError?`<b class="match-error" role="alert">${escapeHtml(state.briefError)}</b>`:""}${state.briefSaved?`<b class="coaching-saved" role="status">✓ Brief enregistré.</b>`:""}</div><button type="submit" class="company-primary" ${state.briefSaving?"disabled":""}>${state.briefSaving?"Enregistrement…":"Enregistrer le brief"}</button></footer>
+      </form>
     </section>`;
+  }
+
+  function prematchAgentInsights() {
+    return `<section class="prematch-card prematch-agent-insights"><header><div><span class="coaching-kicker">ÉCLAIRAGE ESPORTIF</span><h2>Recommandations sportives des agents</h2><p>Ces informations nourrissent votre réflexion sans écrire ni hiérarchiser votre brief à votre place.</p></div></header>${agentSuggestionList("pre_match",5)}</section>`;
   }
 
   function observationForm(scope,{eventId="",eventLabel="",occurredAt=""}={}) {
@@ -416,6 +421,7 @@
           ${resultRatio(history.againstMatches)}
           ${fixtureSeries(history.againstMatches,"Aucun face-à-face retrouvé")}
         </section>
+        ${prematchAgentInsights()}
       </div>
     </main>`;
   }
@@ -765,6 +771,20 @@
     finally {state.coachingSaving=false;notify();}
   }
 
+  async function submitPrematchBrief(formElement) {
+    if (state.briefSaving) return;
+    const data=new FormData(formElement);
+    const payload={eventId:data.get("eventId"),eventLabel:data.get("eventLabel"),content:data.get("content")};
+    state.briefSaving=true;state.briefError="";state.briefSaved=false;notify();
+    try {
+      await call("coaching/brief",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      state.coaching=null;
+      await loadCoaching();
+      state.briefSaved=true;
+    } catch (error) {state.briefError=error.message;}
+    finally {state.briefSaving=false;notify();}
+  }
+
   async function submitTrainingObjective(formElement) {
     if (state.objectiveSaving) return;
     const data=new FormData(formElement);
@@ -830,7 +850,7 @@
     if (root && !root.contains(event.relatedTarget)) root.querySelectorAll(".is-preview").forEach(button => button.classList.remove("is-preview"));
   });
   document.addEventListener("change", event => {
-    if (event.target.matches?.("[data-prematch-select]")) {state.prematchSelectedId=event.target.value;state.prematch=null;loadPrematch(state.prematchSelectedId);return;}
+    if (event.target.matches?.("[data-prematch-select]")) {state.prematchSelectedId=event.target.value;state.prematch=null;state.briefError="";state.briefSaved=false;loadPrematch(state.prematchSelectedId);return;}
     if (event.target.matches?.('[data-prematch-roster-form] input[name="playerIds"]')) {
       const form = event.target.closest("[data-prematch-roster-form]");
       const count = form?.querySelectorAll('input[name="playerIds"]:checked').length || 0;
@@ -864,6 +884,9 @@
     }
   });
   document.addEventListener("submit", event => {
+    if (event.target.matches?.("[data-prematch-brief-form]")) {
+      event.preventDefault(); submitPrematchBrief(event.target); return;
+    }
     if (event.target.matches?.("[data-training-objective-form]")) {
       event.preventDefault(); submitTrainingObjective(event.target); return;
     }
@@ -892,7 +915,7 @@
   });
   const receiveSession = event => {
     state.token = typeof event.detail?.token === "string" ? event.detail.token : "";
-    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",prematchSaving:false,prematchSaveError:"",prematchSaved:false,coaching:null,coachingLoading:false,coachingError:"",coachingSaving:false,coachingSaved:false,loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
+    if (!state.token) Object.assign(state,{prematch:null,prematchLoading:false,prematchError:"",prematchSelectedId:"",prematchSaving:false,prematchSaveError:"",prematchSaved:false,coaching:null,coachingLoading:false,coachingError:"",coachingSaving:false,coachingSaved:false,briefSaving:false,briefError:"",briefSaved:false,loading:false,error:"",data:null,selectedId:"",scanStatus:"",scanError:"",preview:"",proposal:null,form:null,submitting:false,result:null});
     notify();
   };
   window.addEventListener("lykos:hub-session",receiveSession);

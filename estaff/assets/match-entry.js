@@ -215,7 +215,7 @@
   function agentSuggestionList(target,limit=6) {
     const objectives=(state.coaching?.objectives || []).filter(item => item.status !== "acquired").slice(0,4).map(item => ({
       id:`objective-${item.id}`,agent:"leonard",kind:"Historique des objectifs",title:item.content,
-      observation:`Dernières évaluations : ${objectiveScoreHistory(item)}.`,
+      observation:`Dernières évaluations : ${objectiveScoreHistory(item)}.`,observationLabel:"Historique",
       suggestion:target === "pre_match" ? "Le rappeler dans les consignes et observer sa réalisation pendant le match." : "Le reprendre dans la prochaine séance tant qu’il reste sous 4 sur 5.",
       source:item.trainingLabel || "Suivi des entraînements",occurredAt:item.updatedAt || item.createdAt,priority:true,
     }));
@@ -224,14 +224,15 @@
       if (!AGENT_LABELS[item.agent] || seen.has(item.agent)) return false;
       seen.add(item.agent);return true;
     }).map(item => ({
-      id:item.id,agent:item.agent,kind:item.type || "Constat individuel",title:item.title,observation:"",suggestion:item.summary,
+      id:item.id,agent:item.agent,kind:item.type || "Constat individuel",title:item.title,
+      observation:normalize(item.summary) === normalize(item.suggestion) ? "" : item.summary,observationLabel:"Constat sportif",suggestion:item.suggestion,
       source:item.source || "Retour eSportif",occurredAt:item.occurredAt,priority:false,
     }));
     const items=(target === "training" ? [...objectives,...reports] : [...reports,...objectives]).slice(0,limit);
-    if (!items.length) return `<div class="coaching-empty"><strong>Aucune suggestion sourcée disponible</strong><span>Les suggestions apparaîtront après une constatation d’agent ou l’évaluation d’un objectif.</span></div>`;
+    if (!items.length) return `<div class="coaching-empty"><strong>Aucune recommandation sportive suffisamment précise</strong><span>Les contrôles techniques et comptes rendus d’activité sont volontairement masqués. Une carte apparaîtra seulement avec un fait de jeu, une conséquence et une proposition exploitable.</span></div>`;
     return `<div class="agent-suggestion-list">${items.map(item => `<article class="${item.priority?"is-priority":""}">
       <header><div><span>${escapeHtml(AGENT_LABELS[item.agent] || item.agent)}</span><small>${escapeHtml(item.kind)}</small></div>${item.priority?"<b>À reprendre</b>":""}</header>
-      <h3>${escapeHtml(item.title)}</h3>${item.observation?`<p><strong>Historique</strong>${escapeHtml(item.observation)}</p>`:""}<p><strong>Suggestion de l’agent</strong>${escapeHtml(item.suggestion)}</p>
+      <h3>${escapeHtml(item.title)}</h3>${item.observation?`<p><strong>${escapeHtml(item.observationLabel || "Constat sportif")}</strong>${escapeHtml(item.observation)}</p>`:""}<p><strong>Proposition pour le jeu</strong>${escapeHtml(item.suggestion)}</p>
       <footer><span>${escapeHtml(item.source)}</span><time>${escapeHtml(formatDay(item.occurredAt))}</time></footer>
     </article>`).join("")}</div>`;
   }
@@ -246,7 +247,7 @@
     return `<section class="prematch-card coaching-brief-card">
       <header><div><span class="coaching-kicker">COACHING</span><h2>Consignes et dynamique de jeu</h2><p>Le plan des coachs, le contexte du match et les derniers retours eSportif sont rapprochés automatiquement.</p></div></header>
       <div class="coaching-priorities"><article><b>1</b><div><h3>Installer la sortie courte</h3><p>Gardien impliqué, deux solutions visibles et passe de soutien autorisée si l’avant est fermé.</p></div></article><article><b>2</b><div><h3>Rester reliés en 1-2-1</h3><p>Largeur, intérieur, joueur haut et sécurité bougent ensemble autour du porteur.</p></div></article><article><b>3</b><div><h3>Protéger la perte</h3><p>${escapeHtml(historyCue)} Le plus proche ralentit ; les autres reforment le 2-2 et ferment l’intérieur.</p></div></article></div>
-      <div class="coaching-esportif"><h3>Suggestions individuelles des agents</h3><p class="agent-suggestion-intro">Chaque proposition conserve son auteur, son constat et sa source. Les objectifs sous 4/5 restent visibles.</p>${agentSuggestionList("pre_match",5)}</div>
+      <div class="coaching-esportif"><h3>Recommandations sportives des agents</h3><p class="agent-suggestion-intro">Uniquement des constats précis qui modifient une consigne, un comportement ou une priorité de jeu. Les objectifs sous 4/5 restent visibles.</p>${agentSuggestionList("pre_match",5)}</div>
     </section>`;
   }
 
@@ -525,7 +526,7 @@
         <section class="match-card training-history"><header><div><span class="coaching-kicker">HISTORIQUE</span><h2>Séances SportEasy</h2><p>Les entraînements sont classés automatiquement par date.</p></div></header>${trainings.length ? `<div class="training-timeline">${trainings.map(item => `<button type="button" class="${String(item.id)===String(current?.id)?"is-current":""}" data-training-id="${escapeHtml(item.id)}"><time>${escapeHtml(formatDay(item.startAt))}</time><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.venue || item.pitch || "Lieu non renseigné")}</span></button>`).join("")}</div>` : `<div class="coaching-empty"><strong>Aucune séance SportEasy retrouvée</strong><span>L’historique apparaîtra automatiquement dès que la source transmettra les entraînements.</span></div>`}</section>
         <section class="match-card training-objectives"><header><div><span class="coaching-kicker">OBJECTIFS MESURABLES</span><h2>${escapeHtml(current?.label || "Objectifs d’entraînement")}</h2><p>${current ? escapeHtml(formatDate(current.startAt)) : "Sélectionnez une séance pour fixer ses objectifs."}</p></div><strong class="objective-threshold">Acquis à partir de 4/5</strong></header><div class="training-objective-grid"><div>${objectiveForm(current)}</div><div><h3>Évaluation et priorités actives</h3>${objectiveList(current)}</div></div></section>
         <section class="match-card coaching-notebook"><header><div><span class="coaching-kicker">RETOUR TERRAIN</span><h2>Constats complémentaires</h2><p>Les observations restent distinctes des objectifs mesurés de la séance.</p></div></header><div class="coaching-notebook-grid"><div>${observationForm("training",{eventId:current?.id,eventLabel:current?.label,occurredAt:current?.startAt})}</div><div><h3>Points de travail</h3>${observationList("training",current?.id)}</div></div></section>
-        <section class="match-card training-esportif"><header><div><span class="coaching-kicker">ESPORTIF</span><h2>Suggestions des agents</h2><p>Les constatations individuelles et l’historique des objectifs deviennent des propositions directement exploitables.</p></div></header>${agentSuggestionList("training",8)}</section>
+        <section class="match-card training-esportif"><header><div><span class="coaching-kicker">ESPORTIF</span><h2>Recommandations sportives des agents</h2><p>Les constats tactiques précis et l’historique des objectifs deviennent des thèmes directement exploitables.</p></div></header>${agentSuggestionList("training",8)}</section>
       </div>
     </main>`;
   }

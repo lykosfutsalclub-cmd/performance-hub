@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-10-26T15:28:23.157Z",
+  "generatedAt": "2026-10-27T13:33:39.382Z",
   "periods": {
     "current": {
-      "matchesPlayed": 6,
+      "matchesPlayed": 7,
       "wins": 5,
       "draws": 0,
-      "losses": 1,
-      "goalsFor": 116,
-      "goalsAgainst": 59,
-      "goalsForPerMatch": 19.33,
-      "goalsAgainstPerMatch": 9.83,
-      "winRate": 83.3,
-      "goalDifference": 57,
-      "averageGoalDifference": 9.5,
-      "recentFormScore": 83.3,
+      "losses": 2,
+      "goalsFor": 122,
+      "goalsAgainst": 69,
+      "goalsForPerMatch": 17.43,
+      "goalsAgainstPerMatch": 9.86,
+      "winRate": 71.4,
+      "goalDifference": 53,
+      "averageGoalDifference": 7.57,
+      "recentFormScore": 71.4,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -31,8 +31,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-26-ase-foot-5",
+              "date": "2026-10-26",
+              "opponent": "ASE Foot 5",
+              "scoreFor": 6,
+              "scoreAgainst": 10,
+              "difference": -4
+            }
+          ]
         },
         {
           "difference": -3,
@@ -265,6 +274,7 @@ window.LYKOS_TEAM_STATS = {
         }
       ],
       "recentResults": [
+        "defeat",
         "victory",
         "victory",
         "victory",
@@ -295,9 +305,9 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 76.6,
+        "value": 70.2,
         "label": "BONNE",
-        "matchCount": 6,
+        "matchCount": 7,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }
@@ -969,18 +979,18 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 160,
+      "matchesPlayed": 161,
       "wins": 77,
       "draws": 7,
-      "losses": 76,
-      "goalsFor": 1845,
-      "goalsAgainst": 1638,
-      "goalsForPerMatch": 11.53,
+      "losses": 77,
+      "goalsFor": 1851,
+      "goalsAgainst": 1648,
+      "goalsForPerMatch": 11.5,
       "goalsAgainstPerMatch": 10.24,
-      "winRate": 48.1,
-      "goalDifference": 207,
-      "averageGoalDifference": 1.29,
-      "recentFormScore": 60,
+      "winRate": 47.8,
+      "goalDifference": 203,
+      "averageGoalDifference": 1.26,
+      "recentFormScore": 50,
       "scoreDistribution": [
         {
           "difference": -14,
@@ -1340,8 +1350,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 4,
+          "matches": 5,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-26-ase-foot-5",
+              "date": "2026-10-26",
+              "opponent": "ASE Foot 5",
+              "scoreFor": 6,
+              "scoreAgainst": 10,
+              "difference": -4
+            },
             {
               "eventId": "match-2026-02-16-lancon-futsal",
               "date": "2026-02-16",
@@ -2543,6 +2561,7 @@ window.LYKOS_TEAM_STATS = {
         }
       ],
       "recentResults": [
+        "defeat",
         "victory",
         "victory",
         "victory",
@@ -2551,8 +2570,7 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "defeat",
         "defeat",
-        "defeat",
-        "victory"
+        "defeat"
       ],
       "streaks": {
         "wins": {
@@ -2577,7 +2595,7 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 60.9,
+        "value": 58.8,
         "label": "POSITIVE",
         "matchCount": 10,
         "eventRatingCoverage": 90,
@@ -2590,7 +2608,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 6,
+      "matchCount": 7,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2753,12 +2771,39 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "match-2026-10-26-ase-foot-5",
+          "index": 7,
+          "date": "2026-10-26",
+          "opponent": "ASE Foot 5",
+          "score": "6–10",
+          "winRate": 71.4,
+          "goalsForPerMatch": 17.43,
+          "goalsAgainstPerMatch": 9.86,
+          "goalDifferencePerMatch": 7.57,
+          "teamForm": 32.3,
+          "formTrace": {
+            "value": 32.3,
+            "playerGradeAverage": 5.5,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 3,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 0,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "no-history-median"
+            },
+            "importance": 1.25,
+            "availableWeight": 1
+          }
         }
       ],
       "form": {
-        "value": 76.6,
+        "value": 70.2,
         "label": "BONNE",
-        "matchCount": 6,
+        "matchCount": 7,
         "eventRatingCoverage": 100,
         "gradeCoverage": 100
       }

@@ -77,7 +77,7 @@ test("la page charge l’accueil humain après les protections existantes", asyn
   const style = await readFile(new URL("estaff/assets/team-home.css",root),"utf8");
 
   assert.match(page,/team-home\.css\?v=20261027-action-center-v1/);
-  assert.match(page,/team-home\.js\?v=20261027-action-center-v1/);
+  assert.match(page,/team-home\.js\?v=20261027-useful-activity-v1/);
   assert.match(script,/logo-lykos-intro-integral-2026\.png/);
   assert.doesNotMatch(script,/logo-lykos-intro-carre-2026\.png/);
   assert.doesNotMatch(page,/personal-access\.js/);
@@ -175,9 +175,23 @@ test("le Journal d’équipe reprend les mêmes titres courts et résumés méti
   assert.match(script,/function activityPresentation\(entry\)/);
   assert.match(script,/presentation=activityPresentation\(entry\)/);
   assert.match(script,/<strong>\$\{escapeHtml\(presentation\.title\)\}<\/strong><small>\$\{escapeHtml\(presentation\.summary\)\}<\/small>/);
-  assert.match(script,/activityPresentation\(\{\.\.\.entry,activityType:"mission"\}\)/);
+  assert.match(script,/map\(entry=>\(\{\.\.\.entry,activityType:"mission"\}\)\)/);
   assert.doesNotMatch(script,/class="activity-summary"[\s\S]{0,300}<strong>\$\{escapeHtml\(humanizeText\(entry\.title/);
   assert.match(style,/\.activity-summary small \{[^}]*-webkit-line-clamp:2/);
+});
+
+test("le journal masque les contrôles sans nouveauté et les conclusions génériques répétitives", async () => {
+  const script = await readFile(new URL("estaff/assets/team-home.js",root),"utf8");
+
+  assert.match(script,/function isInternalActivityNoise\(entry\)/);
+  assert.match(script,/text\.includes\("conclusions egeneral director"\)/);
+  assert.match(script,/text\.includes\("les lectures et controles sans suite restent internes"\)/);
+  assert.match(script,/normalize\(cadence\?\.outcome\)\.includes\("no_change"\)/);
+  assert.match(script,/function usefulActivityEntries\(entries\)/);
+  assert.match(script,/if\(seen\.has\(signature\)\)return false/);
+  assert.match(script,/Aucune nouveauté utile/);
+  assert.match(script,/Uniquement ce qui compte/);
+  assert.doesNotMatch(script,/contrôles compris/);
 });
 
 test("les fiches agent écartent les attributions historiques seulement supposées", async () => {

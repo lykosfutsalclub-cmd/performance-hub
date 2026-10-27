@@ -44,7 +44,7 @@ jobs:
         id: audit
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          ERH_AUDIT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/erh-activity-audit
+          ERH_AUDIT_URL: https://lykos-estaff-service.lykosfutsalclub.workers.dev/api/estaff/worker/erh-activity-audit/publish
         with:
           script: |
             if (context.eventName === "schedule") {
@@ -59,6 +59,7 @@ jobs:
             }
             const identity = await core.getIDToken("lykos-estaff-esupport");
             const response = await fetch(process.env.ERH_AUDIT_URL, {
+              method:"POST",
               headers:{Authorization:`Bearer ${identity}`},
             });
             const result = await response.json().catch(() => ({}));

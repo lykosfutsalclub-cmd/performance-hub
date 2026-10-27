@@ -4,10 +4,9 @@ import {readFile} from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 
-test("le Performance Hub autorise le zoom du navigateur", async () => {
+test("le Performance Hub verrouille le cadrage mobile", async () => {
   const page = await readFile(new URL("index.html", root), "utf8");
-  assert.match(page, /name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/);
-  assert.doesNotMatch(page, /user-scalable=no|maximum-scale=1/);
+  assert.match(page, /name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/);
 });
 
 test("la porte d’accès est annoncée comme une fenêtre et reçoit le focus", async () => {

@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-10-31T09:57:41.861Z",
+  "generatedAt": "2026-11-01T14:30:32.878Z",
   "periods": {
     "current": {
-      "matchesPlayed": 7,
+      "matchesPlayed": 10,
       "wins": 5,
       "draws": 0,
-      "losses": 2,
-      "goalsFor": 122,
-      "goalsAgainst": 69,
-      "goalsForPerMatch": 17.43,
-      "goalsAgainstPerMatch": 9.86,
-      "winRate": 71.4,
-      "goalDifference": 53,
-      "averageGoalDifference": 7.57,
-      "recentFormScore": 71.4,
+      "losses": 5,
+      "goalsFor": 129,
+      "goalsAgainst": 84,
+      "goalsForPerMatch": 12.9,
+      "goalsAgainstPerMatch": 8.4,
+      "winRate": 50,
+      "goalDifference": 45,
+      "averageGoalDifference": 4.5,
+      "recentFormScore": 50,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -31,8 +31,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 1,
+          "matches": 2,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-31-grenoble-fc",
+              "date": "2026-10-31",
+              "opponent": "GRENOBLE FC",
+              "scoreFor": 2,
+              "scoreAgainst": 6,
+              "difference": -4
+            },
             {
               "eventId": "match-2026-10-26-ase-foot-5",
               "date": "2026-10-26",
@@ -50,8 +58,25 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -2,
-          "matches": 0,
-          "fixtures": []
+          "matches": 2,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-31-all-stars",
+              "date": "2026-10-31",
+              "opponent": "ALL STARS",
+              "scoreFor": 1,
+              "scoreAgainst": 3,
+              "difference": -2
+            },
+            {
+              "eventId": "match-2026-10-31-blues-five-club",
+              "date": "2026-10-31",
+              "opponent": "BLUES FIVE CLUB",
+              "scoreFor": 4,
+              "scoreAgainst": 6,
+              "difference": -2
+            }
+          ]
         },
         {
           "difference": -1,
@@ -275,6 +300,9 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "defeat",
+        "defeat",
+        "defeat",
+        "defeat",
         "victory",
         "victory",
         "victory",
@@ -294,22 +322,22 @@ window.LYKOS_TEAM_STATS = {
           "endAt": "2026-10-12"
         },
         "losses": {
-          "count": 1,
-          "startAt": "2026-09-09",
-          "endAt": "2026-09-09"
+          "count": 4,
+          "startAt": "2026-10-26",
+          "endAt": "2026-10-31"
         },
         "winless": {
-          "count": 1,
-          "startAt": "2026-09-09",
-          "endAt": "2026-09-09"
+          "count": 4,
+          "startAt": "2026-10-26",
+          "endAt": "2026-10-31"
         }
       },
       "form": {
-        "value": 70.2,
-        "label": "BONNE",
-        "matchCount": 7,
+        "value": 53.3,
+        "label": "MOYENNE",
+        "matchCount": 10,
         "eventRatingCoverage": 100,
-        "gradeCoverage": 100
+        "gradeCoverage": 70
       }
     },
     "previous": {
@@ -979,17 +1007,17 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 161,
+      "matchesPlayed": 164,
       "wins": 77,
       "draws": 7,
-      "losses": 77,
-      "goalsFor": 1851,
-      "goalsAgainst": 1648,
-      "goalsForPerMatch": 11.5,
-      "goalsAgainstPerMatch": 10.24,
-      "winRate": 47.8,
-      "goalDifference": 203,
-      "averageGoalDifference": 1.26,
+      "losses": 80,
+      "goalsFor": 1858,
+      "goalsAgainst": 1663,
+      "goalsForPerMatch": 11.33,
+      "goalsAgainstPerMatch": 10.14,
+      "winRate": 47,
+      "goalDifference": 195,
+      "averageGoalDifference": 1.19,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -1350,8 +1378,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 5,
+          "matches": 6,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-31-grenoble-fc",
+              "date": "2026-10-31",
+              "opponent": "GRENOBLE FC",
+              "scoreFor": 2,
+              "scoreAgainst": 6,
+              "difference": -4
+            },
             {
               "eventId": "match-2026-10-26-ase-foot-5",
               "date": "2026-10-26",
@@ -1490,8 +1526,24 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -2,
-          "matches": 12,
+          "matches": 14,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-31-all-stars",
+              "date": "2026-10-31",
+              "opponent": "ALL STARS",
+              "scoreFor": 1,
+              "scoreAgainst": 3,
+              "difference": -2
+            },
+            {
+              "eventId": "match-2026-10-31-blues-five-club",
+              "date": "2026-10-31",
+              "opponent": "BLUES FIVE CLUB",
+              "scoreFor": 4,
+              "scoreAgainst": 6,
+              "difference": -2
+            },
             {
               "eventId": "match-2026-01-27-sahara-strikers",
               "date": "2026-01-27",
@@ -2562,15 +2614,15 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "defeat",
+        "defeat",
+        "defeat",
+        "defeat",
         "victory",
         "victory",
         "victory",
         "victory",
         "defeat",
-        "victory",
-        "defeat",
-        "defeat",
-        "defeat"
+        "victory"
       ],
       "streaks": {
         "wins": {
@@ -2595,11 +2647,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 58.8,
-        "label": "POSITIVE",
+        "value": 53.3,
+        "label": "MOYENNE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
-        "gradeCoverage": 90
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 70
       }
     }
   },
@@ -2608,7 +2660,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 7,
+      "matchCount": 10,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2798,14 +2850,95 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1.25,
             "availableWeight": 1
           }
+        },
+        {
+          "eventId": "match-2026-10-31-all-stars",
+          "index": 8,
+          "date": "2026-10-31",
+          "opponent": "ALL STARS",
+          "score": "1–3",
+          "winRate": 62.5,
+          "goalsForPerMatch": 15.38,
+          "goalsAgainstPerMatch": 9,
+          "goalDifferencePerMatch": 6.38,
+          "teamForm": 9.1,
+          "formTrace": {
+            "value": 9.1,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": 2,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 0,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "no-history-median"
+            },
+            "importance": 1.5,
+            "availableWeight": 0.55
+          }
+        },
+        {
+          "eventId": "match-2026-10-31-grenoble-fc",
+          "index": 9,
+          "date": "2026-10-31",
+          "opponent": "GRENOBLE FC",
+          "score": "2–6",
+          "winRate": 55.6,
+          "goalsForPerMatch": 13.89,
+          "goalsAgainstPerMatch": 8.67,
+          "goalDifferencePerMatch": 5.22,
+          "teamForm": 13.6,
+          "formTrace": {
+            "value": 13.6,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": 3,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 0,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "no-history-median"
+            },
+            "importance": 1.5,
+            "availableWeight": 0.55
+          }
+        },
+        {
+          "eventId": "match-2026-10-31-blues-five-club",
+          "index": 10,
+          "date": "2026-10-31",
+          "opponent": "BLUES FIVE CLUB",
+          "score": "4–6",
+          "winRate": 50,
+          "goalsForPerMatch": 12.9,
+          "goalsAgainstPerMatch": 8.4,
+          "goalDifferencePerMatch": 4.5,
+          "teamForm": 18.2,
+          "formTrace": {
+            "value": 18.2,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": 4,
+            "eventRatingVoteCount": 1,
+            "contextualResult": 0,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "no-history-median"
+            },
+            "importance": 1.5,
+            "availableWeight": 0.55
+          }
         }
       ],
       "form": {
-        "value": 70.2,
-        "label": "BONNE",
-        "matchCount": 7,
+        "value": 53.3,
+        "label": "MOYENNE",
+        "matchCount": 10,
         "eventRatingCoverage": 100,
-        "gradeCoverage": 100
+        "gradeCoverage": 70
       }
     },
     {

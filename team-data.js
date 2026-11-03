@@ -1,18 +1,18 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-11-02T11:40:23.883Z",
+  "generatedAt": "2026-11-03T12:20:42.992Z",
   "periods": {
     "current": {
       "matchesPlayed": 10,
       "wins": 5,
       "draws": 0,
       "losses": 5,
-      "goalsFor": 129,
+      "goalsFor": 130,
       "goalsAgainst": 84,
-      "goalsForPerMatch": 12.9,
+      "goalsForPerMatch": 13,
       "goalsAgainstPerMatch": 8.4,
       "winRate": 50,
-      "goalDifference": 45,
-      "averageGoalDifference": 4.5,
+      "goalDifference": 46,
+      "averageGoalDifference": 4.6,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -31,16 +31,8 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 2,
+          "matches": 1,
           "fixtures": [
-            {
-              "eventId": "match-2026-10-31-grenoble-fc",
-              "date": "2026-10-31",
-              "opponent": "GRENOBLE FC",
-              "scoreFor": 2,
-              "scoreAgainst": 6,
-              "difference": -4
-            },
             {
               "eventId": "match-2026-10-26-ase-foot-5",
               "date": "2026-10-26",
@@ -53,8 +45,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -3,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-10-31-grenoble-fc",
+              "date": "2026-10-31",
+              "opponent": "GRENOBLE FC",
+              "scoreFor": 3,
+              "scoreAgainst": 6,
+              "difference": -3
+            }
+          ]
         },
         {
           "difference": -2,
@@ -1011,13 +1012,13 @@ window.LYKOS_TEAM_STATS = {
       "wins": 77,
       "draws": 7,
       "losses": 80,
-      "goalsFor": 1858,
+      "goalsFor": 1859,
       "goalsAgainst": 1663,
-      "goalsForPerMatch": 11.33,
+      "goalsForPerMatch": 11.34,
       "goalsAgainstPerMatch": 10.14,
       "winRate": 47,
-      "goalDifference": 195,
-      "averageGoalDifference": 1.19,
+      "goalDifference": 196,
+      "averageGoalDifference": 1.2,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -1378,16 +1379,8 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -4,
-          "matches": 6,
+          "matches": 5,
           "fixtures": [
-            {
-              "eventId": "match-2026-10-31-grenoble-fc",
-              "date": "2026-10-31",
-              "opponent": "GRENOBLE FC",
-              "scoreFor": 2,
-              "scoreAgainst": 6,
-              "difference": -4
-            },
             {
               "eventId": "match-2026-10-26-ase-foot-5",
               "date": "2026-10-26",
@@ -1432,8 +1425,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": -3,
-          "matches": 11,
+          "matches": 12,
           "fixtures": [
+            {
+              "eventId": "match-2026-10-31-grenoble-fc",
+              "date": "2026-10-31",
+              "opponent": "GRENOBLE FC",
+              "scoreFor": 3,
+              "scoreAgainst": 6,
+              "difference": -3
+            },
             {
               "eventId": "match-2026-05-25-ase",
               "date": "2026-05-25",
@@ -2883,11 +2884,11 @@ window.LYKOS_TEAM_STATS = {
           "index": 9,
           "date": "2026-10-31",
           "opponent": "GRENOBLE FC",
-          "score": "2–6",
+          "score": "3–6",
           "winRate": 55.6,
-          "goalsForPerMatch": 13.89,
+          "goalsForPerMatch": 14,
           "goalsAgainstPerMatch": 8.67,
-          "goalDifferencePerMatch": 5.22,
+          "goalDifferencePerMatch": 5.33,
           "teamForm": 13.6,
           "formTrace": {
             "value": 13.6,
@@ -2912,9 +2913,9 @@ window.LYKOS_TEAM_STATS = {
           "opponent": "BLUES FIVE CLUB",
           "score": "4–6",
           "winRate": 50,
-          "goalsForPerMatch": 12.9,
+          "goalsForPerMatch": 13,
           "goalsAgainstPerMatch": 8.4,
-          "goalDifferencePerMatch": 4.5,
+          "goalDifferencePerMatch": 4.6,
           "teamForm": 18.2,
           "formTrace": {
             "value": 18.2,

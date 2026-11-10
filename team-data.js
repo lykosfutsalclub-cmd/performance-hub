@@ -1,18 +1,18 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-11-09T19:47:31.979Z",
+  "generatedAt": "2026-11-10T11:44:22.259Z",
   "periods": {
     "current": {
       "matchesPlayed": 11,
       "wins": 6,
       "draws": 0,
       "losses": 5,
-      "goalsFor": 144,
-      "goalsAgainst": 86,
-      "goalsForPerMatch": 13.09,
-      "goalsAgainstPerMatch": 7.82,
+      "goalsFor": 167,
+      "goalsAgainst": 90,
+      "goalsForPerMatch": 15.18,
+      "goalsAgainstPerMatch": 8.18,
       "winRate": 54.5,
-      "goalDifference": 58,
-      "averageGoalDifference": 5.27,
+      "goalDifference": 77,
+      "averageGoalDifference": 7,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -172,17 +172,8 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 12,
-          "matches": 1,
-          "fixtures": [
-            {
-              "eventId": "match-2026-11-09-les-collegues",
-              "date": "2026-11-09",
-              "opponent": "Les Collègues",
-              "scoreFor": 14,
-              "scoreAgainst": 2,
-              "difference": 12
-            }
-          ]
+          "matches": 0,
+          "fixtures": []
         },
         {
           "difference": 13,
@@ -285,8 +276,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 31,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-11-09-les-collegues",
+              "date": "2026-11-09",
+              "opponent": "Les Collègues",
+              "scoreFor": 37,
+              "scoreAgainst": 6,
+              "difference": 31
+            }
+          ]
         },
         {
           "difference": 32,
@@ -343,10 +343,10 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 55.3,
+        "value": 55.4,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
+        "eventRatingCoverage": 100,
         "gradeCoverage": 60
       }
     },
@@ -1021,13 +1021,13 @@ window.LYKOS_TEAM_STATS = {
       "wins": 78,
       "draws": 7,
       "losses": 80,
-      "goalsFor": 1873,
-      "goalsAgainst": 1665,
-      "goalsForPerMatch": 11.35,
-      "goalsAgainstPerMatch": 10.09,
+      "goalsFor": 1896,
+      "goalsAgainst": 1669,
+      "goalsForPerMatch": 11.49,
+      "goalsAgainstPerMatch": 10.12,
       "winRate": 47.3,
-      "goalDifference": 208,
-      "averageGoalDifference": 1.26,
+      "goalDifference": 227,
+      "averageGoalDifference": 1.38,
       "recentFormScore": 50,
       "scoreDistribution": [
         {
@@ -2364,16 +2364,8 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 12,
-          "matches": 3,
+          "matches": 2,
           "fixtures": [
-            {
-              "eventId": "match-2026-11-09-les-collegues",
-              "date": "2026-11-09",
-              "opponent": "Les Collègues",
-              "scoreFor": 14,
-              "scoreAgainst": 2,
-              "difference": 12
-            },
             {
               "eventId": "match-2024-09-04-equipe-anonyme-le-complexe",
               "date": "2024-09-04",
@@ -2607,8 +2599,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 31,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-11-09-les-collegues",
+              "date": "2026-11-09",
+              "opponent": "Les Collègues",
+              "scoreFor": 37,
+              "scoreAgainst": 6,
+              "difference": 31
+            }
+          ]
         },
         {
           "difference": 32,
@@ -2665,10 +2666,10 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 55.3,
+        "value": 55.4,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
+        "eventRatingCoverage": 100,
         "gradeCoverage": 60
       }
     }
@@ -2955,18 +2956,18 @@ window.LYKOS_TEAM_STATS = {
           "index": 11,
           "date": "2026-11-09",
           "opponent": "Les Collègues",
-          "score": "14–2",
+          "score": "37–6",
           "winRate": 54.5,
-          "goalsForPerMatch": 13.09,
-          "goalsAgainstPerMatch": 7.82,
-          "goalDifferencePerMatch": 5.27,
-          "teamForm": 97.5,
+          "goalsForPerMatch": 15.18,
+          "goalsAgainstPerMatch": 8.18,
+          "goalDifferencePerMatch": 7,
+          "teamForm": 98.2,
           "formTrace": {
-            "value": 97.5,
+            "value": 98.2,
             "playerGradeAverage": null,
             "playerGradeCount": 0,
-            "eventRatingAverage": null,
-            "eventRatingVoteCount": null,
+            "eventRatingAverage": 6,
+            "eventRatingVoteCount": 1,
             "contextualResult": 97.5,
             "opponentDifficulty": {
               "value": 50,
@@ -2974,15 +2975,15 @@ window.LYKOS_TEAM_STATS = {
               "policy": "no-history-median"
             },
             "importance": 1,
-            "availableWeight": 0.4
+            "availableWeight": 0.55
           }
         }
       ],
       "form": {
-        "value": 55.3,
+        "value": 55.4,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
+        "eventRatingCoverage": 100,
         "gradeCoverage": 60
       }
     },

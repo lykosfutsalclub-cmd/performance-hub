@@ -1,19 +1,19 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-11-16T12:02:12.732Z",
+  "generatedAt": "2026-11-17T14:53:39.950Z",
   "periods": {
     "current": {
-      "matchesPlayed": 11,
-      "wins": 6,
+      "matchesPlayed": 12,
+      "wins": 7,
       "draws": 0,
       "losses": 5,
-      "goalsFor": 167,
-      "goalsAgainst": 90,
-      "goalsForPerMatch": 15.18,
-      "goalsAgainstPerMatch": 8.18,
-      "winRate": 54.5,
-      "goalDifference": 77,
-      "averageGoalDifference": 7,
-      "recentFormScore": 50,
+      "goalsFor": 204,
+      "goalsAgainst": 98,
+      "goalsForPerMatch": 17,
+      "goalsAgainstPerMatch": 8.17,
+      "winRate": 58.3,
+      "goalDifference": 106,
+      "averageGoalDifference": 8.83,
+      "recentFormScore": 60,
       "scoreDistribution": [
         {
           "difference": -5,
@@ -266,8 +266,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 29,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-11-16-les-collegues",
+              "date": "2026-11-16",
+              "opponent": "Les Collègues",
+              "scoreFor": 37,
+              "scoreAgainst": 8,
+              "difference": 29
+            }
+          ]
         },
         {
           "difference": 30,
@@ -310,6 +319,7 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "victory",
+        "victory",
         "defeat",
         "defeat",
         "defeat",
@@ -317,8 +327,7 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
-        "victory",
-        "defeat"
+        "victory"
       ],
       "streaks": {
         "wins": {
@@ -343,11 +352,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 55.4,
+        "value": 58.7,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     },
     "previous": {
@@ -1017,18 +1026,18 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 165,
-      "wins": 78,
+      "matchesPlayed": 166,
+      "wins": 79,
       "draws": 7,
       "losses": 80,
-      "goalsFor": 1896,
-      "goalsAgainst": 1669,
-      "goalsForPerMatch": 11.49,
-      "goalsAgainstPerMatch": 10.12,
-      "winRate": 47.3,
-      "goalDifference": 227,
-      "averageGoalDifference": 1.38,
-      "recentFormScore": 50,
+      "goalsFor": 1933,
+      "goalsAgainst": 1677,
+      "goalsForPerMatch": 11.64,
+      "goalsAgainstPerMatch": 10.1,
+      "winRate": 47.6,
+      "goalDifference": 256,
+      "averageGoalDifference": 1.54,
+      "recentFormScore": 60,
       "scoreDistribution": [
         {
           "difference": -14,
@@ -2589,8 +2598,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 29,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-11-16-les-collegues",
+              "date": "2026-11-16",
+              "opponent": "Les Collègues",
+              "scoreFor": 37,
+              "scoreAgainst": 8,
+              "difference": 29
+            }
+          ]
         },
         {
           "difference": 30,
@@ -2633,6 +2651,7 @@ window.LYKOS_TEAM_STATS = {
       ],
       "recentResults": [
         "victory",
+        "victory",
         "defeat",
         "defeat",
         "defeat",
@@ -2640,8 +2659,7 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
-        "victory",
-        "defeat"
+        "victory"
       ],
       "streaks": {
         "wins": {
@@ -2666,11 +2684,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 55.4,
+        "value": 58.7,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     }
   },
@@ -2679,7 +2697,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 11,
+      "matchCount": 12,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -2977,14 +2995,41 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1,
             "availableWeight": 0.55
           }
+        },
+        {
+          "eventId": "match-2026-11-16-les-collegues",
+          "index": 12,
+          "date": "2026-11-16",
+          "opponent": "Les Collègues",
+          "score": "37–8",
+          "winRate": 58.3,
+          "goalsForPerMatch": 17,
+          "goalsAgainstPerMatch": 8.17,
+          "goalDifferencePerMatch": 8.83,
+          "teamForm": 60,
+          "formTrace": {
+            "value": 60,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": null,
+            "eventRatingVoteCount": null,
+            "contextualResult": 60,
+            "opponentDifficulty": {
+              "value": 0,
+              "sampleSize": 1,
+              "policy": "previous-head-to-head"
+            },
+            "importance": 1,
+            "availableWeight": 0.4
+          }
         }
       ],
       "form": {
-        "value": 55.4,
+        "value": 58.7,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     },
     {

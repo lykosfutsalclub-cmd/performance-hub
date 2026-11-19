@@ -1,5 +1,5 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-11-18T14:34:34.657Z",
+  "generatedAt": "2026-11-19T13:52:35.866Z",
   "periods": {
     "current": {
       "matchesPlayed": 12,
@@ -352,11 +352,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 58.7,
+        "value": 59.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
-        "gradeCoverage": 50
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 70
       }
     },
     "previous": {
@@ -2684,11 +2684,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 58.7,
+        "value": 59.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
-        "gradeCoverage": 50
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 70
       }
     }
   },
@@ -2979,11 +2979,11 @@ window.LYKOS_TEAM_STATS = {
           "goalsForPerMatch": 15.18,
           "goalsAgainstPerMatch": 8.18,
           "goalDifferencePerMatch": 7,
-          "teamForm": 98.2,
+          "teamForm": 92.3,
           "formTrace": {
-            "value": 98.2,
-            "playerGradeAverage": null,
-            "playerGradeCount": 0,
+            "value": 92.3,
+            "playerGradeAverage": 8.5,
+            "playerGradeCount": 6,
             "eventRatingAverage": 6,
             "eventRatingVoteCount": 1,
             "contextualResult": 97.5,
@@ -2993,7 +2993,7 @@ window.LYKOS_TEAM_STATS = {
               "policy": "no-history-median"
             },
             "importance": 1,
-            "availableWeight": 0.55
+            "availableWeight": 1
           }
         },
         {
@@ -3006,13 +3006,13 @@ window.LYKOS_TEAM_STATS = {
           "goalsForPerMatch": 17,
           "goalsAgainstPerMatch": 8.17,
           "goalDifferencePerMatch": 8.83,
-          "teamForm": 60,
+          "teamForm": 74,
           "formTrace": {
-            "value": 60,
-            "playerGradeAverage": null,
-            "playerGradeCount": 0,
-            "eventRatingAverage": null,
-            "eventRatingVoteCount": null,
+            "value": 74,
+            "playerGradeAverage": 8.33,
+            "playerGradeCount": 6,
+            "eventRatingAverage": 5,
+            "eventRatingVoteCount": 1,
             "contextualResult": 60,
             "opponentDifficulty": {
               "value": 0,
@@ -3020,16 +3020,16 @@ window.LYKOS_TEAM_STATS = {
               "policy": "previous-head-to-head"
             },
             "importance": 1,
-            "availableWeight": 0.4
+            "availableWeight": 1
           }
         }
       ],
       "form": {
-        "value": 58.7,
+        "value": 59.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 90,
-        "gradeCoverage": 50
+        "eventRatingCoverage": 100,
+        "gradeCoverage": 70
       }
     },
     {

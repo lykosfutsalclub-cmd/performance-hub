@@ -1,18 +1,18 @@
 window.LYKOS_TEAM_STATS = {
-  "generatedAt": "2026-11-25T17:37:36.814Z",
+  "generatedAt": "2026-11-26T10:01:25.666Z",
   "periods": {
     "current": {
-      "matchesPlayed": 13,
-      "wins": 8,
+      "matchesPlayed": 14,
+      "wins": 9,
       "draws": 0,
       "losses": 5,
-      "goalsFor": 239,
-      "goalsAgainst": 101,
-      "goalsForPerMatch": 18.38,
-      "goalsAgainstPerMatch": 7.77,
-      "winRate": 61.5,
-      "goalDifference": 138,
-      "averageGoalDifference": 10.62,
+      "goalsFor": 259,
+      "goalsAgainst": 111,
+      "goalsForPerMatch": 18.5,
+      "goalsAgainstPerMatch": 7.93,
+      "winRate": 64.3,
+      "goalDifference": 148,
+      "averageGoalDifference": 10.57,
       "recentFormScore": 60,
       "scoreDistribution": [
         {
@@ -162,8 +162,17 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 10,
-          "matches": 0,
-          "fixtures": []
+          "matches": 1,
+          "fixtures": [
+            {
+              "eventId": "match-2026-11-25-saint-cannat",
+              "date": "2026-11-25",
+              "opponent": "Saint-Cannat",
+              "scoreFor": 20,
+              "scoreAgainst": 10,
+              "difference": 10
+            }
+          ]
         },
         {
           "difference": 11,
@@ -330,11 +339,11 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
-        "defeat",
-        "defeat",
-        "defeat",
-        "defeat",
         "victory",
+        "defeat",
+        "defeat",
+        "defeat",
+        "defeat",
         "victory",
         "victory"
       ],
@@ -361,11 +370,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 57,
+        "value": 57.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     },
     "previous": {
@@ -1035,17 +1044,17 @@ window.LYKOS_TEAM_STATS = {
       }
     },
     "alltime": {
-      "matchesPlayed": 167,
-      "wins": 80,
+      "matchesPlayed": 168,
+      "wins": 81,
       "draws": 7,
       "losses": 80,
-      "goalsFor": 1968,
-      "goalsAgainst": 1680,
-      "goalsForPerMatch": 11.78,
+      "goalsFor": 1988,
+      "goalsAgainst": 1690,
+      "goalsForPerMatch": 11.83,
       "goalsAgainstPerMatch": 10.06,
-      "winRate": 47.9,
-      "goalDifference": 288,
-      "averageGoalDifference": 1.72,
+      "winRate": 48.2,
+      "goalDifference": 298,
+      "averageGoalDifference": 1.77,
       "recentFormScore": 60,
       "scoreDistribution": [
         {
@@ -2330,8 +2339,16 @@ window.LYKOS_TEAM_STATS = {
         },
         {
           "difference": 10,
-          "matches": 4,
+          "matches": 5,
           "fixtures": [
+            {
+              "eventId": "match-2026-11-25-saint-cannat",
+              "date": "2026-11-25",
+              "opponent": "Saint-Cannat",
+              "scoreFor": 20,
+              "scoreAgainst": 10,
+              "difference": 10
+            },
             {
               "eventId": "match-2024-12-04-equipe-anonyme-le-complexe",
               "date": "2024-12-04",
@@ -2671,11 +2688,11 @@ window.LYKOS_TEAM_STATS = {
         "victory",
         "victory",
         "victory",
-        "defeat",
-        "defeat",
-        "defeat",
-        "defeat",
         "victory",
+        "defeat",
+        "defeat",
+        "defeat",
+        "defeat",
         "victory",
         "victory"
       ],
@@ -2702,11 +2719,11 @@ window.LYKOS_TEAM_STATS = {
         }
       },
       "form": {
-        "value": 57,
+        "value": 57.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     }
   },
@@ -2715,7 +2732,7 @@ window.LYKOS_TEAM_STATS = {
       "id": "saison-2026-2027",
       "label": "2026-2027",
       "current": true,
-      "matchCount": 13,
+      "matchCount": 14,
       "series": [
         {
           "eventId": "match-2026-09-02-fc-lancon",
@@ -3067,14 +3084,41 @@ window.LYKOS_TEAM_STATS = {
             "importance": 1.25,
             "availableWeight": 0.55
           }
+        },
+        {
+          "eventId": "match-2026-11-25-saint-cannat",
+          "index": 14,
+          "date": "2026-11-25",
+          "opponent": "Saint-Cannat",
+          "score": "20–10",
+          "winRate": 64.3,
+          "goalsForPerMatch": 18.5,
+          "goalsAgainstPerMatch": 7.93,
+          "goalDifferencePerMatch": 10.57,
+          "teamForm": 97.5,
+          "formTrace": {
+            "value": 97.5,
+            "playerGradeAverage": null,
+            "playerGradeCount": 0,
+            "eventRatingAverage": null,
+            "eventRatingVoteCount": null,
+            "contextualResult": 97.5,
+            "opponentDifficulty": {
+              "value": 50,
+              "sampleSize": 0,
+              "policy": "no-history-median"
+            },
+            "importance": 1,
+            "availableWeight": 0.4
+          }
         }
       ],
       "form": {
-        "value": 57,
+        "value": 57.5,
         "label": "POSITIVE",
         "matchCount": 10,
-        "eventRatingCoverage": 100,
-        "gradeCoverage": 60
+        "eventRatingCoverage": 90,
+        "gradeCoverage": 50
       }
     },
     {
